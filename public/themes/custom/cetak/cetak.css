@@ -1,0 +1,64 @@
+/* body{margin-left:5px;margin-right:5px;}   */ 
+body {
+    -webkit-print-color-adjust: exact !important;   /* Chrome, Safari */
+    color-adjust: exact !important;   
+     size: landscape;
+}
+
+td {
+    padding: 3px 5px 3px 5px;
+    border: 1px solid #666666;
+    font-size: 10px;
+}
+
+th {
+    padding: 0px 0px 0px 0px;
+    border-right: 0px solid #fff;
+    border-bottom: 0px solid #fff;
+}
+ 
+.head td {
+    font-weight: bold;
+    font-size: 10px;
+    background: #b7f0ff; 
+}
+ 
+th {
+
+    padding-bottom: 10px;
+    font-size: 10px;
+}
+
+.kaki{
+    font-size: 10px;
+}
+
+.tujuan {
+
+    font-size: 14px;
+    font-weight: normal;
+}
+ 
+table .main tbody tr td {
+    font-size: 6px;
+    border: 1px solid #000;
+}
+ 
+table, table .main {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+ 
+h1 {
+    font-size:20px;
+}
+
+.font_jam {
+    font-size:8px;
+    text-align: center;
+}
+
+.judul {
+     border: 0px;
+}

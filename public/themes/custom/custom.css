@@ -1,0 +1,46 @@
+.msclick{
+	cursor: pointer;
+}
+
+@media (min-width: 1400px) {
+    .content {
+        margin-right: 65px;
+        margin-left: 65px;
+    }
+}
+
+
+@media (min-width: 1600px) {
+    .content {
+        margin-right: 100px;
+        margin-left: 100px;
+    }
+}
+
+
+@media (min-width: 1900px) {
+    .content {
+        margin-right: 180px;
+        margin-left: 180px;
+    }
+}
+
+@media (min-width: 2000px) {
+    .content {
+        margin-right: 280px;
+        margin-left: 280px;
+    }
+}
+
+.select2-results__options {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.table-hover tbody tr:hover td {
+    background-color: #b3e5fc;
+}
+.table th:hover {
+     background-color: none !important;   
+}
+
