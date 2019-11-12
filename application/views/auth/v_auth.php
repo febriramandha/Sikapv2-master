@@ -1,6 +1,6 @@
 <div class="limiter">
 		<div class="container-login100">
-			<div class="wrap-login100" style="padding-top: 80px;">
+			<div class="wrap-login100" style="padding-top: 50px;">
 				<span class="login100-form-title" style="font-size: 16px">
 						Sistem Informasi Kinerja<br> Aparatur Pemerintah
 				</span>
@@ -31,8 +31,8 @@
 					
 
 					<div class="text-center">
-						<input type="checkbox" name="remember" data-fouc>
-						<span class="txt2">Biarkan Tetap Masuk</span>
+						<input type="checkbox" name="remember"  id="checkbox_id" data-fouc>
+						<label class="txt2 m-b-0" for="checkbox_id">Biarkan Tetap Masuk</label>
 					</div>
 					
 					<div class="container-login100-form-btn">
@@ -40,7 +40,7 @@
 							Masuk
 						</button>
 					</div>
-					<div class="text-center p-t-136">
+					<div class="text-center p-t-70">
 						<a class="txt2" href="#">
 							&copy; 2018-<?php echo date('Y') ?> Pemerintah Kabupaten Agam
 							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>

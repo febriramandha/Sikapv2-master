@@ -30,7 +30,7 @@
 	<div class="navbar navbar-expand-md navbar-light navbar-static">
 		<div class="navbar-brand">
 			<a href="<?php echo config_item('base_url') ?>" class="d-inline-block">
-				<img src="<?php echo config_item('base_url') ?>public/images/logo-01-9-dark.png" alt="" style="height: 2rem; margin: -10px;">
+				<img src="<?php echo config_item('base_url') ?>public/images/logo-01-11-dark.png" alt="" style="height: 2rem; margin: -10px;">
 			</a>
 		</div>
 
