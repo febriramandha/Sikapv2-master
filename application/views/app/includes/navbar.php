@@ -4,12 +4,12 @@
 		<div class="navbar-header navbar-dark d-none d-md-flex align-items-md-center bg-light">
 			<div class="navbar-brand navbar-brand-md"  style="margin-left: 0;padding-top: 0;padding-bottom: 0;">
 				<a href="<?php echo base_url() ?>" class="d-inline-block"  >
-					<img src="<?php echo base_url() ?>public/images/logo-01-11-dark.png" alt="" style="height: 50px;" >
+					<img src="<?php echo base_url() ?>public/images/logo-01-14-dark-b.png" alt="" style="height: 50px;" >
 				</a>
 			</div>
 			<div class="navbar-brand navbar-brand-xs">
 				<a href="<?php echo base_url() ?>" class="d-inline-block">
-					<img src="<?php echo base_url() ?>public/images/logo_sk.png" alt="">
+					<img src="<?php echo base_url() ?>public/images/logo_yy.png" alt="">
 				</a>
 			</div>
 		</div>
@@ -18,7 +18,7 @@
 		<div class="d-flex flex-1 d-md-none">
 			<div class="navbar-brand mr-auto">
 				<a href="<?php echo base_url() ?>" class="d-inline-block">
-					<img src="<?php echo base_url() ?>public/images/logo-01-11-dark.png" alt="" style="height: 2rem; margin: -10px;">
+					<img src="<?php echo base_url() ?>public/images/logo-01-14-dark-b.png" alt="" style="height: 2rem; margin: -10px;">
 				</a>
 			</div>	
 			<button class="navbar-toggler sidebar-mobile-main-toggle" type="button">

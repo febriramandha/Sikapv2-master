@@ -31,7 +31,7 @@ class Kategori extends App_Controller {
         $this->datatables->select('id, name, description')
         	->from('_kategori')
         	->add_column('action', '
-        							<span class="cek list-icons-item text-primary-600 ml-2 msclick" onClick="edit($1)">
+        							<span class="cek list-icons-item text-info-400 msclick" onClick="edit($1)">
         									<i class="icon-pencil5" ></i>
         							</span>
         							<span class="confirm-aksi list-icons-item text-danger-600 ml-2 msclick"  id="$1" msg="yakin ingin menghapus data ini">
@@ -46,7 +46,7 @@ class Kategori extends App_Controller {
 
 		$this->form_validation->set_rules('nama', 'nama', 'required')
 								->set_rules('desck', 'deskripsi', 'required');
-		$this->form_validation->set_error_delimiters('<div>', '</div>');
+		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 
 		if ($this->form_validation->run() == TRUE) {
 			$config = array(
@@ -58,51 +58,49 @@ class Kategori extends App_Controller {
 			);
 			$this->load->library('slug', $config);
 
-			$mod = $this->input->post('mod');
-			if ($mod == "add") {
+			$this->mod = $this->input->post('mod');
+			if ($this->mod == "add") {
 				$data = array('name' 	 		=> $this->input->post('nama'),
 							  'description' 	=> $this->input->post('desck'),
 							  'slug' 		    => $this->slug->create_uri($this->input->post('nama')),
 							  'created_at' 		=> date('Y-m-d H:i:s'),
 							  'created_by' 	 	=> $this->session->userdata('tpp_user_id'),
 				 );
-				$res = $this->db->insert('_kategori',$data);
+				$this->return = $this->db->insert('_kategori',$data);
 
-				if ($res) {
-					 $data_ = array('status' => true,
-				    			    'alert' => 'Data berhasil disimpan');
+				if ($this->return) {
+					 $this->result = array('status' => true,
+				    			    		'message' => 'Data berhasil disimpan');
 				}else{
-					 $data_ = array('status' => false,
-				    			    'alert' => 'Data gagal disimpan');
+					 $this->result = array('status' => false,
+				    			    		'message' => 'Data gagal disimpan');
 				}
-			}elseif ($mod == "edit") {
+			}elseif ($this->mod == "edit") {
 				$data = array('name' 	 		=> $this->input->post('nama'),
 							  'description' 	=> $this->input->post('desck'),
 							  'slug' 		    => $this->slug->create_uri($this->input->post('nama')),
 							  'updated_at' 		=> date('Y-m-d H:i:s'),
 							  'updated_by' 	 	=> $this->session->userdata('tpp_user_id'),
 				 );
-				$res = $this->db->update('_kategori', $data, ['id' => $this->input->post('id')]);
+				$this->return = $this->db->update('_kategori', $data, ['id' => $this->input->post('id')]);
 
-				if ($res) {
-					 $data_ = array('status' => true,
-				    			   'alert' => 'Data berhasil disimpan');
+				if ($this->return) {
+					 $this->result = array('status' => true,
+				    			   'message' => 'Data berhasil disimpan');
 				}else{
-					 $data_ = array('status' => false,
-				    			   'alert' => 'Data gagal disimpan');
+					 $this->result = array('status' => false,
+				    			   'message' => 'Data gagal disimpan');
 				}
 			}
 
 		}else {
-			$validasi =  form_error('nama').
-						 form_error('desc');
-			$data_ = array('status' => false,
-				    		'alert' => $validasi,);
+			$this->result = array('status' => false,
+				    			  'message' => validation_errors(),);
 		}
-		if ($data_) {
-			$this->output->set_output(json_encode($data_));	
+		if ($this->result) {
+			$this->output->set_output(json_encode($this->result));	
 		}else {
-			$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal mengambil data.']));
+			$this->output->set_output(json_encode(['message'=>FALSE, 'msg'=> 'Gagal mengambil data.']));
 		}
 	}
 
@@ -111,9 +109,9 @@ class Kategori extends App_Controller {
 		$this->output->unset_template();
 		$cuti = $this->db->get_where('_kategori', ['id'=> $this->input->get('id')])->row();
 		if ($cuti) {
-			$this->output->set_output(json_encode(['status'=>TRUE, 'msg'=> 'Berhasil mengambil data.', 'data'=> $cuti]));
+			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Berhasil mengambil data.', 'data'=> $cuti]));
 		} else{
-			$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal mengambil data.']));	
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal mengambil data.']));	
 		}
 	}
 
@@ -123,9 +121,9 @@ class Kategori extends App_Controller {
 		$del = $this->db->delete('_kategori',['id' => $this->input->get('id')]);
 
 		if ($del) {
-			$this->output->set_output(json_encode(['status'=>TRUE, 'msg'=> 'Data berhasil dihapus.']));
+			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil dihapus.']));
 		} else{
-			$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal dihapus.']));	
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal dihapus.']));	
 		}
 	}
 

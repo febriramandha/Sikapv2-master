@@ -29,20 +29,22 @@
 	<script src="<?php echo base_url() ?>public/themes/material/global_assets/js/plugins/loaders/blockui.min.js"></script>
 	<script src="<?php echo base_url() ?>public/themes/material/global_assets/js/plugins/ui/ripple.min.js"></script>
 	<!-- /core JS files -->
-	<script src="<?php echo base_url() ?>public/themes/plugin/bootbox/bootbox.all.min.js"></script>
-	<!-- Toastr -->
-	<link rel="stylesheet" href="<?php echo base_url() ?>public/themes/plugin/toastr/toastr.css">
-	<script src="<?php echo base_url() ?>public/themes/plugin/toastr/toastr.min.js"></script>
-
+	<script src="<?php echo base_url() ?>public/themes/plugin/bootbox/bootbox.js"></script>
 
 	<script src="<?php echo base_url() ?>public/themes/material/global_assets/js/plugins/forms/selects/select2.min.js"> </script>
 	<script src="<?php echo base_url() ?>public/themes/material/global_assets/js/plugins/tables/datatables/datatables.min.js"> </script>
 	<!-- Theme JS files -->
 	<script src="<?php echo base_url() ?>public/themes/material/js/app.js"></script>
+	<script src="<?php echo base_url() ?>public/themes/material/global_assets/js/plugins/forms/styling/uniform.min.js"></script>
+	<script src="<?php echo base_url() ?>public/themes/material/global_assets/js/plugins/forms/styling/switchery.min.js"></script>
 	<!-- /theme JS files -->
 <?php foreach($js as $file){ ?>
 	<script src="<?php echo $file; ?>"> </script>
 <?php } ?>
+<script type="text/javascript">
+	var uri_dasar = '<?= site_url() ?>';
+	var csrf_value = '<?php echo $this->security->get_csrf_hash(); ?>';
+</script>
 
 </head>
 <body class="navbar-top">	
@@ -68,7 +70,7 @@
 						<div class="d-flex justify-content-center">
 							<a href="#" class="btn btn-link btn-float font-size-sm font-weight-semibold text-default">
 							<!-- <img src="<?php echo base_url('public/themes/global_assets/images/logo-120.png') ?>" height="38px"> -->
-							<img src="<?php echo base_url('public/images/logo_sk.png') ?>" height="50px">
+							<img src="<?php echo base_url('public/images/logo_yy.png') ?>" height="50px">
 								<!-- <span><?php echo $regency ?></span> -->
 							</a>
 						</div>
@@ -91,7 +93,7 @@
 				<div class="text-center w-100">
 					<button type="button" class="navbar-toggler" >
 						<i class="icon-circles mr-2"></i>
-						&copy; 2018 - <?php echo date('Y') ?> <a href="#">Kabupaten Agam</a> 
+						&copy; 2018 - <?php echo date('Y') ?> <a href="#">Pemerintah Kabupaten Agam</a> 
 					</button>
 				</div>
 			</div>

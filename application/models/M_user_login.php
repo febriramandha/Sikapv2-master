@@ -80,7 +80,7 @@ class M_user_login extends CI_Model {
     // ambil data berdasarkan cookie
     public function get_by_cookie($cookie)
     {
-        return $this->db->select('b.id, b.dept_id, b.user_id, b.username, b.display_name, b.level, c.pns, b.avatar')
+        return $this->db->select('b.id, c.dept_id, b.user_id, b.username, c.nama, b.level, c.pns, b.avatar')
 		        		 ->where(['a.cookie' => $cookie, 'a.deleted' => 1])
 		        		 ->join('users_login b','a.login_id=b.id')
 		        		 ->join('mf_users c','b.user_id=c.id', 'left')
@@ -99,14 +99,27 @@ class M_user_login extends CI_Model {
 	    return (bool) $this->session->userdata('tpp_loggedin');
 	}
 
+	public function update_reset_key($email,$reset_key)
+	{
+		$this->db->where('email', $email);
+		$data = array('reset_password'=>$reset_key);
+		$this->db->update('users_login', $data);
+		if($this->db->affected_rows()>0)
+		{
+			return TRUE;
+		}else{
+			return FALSE;
+		}
+	}
+
 	public function AjaxSaveAkun()
 	{
-		$this->form_validation->set_rules('username', 'username', 'required|min_length[6]|trim');
+		$this->form_validation->set_rules('username', 'username', 'trim|required|min_length[6]|edit_unique[users_login.username.'.$this->session->userdata('tpp_login_id').']');
 		if ($this->input->post('password') || $this->input->post('password_confirmation')) {
 			$this->form_validation->set_rules('password_confirmation', 'Kata Sandi Baru', 'trim|required|min_length[6]|matches[password]');
 			$this->form_validation->set_rules('password', 'Konfirmasi Kata Sandi Baru', 'trim|required');
 		}
-		$this->form_validation->set_error_delimiters('<div>', '</div>');
+		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 
 		if ($this->form_validation->run() == TRUE) {
 				$data = array('username' 	=> $this->input->post('username'),
@@ -115,10 +128,7 @@ class M_user_login extends CI_Model {
 					$data['password'] = $this->m_user_login->ghash($this->input->post('password'));
 					$data['recovery'] = $this->encryption->encrypt($this->input->post('password'));
 				}
-				$res = $this->db->update('users_login',$data, $this->session->userdata('tpp_login_id'));
-
-				
-
+				$res = $this->db->update('users_login',$data, ['id' => $this->session->userdata('tpp_login_id')]);
 				if ($res) {
 					 $data_ = array('status' => true,
 				    			   'msg' => 'Data berhasil disimpan');

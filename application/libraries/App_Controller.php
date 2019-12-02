@@ -7,8 +7,13 @@ class App_Controller extends MY_Controller {
 	{
 		parent::__construct();
 		$this->load->model('m_user_login');
-		$this->data['title'] = "Home";
+		$this->data['title'] 	 = "Home";
 		$this->data['sub_title'] = "";
+		$this->mod 				 = '';
+		$this->return 			 = '';
+		$this->result			 = '';
+		$this->msg 				 = '';
+		$this->del 				 = '';
 		$this->output->set_common_meta(
 			$this->data['site_name'], // Title
 			$this->data['description'], // Description

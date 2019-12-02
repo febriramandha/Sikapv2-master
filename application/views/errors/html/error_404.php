@@ -30,7 +30,7 @@
 	<div class="navbar navbar-expand-md navbar-light navbar-static">
 		<div class="navbar-brand">
 			<a href="<?php echo config_item('base_url') ?>" class="d-inline-block">
-				<img src="<?php echo config_item('base_url') ?>public/images/logo-01-11-dark.png" alt="" style="height: 2rem; margin: -10px;">
+				<img src="<?php echo config_item('base_url') ?>public/images/logo-01-14-dark-b.png" alt="" style="height: 2rem; margin: -10px;">
 			</a>
 		</div>
 
@@ -96,7 +96,7 @@
 				<div class="text-center w-100">
 					<button type="button" class="navbar-toggler" >
 						<i class="icon-circles mr-2"></i>
-						&copy; 2018 - <?php echo date('Y') ?> <a href="#">Kabupaten Agam</a> 
+						&copy; 2018 - <?php echo date('Y') ?> <a href="#">Pemerintah Kabupaten Agam</a> 
 					</button>
 				</div>
 			</div>

@@ -9,7 +9,7 @@ class Mesin extends App_Controller {
 		$this->_init();
 		$this->breadcrumbs->push('Mesin', 'administrator/mesin');
 		$this->data['title'] = "Master";
-		$this->load->model('m_user');
+		$this->load->model(['m_instansi','m_machine']);
 	}
 
 	private function _init()
@@ -24,7 +24,7 @@ class Mesin extends App_Controller {
 		$this->load->view('mesin/v_index', $this->data);
 	}
 
-	public function json()
+	public function indexJson()
 	{
 		$this->output->unset_template();
 		$instansi = $this->input->post('instansi');
@@ -36,22 +36,200 @@ class Mesin extends App_Controller {
         	->from('_mf_machines a')
         	->join('v_instansi_all b','b.id=a.dept_id')
         	->order_by('b.path_info,a.id')
+        	->where('a.deleted', 1)
         	->add_column('status_mesin','$1','status_user(status)')
-        	->add_column('action', '<div class="list-icons">
-										<div class="dropdown">
-											<a href="#" class="list-icons-item" data-toggle="dropdown">
-												<i class="icon-menu9"></i>
-											</a>
-											<div class="dropdown-menu dropdown-menu-right">
-												$2
-												<a href="javascript:;" class="edit dropdown-item" data="$1"><i class="icon-pencil5"></i> Ubah Data</a>
-											</div>
-										</div>
-									</div>', 'id, cekAksiAktifMesin(status,id)');
+        	->add_column('action', '<a href="'.base_url('master/mesin/edit/').'$1">
+        								<i class="icon-pencil5 text-info-400 mr-1"></i>
+					                </a>
+					              	<span class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus akun" style="cursor:pointer;" id="$1">
+					              		<i class="icon-bin"></i>
+					              	</span>', 'encrypt_url(id,"machines_id")');
         	if ($instansi) {
 	        		$this->datatables->where("b.path_id['".$level."']='".decrypt_url($instansi,'user_instansi')."'");
 	        }
         return $this->output->set_output($this->datatables->generate());
+	}
+
+	public function add()
+	{
+		$this->data['sub_title'] 	= "Tambah Data Mesin";
+		$this->breadcrumbs->push('Tambah Mesin', '/');
+		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
+		$this->data['instansi']		= $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
+		$this->load->view('mesin/v_add', $this->data);
+	}
+
+	public function edit($id)
+	{
+		$this->data['sub_title'] 	= "Edit Data Mesin";
+		$this->breadcrumbs->push('Edit Mesin', '/');
+		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
+		$this->data['instansi']		= $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
+		$this->data['mesin']		= $this->db->get_where('_mf_machines', ['id' => decrypt_url($id, 'machines_id')])->row();
+		$this->load->view('mesin/v_edit', $this->data);
+	}
+
+	
+	public function AjaxSave()
+	{
+		$this->load->model('m_server_att');
+		$this->output->unset_template();
+		$this->form_validation->set_rules('nama', 'nama mesin', 'required')
+								->set_rules('ip', 'IP Adress', 'required')
+								->set_rules('port', 'port', 'required|numeric')
+								->set_rules('ket', 'keterangan', 'required')
+								->set_rules('instansi', 'instansi', 'required');
+		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
+		$res ='';
+		if ($this->form_validation->run() == TRUE) {
+			$this->mod = $this->input->post('mod');
+			
+			if ($this->mod == "add") {
+				$number = $this->db->select('max(machine_number) as jum')->get('_mf_machines')->row();
+				if ($number) {
+					$number_plus = $number->jum+1;
+				}else {
+					$number_plus = 1;
+				}
+
+				if ($this->input->post('status')) {
+					$status = 1;
+				}else {
+					$status = 0;
+				}
+
+				$data = array('dept_id' 	 	=> decrypt_url($this->input->post('instansi'),'instansi'),
+							  'name' 		    => $this->input->post('nama'),
+							  'machine_number' 	=> $number_plus,
+							  'ip' 	 			=> $this->input->post('ip'),
+							  'port' 	 		=> $this->input->post('port'),
+							  'password' 	 	=> $this->input->post('pass'),
+							  'ket' 	 		=> $this->input->post('ket'),
+							  'status' 	 		=> $status
+				 );
+				$this->return = $this->db->insert('_mf_machines',$data);
+				$id_new = $this->db->insert_id();
+
+				if ($this->return) {
+					if ($status == 1) {
+						$data_att_dept = array( 'id' 		=> $id_new,
+												'machinealias'  => $this->input->post('nama'),
+												'ConnectType' 	=> 1,
+												'ip' 			=> $this->input->post('ip'),
+												'serialport' 	=> 1,
+												'port' 			=> $this->input->post('port'),
+												'baudrate' 		=> '115200',
+												'machinenumber' => $number_plus,
+												'enabled' 		=> 1,
+												'commpassword' 	=> $this->input->post('pass'),
+										);
+						$this->m_server_att->Newmachines($data_att_dept);
+					}
+					
+				}
+
+				if ($this->return) {
+					 $this->result = array('status' => true,
+				    			   			'message' => 'Data berhasil disimpan');
+				}else{
+					 $this->result = array('status' => false,
+				    			    		'message' => 'Data gagal disimpan');
+				}
+			}elseif ($this->mod == "edit") {
+				$cek_status = $this->db->select('*')->get_where('_mf_machines', ['id' => decrypt_url($this->input->post('id'),'machines_id')])->row();
+				if ($this->input->post('status')) {
+					$status = 1;
+				}else {
+					$status = 0;
+				}
+
+				$data = array(
+							  'name' 		    => $this->input->post('nama'),
+							  'ip' 	 			=> $this->input->post('ip'),
+							  'port' 	 		=> $this->input->post('port'),
+							  'password' 	 	=> $this->input->post('pass'),
+							  'ket' 	 		=> $this->input->post('ket'),
+							  'status' 	 		=> $status
+				);
+				$this->return = $this->db->update('_mf_machines', $data, ['id' => decrypt_url($this->input->post('id'),'machines_id')]);
+
+				if ($this->return) {
+					if ($status == 1) {
+						if ($cek_status->status == 1) {
+							   $data_att_dept = array(
+											'machinealias'  => $this->input->post('nama'),
+											'ip' 			=> $this->input->post('ip'),
+											'port' 			=> $this->input->post('port'),
+											'commpassword' 	=> $this->input->post('pass'),
+										);
+							   $this->return = $this->m_server_att->Updatemachines($data_att_dept, ['id' => decrypt_url($this->input->post('id'),'machines_id')]);
+						}else {
+							$data_att_dept = array( 'id' 		    => $cek_status->id,
+													'machinealias'  => $this->input->post('nama'),
+													'ConnectType' 	=> 1,
+													'ip' 			=> $this->input->post('ip'),
+													'serialport' 	=> 1,
+													'port' 			=> $this->input->post('port'),
+													'baudrate' 		=> '115200',
+													'machinenumber' => $cek_status->machine_number,
+													'enabled' 		=> 1,
+													'commpassword' 	=> $this->input->post('pass'),
+											);
+							$this->m_server_att->Newmachines($data_att_dept);
+						}
+					}else {
+						if ($cek_status->status == 1) {
+								$this->m_server_att->Delmachines(['id' => decrypt_url($this->input->post('id'),'machines_id')]);
+						}
+					}
+					
+				}
+
+				if ($this->return) {
+					 $this->result = array('status' => true,
+				    			   'message' => 'Data berhasil disimpan');
+				}else{
+					 $this->result = array('status' => false,
+				    			   'message' => 'Data gagal disimpan');
+				}
+			}
+
+		}else {
+			$this->result = array('status' => false,
+				    		      'message' => validation_errors(),);
+		}
+
+		if ($this->result) {
+			$this->output->set_output(json_encode($this->result));	
+		}else {
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal mengambil data.']));
+		}
+	}
+
+	public function AjaxDel()
+	{
+		$this->load->model('m_server_att');
+		$this->output->unset_template();
+
+		$this->del = $this->db->update('_mf_machines',['deleted' => 0,'status' => 0],['id' => decrypt_url($this->input->get('id'),'machines_id')]);
+		if ($this->del) {
+			$this->m_server_att->Delmachines(['id' => decrypt_url($this->input->get('id'),'machines_id')]);
+		}
+		if ($this->del) {
+			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil dihapus.']));
+		} else{
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal dihapus atau data sedang digunakan.']));	
+		}
+	}
+
+	public function cetak()
+	{
+		ini_set('memory_limit', '-1');
+		ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+		$this->output->unset_template();
+		$this->load->library('Tpdf');
+		$this->data['mesin'] = $this->m_machine->GetAllMesin()->result();
+		$this->load->view('mesin/v_cetak', $this->data);
 	}
 
 	public function dumpt()
@@ -72,172 +250,8 @@ class Mesin extends App_Controller {
 		}
 	}
 
-	public function AjaxSave()
-	{
-		$this->db2 = $this->load->database('sqlsrv',TRUE);
-		$this->output->unset_template();
-		$this->form_validation->set_rules('ip', 'IP Adress', 'required')
-								->set_rules('port', 'port', 'required|numeric')
-								->set_rules('ket', 'keterangan', 'required');
-		$this->form_validation->set_error_delimiters('<div>', '</div>');
-		$res ='';
-		if ($this->form_validation->run() == TRUE) {
-			$mod = $this->input->post('mod');
-			$dept = $this->db->select('dept_alias, path_info')->get_where('v_instansi_all', ['id' => decrypt_url($this->input->post('instansi_add'),'user_instansi')])->row();
-			// $new_path = attConverPathNumber($dept->path_info);
-			
-			if ($mod == "add") {
-				$number = $this->db->select('max(machine_number) as jum')->get('_mf_machines')->row();
-				if ($number) {
-					$number_plus = $number->jum+1;
-				}else {
-					$number_plus = 1;
-				}
 
-				$data = array('dept_id' 	 	=> decrypt_url($this->input->post('instansi_add'),'user_instansi'),
-							  'name' 		    => $dept->dept_alias.'_'.$number_plus,
-							  'machine_number' 	=> $number_plus,
-							  'ip' 	 			=> $this->input->post('ip'),
-							  'port' 	 		=> $this->input->post('port'),
-							  'password' 	 	=> $this->input->post('password'),
-							  'ket' 	 		=> $this->input->post('ket'),
-							  'status' 	 		=> 1
-				 );
-				$res_ = $this->db->insert('_mf_machines',$data);
-				$id_new = $this->db->insert_id();
-
-				if ($res_) {
-					$this->db2->query("SET IDENTITY_INSERT machines ON");
-					$data_att_dept = array( 'id' 			=> $id_new,
-											'machinealias'  => $dept->dept_alias.'_'.$number_plus,
-											'ConnectType' 	=> 1,
-											'ip' 			=> $this->input->post('ip'),
-											'serialport' 	=> 1,
-											'port' 			=> $this->input->post('port'),
-											'baudrate' 		=> '115200',
-											'machinenumber' => $number_plus,
-											'enabled' 		=> 1,
-											'commpassword' 	=> $this->input->post('password'),
-										);
-					$res = $this->db2->insert('machines', $data_att_dept);
-				}
-
-				if ($res) {
-					 $data_ = array('status' => true,
-				    			    'alert' => 'Data berhasil disimpan');
-				}else{
-					 $data_ = array('status' => false,
-				    			    'alert' => 'Data gagal disimpan');
-					 $this->db->delete('_mf_machines', ['id' => $id_new]);
-				}
-			}elseif ($mod == "edit") {
-				$machine_number =$this->db->select('machine_number')->get_where('_mf_machines', ['id' => $this->input->post('id')])->row()->machine_number;
-				$data = array(
-							  'name' 		    => $dept->dept_alias.'_'.$machine_number,
-							  'ip' 	 			=> $this->input->post('ip'),
-							  'port' 	 		=> $this->input->post('port'),
-							  'password' 	 	=> $this->input->post('password'),
-							  'ket' 	 		=> $this->input->post('ket'),
-				 );
-				$res = $this->db->update('_mf_machines', $data, ['id' => $this->input->post('id')]);
-
-				if ($res) {
-					$data_att_dept = array(
-											'machinealias'  => $dept->dept_alias.'_'.$machine_number,
-											'ip' 			=> $this->input->post('ip'),
-											'port' 			=> $this->input->post('port'),
-											'commpassword' 	=> $this->input->post('password'),
-										);
-					$res = $this->db2->update('machines', $data_att_dept, ['id' => $this->input->post('id')]);
-				}
-
-				if ($res) {
-					 $data_ = array('status' => true,
-				    			   'alert' => 'Data berhasil disimpan');
-				}else{
-					 $data_ = array('status' => false,
-				    			   'alert' => 'Data gagal disimpan');
-				}
-			}
-
-		}else {
-			$validasi =  form_error('ip').
-						 form_error('port').
-						 form_error('ket');
-			$data_ = array('status' => false,
-				    		'alert' => $validasi,);
-		}
-
-		if ($data_) {
-			$this->output->set_output(json_encode($data_));	
-		}else {
-			$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal mengambil data.']));
-		}
-	}
-
-	public function AjaxGet()
-	{
-		$this->output->unset_template();
-		$this->mod = $this->input->get('mod');
-
-	   if ($this->mod == "get_edit") {
-			$res = $this->db->get_where('_mf_machines', ['id' => $this->input->get('id')])->row();
-
-			$data = array('id' 		=> $res->id,
-						  'dept_id' => encrypt_url($res->dept_id,'user_instansi'),
-						  'ip' 		=> $res->ip,
-						  'port' 	=> $res->port,
-						  'ket' 	=> $res->ket, );
-
-			if ($res) {
-				$this->output->set_output(json_encode(['status'=>true, 'data'=> $data]));
-			}else{
-				$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal mengambil data.']));
-			}
-		}elseif ($this->mod == "non_aktif") {
-			$this->db2 = $this->load->database('sqlsrv',TRUE);
-			$update = $this->db->update('_mf_machines',['status' => 0], ['id' => $this->input->get('id')]);
-			if ($update) {
-					$this->db2->delete('machines', ['id' => $this->input->get('id')]);
-			}
-
-			if ($update) {
-				$this->output->set_output(json_encode(['status'=>true, 'msg'=> 'mesin dinonaktifkan.']));
-			}else{
-				$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal mengambil data.']));
-			}
-		}elseif ($this->mod == "aktif") {
-			$this->db2 = $this->load->database('sqlsrv',TRUE);
-			
-
-			$update = $this->db->update('_mf_machines',['status' => 1], ['id' => $this->input->get('id')]);
-			$res ='';
-			if ($update) {
-				$get_data = $this->db->select('name, machine_number, ip, port, password')->get_where('_mf_machines', ['id' => $this->input->get('id')])->row();
-
-				$this->db2->query("SET IDENTITY_INSERT machines ON");
-					$data_att_dept = array( 'id' 			=> $this->input->get('id'),
-											'machinealias'  => $get_data->name,
-											'ConnectType' 	=> 1,
-											'ip' 			=> $get_data->ip, 
-											'serialport' 	=> 1,
-											'port' 			=> $get_data->port,
-											'baudrate' 		=> '115200',
-											'machinenumber' => $get_data->machine_number,
-											'enabled' 		=> 1,
-											'commpassword' 	=> $get_data->password,
-										);
-				$res = $this->db2->insert('machines', $data_att_dept);
-			}
-
-			if ($res) {
-				$this->output->set_output(json_encode(['status'=>true, 'msg'=> 'mesin diaktifkan.']));
-			}else{
-				$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal mengambil data.']));
-			}
-			
-		}
-	}
+	
 
 
 }

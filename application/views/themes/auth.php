@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Masuk Ke <?php echo $app_name; ?></title>
+	<title>Masuk Ke <?php echo $app_name; ?> - SISTEM INFORMASI KINERJA APARATUR</title>
 	<meta charset="UTF-8">
 	<meta content="<?php echo $author ?>" name="author" />
 <?php foreach($meta as $name=>$content){ ?>
@@ -29,9 +29,7 @@
 	<script src="<?php echo base_url('public/themes/auth/') ?>vendor/bootstrap/js/popper.js"></script>
 	<script src="<?php echo base_url('public/themes/auth/') ?>vendor/bootstrap/js/bootstrap.min.js"></script>
 <!--===============================================================================================-->
-	<link rel="stylesheet" href="<?php echo base_url() ?>public/themes/plugin/toastr/toastr.css">
-	<!-- Toastr -->
-	<script src="<?php echo base_url() ?>public/themes/plugin/toastr/toastr.min.js"></script>
+	<script src="<?php echo base_url() ?>public/themes/plugin/bootbox/bootbox.js"></script>
 </head>
 <body>
 	
@@ -42,6 +40,19 @@
 		$('.js-tilt').tilt({
 			scale: 1.1
 		})
+		function bx_alert(msg) {
+			bootbox.alert({
+		   		title: "Peringatan!",
+			    message: msg,
+			    closeButton: false,
+			    buttons: {
+			      ok: {
+			        label: 'Baiklah',
+			        className: 'btn-info'
+			      }
+			    },
+			});
+		}
 	</script>
 
 </body>

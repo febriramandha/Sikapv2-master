@@ -38,7 +38,7 @@ class Auth extends Frontend_Controller {
 		$this->output->unset_template();
 		$this->form_validation->set_rules('username', 'nama pengguna', 'trim|required|max_length[50]');
 		$this->form_validation->set_rules('password', 'kata sandi', 'required|min_length[3]|max_length[50]');
-		$this->form_validation->set_error_delimiters('<div>', '</div>');	
+		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 		
 		if ($this->form_validation->run() == TRUE) {
 
@@ -64,23 +64,21 @@ class Auth extends Frontend_Controller {
 		            }
 
 			    $data = array('status' => true,
-			    			   'alert' => 'Berhasil Masuk', );
+			    			   'message' => '<i class="fa fa-check text-success"></i> Berhasil Masuk', );
 				   		
 			}else {
 				  $data = array('status' => false,
-				    			 'alert' => '<strong>Peringatan!</strong> username atau password salah', );
+				    			 'message' => 'nama pengguna atau kata sandi salah' );
 			}
 		}else {
-			$validasi = form_error('username').
-						form_error('password');
 			$data = array('status' => false,
-				    	   'alert' => $validasi,);
+				    	   'message' => validation_errors(),);
 		}
 
 		if ($data) {
 			$this->output->set_output(json_encode($data));	
 		}else {
-			$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal mengambil data.']));
+			$this->output->set_output(json_encode(['message'=>FALSE, 'msg'=> 'Gagal mengambil data.']));
 		}
 	}
 
@@ -95,6 +93,73 @@ class Auth extends Frontend_Controller {
         $this->session->set_flashdata('msg', 'Terimakasih Anda Berhasil Keluar');
         redirect('auth');
     }
+
+    public function reset_password()
+    {
+    	$this->load->view('auth/v_reset_password', $this->data);
+    }
+
+    public function email_reset_password_validation(){
+    	$this->output->unset_template();
+		$this->form_validation->set_rules('email', 'Email', 'required|valid_email|trim');
+		if($this->form_validation->run()){
+
+			$email = $this->input->post('email');
+			$reset_key =  random_string('alnum', 50);
+
+			if($this->m_user_login->update_reset_key($email,$reset_key))
+			{
+				//memanggil library email dan set konfigurasi untuk pengiriman email
+				$config = Array(
+				    'mailtype'  => 'html',
+		            'charset'   => 'utf-8',
+		            'protocol'  => 'smtp',
+		            'smtp_host' => 'smtp.googlemail.com',
+		            'smtp_user' => 'rianreski13@gmail.com',  // Email gmail
+		            'smtp_pass'   => 'jjzahszdgqilivqs',  // Password gmail
+		            'smtp_crypto' => 'ssl',
+		            'smtp_port'   => 465,
+		            'crlf'    => "\r\n",
+		            'newline' => "\r\n"
+				);
+
+					
+				$this->load->library('email', $config);
+				$this->email->set_newline("\r\n");
+				//konfigurasi pengiriman
+				$this->email->from($config['smtp_user']);
+				$this->email->to($this->input->post('email'));
+				$this->email->subject("Reset your password");
+
+				$message = "<p>Anda melakukan permintaan reset password</p>";
+				$message .= "<a href='".site_url('auth/reset_password/'.$reset_key)."'>klik reset password</a>";
+				$this->email->message($message);
+				
+				if($this->email->send())
+				{
+					$data = array('status' => true,
+			    			   'alert' => "silahkan cek email <b>".$this->input->post('email').'</b> untuk melakukan reset password', );
+				}else{
+					$data = array('status' => false,
+			    			   'alert' => 'Berhasil melakukan registrasi, gagal mengirim verifikasi email', );
+				}
+
+			}else {
+				 $data = array('status' => false,
+				    			 'alert' => 'Email yang anda masukan belum terdaftar' );
+			}
+		} else{
+			$validasi = form_error('email');
+			$data = array('status' => false,
+				    	   'alert' => $validasi,);
+		}
+
+		if ($data) {
+			$this->output->set_output(json_encode($data));	
+		}else {
+			$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal mengambil data.']));
+		}
+	}
 
 }
 

@@ -1,6 +1,6 @@
 <!-- Basic table -->
 <div class="card">
-	<div class="card-header bg-white header-elements-inline pb-1 pt-sm-1">
+	<div class="card-header bg-white header-elements-inline py-2">
 		<h5 class="card-title">Semua Pos</h5>
 		<div class="header-elements">
 			<div class="list-icons">
@@ -10,18 +10,13 @@
 	</div>
 
 	<div class="card-body">
-      <div class="text-left">
-			     <a href="<?php echo base_url('pos/add') ?>" class="btn btn-sm btn-info"><i class="icon-stack-plus mr-2"></i> Tambah Baru</a>
-	  	</div>
-      <div class="text-right mt-1">
-        <button class="btn btn-sm btn-light legitRipple pt-1 pb-1" id="cetak">
-          <span><i class="icon-printer mr-2"></i> Cetak</span>
-        </button> 
-      </div>
+	  <div class="text-right">
+			<a href="<?php echo base_url('pos/add') ?>" class="btn btn-sm btn-info"><i class="icon-pen-plus mr-1"></i> Tambah Baru</a>
+	  </div>		
 	</div>
 
 	<div class="table-responsive">
-		<table id="datatable" class="table table-sm table-bordered">
+		<table id="datatable" class="table table-sm table-hover">
 			<thead>
 				<tr>
 					<th width="1%">No</th>
@@ -53,15 +48,13 @@
 		    language: {
 	            search: '<span></span> _INPUT_',
 	            searchPlaceholder: 'Cari...',
-	        }, 
+	            processing: '<i class="icon-spinner9 spinner text-blue"></i> Loading..'
+	        },   
 	        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
 		    ajax: {
 		        url : "<?php echo site_url('pos/json') ?>",
 		        type:"post",
 		        "data": {csrf_sikap_token_name: csrf_value},
-		        beforeSend:function(){
-			        	load_dt('#load_dt');
-			     },
 		    },
 		    "columns": [
 		        {"data": "id", searchable:false},
@@ -96,16 +89,22 @@
             url: "<?php echo site_url('pos/AjaxDel') ?>",
             data: {id: id},
             dataType :"json",
-            success: function(res){
-                if (res.status == true) {
-                    table.ajax.reload();
-                    toastr["success"](res.msg);
-
-                }else {
-                    toastr["warning"](res.msg);
-                }
-                
-            }
+            error:function(){
+	           $('.table').unblock();
+	           message
+	        },
+	         beforeSend:function(){
+	            load_dt('.table');
+	        },
+	        success: function(res) {
+	            if (res.status == true) {
+	                bx_alert_ok(res.message,'success');
+	               table.ajax.reload();
+	            }else {
+	               bx_alert(res.message);
+	            }
+	            $('.table').unblock();
+	        }
         });
     }
 </script>

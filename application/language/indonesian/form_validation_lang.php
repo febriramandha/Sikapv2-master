@@ -30,6 +30,7 @@ $lang['form_validation_regex_match'] = 'Bidang {field} tidak dalam format yang b
 $lang['form_validation_matches'] = 'Bidang {field} tidak cocok dengan bidang {param}.';
 $lang['form_validation_differs'] = 'Bidang {field} harus berbeda dari bidang {param}.';
 $lang['form_validation_is_unique'] = 'Bidang {field} harus berisi nilai unik.';
+$lang['form_validation_edit_unique'] = 'Bidang {field} harus berisi nilai unik.';
 $lang['form_validation_is_natural'] = 'Bidang {field} harus hanya mengandung angka.';
 $lang['form_validation_is_natural_no_zero'] = 'Bidang {field} harus hanya berisi angka dan harus lebih besar dari nol.';
 $lang['form_validation_decimal'] = 'Bidang {field} harus berisi angka desimal.';

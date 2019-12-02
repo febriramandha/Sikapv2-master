@@ -1,6 +1,6 @@
 <!-- Basic table -->
 <div class="card">
-	<div class="card-header bg-white header-elements-inline pb-1 pt-sm-1">
+	<div class="card-header bg-white header-elements-inline py-2">
 		<h5 class="card-title">Data Tunjangan PNS</h5>
 		<div class="header-elements">
 			<div class="list-icons">
@@ -10,11 +10,11 @@
 	</div>
 
 	<div class="card-body">
-      <div class="text-left">
-			     <a href="javascript:;" id="add" class="btn btn-sm btn-info"><i class="icon-stack-plus mr-2"></i> Tambah Baru</a>
-	  	</div>
+      <div class="text-right">
+          <a href="<?php echo base_url('master/allowance/add') ?>" class="btn btn-sm btn-info"><i class="icon-pen-plus mr-1"></i> Tambah Baru</a>
+      </div>
       <div class="text-right mt-1">
-        <button class="btn btn-sm btn-info legitRipple pt-1 pb-1" id="cetak">
+        <button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1" id="cetak">
           <span><i class="icon-printer mr-2"></i> Cetak</span>
         </button> 
       </div>
@@ -28,13 +28,13 @@
 					<th class="text-nowrap">Uraian</th>
 					<th width="1%">Esolon</th>
 					<th width="1%">Golongan</th>
-          			<th width="1%">Besaran TPP Perbulan</th>
-          			<th width="1%">No Urut</th>
-          			<th width="1%">Status</th>
+    			<th width="1%">Besaran TPP Perbulan</th>
+    			<th width="1%">No Urut</th>
+    			<th width="1%">Status</th>
 					<th width="1%">Aksi</th>
 				</tr>
 			</thead>
-			<tbody id="load_dt">
+			<tbody>
 			</tbody>
 		</table>
 	</div>
@@ -186,6 +186,7 @@ $(document).ready(function(){
             },
             createdRow: function(row, data, index) {
                 $('td', row).eq(4).addClass('text-nowrap');
+                $('td', row).eq(7).addClass('text-nowrap');
               },
 
         });

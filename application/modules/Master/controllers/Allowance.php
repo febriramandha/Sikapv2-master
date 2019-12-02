@@ -37,17 +37,12 @@ class Allowance extends App_Controller {
         	->order_by('eselon_id')
         	->add_column('status_tunjangan','$1','status_user(status)')
         	->add_column('tpp','$1','rupiah(tpp)')
-        	->add_column('action', '<div class="list-icons">
-										<div class="dropdown">
-											<a href="#" class="list-icons-item" data-toggle="dropdown">
-												<i class="icon-menu9"></i>
-											</a>
-											<div class="dropdown-menu dropdown-menu-right">
-												<a href="javascript:;" class="edit dropdown-item" data="$1"><i class="icon-pencil5"></i> Ubah Data</a>
-												<a href="javascript:;" class="deleted dropdown-item" data="$1"><i class="icon-bin"></i> Hapus Data</a>
-											</div>
-										</div>
-									</div>', 'id');
+        	->add_column('action', '<a href="'.base_url('master/allowance/edit/').'$1">
+        								<i class="icon-pencil5 text-info-400"></i>
+					                </a>
+						            <span class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus akun" style="cursor:pointer;" id="$1">
+						             	<i class="icon-bin"></i>
+						            </span>', 'encrypt_url(id,"allowance_id")');
         return $this->output->set_output($this->datatables->generate());
 	}
 
@@ -120,6 +115,33 @@ class Allowance extends App_Controller {
 		}else {
 			$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal mengambil data.']));
 		}
+	}
+
+	public function add()
+	{
+		$jum = $this->db->select('max(position) as jum')->get('_allowances')->row();
+
+		if ($jum) {
+			$position = $jum->jum+1;
+		}else $position = 1;
+		$this->data['sub_title'] 	= "Tambah Tunjangan";
+		$this->breadcrumbs->push('Tambah Tunjangan', '/');
+		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
+		$this->data['eselon']     	= $this->db->order_by('id')->get('_eselon')->result();
+		$this->data['golongan']  	= $this->db->order_by('id')->get('_golongan')->result();
+		$this->data['position'] 	= $position;
+		$this->load->view('allowance/v_add', $this->data);
+	}
+
+	public function edit($id)
+	{
+		$this->data['sub_title'] 	= "Edit Tunjangan";
+		$this->breadcrumbs->push('Edit Tunjangan', '/');
+		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
+		$this->data['eselon']     	= $this->db->order_by('id')->get('_eselon')->result();
+		$this->data['golongan']  	= $this->db->order_by('id')->get('_golongan')->result();
+		$this->data['tunjangan']	= $this->db->get_where('_allowances',['id' => decrypt_url($id,'allowance_id')])->row();
+		$this->load->view('allowance/v_edit', $this->data);
 	}
 
 	public function AjaxGet()

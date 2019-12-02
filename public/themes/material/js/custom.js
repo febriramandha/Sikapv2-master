@@ -15,11 +15,11 @@
 		buttons: {
 		    "cancel" : {
 		      	"label" : "<i class='icon-cross3'></i> Tidak",
-		      	"className" : "btn-danger btn-sm py-1"
+		      	"className" : "btn-danger"
 		    },
 		    "main" : {
 		      	"label" : "<i class='icon-checkmark2'></i> Ya",
-		      	"className" : "btn-primary btn-sm py-1",
+		      	"className" : "btn-primary",
 		      	callback:function(result){
 		        	if (result) {
 						confirmAksi(id);
@@ -30,25 +30,6 @@
 	});
 });
 
-
-// toastr.options = {
-//   "closeButton": false,
-//   "debug": false,
-//   "newestOnTop": false,
-//   "progressBar": false,
-//   "rtl": false,
-//   "positionClass": "toast-top-full-width mt-2",
-//   "preventDuplicates": false,
-//   "onclick": null,
-//   "showDuration": 300,
-//   "hideDuration": 1000,
-//   "timeOut": 5000,
-//   "extendedTimeOut": 1000,
-//   "showEasing": "swing",
-//   "hideEasing": "linear",
-//   "showMethod": "fadeIn",
-//   "hideMethod": "fadeOut"
-// };
 
 // for sidebar menu entirely but not cover treeview
 $('ul.nav-sidebar a').filter(function() {
@@ -99,3 +80,99 @@ function load_dt(load) {
         }
     });
 }
+
+$('.select-search').select2();
+
+$('.select-nosearch').select2({
+	minimumResultsForSearch: Infinity,
+	placeholder: 'Pilih Data',
+	allowClear: true,
+});
+
+$('.trim').bind('input', function(){
+    $(this).val(function(_, v){
+        return v.trim();
+    });
+});
+
+// Initialize
+var elems = Array.prototype.slice.call(document.querySelectorAll('.form-control-switchery'));
+elems.forEach(function(html) {
+    var switchery = new Switchery(html);
+});
+
+function bx_alert(msg) {
+	bootbox.alert({
+   		title: "Peringatan!",
+	    message: msg,
+	    closeButton: false,
+	    buttons: {
+	      ok: {
+	        label: 'Baiklah',
+	        className: 'btn-info',
+	      }
+	    },
+	});
+}
+
+
+function bx_alert_ok(msg, clasic) {
+
+	var icon = '';
+	if(clasic=='success') {
+		 icon = '<i class="icon-checkmark4 ml-2 text-'+clasic+'"></i> ';
+	}
+
+	bootbox.dialog({
+	    message: icon+msg,
+	    timeOut : 5000,
+	    closeButton: true
+	});
+}
+
+function bx_alert_success(msg, redirec) {
+	bootbox.dialog({
+	    message: '<i class="icon-checkmark4 ml-2 text-success"></i> '+msg,
+	    closeButton: false,
+	    buttons: {
+	      add: {
+	        label: '<i class="icon-pen-plus mr-1"></i> Tambah data',
+	        className: 'btn-info',
+	        callback:function(result){
+	        	if (result) {
+					location.reload();
+				}
+	    	}
+	      },
+	      main: {
+	        label: '<i class="icon-arrow-left5 mr-1"></i> Kembali',
+	        className: 'bg-success-400',
+	        callback:function(result){
+	        	if (result) {
+					window.location.href = uri_dasar+redirec;
+				}
+	    	}
+	      }
+	    },
+	});
+}
+
+function bx_alert_successUpadate(msg, redirec) {
+	bootbox.dialog({
+	    message: '<i class="icon-checkmark4 ml-2 text-success"></i> '+msg,
+	    closeButton: false,
+	    buttons: {
+	      main: {
+	        label: '<i class="icon-arrow-left5 mr-1"></i> Kembali',
+	        className: 'bg-success-400',
+	        callback:function(result){
+	        	if (result) {
+					window.location.href = uri_dasar+redirec;
+				}
+	    	}
+	      }
+	    },
+	});
+}
+
+  

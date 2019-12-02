@@ -18,6 +18,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		return $div.'<span class="badge badge-info" >'.filter_path($path_info).'</span> ';
 	}
 
+  function level_instansiF($level, $path_info)
+  {
+    return  '['.$level.']'.carakteX($level, '-','|').filter_path($path_info);
+  }
+
 
 	 function filter_path($string)
     {
@@ -56,13 +61,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     function level_alias($id='')
     {
         if($id == 1) {
-            $level = "SuperAdmin";
+            $level = "Super Administrator";
         }else if($id == 2) {
             $level = "Admin Instansi";
         }else if($id == 3) {
             $level = "Pegawai";
-        }else if($id == 4) {
+        }else if($id == 5) {
             $level = "Piminan Instansi";
+        }else if($id == 4) {
+            $level = "Admin Monitoring";
         }else{
             $level = "Belum Ada Akses";
         }

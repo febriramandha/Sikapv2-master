@@ -32,7 +32,7 @@ class Jnscuti extends App_Controller {
         	->from('_cuti')
         	->where('deleted',1)
         	->add_column('action', '
-        							<span class="cek list-icons-item text-primary-600 ml-2 msclick" onClick="edit($1)">
+        							<span class="cek list-icons-item text-info-400 ml-2 msclick" onClick="edit($1)">
         									<i class="icon-pencil5" ></i>
         							</span>
         							<span class="confirm-aksi list-icons-item text-danger-600 ml-2 msclick"  id="$1" msg="yakin ingin menghapus data ini">
@@ -46,48 +46,46 @@ class Jnscuti extends App_Controller {
 		$this->output->unset_template();
 		$this->form_validation->set_rules('kode', 'kode cuti', 'required')
 								->set_rules('nama', 'nama cuti', 'required');
-		$this->form_validation->set_error_delimiters('<div>', '</div>');
+		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 
 		if ($this->form_validation->run() == TRUE) {
-			$mod = $this->input->post('mod');
-			if ($mod == "add") {
+			$this->mod = $this->input->post('mod');
+			if ($this->mod == "add") {
 				$data = array('kode' 	 	=> $this->input->post('kode'),
 							  'nama' 		=> $this->input->post('nama'),
 				 );
-				$res = $this->db->insert('_cuti',$data);
+				$this->return = $this->db->insert('_cuti',$data);
 
-				if ($res) {
-					 $data_ = array('status' => true,
-				    			    'alert' => 'Data berhasil disimpan');
+				if ($this->return) {
+					 $this->result = array('status' => true,
+				    			    'message' => 'Data berhasil disimpan');
 				}else{
-					 $data_ = array('status' => false,
-				    			    'alert' => 'Data gagal disimpan');
+					 $this->result = array('status' => false,
+				    			    'message' => 'Data gagal disimpan');
 				}
-			}elseif ($mod == "edit") {
+			}elseif ($this->mod == "edit") {
 				$data = array('kode' 	 	=> $this->input->post('kode'),
 							  'nama' 		=> $this->input->post('nama'),
 				 );
-				$res = $this->db->update('_cuti', $data, ['id' => $this->input->post('id')]);
+				$this->return = $this->db->update('_cuti', $data, ['id' => $this->input->post('id')]);
 
-				if ($res) {
-					 $data_ = array('status' => true,
-				    			   'alert' => 'Data berhasil disimpan');
+				if ($this->return) {
+					 $this->result = array('status' => true,
+				    			   'message' => 'Data berhasil disimpan');
 				}else{
-					 $data_ = array('status' => false,
-				    			   'alert' => 'Data gagal disimpan');
+					 $this->result = array('status' => false,
+				    			   'message' => 'Data gagal disimpan');
 				}
 			}
 
 		}else {
-			$validasi =  form_error('kode').
-						 form_error('nama');
-			$data_ = array('status' => false,
-				    		'alert' => $validasi,);
+			$this->result = array('status' => false,
+				    		'message' => validation_errors(),);
 		}
-		if ($data_) {
-			$this->output->set_output(json_encode($data_));	
+		if ($this->result) {
+			$this->output->set_output(json_encode($this->result));	
 		}else {
-			$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal mengambil data.']));
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal mengambil data.']));
 		}
 	}
 

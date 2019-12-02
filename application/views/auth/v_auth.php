@@ -5,7 +5,7 @@
 						Sistem Informasi Kinerja<br> Aparatur Pemerintah
 				</span>
 				<div class="login100-pic js-tilt" data-tilt>
-					<img src="<?php echo base_url('public/') ?>images/logo_sk.png" alt="IMG">
+					<img src="<?php echo base_url('public/') ?>images/welcome-sikap-1.png" alt="IMG">
 				</div>
 
 			   <?php echo form_open('auth/GetData','class="login100-form" id="formAjax"'); ?>
@@ -40,19 +40,22 @@
 							Masuk
 						</button>
 					</div>
+					
+				</form>
+				<div class="col-12">
 					<div class="text-center p-t-70">
 						<a class="txt2" href="#">
 							&copy; 2018-<?php echo date('Y') ?> Pemerintah Kabupaten Agam
-							<i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
 						</a>
 					</div>
-				</form>
+				</div>
+				
 			</div>
 		</div>
 	</div>
 
 <script type="text/javascript">
-        $('#formAjax').submit(function() {
+  $('#formAjax').submit(function() {
         var result = $('#result');
         $.ajax({
             type: 'POST',
@@ -62,6 +65,7 @@
             error:function(){
 	      	 		result.html('Masuk');
         			result.attr("disabled", false);
+        			bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
 		     },
 		    beforeSend:function(){
 		       		result.html('<i class="fa fa-refresh fa-spin fa-1x fa-fw"></i>');
@@ -69,10 +73,13 @@
 		    },
             success: function(res) {
                 if (res.status == true) {
+                	 bootbox.dialog({
+					    message: res.message,
+					    closeButton: false
+					});
                     location.reload();
-                    toastr["success"](res.alert);
                 }else {
-                   	toastr["warning"](res.alert);
+					bx_alert(res.message);
                    	result.html('Masuk');
         			result.attr("disabled", false);
                 }

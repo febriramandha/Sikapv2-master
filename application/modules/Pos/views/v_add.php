@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-        <div class="card-header bg-white">
+        <div class="card-header bg-white header-elements-inline py-2">
             <h5 class="card-title">Tambah Pos</h5>
         </div>
             <div class="card-body">
@@ -9,13 +9,23 @@
                          <div class="form-group row">
                             <label class="col-lg-2 col-form-label font-weight-semibold">Judul</label>
                             <div class="col-lg-9">
-                                <input class="form-control" placeholder="Isi Judul" name="title"  >
+                                 <div class="form-group-feedback form-group-feedback-left">
+                                      <div class="form-control-feedback">
+                                        <i class="icon-pencil3"></i>
+                                      </div>
+                                       <input class="form-control" placeholder="Isi Judul" name="title">
+                                  </div>
                             </div>
                          </div>
                          <div class="form-group row">
                             <label class="col-lg-2 col-form-label font-weight-semibold">Deskripsi</label>
                             <div class="col-lg-9">
-                                <input class="form-control" placeholder="Isi Deskripsi" name="deskripsi"  >
+                                <div class="form-group-feedback form-group-feedback-left">
+                                      <div class="form-control-feedback">
+                                        <i class="icon-pencil3"></i>
+                                      </div>
+                                        <input class="form-control" placeholder="Isi Deskripsi" name="deskripsi"  >
+                                </div>
                             </div>
                          </div>
                          <div class="form-group row">
@@ -34,25 +44,27 @@
                             	</select>
                             </div>
                             <div class="col-lg-4">
-                                <a href="<?php echo base_url('pos/kategori') ?>" class="btn btn-sm btn-info legitRipple"><i class="icon-stack-plus mr-2"></i> Tambah Ketegori</a>
+                                <a href="<?php echo base_url('pos/kategori') ?>" class="btn btn-sm btn-info legitRipple"><i class="icon-pen-plus mr-2"></i> Tambah Ketegori</a>
                             </div>
                          </div>
                         <div class="form-group row">
-                            <label class="col-lg-2 col-form-label font-weight-semibold">Status</label>
-                            <div class="col-lg-9">
-                                <span class="badge badge-success" disabled="">
-                                     <input type="radio" name="status" value="publish" checked=""> Aktif
+                            <label class="col-form-label col-lg-2">Status</label>
+                            <div class="col-lg-10">
+                              <div class="input-group">
+                                <span class="input-group-prepend">
+                                  <span class="input-group-text">
+                                    <input type="checkbox" name="status" class="form-control-switchery" checked data-fouc> 
+                                  </span>
                                 </span>
-                                <span class="badge badge-danger" disabled="">
-                                   <input type="radio" name="status" value="unpublish" > Non Aktif
-                                </span>
+                              </div>
                             </div>
-                        </div>
+                          </div>
                         <input type="hidden" name="mod" value="add">
-                        <div class="text-center">
-                            <button type="reset" class="btn btn-sm btn-default">Batal <i class="icon-cross3 ml-2"></i></button>
-                            <button type="submit" class="btn btn-sm btn-info" id="result">Simpan <i class="icon-checkmark4 ml-2"></i></button>
-                      </div>
+                        <div class="text-left offset-lg-2" >
+                          <button type="reset" class="btn btn-sm bg-orange-300 result">Batal <i class="icon-cross3 ml-2"></i></button>                 
+                          <button type="submit" class="btn btn-sm btn-info result">Simpan <i class="icon-checkmark4 ml-2"></i></button>
+                          <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>  
+                       </div>
 
                 <?php echo form_close(); ?>
                    
@@ -77,30 +89,30 @@
 
     $('#formAjax').submit(function() {
         CKupdate();
-        var result = $('#result');
+        var result  = $('.result');
+        var spinner = $('#spinner');
         $.ajax({
             type: 'POST',
             url: $(this).attr('action'),
             data: $(this).serialize(),
             dataType : "JSON",
             error:function(){
-                 result.html('<span><i class="icon-checkmark4 ml-2"></i> Simpan</span>');
-                 result.attr("disabled", false);
-              },
-            beforeSend:function(){
-                result.html('<i class="icon-spinner2 spinner"></i> Proses..');
-                result.attr("disabled", true);
+               result.attr("disabled", false);
+               spinner.hide();
+               bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
             },
-            success: function(res) {   
+             beforeSend:function(){
+                result.attr("disabled", true);
+                spinner.show();
+            },
+            success: function(res) {
                 if (res.status == true) {
-                    toastr["success"](res.alert);
-                    window.location.assign("<?= base_url('pos') ?>");
+                    bx_alert_success(res.message, 'pos');
                 }else {
-                    toastr["warning"](res.alert);
-                    result.attr("disabled", false);
-                    result.html('<span><i class="icon-checkmark4 ml-2"></i> Simpan</span>');
+                    bx_alert(res.message);
                 }
-
+                result.attr("disabled", false);
+                spinner.hide();
             }
         });
         return false;

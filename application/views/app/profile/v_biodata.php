@@ -166,10 +166,10 @@
               	$('.card-img-actions').unblock();
 			  	$(".image_avatar").attr('src',res.url);	
 			  	$(".image_avatar").attr('href',res.url);	
-			  	toastr["success"](res.msg);
+			  	bx_alert_ok(res.msg,'success');
 			  }else{
 			  	$('.card-img-actions').unblock();
-			  	toastr["warning"](res.msg);	
+			  	 bx_alert(res.msg);
 			  }			  
             }
         });

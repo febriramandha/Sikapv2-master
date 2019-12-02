@@ -1,6 +1,6 @@
 <!-- Basic table -->
 <div class="card">
-	<div class="card-header bg-white header-elements-inline pb-1 pt-sm-1">
+	<div class="card-header bg-white header-elements-inline py-2">
 		<h5 class="card-title">Jenis Cuti</h5>
 		<div class="header-elements">
 			<div class="list-icons">
@@ -25,7 +25,7 @@
 							<input type="text" name="nama" class="form-control" placeholder="Nama Cuti">
 						</div>
 						<input type="hidden" name="mod" value="add">
-						<button type="submit" class="btn-summit btn btn-info btn-sm legitRipple"><i class="icon-stack-plus mr-2"></i> Tambah Jenis Cuti</button>
+						<button type="submit" class="btn-summit btn btn-info btn-sm legitRipple" id="result"><i class="icon-pen-plus mr-2"></i> Tambah Jenis Cuti</button>
 					<?php echo form_close(); ?>
 				</div>
 				<div class="col-md-8">
@@ -62,17 +62,15 @@
 		    serverSide: true, 
 		    "ordering": false,
 		    language: {
-	            search: '<span></span> _INPUT_',
+            search: '<span></span> _INPUT_',
 	            searchPlaceholder: 'Cari...',
+	            processing: '<i class="icon-spinner9 spinner text-blue"></i> Loading..'
 	        }, 
 	        "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
 		    ajax: {
 		        url : "<?php echo site_url('master/jnscuti/Getjson') ?>",
 		        type:"post",
 		        "data": {csrf_sikap_token_name: csrf_value},
-		        beforeSend:function(){
-			        	load_dt('#load_dt');
-			     },
 		    },
 		    "columns": [
 		        {"data": "id", searchable:false},
@@ -101,20 +99,31 @@
 	});
 
 $('#formAjax').submit(function() {
+	var result = $('#result');
     $.ajax({
         type: 'POST',
         url: $(this).attr('action'),
         data: $(this).serialize(),
         dataType : "JSON",
+        error:function(){
+		 	result.html('<span><i class="icon-pen-plus mr-2"></i> Tambah Jenis Cuti</span>');
+		 	result.attr("disabled", false);
+		},
+		beforeSend:function(){
+			result.html('<i class="icon-spinner2 spinner"></i> Proses..');
+			result.attr("disabled", true);
+		},
         success: function(res) {
-            if (res.status == true) {
+           if (res.status == true) {
                 $('#formAjax')[0].reset();
                 table.ajax.reload();
-                $('.btn-summit').html('<i class="icon-stack-plus mr-2"></i> Tambah Jenis Cuti');
-                toastr["success"](res.alert);
+                
+                bx_alert_ok(res.message,'success');
             }else {
-                toastr["error"](res.alert);
+                bx_alert(res.message);
             }
+            result.html('<i class="icon-pen-plus mr-2"></i> Tambah Jenis Cuti');
+            result.attr("disabled", false);
         }
     });
     return false;
@@ -128,7 +137,7 @@ function edit(id) {
         success: function(res){  
             $('#formAjax')[0].reset();
             $('input[name="mod"]').val('edit');
-            $('.btn-summit').html('<i class="icon-checkmark4 ml-2"></i> Ubah Jenis Cuti');
+            $('.btn-summit').html('<i class="icon-checkmark4 mr-2"></i> Edit Jenis Cuti');
             var r = res.data;
             $('input[name="kode"]').val(r.kode);
             $('input[name="nama"]').val(r.nama);

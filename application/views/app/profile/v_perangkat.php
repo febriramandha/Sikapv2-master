@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="card">
-			<div class="card-header bg-white">
+			<div class="card-header bg-white header-elements-inline py-2">
 				<h6 class="card-title"><i class="icon-screen3 mr-2 text-blue-400"></i>Perangkat Anda</h6>
 			</div>
 			<div class="card-body">
@@ -73,11 +73,10 @@ var csrf_value = '<?php echo $this->security->get_csrf_hash(); ?>';
             dataType :"json",
             success: function(res){
                 if (res.status == true) {
+                    bx_alert_ok(res.msg,'success');
                     table.ajax.reload();
-                    toastr["success"](res.msg);
-
                 }else {
-                    toastr["warning"](res.msg);
+                    bx_alert(res.msg);
                 }
                 
             }
