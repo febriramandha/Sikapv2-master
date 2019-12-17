@@ -1,13 +1,18 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class Mesin extends App_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->_init();
-		$this->breadcrumbs->push('Mesin', 'administrator/mesin');
+		$this->breadcrumbs->push('Mesin', 'master/mesin');
 		$this->data['title'] = "Master";
 		$this->load->model(['m_instansi','m_machine']);
 	}
@@ -75,7 +80,7 @@ class Mesin extends App_Controller {
 		$this->load->model('m_server_att');
 		$this->output->unset_template();
 		$this->form_validation->set_rules('nama', 'nama mesin', 'required')
-								->set_rules('ip', 'IP Adress', 'required')
+								->set_rules('ip', 'Alamat IP', 'required')
 								->set_rules('port', 'port', 'required|numeric')
 								->set_rules('ket', 'keterangan', 'required')
 								->set_rules('instansi', 'instansi', 'required');

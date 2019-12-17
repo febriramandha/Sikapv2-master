@@ -1,11 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class M_acl extends CI_Model {
 
 	public function privilage()
 	{
-		$acl1  = '';
+		$acl  = '';
 		$class_name = $this->router->fetch_class();
         $function 	= $this->router->fetch_method();
         $login 		= $this->session->userdata('tpp_loggedin');
@@ -24,24 +29,9 @@ class M_acl extends CI_Model {
 				 }else {
 				 	$this->db->where('type','frontend');
 				 }
-		$acl1 = $this->db->get('_acl')->row();
+		$acl = $this->db->get('_acl')->row();
 
-        if ($acl1) {
-        	$data_log = array('user_id'  => $this->session->userdata('tpp_user_id'),
-        					  'acl_id'   => $acl1->id,
-        					  'function' => $function, );
-        	$data_update = $data_log;
-        	$data_update['updated_at'] = date('Y-m-d H:i:s');
-        	$this->db->set('hit', 'hit +1',false);
-        	$this->db->update('_acl_log', $data_update, $data_log);
-
-        	if ($this->db->affected_rows() == 0) {
-        		$data_insert = $data_log;
-        		$data_insert['created_at'] = date('Y-m-d H:i:s');
-        		$this->db->insert('_acl_log', $data_insert);
-        	}
-        }
-		return $acl1;
+		return $acl;
 	}
 
 	public function _acl($level)

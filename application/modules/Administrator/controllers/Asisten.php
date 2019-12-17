@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class Asisten extends App_Controller {
 
 	public function __construct()
@@ -52,8 +57,6 @@ class Asisten extends App_Controller {
 			}
 		}
 		
-
-
 		$this->load->library('datatables');
         $this->datatables->select('id, dept_name, dept_alias, parent_id, level, path_info, position_order')
         	->from('v_instansi_all')
@@ -72,14 +75,14 @@ class Asisten extends App_Controller {
 	{
 		$this->output->unset_template();
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, c.nama, b.dept_name, b.dept_alias, b.path_info, c.nip, d.jabatan')
+        $this->datatables->select('a.id, c.nama, b.dept_name, b.dept_alias, b.path_info, c.nip, d.jabatan,c.gelar_dpn,c.gelar_blk')
         	->from('pejabat_instansi a')
         	->join('v_instansi_all b','b.id=a.dept_id')
         	->join('v_users_all c','a.user_id=c.id')
         	->join('sp_pegawai d','a.user_id=d.user_id')
         	->where('pejabat_id',2)
-        	->order_by('d.golongan_id, b.path_info')
-        	->add_column('nama_nip','$2<hr class="m-0">($1)','nip,nama')
+        	->order_by('c.no_urut')
+        	->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip)')
         	->add_column('action', '<span class="deleted msclick text-danger" data="$1"><i class="icon-bin" data="$1"></i></span>', 'id');
         return $this->output->set_output($this->datatables->generate());
 	}

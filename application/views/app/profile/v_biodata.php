@@ -5,6 +5,7 @@
 			<h4 class="font-weight-semibold mb-1"><?php echo $user->nama ?></h4>
 			<span class="text-muted d-block"><?php echo $user->dept_name ?></span>
 		</div>
+		
 
 		<div class="col-md-12">
 			<div class="row">

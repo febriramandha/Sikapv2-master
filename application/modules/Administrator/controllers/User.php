@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class User extends App_Controller {
 
 	public function __construct()
@@ -33,12 +38,12 @@ class User extends App_Controller {
 			$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $instansi])->row()->level;
 		}
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, att_status, count_finger')
+        $this->datatables->select('a.id, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, att_status, count_finger,gelar_dpn,gelar_blk')
         	->from('v_users_all a')
         	->where('key > 0')
         	->join('users_login b','a.id=b.user_id','left')
-        	->order_by('path_info, eselon_id')
-        	->add_column('nama_nip','$2<hr class="m-0">($1)','nip,nama')
+        	->order_by('no_urut')
+        	->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip)')
         	->add_column('status_att','$1','status_user(att_status)')
         	->add_column('status_user','$1','status_user(status)')
         	->add_column('pegawai_status','$1','status_pegawai(status_pegawai)')
@@ -130,7 +135,7 @@ class User extends App_Controller {
 						}
 						// tpp
 						$tpp = 0;
-						if ($this->input->post('tpp')) {
+						if ($this->input->post('tpp') && $this->input->post('ketegori')==1) {
 							$tpp = 1;
 						}
 
@@ -186,7 +191,7 @@ class User extends App_Controller {
 					}
 					// tpp
 					$tpp = 0;
-					if ($this->input->post('tpp')) {
+					if ($this->input->post('tpp') && $this->input->post('ketegori')==1) {
 						$tpp = 1;
 					}
 
@@ -223,10 +228,10 @@ class User extends App_Controller {
 
 					if ($return) {
 						$result = array('status'   => true,
-			    	     		  		'message' => 'Data berhasil diubah',);
+			    	     		  		'message' => 'Data berhasil disimpan',);
 					}else{
 						$result = array('status'   => false,
-			    	     		  		'message' => 'Data gagal diubah',);
+			    	     		  		'message' => 'Data gagal disimpan',);
 					}	
 				}
 

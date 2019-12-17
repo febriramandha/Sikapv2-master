@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class Instansi extends App_Controller {
 
 	public function __construct()
@@ -29,9 +34,11 @@ class Instansi extends App_Controller {
 		$this->output->unset_template();
 		//header('Content-Type: application/json');
 		$this->load->library('datatables');
-        $this->datatables->select('id, dept_name, dept_alias, parent_id, level, path_info, position_order, status_instansi')
-        	->from('v_instansi_all_master')
-        	->add_column('dept_alias', '$1$2', 'level_instansiF(level, path_info), dept_name')
+        $this->datatables->select('a.id, dept_name, dept_alias, parent_id, level, path_info, position_order, status_instansi, b.nama as kecamatan, jum_user')
+        	->from('v_instansi_all_master a')
+        	->join('(SELECT count(*) as jum_user, dept_id FROM "mf_users" GROUP BY dept_id) as tot_user','a.id=tot_user.dept_id','left')
+        	->join('_kecamatan b','a.kecamatan_id=b.id','left')
+        	->add_column('dept_alias', '$1', 'level_instansi_tabel(dept_alias,dept_name,level, path_info)')
         	->add_column('instansi_status', '$1', 'status_user(status_instansi)')
         	->add_column('action', '<a href="'.base_url('master/instansi/add/').'$1">
         								<i class="icon-file-plus2 text-orange-300 mr-1"></i>

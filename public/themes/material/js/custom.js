@@ -10,7 +10,7 @@
 	var id = $(this).attr("id");
 	var msg = $(this).attr("msg");
     bootbox.dialog({
-	  	title:"Konfirmasi",
+	  	title:'<i class="icon-info22 mr-2"></i>Konfirmasi',
 	  	message: msg,
 		buttons: {
 		    "cancel" : {
@@ -29,7 +29,6 @@
 		}
 	});
 });
-
 
 // for sidebar menu entirely but not cover treeview
 $('ul.nav-sidebar a').filter(function() {
@@ -103,7 +102,7 @@ elems.forEach(function(html) {
 
 function bx_alert(msg) {
 	bootbox.alert({
-   		title: "Peringatan!",
+   		title: '<i class="icon-warning mr-2"></i>Peringatan',
 	    message: msg,
 	    closeButton: false,
 	    buttons: {
@@ -174,5 +173,17 @@ function bx_alert_successUpadate(msg, redirec) {
 	    },
 	});
 }
+
+var $el = $(".naikturun");
+function anim() {
+  var st = $el.scrollTop();
+  var sb = $el.prop("scrollHeight")-$el.innerHeight();
+  $el.animate({scrollTop: st<sb/2 ? sb : 0}, 4000, anim);
+}
+function stop(){
+  $el.stop();
+}
+anim();
+$el.hover(stop, anim);
 
   

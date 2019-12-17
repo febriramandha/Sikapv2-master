@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class M_user extends CI_Model {
 
 	public function GetUser($user_id)
@@ -15,7 +20,7 @@ class M_user extends CI_Model {
 	public function GetDetailBiodata($user_id='')
 	{	
 		$this->db->where('a.id', $user_id);
-		$this->db->select('a.id, a.nama, a.nip, a.key, b.dept_name, c.gelar_dpn, c.gelar_blk, c.gender, c.lahir_tanggal, c.statkawin_id, c.jabatan, d.username, d.level, d.status, d.avatar, e.agama, f.nama as status_pegawai, g.golongan, g.pangkat, h.eselon, i.last_login, c.eselon_id, c.golongan_id')
+		$this->db->select('a.id, a.nama, a.nip, a.key, b.dept_name, c.gelar_dpn, c.gelar_blk, c.gender, c.lahir_tanggal, c.statkawin_id, c.jabatan, d.username, d.level, d.status, d.avatar, e.agama, f.nama as status_pegawai, g.golongan, g.pangkat, h.eselon, i.last_login, c.eselon_id, c.golongan_id,a.dept_id')
 				->from('mf_users a')
 				->join('mf_departments b','a.dept_id=b.id')
 				->join('sp_pegawai c','a.id=c.user_id','left')
@@ -31,19 +36,50 @@ class M_user extends CI_Model {
 	public function GetUserAll($dept_id='')
 	{
 		$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $dept_id])->row()->level;
-		$this->db->select('a.id, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, att_status, count_finger, a.gelar_dpn, a.gelar_blk')
+		$this->db->select('a.id, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, att_status, count_finger, a.gelar_dpn, a.gelar_blk, b.avatar')
 				->from('v_users_all a')
 				->where('key > 0')
 				->join('users_login b','a.id=b.user_id','left')
-				->order_by('path_info, eselon_id');
+				->order_by('path_info, eselon_id,pns');
 		$this->db->where("path_id['".$level."']='".$dept_id."'");
         return $this->db->get();
 	}
 
+  public function GetUserAllLimitQry($dept_id='',$limit='')
+  {
+    $level    = $this->db->select('level')->get_where('v_instansi_all', ['id' => $dept_id])->row()->level;
+    $this->db->group_start();
+      $this->db->like('lower(a.nama)', strtolower($this->input->get('qry')));
+      $this->db->or_like('a.nip', $this->input->get('qry'));
+    $this->db->group_end();
+    $this->db->select('a.id, a.nip, a.nama,a.gelar_dpn, a.gelar_blk, b.avatar')
+        ->from('v_users_all a')
+        ->where('key > 0')
+        ->limit($limit)
+        ->join('users_login b','a.id=b.user_id','left')
+        ->order_by('path_info, eselon_id,pns');
+    $this->db->where("path_id['".$level."']='".$dept_id."'");
+        return $this->db->get();
+  }
+
+  public function GetUserAllAktif($dept_id='')
+  {
+    
+    $level    = $this->db->select('level')->get_where('v_instansi_all', ['id' => $dept_id])->row()->level;
+    $this->db->select('a.id, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, att_status, count_finger, a.gelar_dpn, a.gelar_blk')
+        ->from('v_users_all a')
+        ->where('key > 0')
+        ->where('att_status',1)
+        ->join('users_login b','a.id=b.user_id','left')
+        ->order_by('path_info, eselon_id,pns');
+    $this->db->where("path_id['".$level."']='".$dept_id."'");
+        return $this->db->get();
+  }
+
   public function GetUserAdmin($dept_id='')
   {
   	$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $dept_id])->row()->level;
-	$this->db->select('a.id, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, att_status, count_finger,b.username, a.gelar_dpn, a.gelar_blk')
+	   $this->db->select('a.id, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, att_status, count_finger,b.username, a.gelar_dpn, a.gelar_blk')
 			->from('v_users_all a')
 			->where('key > 0')
 			->where('b.level in(1,2)')

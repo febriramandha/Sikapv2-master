@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class Admin  extends App_Controller {
 
 	public function __construct()
@@ -33,13 +38,13 @@ class Admin  extends App_Controller {
 			$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $instansi])->row()->level;
 		}
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, b.username')
+        $this->datatables->select('a.id, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, b.username,gelar_dpn,gelar_blk')
         	->from('v_users_all a')
         	->where('key > 0')
         	->join('users_login b','a.id=b.user_id','left')
-        	->order_by('path_info, eselon_id')
+        	->order_by('no_urut')
         	->where('b.level in(1,2)')
-        	->add_column('nama_nip','$2<hr class="m-0">($1)','nip,nama')
+        	->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip)')
         	->add_column('status_user','$1','status_user(status)')
         	->add_column('level','$1','level_alias(level)')
         	->add_column('action','<a href="'.base_url('administrator/user/edit/').'$1">

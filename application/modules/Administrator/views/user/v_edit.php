@@ -69,6 +69,7 @@
                         <i class="icon-pencil3"></i>
                       </div>
                       <input type="text" name="nama" class="form-control" placeholder="isi nama lengkap" value="<?php echo $user->nama ?>">
+                      <span><i>* isi tanpa nama gelar jika pns/cpns</i></span>
                   </div>
               </div>
           </div>
@@ -91,7 +92,7 @@
                   <div class="input-group">
                     <span class="input-group-prepend">
                       <span class="input-group-text">
-                        <input type="checkbox" name="status_att" class="form-control-switchery" <?php if ($user->tpp == 1) { echo "checked";} ?> data-fouc>
+                        <input type="checkbox" name="tpp" class="form-control-switchery" <?php if ($user->tpp == 1) { echo "checked";} ?> data-fouc>
                       </span>
                     </span>
                   </div>

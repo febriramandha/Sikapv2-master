@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class Allowance extends App_Controller {
 
 	public function __construct()
@@ -34,7 +39,8 @@ class Allowance extends App_Controller {
         	->from('_allowances a')
         	->join('_eselon b','b.id=a.eselon_id')
         	->join('_golongan c','c.id=a.golongan_id')
-        	->order_by('eselon_id')
+        	->order_by('position')
+        	->where('deleted',1)
         	->add_column('status_tunjangan','$1','status_user(status)')
         	->add_column('tpp','$1','rupiah(tpp)')
         	->add_column('action', '<a href="'.base_url('master/allowance/edit/').'$1">
@@ -51,14 +57,18 @@ class Allowance extends App_Controller {
 		$this->output->unset_template();
 		$this->form_validation->set_rules('nama', 'uraian', 'required')
 								->set_rules('eselon', 'eselon', 'required|numeric')
-								->set_rules('golongan', 'golongan', 'required')
+								->set_rules('golongan', 'golongan', 'required|numeric')
 								->set_rules('tpp', 'tpp', 'required|numeric')
-								->set_rules('order', 'nomor urut', 'required');
-		$this->form_validation->set_error_delimiters('<div>', '</div>');
-		$res ='';
+								->set_rules('order', 'nomor urut', 'required|numeric');
+		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 		if ($this->form_validation->run() == TRUE) {
-			$mod = $this->input->post('mod');			
-			if ($mod == "add") {
+			$this->mod = $this->input->post('mod');			
+			if ($this->input->post('status')) {
+				$status = 1;
+			}else {
+				$status = 0;
+			}
+			if ($this->mod == "add") {
 				
 				$data = array(
 							  'name' 		    => $this->input->post('nama'),
@@ -66,19 +76,19 @@ class Allowance extends App_Controller {
 							  'golongan_id' 	=> $this->input->post('golongan'),
 							  'tpp' 	 		=> $this->input->post('tpp'),
 							  'position' 	 	=> $this->input->post('order'),
-							  'status' 	 		=> $this->input->post('status'),
+							  'status' 	 		=> $status,
 							  'created_at'		=> date('Y-m-d H:i:s'),
 							  'created_by'		=> $this->session->userdata('tpp_user_id')
 				 );
-				$res = $this->db->insert('_allowances',$data);
-				if ($res) {
-					 $data_ = array('status' => true,
-				    			    'alert' => 'Data berhasil disimpan');
+				$this->return = $this->db->insert('_allowances',$data);
+				if ($this->return) {
+					 $this->result = array('status' => true,
+				    			    'message' => 'Data berhasil disimpan');
 				}else{
-					 $data_ = array('status' => false,
-				    			    'alert' => 'Data gagal disimpan');
+					 $this->result = array('status' => false,
+				    			    'message' => 'Data gagal disimpan');
 				}
-			}elseif ($mod == "edit") {
+			}elseif ($this->mod == "edit") {
 				
 				$data = array(
 							  'name' 		    => $this->input->post('nama'),
@@ -86,40 +96,35 @@ class Allowance extends App_Controller {
 							  'golongan_id' 	=> $this->input->post('golongan'),
 							  'tpp' 	 		=> $this->input->post('tpp'),
 							  'position' 	 	=> $this->input->post('order'),
-							  'status' 	 		=> $this->input->post('status'),
+							  'status' 	 		=> $status,
 							  'updated_at'		=> date('Y-m-d H:i:s'),
 							  'updated_by'		=> $this->session->userdata('tpp_user_id')
 				 );
-				$res = $this->db->update('_allowances', $data, ['id' => $this->input->post('id')]);
-				if ($res) {
-					 $data_ = array('status' => true,
-				    			   'alert' => 'Data berhasil disimpan');
+				$this->return = $this->db->update('_allowances', $data, ['id' => decrypt_url($this->input->post('id'),'allowance_id')]);
+				if ($this->return) {
+					 $this->result = array('status' => true,
+				    			   'message' => 'Data berhasil disimpan');
 				}else{
-					 $data_ = array('status' => false,
-				    			   'alert' => 'Data gagal disimpan');
+					 $this->result = array('status' => false,
+				    			   'message' => 'Data gagal disimpan');
 				}
 			}
 
 		}else {
-			$validasi =  form_error('nama').
-						 form_error('eselon').
-						 form_error('golongan').
-						 form_error('tpp').
-						 form_error('order');
-			$data_ = array('status' => false,
-				    		'alert' => $validasi,);
+			$this->result = array('status' => false,
+				    		'message' => validation_errors(),);
 		}
 
-		if ($data_) {
-			$this->output->set_output(json_encode($data_));	
+		if ($this->result) {
+			$this->output->set_output(json_encode($this->result));	
 		}else {
-			$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal mengambil data.']));
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal mengambil data.']));
 		}
 	}
 
 	public function add()
 	{
-		$jum = $this->db->select('max(position) as jum')->get('_allowances')->row();
+		$jum = $this->db->select('max(position) as jum')->where('deleted',1)->get('_allowances')->row();
 
 		if ($jum) {
 			$position = $jum->jum+1;
@@ -144,45 +149,15 @@ class Allowance extends App_Controller {
 		$this->load->view('allowance/v_edit', $this->data);
 	}
 
-	public function AjaxGet()
-	{
-		$this->output->unset_template();
-		$this->mod = $this->input->get('mod');
-
-		if ($this->mod == "Getposititon") {
-			$jum = $this->db->select('max(position) as jum')->get('_allowances')->row();
-
-			if ($jum) {
-				$position = $jum->jum+1;
-			}else $position = 1;
-
-			$data = array('position' => $position, );
-
-			if ($jum) {
-				$this->output->set_output(json_encode(['status'=>true, 'data'=> $data]));
-			}else{
-				$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal mengambil data.']));
-			}
-		}elseif ($this->mod == "edit") {
-			$data = $this->db->get_where('_allowances',['id' => $this->input->get('id')])->row();
-
-			if ($data) {
-				$this->output->set_output(json_encode(['status'=>true, 'data'=> $data]));
-			}else{
-				$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal mengambil data.']));
-			}
-		}
-	}
-
 	public function AjaxDel()
 	{
 		$this->output->unset_template();
-		$del = $this->db->delete('_allowances', ['id' => $this->input->get('id')]);
+		$del = $this->db->update('_allowances', ['deleted' => 0], ['id' => decrypt_url($this->input->get('id'),'allowance_id')]);
 		
 		if ($del) {
-			$this->output->set_output(json_encode(['status'=>TRUE, 'msg'=> 'Data berhasil dihapus.']));
+			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil dihapus.']));
 		} else{
-			$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal dihapus atau data sedang digunakan.']));	
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal dihapus atau data sedang digunakan.']));	
 		}
 	}
 

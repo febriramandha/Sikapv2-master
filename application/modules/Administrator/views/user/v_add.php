@@ -53,7 +53,7 @@
                   <div class="form-group">
                        <select class="form-control select-nosearch" name="ketegori" >  
                               <option disabled="">Pilih Ketegori</option> 
-                              <option value="1">PNS</option>
+                              <option value="1">PNS/CPNS</option>
                               <option value="2">NON PNS</option>
                       </select> 
                   </div>
@@ -67,6 +67,7 @@
                         <i class="icon-pencil3"></i>
                       </div>
                       <input type="text" name="nama" class="form-control" placeholder="isi nama lengkap">
+                      <span><i>* isi tanpa nama gelar jika pns/cpns</i></span>
                   </div>
               </div>
           </div>
@@ -87,7 +88,7 @@
                   <div class="input-group">
                     <span class="input-group-prepend">
                       <span class="input-group-text">
-                        <input type="checkbox" name="status_att" class="form-control-switchery" data-fouc>
+                        <input type="checkbox" name="tpp" class="form-control-switchery" data-fouc>
                       </span>
                     </span>
                   </div>

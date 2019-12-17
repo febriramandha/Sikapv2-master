@@ -69,9 +69,9 @@
 	<div class="col-lg-6 d-flex">
 		<div class="card col-lg-12 " style="height: 203px;">
 			<div class="card-header bg-white header-elements-sm-inline pb-0">
-				<h6 class="font-weight-semibold"> <i class="icon-bell2 mr-3"></i>Info/Pengumuman</h6>
+				<h6 class="font-weight-semibold"> <i class="icon-bell2 mr-3"></i>Informasi/Pengumuman</h6>
 			</div>
-			<div class="table-responsive m-0" id="pos">
+			<div class="table-responsive m-0 naikturun">
 				<table class="table text-nowrap">
 					<?php
 					foreach ($pos->result() as $row ) { ?>
@@ -357,19 +357,6 @@
         });
     });
 });
-
-
-var $el = $("#pos");
-function anim() {
-  var st = $el.scrollTop();
-  var sb = $el.prop("scrollHeight")-$el.innerHeight();
-  $el.animate({scrollTop: st<sb/2 ? sb : 0}, 4000, anim);
-}
-function stop(){
-  $el.stop();
-}
-anim();
-$el.hover(stop, anim);
 
 </script>
 

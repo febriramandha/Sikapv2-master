@@ -11,7 +11,7 @@
 
 	<div class="card-body">
 
-  <?php echo form_open('master/mesin/AjaxSave','class="form-horizontal" id="formAjax"'); ?>
+  <?php echo form_open('master/allowance/AjaxSave','class="form-horizontal" id="formAjax"'); ?>
 		<div class="col-lg-12">
           <div class="form-group row">
               <label class="col-form-label col-lg-2">Uraian <span class="text-danger">*</span></label>
@@ -114,7 +114,7 @@ $('#formAjax').submit(function() {
         },
         success: function(res) {
             if (res.status == true) {
-                bx_alert_success(res.message, 'master/mesin');
+                bx_alert_success(res.message, 'master/allowance');
             }else {
                 bx_alert(res.message);
             }

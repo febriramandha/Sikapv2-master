@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class Ksb_kepegawaian extends App_Controller {
 
 	public function __construct()
@@ -34,14 +39,14 @@ class Ksb_kepegawaian extends App_Controller {
 			$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $instansi])->row()->level;
 		}
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, c.nama, b.dept_name, b.dept_alias, b.path_info, c.nip, d.jabatan')
+        $this->datatables->select('a.id, c.nama, b.dept_name, b.dept_alias, b.path_info, c.nip, d.jabatan, c.gelar_dpn,c.gelar_blk')
         	->from('pejabat_instansi a')
         	->join('v_instansi_all b','b.id=a.dept_id')
         	->join('v_users_all c','a.user_id=c.id')
         	->join('sp_pegawai d','a.user_id=d.user_id')
         	->where('pejabat_id',7)
-        	->order_by('b.path_info')
-        	->add_column('nama_nip','$2<hr class="m-0">($1)','nip,nama')
+        	->order_by('c.no_urut')
+        	->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip)')
         	->add_column('action','<a href="'.base_url('administrator/ksb-kepegawaian/edit/').'$1">
         							<i class="icon-pencil5 text-info-400"></i>
 					                </a>
@@ -91,7 +96,7 @@ class Ksb_kepegawaian extends App_Controller {
 			if ($list_pegawai) {
 				$this->output->set_output(json_encode(['results'=> $data_user ]));
 			}else {
-				$this->output->set_output(json_encode(['status'=>false, 'msg'=> 'Gagal mengambil data.', 'results'=>[]]));
+				$this->output->set_output(json_encode(['status'=>false, 'message'=> 'Gagal mengambil data.', 'results'=>[]]));
 			}
 		}
 			

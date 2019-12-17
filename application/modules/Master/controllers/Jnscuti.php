@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class Jnscuti extends App_Controller {
 
 	public function __construct()
@@ -94,9 +99,9 @@ class Jnscuti extends App_Controller {
 		$this->output->unset_template();
 		$cuti = $this->db->get_where('_cuti', ['id'=> $this->input->get('id')])->row();
 		if ($cuti) {
-			$this->output->set_output(json_encode(['status'=>TRUE, 'msg'=> 'Berhasil mengambil data.', 'data'=> $cuti]));
+			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Berhasil mengambil data.', 'data'=> $cuti]));
 		} else{
-			$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal mengambil data.']));	
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal mengambil data.']));	
 		}
 	}
 
@@ -106,9 +111,9 @@ class Jnscuti extends App_Controller {
 		$del = $this->db->update('_cuti',['deleted' => 0],['id' => $this->input->get('id')]);
 
 		if ($del) {
-			$this->output->set_output(json_encode(['status'=>TRUE, 'msg'=> 'Data berhasil dihapus.']));
+			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil dihapus.']));
 		} else{
-			$this->output->set_output(json_encode(['status'=>FALSE, 'msg'=> 'Gagal dihapus.']));	
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal dihapus.']));	
 		}
 	}
 

@@ -25,7 +25,7 @@
               </div>
           </div>
           <div class="form-group row">
-              <label class="col-form-label col-lg-2">IP Adress <span class="text-danger">*</span></label>
+              <label class="col-form-label col-lg-2">Alamat IP<span class="text-danger">*</span></label>
               <div class="col-lg-10">
                   <div class="form-group-feedback form-group-feedback-left">
                       <div class="form-control-feedback">

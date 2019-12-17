@@ -23,9 +23,11 @@
 				<tr>
 					<th width="1%">No</th>
 					<th>Nama Instansi</th>
-          <th width="1%">Status</th>
+          <th width="1%" style="font-size: 80%;">Jumlah Pengguna</th>
+    			<th width="1%">Status</th>
+    			<th width="1%" class="text-nowrap">Kecamatan</th>
 					<th width="1%" class="text-nowrap">No Urut</th>
-					<th class="col-2">Aksi</th>
+					<th width="1%" >Aksi</th>
 				</tr>
 			</thead>
 			<tbody id="load_dt">
@@ -58,7 +60,9 @@ $(document).ready(function() {
 	    "columns": [
 	        {"data": "id", searchable:false},
 	        {"data": "dept_alias", searchable:false},
+          {"data": "jum_user", searchable:false},
           {"data": "instansi_status", searchable:false},
+          {"data": "kecamatan", searchable:false},
 	        {"data": "position_order", searchable:false},
 	        {"data": "action", searchable:false},
 	    ],
@@ -70,8 +74,9 @@ $(document).ready(function() {
 	        $('td:eq(0)', row).html(index);
 	    },
        createdRow: function(row, data, index) {
-          $('td', row).eq(4).addClass('text-nowrap');
-          $('td', row).eq(3).addClass('text-center');
+       	  $('td', row).eq(6).addClass('text-nowrap');
+          $('td', row).eq(5).addClass('text-center');
+          $('td', row).eq(4).addClass('text-center text-nowrap');
         },
 
 

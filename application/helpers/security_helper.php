@@ -5,11 +5,8 @@ function encrypt_url($string,$key) {
     /*
     * read security.ini file & get encryption_key | iv | encryption_mechanism value for generating encryption code
     */    
-    // $date = date('Ymd');
     $user_id = $CI->session->userdata('tpp_login_id');
     $level = $CI->session->userdata('tpp_level');
-    // $string = $string.','.$date; 
-    // $string = $string.','.$user_id;
     $string = $string;    
     $security       = parse_ini_file("security.ini");
     $secret_key     = $security["encryption_key"].$key.$user_id.$level;
@@ -43,25 +40,6 @@ function decrypt_url($string,$key) {
     $iv = substr(hash("sha256", $secret_iv), 0, 16);
     //do the decryption given text/string/number
     $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
-
-    // $pecah = explode(",", $output);
-    // $dateme = '';
-    // if(isset($pecah[1])) {
-    //     $dateme = $pecah[1];
-    // }
-    
-    
-    // if($dateme != date('Ymd')) {
-    //     $output = false;
-    // }else {
-    //     $output = $pecah[0];
-    // }
-    //  if($dateme != $user_id) {
-    //     $output = false;
-    // }else {
-    //     $output = $pecah[0];
-    // }
-
 
     return $output;
 }

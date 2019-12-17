@@ -110,3 +110,8 @@
     <script src="<?php echo base_url() ?>public/themes/custom/js/datatables_script.js"> </script>
 </body>
 </html>
+
+<!--
+* Created By: Rian Reski A
+* 2019
+-->

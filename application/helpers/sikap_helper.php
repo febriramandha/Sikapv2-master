@@ -1,7 +1,10 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-
+/**
+* Created By: Rian Reski A
+* 2019
+*/
 
 	 function level_instansi($level, $path_info){
         
@@ -50,9 +53,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     function status_user($id='')
     {
         if($id==1) {
-            $a = '<span class="badge badge-success">Aktif</span>';
+            // $a = '<span class="badge badge-success">Aktif</span>';
+            $a = '<span class="badge bg-success badge-pill">aktif</span>';
         }else{
-           $a = '<span class="badge badge-danger">Non Aktif</span>';
+           // $a = '<span class="badge badge-danger">Non Aktif</span>';
+            $a = '<span class="badge bg-danger badge-pill">non aktif</span>';
         }
 
         return $a;
@@ -100,24 +105,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       return $g;
     }
 
-    function format_tgl_ind($tgl='')
-    {
-      $tgl_ = '';
-      if ($tgl) {
-        $tgl_ = date('d-m-Y', strtotime($tgl));
-      }
-      return $tgl_;
-    }
-
-    function format_waktu_ind($tgl='')
-    {
-      $tgl_ = '';
-      if ($tgl) {
-        $tgl_ = date('d-m-Y (H:i)', strtotime($tgl));
-      }
-      return $tgl_;
-    }
-
+   
     function status_kawin($id='')
     {
         if ($id == 1) {
@@ -142,29 +130,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         return $gl_d.$name.$gl_b;
     }
 
+    function nama_gelar($name='', $gl_d='', $gl_b='') { 
+        if ($gl_d) {
+              $gl_d = $gl_d.'. ';
+              $gl_d = str_replace([', ,', '. .'],[',', '.'], $gl_d);
+        }
+        if ($gl_b) {
+            $gl_b = ', '.$gl_b;
+            $gl_b = str_replace([", ,", ". ."],[',', '.'], $gl_b);
+        }
+
+        return $gl_d._name($name).$gl_b;
+    }
+
+    function _ucname($str){
+      $string = ucwords(strtolower($str));
+      foreach (array('-','\'','.') as $delimiter) {
+          if (strpos($string, $delimiter) !== FALSE) {
+              $string = implode($delimiter, array_map('ucfirst', explode($delimiter, $string)));
+          }
+      }
+      return $string;
+    }
+
     function _name($name='')
     {
         return ucwords(strtolower($name));
     }
 
-    function _umur($tgl='')
-    {
-        $umur ='-';
-        if ($tgl) {
-            // Tanggal Lahir
-            $birthday = $tgl;
-            
-            // Convert Ke Date Time
-            $biday = new DateTime($birthday);
-            $today = new DateTime();
-            
-            $diff = $today->diff($biday);
-
-            $umur =  $diff->y ." Tahun";
-        }
-        return $umur;
-  
-    }
 
     function cek_cookie_login($cookie)
     {
@@ -291,18 +284,197 @@ defined('BASEPATH') OR exit('No direct script access allowed');
      
     }
 
-    function tgl_awal($tgl='')
-    {
-      $tgl_pertama = date('01-m-Y', strtotime($tgl));
-     
+    
 
-      return $tgl_pertama;
+    
+
+    function status_tpp($id='')
+    {
+        if($id==1) {
+             $a = '<span class="badge bg-success badge-pill">TPP</span>';
+        }else{
+             $a = '<span class="badge bg-danger badge-pill">Non TPP</span>';
+        }
+
+        return $a;
     }
 
-    function tgl_akhir($tgl='')
+    function random_color()
     {
-       $tgl_terakhir = date('t-m-Y', strtotime($tgl));
-       return $tgl_terakhir;
+        // the array
+        $arrX = array("bg-warning-400", 
+                      "bg-pink-400",
+                      "bg-success-400", 
+                      "bg-blue",
+                      "bg-brown-400",
+                      "bg-teal-400",
+                      "border-indigo-400",
+                      "bg-grey-400",
+                      "bg-primary-600");
+         
+        // get 2 random indexes from array $arrX
+        $randIndex = array_rand($arrX, 2);
+         
+        /*
+        * output the value for the first random index
+        * you can access the first index with $randIndex[0]
+        * (may be a bit confusing for programming beginners)
+        */
+        return $arrX[$randIndex[0]];
+    }
+
+    function color_abjad()
+    {
+        return $color = array('a' => "bg-primary-600",
+                       'b' => "bg-primary-400",
+                       'c' => "bg-danger-600",
+                       'd' => "bg-danger-400",
+                       'e' => "bg-success-600",
+                       'f' => "bg-success-400",
+                       'g' => "bg-warning-600", 
+                       'h' => "bg-warning-400",
+                       'i' => "bg-info-600",
+                       'j' => "bg-info-400",
+                       'k' => "bg-pink-600",
+                       'l' => "bg-pink-400",
+                       'm' => "bg-violet-600",
+                       'n' => "bg-violet-400",
+                       'o' => "bg-orange-600",
+                       'p' => "bg-orange-400",
+                       'q' => "bg-indigo-600",
+                       'r' => "bg-indigo-400",
+                       's' => "bg-blue-600",
+                       't' => "bg-blue-400",
+                       'u' => "bg-teal-600",
+                       'v' => "bg-teal-400",
+                       'w' => "bg-green-600",
+                       'x' => "bg-green-400",
+                       'y' => "bg-grey-600",
+                       'z' => "bg-brown-400",
+                       '?' => "bg-slate-800",
+                       '1' => "bg-blue-400",
+                       '2' => "bg-teal-600",
+                       '3' => "bg-teal-400",
+                       '4' => "bg-green-600",
+                       '5' => "bg-green-400",
+                       '6' => "bg-grey-600",
+                       '7' => "bg-brown-400",
+                       '8' => "bg-danger-400",
+                       '9' => "bg-success-600",
+                       '0' => "bg-info-400",
+                       );
+    }
+
+    function nama_icon_nip($name='', $gl_d='', $gl_b='', $nip='',$link='',$id='',$str3='') { 
+
+        if ($link) {
+              $link = base_url($link."/").encrypt_url($id,"user_id");
+        }else {
+              $link = "#";
+        }
+
+        $nama_gelar = nama_gelar($name, $gl_d, $gl_b);
+        $awal       = _str_limit($name,1);
+        $nama_icon = _nama_icon($nama_gelar,$nip,$awal,$link,$str3);
+        return $nama_icon;
+    }
+
+    function nama_icon_nip_link($name='', $gl_d='', $gl_b='', $nip='',$link='') { 
+
+        if ($link) {
+              $link = base_url($link);
+        }else {
+              $link = "#";
+        }
+
+        $nama_gelar = nama_gelar($name, $gl_d, $gl_b);
+        $awal       = _str_limit($name,1);
+        $nama_icon = _nama_icon($nama_gelar,$nip,$awal,$link);
+        return $nama_icon;
+    }
+
+    function _str_icon($str1='',$str2='',$str3='',$link='')
+    {
+          return _nama_icon($str1,$str2,_str_limit($str1,1),$link,$str3);
+    }
+
+    function _str_limit($str='',$limit='')
+    {
+        if ($str) {
+            $str = substr($str,0,$limit);
+        }else {
+            $str = '?';
+        }
+
+        return $str;
+    }
+
+    function _nama_icon($str1='',$str2='',$alias='',$link='',$str3='')
+    {
+         if ($str3) {
+              $str3 = '<div class="text-muted font-size-sm"><span class="badge badge-mark border-blue mr-1"></span> '.$str3.'</div>';
+         }
+         if ($str2) {
+              $str2 = '<div class="text-muted font-size-sm"><span class="badge badge-mark border-blue mr-1"></span> '.$str2.'</div>';
+         }
+
+         $tag_c = 'span';
+         if ($link) {
+              $tag_c = 'a';
+         }
+
+         $color = color_abjad();
+         $icon = '<div class="d-flex align-items-center">
+                    <div class="mr-3">
+                      <'.$tag_c.' href="'.$link.'" class="btn '.$color[strtolower($alias)].' rounded-round btn-icon btn-sm legitRipple">
+                        <span class="letter-icon">'.$alias.'</span>
+                      </'.$tag_c.'>
+                    </div>
+                    <div>
+                      <'.$tag_c.' href="'.$link.'" class="text-default font-weight-semibold letter-icon-title">'.$str1.'</'.$tag_c.'>
+                      '.$str2.'
+                      '.$str3.'
+                    </div>
+                  </div>';
+          return $icon;
+    }
+
+    function level_instansi_tabel($str1='',$str2='', $level='',$path='') {
+          $level = level_instansiF($level, $path);
+          $name = $level.$str1;
+        return  _name_list($name,$str2);
+
+    }
+
+    function _name_list($str1='',$str2='',$link='')
+    {
+         $tag_c = 'span';
+         if ($link) {
+              $tag_c = 'a';
+         }
+         $icon = '
+                    <div>
+                      <'.$tag_c.' href="'.$link.'" class="text-default font-weight-semibold letter-icon-title">'.$str1.'</'.$tag_c.'>
+                      <div class="text-muted font-size-sm"><span class="badge badge-mark border-blue mr-1"></span> '.$str2.'</div>
+                    </div>';
+          return $icon;
+    }
+
+    function instansi_expl($str,$path,$level)
+    {
+        $pgarray_str = pg_to_array($str);
+        //$pgarray_path = pg_to_array($path);
+        $pgarray_level = pg_to_array($level);
+        $a ='';
+        for ($i=0; $i < count($pgarray_str); $i++) { 
+            $name = str_replace('"',"",$pgarray_str[$i]);
+            //$path_info = str_replace('"',"",$pgarray_path[$i]);
+            $p_level = $pgarray_level[$i];
+            $path_new = level_instansiF($p_level, '');
+            $a .= $path_new.$name.'<br>';
+        }
+
+        return $a;
     }
 
 

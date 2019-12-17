@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class M_instansi extends CI_Model {
 
 	public function GetInstansi_tree()
@@ -77,11 +82,30 @@ class M_instansi extends CI_Model {
 
 	}
 
+	
+
 	public function GetInstansiLevel($dept_id='', $level='')
 	{
 		$this->db->select('id, dept_name, dept_alias, parent_id, path_info, path_id, level,position_order');
 		$this->db->where("path_id['".$level."']='".$dept_id."'");
 		return $this->db->get('v_instansi_all');
+	}
+
+	public function GetInstasiDeptIDCountParent($dept_id='')
+	{
+		$dept_id_cek = $this->GetAdminDept($dept_id);
+		$level = $this->db->select('level')->get_where('v_instansi_all', ['id' => $dept_id_cek])->row()->level;
+		return $this->GetInstansiLevelCountParent($dept_id_cek, $level);
+
+	}
+
+	public function GetInstansiLevelCountParent($dept_id='', $level='')
+	{
+		$this->db->select('id, dept_name, dept_alias, a.parent_id, path_info, path_id, level,position_order,jum_sub');
+		$this->db->join('(select count(*) as jum_sub, parent_id from mf_departments group by parent_id) as jum_sub','a.id=jum_sub.parent_id','left');
+		$this->db->where("path_id['".$level."']='".$dept_id."'");
+		$this->db->order_by('path_info');
+		return $this->db->get('v_instansi_all a');
 	}
 
 }

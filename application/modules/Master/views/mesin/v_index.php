@@ -27,7 +27,7 @@
 					<th width="1%">No</th>
 					<th class="text-nowrap">Nama Mesin</th>
 					<th width="1%">No Mesin</th>
-          <th width="1%">IP</th>
+          <th class="text-nowrap">Alamat IP</th>
 					<th class="text-nowrap">Nama Instansi</th>
           <th width="1%">Status</th>
           <th width="1%">Keterangan</th>

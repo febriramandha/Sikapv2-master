@@ -18,12 +18,7 @@
 				<div class="sidebar-user-material">
 					<div class="sidebar-user-material-body pb-1">
 						<div class="card-body text-center  pb-0">
-							<a href="#" >
-								<!-- class="d-md-none" -->
-								<img src="<?php echo base_url('uploads/avatar/thumb/'.$this->session->userdata('tpp_avatar')) ?>" class="img-fluid rounded-circle shadow-1 mb-1" width="80" height="80" alt="">
-							</a>
-							<h6 class="mb-0 text-blue text-shadow-dark"><?php echo _name($this->session->userdata('tpp_name')) ?></h6>
-							<span><?php echo level_alias($this->session->userdata('tpp_level')) ?></span>
+			                  <?php echo nama_icon_nip($this->session->userdata('tpp_name'),'','',level_alias($this->session->userdata('tpp_level')),) ?>
 						</div>
 					</div>
 				</div>
@@ -33,8 +28,8 @@
 					<ul class="nav nav-sidebar" data-nav-type="accordion">
 
 						<!-- Main -->
-						<!-- <li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Menu utama</div> <i class="icon-menu" title="Main"></i>
-						</li> -->
+						<li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Menu utama</div> <i class="icon-menu" title="Main"></i>
+						</li>
 						<?php echo _sidebar_app() ?>						
 						<!-- /layout -->	
 					</ul>

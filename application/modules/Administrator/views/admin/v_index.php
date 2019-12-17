@@ -51,7 +51,7 @@
 <!-- /basic table -->
 
 <script type="text/javascript">
-	$(document).ready(function(){
+$(document).ready(function(){
      table = $('#datatable').DataTable({ 
 	    processing: true, 
 	    serverSide: true, 

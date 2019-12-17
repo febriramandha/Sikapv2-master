@@ -32,7 +32,7 @@
                       <th width="35%"><b>JABATAN</b></th>
                       <th width="30%"><b>INSTANSI</b></th>
                 </tr>';
-     $arrayForTable = [];
+        $arrayForTable = [];
         foreach ($user as $databaseValue) {
             $temp = [];
             $temp['nama']         = name_degree(_name($databaseValue->nama),$databaseValue->gelar_dpn,$databaseValue->gelar_blk);
@@ -48,7 +48,7 @@
 
         }
 
-    $no=1; foreach ($arrayForTable as $id=>$values) {
+        $no=1; foreach ($arrayForTable as $id=>$values) {
                 foreach ($values as $key=> $value) {
 
                     $html .='<tr nobr="true">';
