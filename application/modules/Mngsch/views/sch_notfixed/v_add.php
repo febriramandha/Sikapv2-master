@@ -1,7 +1,7 @@
 <!-- Basic table -->
 <div class="card">
 	<div class="card-header bg-white header-elements-inline py-2">
-		<h5 class="card-title">Tambah Jadwal Jam Kerja</h5>
+		<h5 class="card-title">Tambah Jadwal Tidak Tetap</h5>
 		<div class="header-elements">
 			<div class="list-icons">
         		<a class="list-icons-item" data-action="collapse"></a>
@@ -11,7 +11,7 @@
 
 	<div class="card-body">
 
-  <?php echo form_open('mngsch/setsch-start/AjaxSave','class="form-horizontal" id="formAjax"'); ?>
+  <?php echo form_open('mngsch/sch-notfixed/AjaxSave','class="form-horizontal" id="formAjax"'); ?>
 		<div class="col-lg-12">
           <div class="form-group row">
               <label class="col-form-label col-lg-2">Nama Jadwal<span class="text-danger">*</span></label>
@@ -20,7 +20,7 @@
                       <div class="form-control-feedback">
                         <i class="icon-pencil3"></i>
                       </div>
-                      <input type="text" name="nama" class="form-control" placeholder="Nama Skedul" >
+                      <input type="text" name="nama" class="form-control" placeholder="Nama Jadwal" >
                   </div>
               </div>
           </div>
@@ -60,22 +60,42 @@
                   </div>
               </div>
           </div>
-          <h5 class="bg-white">Priode Jam Kerja</h5>
-          <?php foreach ($day as $row_day) { ?>
-          <div class="form-group row">
-              <label class="col-form-label col-lg-2"><?php echo $row_day->day_ind ?> <span class="text-danger">*</span></label>
+         <div class="form-group row" id="tabel">
+              <label class="col-form-label col-lg-2">Atur Jadwal <span class="text-danger">*</span></label>
               <div class="col-lg-10">
-                  <div class="form-group">
-                       <select class="form-control select-search" name="h<?php echo $row_day->id ?>" >  
-                              <option disabled="">Pilih Jam Kerja</option>
-                              <?php foreach ($sch_class as $row) { ?>
-                                <option value="<?php echo $row->id ?>"><?php echo $row->name ?> (<?php echo $row->start_time ?> - <?php echo $row->end_time ?>)</option>
-                              <?php } ?>
-                      </select> 
-                  </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover table-bordered">
+                          <thead>
+                            <tr class="table-active">
+                              <th width="1%">ceklis</th>
+                              <th width="1%">Tanggal</th>
+                              <th class="text-nowrap">Jadwal</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              <?php $no=1; foreach ($day as $row_day) { ?>
+                                     <tr>
+                                          <td><label class="pure-material-checkbox">
+                                                  <input class="ceklis" type="checkbox" name="ceklis[<?php echo $row_day->id ?>]" value="<?php echo $row_day->id ?>">
+                                                  <span></span>
+                                            </label></td>
+                                          <td class="text-nowrap"><?php echo $row_day->day_ind ?></td>
+                                          <td class="py-1">
+                                               <select class="form-control select-search select_hari" name="h[<?php echo $row_day->id ?>]" >  
+                                                        <option disabled="">Pilih Jam Kerja</option>
+                                                        <?php foreach ($sch_class as $row) { ?>
+                                                          <option value="<?php echo $row->id ?>"><?php echo $row->name ?> (<?php echo $row->start_time ?> - <?php echo $row->end_time ?>)</option>
+                                                        <?php } ?>
+                                                </select>
+                                          </td>
+                                     </tr>
+                               <?php  }
+                               ?>
+                          </tbody>
+                        </table>
+                      </div><hr>
               </div>
           </div>
-         <?php } ?>
 
           <div class="form-group row">
             <label class="col-form-label col-lg-2">Buka Jadwal <span class="text-danger">*</span></label>
@@ -110,6 +130,14 @@ foreach ($instansi as $row) {
 ?>
 
 <script type="text/javascript">
+
+$(document).ready(function(){
+    $('.ceklis').attr("disabled", true);
+    $(".select_hari").attr("disabled", true);
+
+});
+
+
 $(".datepicker").datepicker({
     format: 'dd-mm-yyyy',
     autoclose: true,
@@ -173,6 +201,75 @@ $('.multiselect-item').on('click', function(event) {
 });
 
 
+$('[name="rank1"]').on('change keyup paste', function () {
+      $('.ceklis').filter(':checkbox').prop('checked',false);
+      $(".select_hari").prop("selected", false).trigger('change');
+      fungsi_ceklis_hari();
+});
+$('[name="rank2"]').on('change keyup paste', function () {
+      $('.ceklis').filter(':checkbox').prop('checked',false);
+      $(".select_hari").prop("selected", false).trigger('change');
+      fungsi_ceklis_hari();
+});
+
+
+function fungsi_ceklis_hari() {
+
+      var result   = $('.result');
+      var spinner  = $('#spinner');
+      var rank1    = $('[name="rank1"]').val();
+      var rank2    = $('[name="rank2"]').val();
+      if (rank1 && rank2) {
+             $.ajax({
+                      type: 'get',
+                      url: uri_dasar+'mngsch/sch-notfixed/AjaxGet',
+                      data: {mod:'cekhari',rank1:rank1, rank2:rank2},
+                      dataType : "JSON",
+                      error:function(){
+                         result.attr("disabled", false);
+                         spinner.hide();
+                         $('.ceklis').attr("disabled", true);
+                         $(".select_hari").attr("disabled", true);
+                         $('.ceklis').filter(':checkbox').prop('checked',false);
+                         $(".select_hari").prop("selected", false).trigger('change');
+                         bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+                        
+                      },
+                       beforeSend:function(){
+                          result.attr("disabled", true);
+                          spinner.show();
+                      },
+                      success: function(res) {
+                          if (res.status == true) {
+                              var select;
+                              var hari_id  = res.result.hari_id;
+                              var len      = hari_id.length;
+                              $('.ceklis').filter(':checkbox').prop('checked',false);
+                              $(".select_hari").prop("selected", false).trigger('change');
+                              for (i = 0; i < len; i++) {
+                                  if (hari_id[i].day_eng) {
+                                      select = false;
+                                  }else {
+                                      select = true;
+                                  }
+                                  $('[name="ceklis['+hari_id[i].id+']"]').attr("disabled", select);
+                                  $('[name="h['+hari_id[i].id+']"]').attr("disabled", select);
+                              }
+                          }else {
+                             $('.ceklis').attr("disabled", true);
+                             $(".select_hari").attr("disabled", true);
+                             $('.ceklis').filter(':checkbox').prop('checked',false);
+                             $(".select_hari").prop("selected", false).trigger('change');
+                              bx_alert(res.message);
+                          }
+                          result.attr("disabled", false);
+                          spinner.hide();
+                      }
+                  });
+      }
+       
+}
+
 $('#formAjax').submit(function() {
   var result  = $('.result');
   var spinner = $('#spinner');
@@ -192,7 +289,7 @@ $('#formAjax').submit(function() {
         },
         success: function(res) {
             if (res.status == true) {
-                bx_alert_success(res.message, 'mngsch/setsch-start');
+                bx_alert_success(res.message, 'mngsch/sch-notfixed');
             }else {
                 bx_alert(res.message);
             }
@@ -202,4 +299,6 @@ $('#formAjax').submit(function() {
     });
     return false;
 });
+
+
 </script>

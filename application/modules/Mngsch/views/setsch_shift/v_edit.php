@@ -68,6 +68,18 @@
                   </div>
               </div>
           </div>
+          <div class="form-group row">
+            <label class="col-form-label col-lg-2">Buka Jadwal <span class="text-danger">*</span></label>
+            <div class="col-lg-10">
+              <div class="input-group">
+                <span class="input-group-prepend">
+                  <span class="input-group-text">
+                    <input type="checkbox" name="status" class="form-control-switchery" <?php if ($sch_run->schedule_status ==1) { echo "checked";} ?>  data-fouc> 
+                  </span>
+                </span>
+              </div>
+            </div>
+          </div>
           <input type="hidden" name="id" value="<?php echo encrypt_url($sch_run->id,"schrun_shift")  ?>">
           <input type="hidden" name="mod" value="edit">
           <div class="text-left offset-lg-3" >

@@ -19,6 +19,7 @@ class Setsch extends App_Controller {
 	private function _init()
 	{
 		$this->output->set_template('app');
+		$this->load->css('public/themes/plugin/chekbox/rrcheckbox.css');
 		$this->load->css('public/themes/plugin/clock/dist/bootstrap-clockpicker.min.css');
 		$this->load->js('public/themes/plugin/clock/dist/bootstrap-clockpicker.min.js');
 	}
@@ -87,7 +88,15 @@ class Setsch extends App_Controller {
 								->set_rules('jenis', 'jenis jam kerja', 'required');
 		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 		if ($this->form_validation->run() == TRUE) {
-			$this->mod = $this->input->post('mod');			
+			$this->mod = $this->input->post('mod');	
+			$cekin = '0';
+			if ($this->input->post('cekin')) {
+						$cekin = 1;
+				}
+			$cekout = '0';
+			if ($this->input->post('cekout')) {
+						$cekout = 1;
+				}		
 			if ($this->mod == "add") {
 				
 				$data = array(
@@ -100,6 +109,8 @@ class Setsch extends App_Controller {
 							  'check_out_time2' => $this->input->post('akhir_cout'),
 							  'work_day' 	 	=> $this->input->post('hari'),
 							  'sch_type' 	 	=> $this->input->post('jenis'),
+							  'required_in' 	=> $cekin,
+							  'required_out' 	=> $cekout,
 							  'created_at'		=> date('Y-m-d H:i:s'),
 							  'created_by'		=> $this->session->userdata('tpp_user_id')
 				 );
@@ -123,6 +134,8 @@ class Setsch extends App_Controller {
 							  'check_out_time2' => $this->input->post('akhir_cout'),
 							  'work_day' 	 	=> $this->input->post('hari'),
 							  'sch_type' 	 	=> $this->input->post('jenis'),
+							  'required_in' 	=> $cekin,
+							  'required_out' 	=> $cekout,
 							  'updated_at'		=> date('Y-m-d H:i:s'),
 							  'updated_by'		=> $this->session->userdata('tpp_user_id')
 				 );

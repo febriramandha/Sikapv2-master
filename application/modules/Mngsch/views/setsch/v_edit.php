@@ -118,6 +118,18 @@
                       </select> 
                   </div>
               </div>
+          </div>
+          <div class="form-group row">
+              <div class="col-lg-3">
+                    <label class="pure-material-checkbox"> 
+                        <input type="checkbox"  name="cekin" <?php if ($jadwal->required_in == 1) { echo "checked"; } ?> /> <span>Harus Ceklok Masuk</span>
+                    </label>
+              </div>
+              <div class="col-lg-3">
+                    <label class="pure-material-checkbox"> 
+                        <input type="checkbox" name="cekout" <?php if ($jadwal->required_out == 1) { echo "checked"; } ?>/> <span>Harus Ceklok Pulang</span>
+                    </label>
+              </div>
           </div>       
           <input type="hidden" name="id" value="<?php echo $jadwal->id ?>">
           <input type="hidden" name="mod" value="edit">

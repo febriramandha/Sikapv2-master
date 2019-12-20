@@ -181,3 +181,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $pecahkan = explode('-', $tanggal);
         return hari_tgl($tanggal). '/'. $pecahkan[2] . ' ' . $bulan[ (int)$pecahkan[1] ] . ' ' . $pecahkan[0];
   }
+
+  function format_tanggal($tgl='', $format='')
+    {
+      $tgl_ = '';
+      if ($tgl) {
+        $tgl_ = date($format, strtotime($tgl));
+      }
+      return $tgl_;
+    }

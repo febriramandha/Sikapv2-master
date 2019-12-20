@@ -10,9 +10,11 @@
 	</div>
 
 	<div class="card-body">
-    <div class="text-right">
+	<div class="form-group row">
+	      <div class="text-left col-lg-12">
 			<a href="<?php echo base_url('administrator/pimpinan/add') ?>" class="btn btn-sm btn-info"><i class="icon-pen-plus mr-1"></i> Tambah Baru</a>
-	</div>
+		  </div>
+	  </div>
 	 <div class="form-group row">
 	      <label class="col-form-label col-lg-2">Instansi <span class="text-danger">*</span></label>
 	      <div class="col-lg-10">

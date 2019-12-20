@@ -10,7 +10,7 @@
 	</div>
 
 	<div class="card-body">
-      <div class="text-right">
+      <div class="text-left">
           <a href="<?php echo base_url('mngsch/setsch-start/add') ?>" class="btn btn-sm btn-info"><i class="icon-pen-plus mr-1"></i> Tambah Jadwal</a>
       </div>
       <div class="text-right mt-1">
@@ -27,7 +27,7 @@
 					<th width="1%">No</th>
 					<th class="text-nowrap">Nama Jadwal<hr class="m-0">Priode</th>
 					<th >instansi</th>
-					<!-- <th >Status</th> -->
+					<th >Status</th>
 					<th width="1%">Aksi</th>
 				</tr>
 			</thead>
@@ -60,7 +60,7 @@ $(document).ready(function(){
 	        {"data": "id", searchable:false},
 	        {"data": "sch_name", searchable:false},
 	        {"data": "dept_name", searchable:false},
-	        // {"data": "status", searchable:false},
+	        {"data": "status", searchable:false},
 	        {"data": "action", searchable:false},
 	    ],
 	    rowCallback: function(row, data, iDisplayIndex) {

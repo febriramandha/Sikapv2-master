@@ -10,7 +10,7 @@
 	</div>
 
 	<div class="card-body">
-      <div class="text-right">
+      <div class="text-left">
           <a href="<?php echo base_url('mngsch/setinst-shift/add') ?>" class="btn btn-sm btn-info"><i class="icon-pen-plus mr-1"></i> Tambah Shift</a>
       </div>
       <div class="text-right mt-1">
@@ -21,9 +21,9 @@
 	</div>
 
 	<div class="table-responsive">
-		<table id="datatable" class="table table-sm table-hover">
+		<table id="datatable" class="table table-sm table-hover table-bordered">
 			<thead>
-				<tr>
+				<tr class="table-active">
 					<th width="1%">No</th>
 					<th width="1%">Kode</th>
 					<th class="text-nowrap">Jam Shift (masuk - pulang)</th>

@@ -51,10 +51,10 @@ class Sch_pegawai extends App_Controller {
         	->add_column('status','$1','status_lock(schedule_status)')
         	->add_column('start_date','$1 - $2','format_tgl_ind(start_date), format_tgl_ind(end_date)')
         	->add_column('sch_name','$1','sch_name(name, start_date)')
-        	->add_column('action', '
-        						<a href="'.base_url('mngsch/sch-pegawai/edit/').'$1" class="btn btn-sm badge-info p-1"> <i class="icon-alarm-check"></i> Atur Jadwal</a>
-					              </span>', 'encrypt_url(id,"schrun_id")');
-        	$this->datatables->where("$dept_id",'any(dept_id)', false);
+        	->add_column('action', '$1', 'acktion_sch_status(id,schedule_status)');
+        	if ($this->session->userdata('tpp_level') != 1) {
+        		$this->datatables->where("$dept_id",'any(dept_id)', false);
+        	}
         	if ($this->input->post('search[value]')) {
         	 	$this->db->group_start();
 		        	$this->datatables->like('lower(name)', strtolower($this->input->post('search[value]')));

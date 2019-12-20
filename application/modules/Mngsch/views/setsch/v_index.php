@@ -10,7 +10,7 @@
 	</div>
 
 	<div class="card-body">
-      <div class="text-right">
+      <div class="text-left">
           <a href="<?php echo base_url('mngsch/setsch/add') ?>" class="btn btn-sm btn-info"><i class="icon-pen-plus mr-1"></i> Tambah Jam Kerja</a>
       </div>
       <div class="text-right mt-1">
@@ -21,9 +21,9 @@
 	</div>
 
 	<div class="table-responsive">
-		<table id="datatable" class="table table-sm table-hover">
+		<table id="datatable" class="table table-sm table-hover table-bordered">
 			<thead>
-				<tr>
+				<tr class="table-active">
 					<th width="1%">No</th>
 					<th class="text-nowrap">Nama Jam Kerja</th>
 					<th width="1%" class="text-nowrap">Jam Masuk <br>(Mulai C/in - Akhir C/in)</th>

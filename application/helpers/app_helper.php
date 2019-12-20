@@ -61,8 +61,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			            $output_menu.='<ul class="nav nav-group-sub" data-submenu-title="'.$r1['title'].'">';
 
 			            foreach($r1['child'] as $m2 => $r2){
-			                $output_menu.='<li class="nav-item">
-			                                  <a href="'.base_url($r2['url']).'" class="nav-link">'.$r2['title'].'</a>
+			                $output_menu.='<li class="nav-item list-feed list-feed-solid">
+			                                  <a href="'.base_url($r2['url']).'" class="nav-link"><div class="list-feed-item pl-3">'.$r2['title'].'</div></a>
 			                              </li>';
 			            }
 		            $output_menu.='</ul>';

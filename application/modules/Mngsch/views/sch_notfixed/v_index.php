@@ -1,7 +1,7 @@
 <!-- Basic table -->
 <div class="card">
 	<div class="card-header bg-white header-elements-inline py-2">
-		<h5 class="card-title">Jadwal Shift</h5>
+		<h5 class="card-title">Jadwal Tidak Tetap</h5>
 		<div class="header-elements">
 			<div class="list-icons">
         		<a class="list-icons-item" data-action="collapse"></a>
@@ -11,7 +11,7 @@
 
 	<div class="card-body">
       <div class="text-left">
-          <a href="<?php echo base_url('mngsch/setsch-shift/add') ?>" class="btn btn-sm btn-info"><i class="icon-pen-plus mr-1"></i> Tambah Jadwal</a>
+          <a href="<?php echo base_url('mngsch/sch-notfixed/add') ?>" class="btn btn-sm btn-info"><i class="icon-pen-plus mr-1"></i> Tambah Jadwal</a>
       </div>
       <div class="text-right mt-1">
         <button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1" id="cetak">
@@ -27,7 +27,7 @@
 					<th width="1%">No</th>
 					<th class="text-nowrap">Nama Jadwal<hr class="m-0">Priode</th>
 					<th >instansi</th>
-					<th width="1%">status</th>
+					<th >Status</th>
 					<th width="1%">Aksi</th>
 				</tr>
 			</thead>
@@ -36,6 +36,7 @@
 		</table>
 	</div>
 </div>
+
 <script type="text/javascript">
 $(document).ready(function(){
      table = $('#datatable').DataTable({ 
@@ -49,7 +50,7 @@ $(document).ready(function(){
         },  
         "lengthMenu": [[10, 25, 50, 100, 200], [10, 25, 50, 100, 200]],
 	    ajax: {
-	        url : uri_dasar+'mngsch/setsch-shift/indexJson',
+	        url : uri_dasar+'mngsch/sch-notfixed/indexJson',
 	        type:"post",
 	        "data": function ( data ) {	
         				data.csrf_sikap_token_name= csrf_value;
@@ -87,7 +88,7 @@ $(document).ready(function(){
 
 function confirmAksi(id) {
         $.ajax({
-            url: uri_dasar+'mngsch/setsch-shift/AjaxDel',
+            url: uri_dasar+'mngsch/setsch-start/AjaxDel',
             data: {id: id},
             dataType :"json",
             error:function(){

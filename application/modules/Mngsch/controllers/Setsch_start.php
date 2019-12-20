@@ -112,6 +112,11 @@ class Setsch_start extends App_Controller {
 			$this->form_validation->set_rules('rank1', 'tanggal mulai dan tanggal berakhir', 'tidak sesuai');
 		}
 		if ($this->form_validation->run() == TRUE) {
+			
+			$status = '0';
+			if ($this->input->post('status')) {
+				$status = 1;
+			}
 
 			$this->mod = $this->input->post('mod');			
 			if ($this->mod == "add") {
@@ -124,6 +129,7 @@ class Setsch_start extends App_Controller {
 							  'created_at'		=> date('Y-m-d H:i:s'),
 							  'created_by'		=> $this->session->userdata('tpp_user_id'),
 							  'type' 			=> 1,
+							  'schedule_status'	=> $status
 				 );
 				$this->return = $this->db->insert('sch_run',$data);
 				$run_id = $this->db->insert_id();
@@ -154,7 +160,8 @@ class Setsch_start extends App_Controller {
 							  'end_date' 		=> $rank2,
 							  'dept_id' 		=> $instansi,
 							  'updated_at'		=> date('Y-m-d H:i:s'),
-							  'updated_by'		=> $this->session->userdata('tpp_user_id')
+							  'updated_by'		=> $this->session->userdata('tpp_user_id'),
+							  'schedule_status'	=> $status
 				 );
 				$this->return = $this->db->update('sch_run', $data, ['id' => decrypt_url($this->input->post('id'),'schrun_umum')]);
 

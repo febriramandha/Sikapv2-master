@@ -65,3 +65,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		return $checked;
 	}
+
+	function acktion_sch_status($id='',$status='')
+	{
+		if ($status == 1) {
+				$a = '<a href="'.base_url('mngsch/sch-pegawai/edit/'.encrypt_url($id,"schrun_id")).'" class="btn btn-sm badge-info p-1"> <i class="icon-alarm-check"></i> Atur Jadwal</a>
+					              </span>';
+		}else {
+				$a = '<a href="#" class="btn btn-sm badge-success p-1"> <i class="icon-lock2"></i></a>';
+		}
+
+		return $a;
+	}
+
+	function acktion_schshift_status($id='',$status='')
+	{
+		if ($status == 1) {
+				$a = '<a href="'.base_url('mngsch/schshift-pegawai/edit/'.encrypt_url($id,"schrun_id_shift")).'" class="btn btn-sm badge-info p-1"> <i class="icon-alarm-check"></i> Atur Jadwal</a>
+					              </span>';
+		}else {
+				$a = '<a href="#" class="btn btn-sm badge-success p-1"> <i class="icon-lock2"></i></a>';
+		}
+
+		return $a;
+	}

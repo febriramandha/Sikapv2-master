@@ -1,20 +1,26 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Setsch_shift extends App_Controller {
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
+class Sch_notfixed extends App_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->_init();
-		$this->breadcrumbs->push('Jadwal Shift', 'mngsch/setsch-shift');
+		$this->breadcrumbs->push('Jadwal Tidak Tetap', 'mngsch/sch-notfixed');
 		$this->data['title'] = "Manajemen Jadwal";
-		$this->load->model(['m_instansi','m_sch_run']);
+		$this->load->model(['m_instansi','m_sch_run','m_sch_class']);
 	}
 
 	private function _init()
 	{
 		$this->output->set_template('app');
+		$this->load->css('public/themes/plugin/chekbox/rrcheckbox.css');
 		$this->load->css('public/themes/plugin/datepicker/css/bootstrap-datepicker.css');
     	$this->load->js('public/themes/plugin/datepicker/js/bootstrap-datepicker.js');
     	$this->load->js('public/themes/material/global_assets/js/plugins/forms/selects/bootstrap_multiselect.js');
@@ -22,40 +28,92 @@ class Setsch_shift extends App_Controller {
 
 	public function index()
 	{
-		$this->data['sub_title']  = "Jadwal Shift";
+		$this->data['sub_title']  = "Jadwal Tidak Tetap";
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
-		$this->load->view('setsch_shift/v_index', $this->data);
+		$this->load->view('sch_notfixed/v_index', $this->data);
 	}
 
 	public function add()
 	{
-		$this->data['sub_title'] 	= "Tambah Jadwal Shift";
-		$this->breadcrumbs->push('Tambah Jadwal Shift', '/');
+		$this->data['sub_title'] 	= "Tambah Jadwal Jam Kerja";
+		$this->breadcrumbs->push('Tambah Jadwal Jam Kerja', '/');
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
+		$this->data['day']		  	= $this->db->order_by('id')->get('days')->result();
 		$this->data['instansi']		= $this->m_instansi->GetInstasiDeptIDCountParent($this->session->userdata('tpp_dept_id'))->result();
-		$this->load->view('setsch_shift/v_add', $this->data);
+		$this->data['sch_class']	= $this->m_sch_class->GetSchClassType('umum')->result();
+		$this->load->view('sch_notfixed/v_add', $this->data);
+	}
+
+	public function AjaxGet()
+	{
+		$this->output->unset_template();
+		$this->mod = $this->input->get('mod');
+
+		if ($this->mod == "cekhari") {
+				$rank1 = format_tgl_eng($this->input->get('rank1'));
+				$rank2 = format_tgl_eng($this->input->get('rank2'));
+				$jum = jumlah_hari_rank($rank1, $rank2);
+				if ($rank1 <= $rank2 && $rank1 && $rank2) {
+					$tanggal = array();
+					for ($i=0; $i < $jum+1; $i++) { 
+							$tanggal[] = format_tanggal(tgl_plus($rank1, $i),'D');
+					}
+					$tgl_id = str_replace(['[', ']','"'],['', '',"'"],json_encode(array_unique($tanggal)));
+
+					$this->db->select('a.id,b.day_eng')
+							->from('days a')
+							->join("(select * from days where day_eng in($tgl_id)) as b",'a.id=b.id','left');
+					$data_hari = $this->db->get()->result();
+
+					$this->return = array('hari_id' => $data_hari, );
+				}
+				
+
+				if ($this->return) {
+					echo json_encode($this->result = array('status' => true,
+							    			          'message' => 'berhasil memanggil data',
+							    			          'result' => $this->return));
+				}else{
+					echo json_encode($this->result = array('status' => false,
+				    			    					   'message' => 'data error'));
+				}
+
+		}
 	}
 
 	public function AjaxSave()
 	{
 		$this->output->unset_template();
-		$this->form_validation->set_rules('nama', 'nama jadwal', 'required');
+		$this->form_validation->set_rules('nama', 'nama skedul', 'required');
 		$this->form_validation->set_rules('rank1', 'tanggal mulai', 'required');
 		$this->form_validation->set_rules('rank2', 'tanggal berakhir', 'required');
 		$this->form_validation->set_rules('instansi[]', 'instansi', 'required');
+		$this->form_validation->set_rules('h[]', 'hari', 'required');
+		$this->form_validation->set_rules('ceklis[]', 'ceklis hari', 'required');
+		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 		$rank1 = format_tgl_eng($this->input->post('rank1'));
 		$rank2 = format_tgl_eng($this->input->post('rank2'));
 
 		if ($rank1 >  $rank2) {
 			$this->form_validation->set_rules('rank1', 'tanggal mulai dan tanggal berakhir', 'tidak sesuai');
 		}
-		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
-		
 		if ($this->form_validation->run() == TRUE) {
+			
 			$status = '0';
 			if ($this->input->post('status')) {
 				$status = 1;
 			}
+
+			$ceklis = $this->input->post('ceklis');
+			$h = $this->input->post('h');
+			foreach ($ceklis as $value) {
+				    $day_id[]   =  $value;
+				    $class_id[]	= $h[$value];
+			}
+
+			$class_id_array = str_replace(['[', ']', '"'],['{', '}',''], json_encode($class_id));
+			$day_id_array = str_replace(['[', ']', '"'],['{', '}',''], json_encode($day_id));
+
 			$this->mod = $this->input->post('mod');			
 			if ($this->mod == "add") {
 				$instansi = str_replace(['[', ']', '"'],['{', '}',''], json_encode($this->input->post('instansi')));
@@ -66,10 +124,18 @@ class Setsch_shift extends App_Controller {
 							  'dept_id' 		=> $instansi,
 							  'created_at'		=> date('Y-m-d H:i:s'),
 							  'created_by'		=> $this->session->userdata('tpp_user_id'),
-							  'type'			=> 2,
+							  'type' 			=> 3,
 							  'schedule_status'	=> $status
 				 );
 				$this->return = $this->db->insert('sch_run',$data);
+				$run_id = $this->db->insert_id();
+
+
+				$data = array('run_id' 	 => $run_id,
+							  'class_id' => $class_id_array,
+							  'day_id' 	 => $day_id_array, );
+
+				$this->return = $this->db->insert('schnotfixed_run_day', $data);
 
 
 				if ($this->return) {
@@ -90,7 +156,13 @@ class Setsch_shift extends App_Controller {
 							  'updated_by'		=> $this->session->userdata('tpp_user_id'),
 							  'schedule_status'	=> $status
 				 );
-				$this->return = $this->db->update('sch_run', $data, ['id' => decrypt_url($this->input->post('id'),'schrun_shift')]);
+				$this->return = $this->db->update('sch_run', $data, ['id' => decrypt_url($this->input->post('id'),'schrun_tidak_tetap')]);
+
+				$data = array(
+							  'class_id' => $class_id_array,
+							  'day_id' 	 => $day_id_array, );
+
+				$this->return = $this->db->update('schnotfixed_run_day', $data, ['run_id' => decrypt_url($this->input->post('id'),'schrun_tidak_tetap')]);
 
 				if ($this->return) {
 					 $this->result = array('status' => true,
@@ -127,17 +199,17 @@ class Setsch_shift extends App_Controller {
 					join v_instansi_all b on a.dept_id=b.id
 					GROUP BY 1) as instansi_all','instansi_all.schrun_id=a.id','left')
         	->order_by('a.id','desc')
-        	->where('type',2)
+        	->where('type',3)
         	->add_column('start_date','$1 - $2','format_tgl_ind(start_date), format_tgl_ind(end_date)')
         	->add_column('sch_name','$1','sch_name(name, start_date)')
         	->add_column('dept_name','<div style="width: 100%;max-height: 60px;overflow-y: auto;">$1</div>','instansi_expl(dept_name,path_info,level)')
         	->add_column('status','$1','status_lock(schedule_status)')
-        	->add_column('action', '<a href="'.base_url('mngsch/setsch-shift/edit/').'$1">
+        	->add_column('action', '<a href="'.base_url('mngsch/sch-notfixed/edit/').'$1">
         							<i class="icon-pencil5 text-info-400"></i>
 					                </a>
 					              <span class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus akun" style="cursor:pointer;" id="$1">
 					              <i class="icon-bin"></i>
-					              </span>', 'encrypt_url(id,"schrun_shift")');
+					              </span>', 'encrypt_url(id,"schrun_tidak_tetap")');
         	if ($this->input->post('search[value]')) {
         	 	$this->db->group_start();
 		        	$this->datatables->like('lower(name)', strtolower($this->input->post('search[value]')));
@@ -148,32 +220,18 @@ class Setsch_shift extends App_Controller {
 
 	public function edit($id)
 	{
-		$this->data['sub_title'] 	= "Edit Jadwal";
-		$this->breadcrumbs->push('Edit Jadwal', '/');
-		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
-		$this->data['sch_run']		= $this->db->get_where('sch_run', ['id' => decrypt_url($id,'schrun_shift')])->row();
-		$this->data['instansi']		= $this->m_instansi->GetInstasiDeptIDCountParent($this->session->userdata('tpp_dept_id'))->result();
-		$this->load->view('setsch_shift/v_edit', $this->data);
+		$this->data['sub_title'] 			= "Tambah Jadwal Jam Kerja";
+		$this->breadcrumbs->push('Tambah Jadwal Jam Kerja', '/');
+		$this->data['breadcrumb'] 			= $this->breadcrumbs->show();
+		$this->data['sch_run']				= $this->db->get_where('sch_run', ['id' => decrypt_url($id,'schrun_tidak_tetap')])->row();
+		$this->data['instansi']				= $this->m_instansi->GetInstasiDeptIDCountParent($this->session->userdata('tpp_dept_id'))->result();
+		$this->data['sch_class']			= $this->m_sch_class->GetSchClassType('umum')->result();
+		$this->data['schnotfixed_run_day']	= $this->m_sch_class->Getschnotfixed_run_day(decrypt_url($id,'schrun_tidak_tetap'))->result();
+		$this->load->view('sch_notfixed/v_edit', $this->data);
 	}
-
-	public function AjaxDel()
-	{
-		$this->output->unset_template();
-		$id = decrypt_url($this->input->get('id'),'schrun_shift');
-		$cek = $this->db->get_where('shift_users_run',['schrun_id' => $id])->row();
-		if (!$cek) {
-			$this->del = $this->db->delete('sch_run',['id' => $id]);
-		}
-		if ($this->del) {
-			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil dihapus.']));
-		} else{
-			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal dihapus atau data telah dikunci.']));	
-		}
-	}	
-
 
 
 }
 
-/* End of file Setsch_shift.php */
-/* Location: ./application/modules/Mngsch/controllers/Setsch_shift.php */
+/* End of file Sch_notfixed.php */
+/* Location: ./application/modules/Mngsch/controllers/Sch_notfixed.php */

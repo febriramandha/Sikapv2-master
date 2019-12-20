@@ -60,9 +60,9 @@ class M_instansi extends CI_Model {
 
 	public function GetAdminDept($dept_id='')
 	{
-		$cek = $this->db->select('id, parent_id, position_order')->get_where('mf_departments', ['id' => $dept_id])->row();
+		$cek = $this->db->select('id, parent_id, position_order, level')->get_where('v_instansi_all', ['id' => $dept_id])->row();
 
-		if ($cek->parent_id > 1 && $cek->position_order == 1) {
+		if ($cek->parent_id > 1 && $cek->position_order == 1 && $cek->level <= 3) {
 			$dept_id_cek = $cek->parent_id;
 		}elseif ($this->session->userdata('tpp_level') == 1) {
 			$id = $this->db->select('id')->order_by('id','asc')->limit(1)->get('mf_departments')->row();

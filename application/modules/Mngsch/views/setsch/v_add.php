@@ -119,7 +119,18 @@
                   </div>
               </div>
           </div>
-
+           <div class="form-group row">
+              <div class="col-lg-3">
+                    <label class="pure-material-checkbox"> 
+                        <input type="checkbox"  name="cekin"  /> <span>Harus Ceklok Masuk</span>
+                    </label>
+              </div>
+              <div class="col-lg-3">
+                    <label class="pure-material-checkbox"> 
+                        <input type="checkbox" name="cekout" /> <span>Harus Ceklok Pulang</span>
+                    </label>
+              </div>
+          </div>     
                       
          
           <input type="hidden" name="mod" value="add">

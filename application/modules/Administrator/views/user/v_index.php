@@ -8,10 +8,11 @@
         	</div>
     	</div>
 	</div>
-
 	<div class="card-body">
-    <div class="text-right">
+	<div class="form-group row">
+		 <div class="text-left col-lg-12">
 			<a href="<?php echo base_url('administrator/user/add') ?>" class="btn btn-sm btn-info"><i class="icon-pen-plus mr-1"></i> Tambah Pengguna</a>
+		 </div>
 	</div>
 	 <div class="form-group row">
 	      <label class="col-form-label col-lg-2">Instansi <span class="text-danger">*</span></label>
@@ -25,7 +26,6 @@
 	          </div>
 	      </div>
 	  </div>
-
     <div class="text-right mt-1">
 				<button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1" id="cetak">
 					<span><i class="icon-printer mr-2"></i> Cetak</span>

@@ -85,6 +85,8 @@ class M_sch_run extends CI_Model {
 		return $this->db->get();
 	}
 
+	
+
 
 }
 

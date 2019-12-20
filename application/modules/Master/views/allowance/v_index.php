@@ -10,7 +10,7 @@
 	</div>
 
 	<div class="card-body">
-      <div class="text-right">
+      <div class="text-left">
           <a href="<?php echo base_url('master/allowance/add') ?>" class="btn btn-sm btn-info"><i class="icon-pen-plus mr-1"></i> Tambah Baru</a>
       </div>
       <div class="text-right mt-1">
