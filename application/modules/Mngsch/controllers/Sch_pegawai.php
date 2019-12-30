@@ -91,7 +91,7 @@ class Sch_pegawai extends App_Controller {
 				left join sch_run b on a.schrun_id=b.id
 				where ((start_date >= '$sch->start_date' and start_date <= '$sch->end_date' and end_date >= '$sch->start_date' and end_date <= '$sch->end_date') or
 				(start_date <= '$sch->start_date' and end_date >= '$sch->start_date'
-				and start_date <= '$sch->end_date' and end_date >= '$sch->end_date'))  and schrun_id != $schrun_id) as usercek",'a.id=usercek.user_id','left')
+				and start_date <= '$sch->end_date' and end_date >= '$sch->end_date'))  and schrun_id != $schrun_id and type in(1,2)) as usercek",'a.id=usercek.user_id','left')
         	->where('key > 0')
         	->where('att_status',1)
         	->order_by('no_urut')

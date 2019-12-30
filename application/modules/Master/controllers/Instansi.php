@@ -24,9 +24,27 @@ class Instansi extends App_Controller {
 
 	public function index()
 	{
+		// $this->data['sub_title'] = "Instansi";
+		// $this->data['breadcrumb'] = $this->breadcrumbs->show();
+		// $this->load->view('instansi/v_index', $this->data);
+		$this->tree();
+	}
+
+	public function tree()
+	{
+		$this->load->css('public/themes/plugin/jquery_treetable/css/jquery.treetable.css');
+		$this->load->css('public/themes/plugin/jquery_treetable/css/jquery.treetable.theme.default.css');
+		$this->load->js('public/themes/plugin/jquery_treetable/jquery.treetable.js');
 		$this->data['sub_title'] = "Instansi";
+		$this->db->select('a.id, dept_name, dept_alias, a.parent_id, level, path_info, position_order, status_instansi, b.nama as kecamatan, jum_user, jum_sub')
+		        	->from('v_instansi_all_master a')
+		        	->join('(SELECT count(*) as jum_user, dept_id FROM "mf_users" GROUP BY dept_id) as tot_user','a.id=tot_user.dept_id','left')
+		        	->join('_kecamatan b','a.kecamatan_id=b.id','left')
+		        	->join('(select count(*) as jum_sub, parent_id from mf_departments GROUP BY parent_id) as c','a.id=c.parent_id','left');
+		$this->data['instansi']	 = $this->db->get()->result();
+
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
-		$this->load->view('instansi/v_index', $this->data);
+		$this->load->view('instansi/v_tree', $this->data);
 	}
 
 	public function indexJson()

@@ -44,3 +44,14 @@
      background-color: none !important;   
 }
 
+.hidden {
+    display: none;
+}
+
+.panel-geser {
+    width: 100%;
+    max-height: 60px;
+    overflow-y: auto;
+    border: 1.5px solid #ddd;
+}
+

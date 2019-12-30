@@ -27,9 +27,6 @@ class Schshift_pegawai extends App_Controller {
 	{
 		$this->data['sub_title']  = "Jadwal Shift Pegawai";
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
-		$dept_id = $this->m_instansi->GetAdminDept($this->session->userdata('tpp_dept_id'));
-		$level = $this->db->select('level')->get_where('v_instansi_all', ['id' => $dept_id])->row()->level;
-		$this->data['instansi']		= $this->m_sch_run->GetSchRunShiftInstansi($dept_id, $level)->result();
 		$this->load->view('schshift_pegawai/v_index', $this->data);
 	}
 
@@ -93,7 +90,7 @@ class Schshift_pegawai extends App_Controller {
 				left join sch_run b on a.schrun_id=b.id
 				where ((start_date >= '$sch->start_date' and start_date <= '$sch->end_date' and end_date >= '$sch->start_date' and end_date <= '$sch->end_date') or
 				(start_date <= '$sch->start_date' and end_date >= '$sch->start_date'
-				and start_date <= '$sch->end_date' and end_date >= '$sch->end_date')) and schrun_id != $schrun_id) as usercek",'a.id=usercek.user_id','left')
+				and start_date <= '$sch->end_date' and end_date >= '$sch->end_date')) and schrun_id != $schrun_id and type in(1,2)) as usercek",'a.id=usercek.user_id','left')
         	->where('key > 0')
         	->where('att_status',1)
         	->order_by('no_urut')

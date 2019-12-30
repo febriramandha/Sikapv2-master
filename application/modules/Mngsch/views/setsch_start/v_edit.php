@@ -68,23 +68,39 @@
                   </div>
               </div>
           </div>
-          <h5 class="bg-white">Priode Jam Kerja</h5>
-          <?php foreach ($sch_run_deil as $row_run) { ?>
-          <div class="form-group row">
-              <label class="col-form-label col-lg-2"><?php echo $row_run->day_ind ?><span class="text-danger">*</span></label>
+          <div class="form-group row" id="tabel">
+              <label class="col-form-label col-lg-2">Atur Jadwal <span class="text-danger">*</span></label>
               <div class="col-lg-10">
-                  <div class="form-group">
-                       <select class="form-control select-search" name="h<?php echo $row_run->s_day ?>" >  
-                              <option disabled="">Pilih Jam Kerja</option>
-                              <?php foreach ($sch_class as $row) { ?>
-                                <option value="<?php echo $row->id ?>"  <?php if ($row_run->class_id == $row->id) { echo "selected";} ?> ><?php echo $row->name ?> (<?php echo $row->start_time ?> - <?php echo $row->end_time ?>)</option>
-                              <?php } ?>
-                      </select> 
-                  </div>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover table-bordered">
+                          <thead>
+                            <tr class="table-active">
+                              <th width="1%">No</th>
+                              <th width="1%">Hari</th>
+                              <th class="text-nowrap">Jadwal</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              <?php $no=1; foreach ($sch_run_deil as $row_run) { ?>
+                                     <tr>
+                                          <td><?php echo $no++ ?></td>
+                                          <td class="text-nowrap"><?php echo $row_run->day_ind ?></td>
+                                          <td class="py-1">
+                                               <select class="form-control select-search" name="h<?php echo $row_run->s_day ?>" >  
+                                                        <option disabled="">Pilih Jam Kerja</option>
+                                                        <?php foreach ($sch_class as $row) { ?>
+                                                          <option value="<?php echo $row->id ?>" <?php if ($row_run->class_id == $row->id) { echo "selected";} ?> ><?php echo $row->name ?> (<?php echo $row->start_time ?> - <?php echo $row->end_time ?>)</option>
+                                                        <?php } ?>
+                                                </select>
+                                          </td>
+                                     </tr>
+                               <?php  }
+                               ?>
+                          </tbody>
+                        </table>
+                      </div>
               </div>
           </div>
-          <?php } ?>
-
           <div class="form-group row">
             <label class="col-form-label col-lg-2">Buka Jadwal <span class="text-danger">*</span></label>
             <div class="col-lg-10">

@@ -166,7 +166,25 @@ function bx_alert_successUpadate(msg, redirec) {
 	        className: 'bg-success-400',
 	        callback:function(result){
 	        	if (result) {
-					window.location.href = uri_dasar+redirec;
+					window.location.href = 'javascript:history.back()';
+				}
+	    	}
+	      }
+	    },
+	});
+}
+
+function bx_alert_successReload(msg) {
+	bootbox.dialog({
+	    message: '<i class="icon-checkmark4 ml-2 text-success"></i> '+msg,
+	    closeButton: false,
+	    buttons: {
+	      main: {
+	        label: '<i class="icon-arrow-left5 mr-1"></i> Kembali',
+	        className: 'bg-success-400',
+	        callback:function(result){
+	        	if (result) {
+					location.reload();
 				}
 	    	}
 	      }
@@ -185,5 +203,16 @@ function stop(){
 }
 anim();
 $el.hover(stop, anim);
+
+function res_notif() {
+	$('audio').remove();
+	$('body').append('<audio controls="controls" id="audio" style="display: none;">'+
+	'<source src="'+uri_dasar+'public/sound/definite.mp3"></source>'+
+	'</audio>');
+	var a = $('#audio');
+	if(a.length !== 0){
+	    a.get(0).play();
+	}
+}
 
   

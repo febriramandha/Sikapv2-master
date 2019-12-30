@@ -126,19 +126,19 @@ class Setinst_shift extends App_Controller {
 		$this->output->unset_template();
 		//header('Content-Type: application/json');
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, kd_shift, class_id, ket, a.status, start_time, end_time, dept_name,path_info,level')
+        $this->datatables->select('a.id, kd_shift, class_id, ket, a.status, start_time, end_time, json_data_instansi')
         	->from('shift_run a')
-        	->join('(select a.id as shiftrun_id, 
-					array_agg(dept_name::text ORDER BY path_info) as dept_name,
-					array_agg(path_info::text ORDER BY path_info) as path_info,
-					array_agg(level::text ORDER BY path_info) as level
+        	->join("(select a.id as shiftrun_id, 
+					json_build_object(
+							'data_instansi', json_agg((dept_name, path_info::text, level) ORDER BY path_info)
+					) as json_data_instansi
 					from (SELECT id, unnest(dept_id) as dept_id FROM shift_run) as a
 					join v_instansi_all b on a.dept_id=b.id
-					GROUP BY 1) as instansi_all','instansi_all.shiftrun_id=a.id','left')
+					GROUP BY 1) as instansi_all",'instansi_all.shiftrun_id=a.id','left')
         	->join('sch_class c','a.class_id=c.id','left')
         	->order_by('a.id','desc')
         	->where('a.deleted',1)
-        	->add_column('dept_name','<div style="width: 100%;max-height: 60px;overflow-y: auto;">$1</div>','instansi_expl(dept_name,path_info,level)')
+        	->add_column('dept_name','<div class="m-0 p-1 panel-geser">$1</div>','instansi_expl(json_data_instansi)')
         	->add_column('start_time','$1 - $2','jm(start_time), jm(end_time)')
         	->add_column('status','$1','status_user(status)')
         	->add_column('action', '<a href="'.base_url('mngsch/setinst-shift/edit/').'$1">

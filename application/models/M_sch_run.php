@@ -27,6 +27,18 @@ class M_sch_run extends CI_Model {
 		return $this->db->get();
 	}
 
+	public function GetSchRunNotfixed($id='')
+	{
+		$this->db->select('a.id, a.name, a.start_date, a.end_date, b.class_id, b.day_id, c.start_time, c.end_time, c.check_in_time1, c.check_in_time2, c.check_out_time1, c.check_out_time2, d.day_ind')
+					->from('sch_run a')
+					->join('(select run_id, unnest(class_id) as class_id,unnest(day_id) as day_id from schnotfixed_run_day) as b','a.id=b.run_id','left')
+					->join('sch_class c','c.id=b.class_id','left')
+					->join('days d','b.day_id=d.id','left')
+					->order_by('d.id')
+					->where('a.id', $id);
+		return $this->db->get();
+	}
+
 	public function GetSchRunShiftInstansi($dept_id='',$level='')
 	{
 

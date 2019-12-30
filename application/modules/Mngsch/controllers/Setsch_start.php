@@ -50,20 +50,20 @@ class Setsch_start extends App_Controller {
 		$this->output->unset_template();
 		//header('Content-Type: application/json');
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, name, start_date, end_date,dept_name,path_info,level, schedule_status')
+        $this->datatables->select('a.id, name, start_date, end_date,json_data_instansi, schedule_status')
         	->from('sch_run a')
-        	->join('(select a.id as schrun_id, 
-					array_agg(dept_name::text ORDER BY path_info) as dept_name,
-					array_agg(path_info::text ORDER BY path_info) as path_info,
-					array_agg(level::text ORDER BY path_info) as level
+        	->join("(select a.id as schrun_id, 
+					json_build_object(
+							'data_instansi', json_agg((dept_name, path_info::text, level) ORDER BY path_info)
+					) as json_data_instansi
 					from (SELECT id, unnest(dept_id) as dept_id FROM sch_run) as a
 					join v_instansi_all b on a.dept_id=b.id
-					GROUP BY 1) as instansi_all','instansi_all.schrun_id=a.id','left')
+					GROUP BY 1) as instansi_all",'instansi_all.schrun_id=a.id','left')
         	->order_by('a.id','desc')
         	->where('type',1)
         	->add_column('start_date','$1 - $2','format_tgl_ind(start_date), format_tgl_ind(end_date)')
         	->add_column('sch_name','$1','sch_name(name, start_date)')
-        	->add_column('dept_name','<div style="width: 100%;max-height: 60px;overflow-y: auto;">$1</div>','instansi_expl(dept_name,path_info,level)')
+        	->add_column('dept_name','<div class="m-0 p-1 panel-geser">$1</div>','instansi_expl(json_data_instansi)')
         	->add_column('status','$1','status_lock(schedule_status)')
         	->add_column('action', '<a href="'.base_url('mngsch/setsch-start/edit/').'$1">
         							<i class="icon-pencil5 text-info-400"></i>

@@ -89,3 +89,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		return $a;
 	}
+
+	function acktion_schnotfixec_status($id='',$status='')
+	{
+		if ($status == 1) {
+				$a = '<a href="'.base_url('mngsch/schnotfixed-pegawai/edit/'.encrypt_url($id,"schrun_id_notfixed")).'" class="btn btn-sm badge-info p-1"> <i class="icon-alarm-check"></i> Atur Jadwal</a>
+					              </span>';
+		}else {
+				$a = '<a href="#" class="btn btn-sm badge-success p-1"> <i class="icon-lock2"></i></a>';
+		}
+
+		return $a;
+	}
+
+
+	

@@ -63,6 +63,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         return $a;
     }
 
+    function status_tree($id='')
+    {
+        if($id==1) {
+            // $a = '<span class="badge badge-success">Aktif</span>';
+            $a = '<a class="badge bg-success badge-pill" >aktif</a>';
+        }else{
+           // $a = '<span class="badge badge-danger">Non Aktif</span>';
+            $a = '<a class="badge bg-danger badge-pill">non aktif</a>';
+        }
+
+        return $a;
+    }
+
     function level_alias($id='')
     {
         if($id == 1) {
@@ -460,7 +473,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           return $icon;
     }
 
-    function instansi_expl($str,$path,$level)
+    function instansi_expl_($str,$path,$level)
     {
         $pgarray_str = pg_to_array($str);
         //$pgarray_path = pg_to_array($path);
@@ -476,6 +489,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         return $a;
     }
+
+    function instansi_expl($json)
+    {
+        $pgarray_str = json_decode($json, true);
+        $a ='';
+        $instansi = $pgarray_str['data_instansi'];
+        for ($i=0; $i < count($instansi); $i++) { 
+            $dept_name  = $instansi[$i]['f1'];
+            $path_info  = $instansi[$i]['f2'];
+            $level      = $instansi[$i]['f3'];
+            $path_new   = level_instansiF($level, $path_info);
+            $a .= $path_new.$dept_name.'<br>';
+        }
+        return $a;
+    }
+
+    function pegawai_expl($json)
+    {
+        $pgarray_nama = json_decode($json, true);
+        $a ='<table>';
+        $nip  = $pgarray_nama['data_pegawai'];
+        $no = 1;
+        for ($i=0; $i < count($nip); $i++) { 
+              $nip_  = $nip[$i]['f1'];
+              $nama_ = $nip[$i]['f2'];
+              $gelar_dpn_ = $nip[$i]['f3'];
+              $gelar_blk_ = $nip[$i]['f4'];
+              $a .= '<tr><td class="p-1">'.$no++.'.'.nama_gelar($nama_,$gelar_dpn_,$gelar_blk_).'('.$nip_.')</td><tr>';
+        }
+        $a .='</table>';
+
+        return $a;
+    }
+
 
 
 /* End of file sikap_helper.php */

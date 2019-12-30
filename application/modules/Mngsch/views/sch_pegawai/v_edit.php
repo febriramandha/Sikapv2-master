@@ -111,6 +111,7 @@
         <?php echo form_close() ?> 
 	</div>
 </div>
+</div>
 <input type="hidden" id="openakses" value="">
 <input type="hidden" name="stag" value="0">
 <script type="text/javascript">

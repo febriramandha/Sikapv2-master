@@ -68,7 +68,7 @@
                           <thead>
                             <tr class="table-active">
                               <th width="1%">ceklis</th>
-                              <th width="1%">Tanggal</th>
+                              <th width="1%">Hari</th>
                               <th class="text-nowrap">Jadwal</th>
                             </tr>
                           </thead>

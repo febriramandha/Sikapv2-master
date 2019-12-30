@@ -75,8 +75,11 @@
 
 <script type="text/javascript">
     var ckeditor = CKEDITOR.replace('ckeditor',
-                {height:'230px'}
+            {
+              height:'230px',
+              customConfig: uri_dasar+'public/themes/plugin/ckeditor/custom/ckeditor_config.js'}
     );
+
     function CKupdate(){
     for ( instance in CKEDITOR.instances )
         CKEDITOR.instances[instance].updateElement();

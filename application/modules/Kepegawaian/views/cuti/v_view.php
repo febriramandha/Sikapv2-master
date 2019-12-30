@@ -49,11 +49,11 @@
          </div>
           <input type="hidden" name="id">
           <input type="hidden" name="dept_id" value="<?php echo encrypt_url($user->dept_id,'dept_id') ?>">
-          <input type="hidden" name="user_id" value="<?php echo encrypt_url($user->id,'user_id') ?>">
+          <input type="hidden" name="user_id" value="<?php echo encrypt_url($user->id,'user_id_cuti') ?>">
           <input type="hidden" name="mod" value="add">
           <div class="text-left offset-lg-2" >
               <button type="reset" class="btn btn-sm bg-orange-300 result">Batal <i class="icon-cross3 ml-2"></i></button>                 
-              <button type="submit" class="btn btn-sm btn-info result" id="result">Simpan <i class="icon-pen-plus ml-2"></i></button>
+              <button type="submit" class="btn btn-sm btn-info result" id="result">Tambah Cuti <i class="icon-pen-plus ml-2"></i></button>
               <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
           </div>
         </div>
@@ -72,7 +72,7 @@
 						<th width="1%">No</th>
 						<th class="text-nowrap">Tanggal Cuti</th>
 						<th class="text-nowrap">Jenis Cuti</th>
-						<th width="1%" style="font-size: 80%;">Jumlah Hari</th>
+						<!-- <th width="1%" style="font-size: 80%;">Jumlah Hari</th> -->
 						<th width="1%">Aksi</th>
 					</tr>
 				</thead>
@@ -112,7 +112,7 @@ $(document).ready(function(){
 	        {"data": "id", searchable:false},
 	        {"data": "start_date", searchable:false},
 	        {"data": "cuti_nama", searchable:false},
-	        {"data": "kode", searchable:false},
+	        // {"data": "kode", searchable:false},
 	        {"data": "action", searchable:false},
 	    ],
 	    rowCallback: function(row, data, iDisplayIndex) {
@@ -124,7 +124,7 @@ $(document).ready(function(){
 	    },
        createdRow: function(row, data, index) {
           // $('td', row).eq(5).addClass('text-center');
-          $('td', row).eq(4).addClass('text-nowrap');
+          $('td', row).eq(3).addClass('text-nowrap');
         },
 
 

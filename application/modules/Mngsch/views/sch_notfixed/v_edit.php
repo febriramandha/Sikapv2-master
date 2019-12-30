@@ -123,7 +123,7 @@
               <div class="input-group">
                 <span class="input-group-prepend">
                   <span class="input-group-text">
-                    <input type="checkbox" name="status" class="form-control-switchery" checked data-fouc> 
+                    <input type="checkbox" name="status" class="form-control-switchery" <?php if ($sch_run->schedule_status ==1) { echo "checked";} ?> data-fouc> 
                   </span>
                 </span>
               </div>

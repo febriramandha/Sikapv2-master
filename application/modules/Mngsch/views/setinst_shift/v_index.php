@@ -75,7 +75,7 @@ $(document).ready(function(){
 	        $('td:eq(0)', row).html(index);
 	    },
        createdRow: function(row, data, index) {
-          // $('td', row).eq(5).addClass('text-center');
+          $('td', row).eq(3).addClass('p-1');
           $('td', row).eq(6).addClass('text-nowrap');
         },
 

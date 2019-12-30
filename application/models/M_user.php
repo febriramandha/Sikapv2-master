@@ -76,6 +76,17 @@ class M_user extends CI_Model {
         return $this->db->get();
   }
 
+   public function GetUserAllAktifDept($dept_id='')
+  {
+    $this->db->select('a.id, a.nip, a.key, a.nama, a.dept_alias, att_status, a.gelar_dpn, a.gelar_blk')
+        ->from('v_users_all a')
+        ->where('key > 0')
+        ->where('att_status',1)
+        ->order_by('no_urut');
+    $this->db->where('dept_id', $dept_id);
+        return $this->db->get();
+  }
+
   public function GetUserAdmin($dept_id='')
   {
   	$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $dept_id])->row()->level;
