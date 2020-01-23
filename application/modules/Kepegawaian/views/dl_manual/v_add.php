@@ -10,8 +10,6 @@
 	</div>
 
 	<div class="card-body">
-		 <?php echo nama_icon_nip("Kominfo") ?>
-    		<hr>
 
 		<?php echo form_open('kepegawaian/dl-manual/AjaxSave/'.$this->uri->segment(4),'class="form-horizontal" id="formAjax"'); ?>
 		<div class="col-lg-12">

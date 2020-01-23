@@ -159,6 +159,18 @@ class Verifikator extends App_Controller {
 		$this->load->view('verifikator/v_cetak', $this->data);
 	}
 
+	public function AjaxDel()
+	{
+		$this->output->unset_template();
+		$this->del = $this->db->delete('verifikator',['user_id' => decrypt_url($this->input->get('id'),"user_id")]);
+
+		if ($this->del) {
+			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil dihapus.']));
+		} else{
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal dihapus atau data sedang digunakan.']));	
+		}
+	}
+
 
 }
 

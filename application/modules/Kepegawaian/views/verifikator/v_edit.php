@@ -20,7 +20,7 @@
       </div>
       <div class="col-lg-5">
           <?php if ($verifikator): ?>
-            <h4 class="font-weight-semibold mb-1">Verifikator:</h4>
+            <h4 class="font-weight-semibold mb-1">Verifikator: <a href="#" id="<?php echo encrypt_url($user->id,'user_id') ?>" class="confirm-aksi btn btn-sm bg-warning-300" msg="Benar ingin hapus data ini?" ><i class="icon-bin"></i></a> </h4>
             <?php echo nama_icon_nip($verifikator->nama, $verifikator->gelar_dpn, $verifikator->gelar_blk,$verifikator->nip,'','',$verifikator->jabatan) ?>
           <?php endif ?>
       </div>
@@ -46,7 +46,7 @@
           <input type="hidden" name="mod" value="edit">
           <input type="hidden" name="id" value="<?php echo encrypt_url($user->id,'user_id') ?>">
           <div class="text-left offset-lg-2" >
-              <button type="reset" class="btn btn-sm bg-orange-300 result">Batal <i class="icon-cross3 ml-2"></i></button>                 
+              <a href="javascript:history.back()" class="btn btn-sm bg-success-300 result">Kembali <i class="icon-arrow-left5 ml-2"></i></a>               
               <button type="submit" class="btn btn-sm btn-info result">Simpan <i class="icon-checkmark4 ml-2"></i></button>
               <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
           </div>
@@ -116,4 +116,23 @@ $('#formAjax').submit(function() {
     });
     return false;
 });
+
+function confirmAksi(id) {
+        $.ajax({
+            url: uri_dasar+'kepegawaian/verifikator/AjaxDel',
+            data: {id: id},
+            dataType :"json",
+            error:function(){
+             bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+          },
+            success: function(res){
+                if (res.status == true) {
+                   bx_alert_successUpadate(res.message, 'kepegawaian/verifikator');
+                }else {
+                    bx_alert(res.message);
+                }
+                
+            }
+        });
+    }
 </script>

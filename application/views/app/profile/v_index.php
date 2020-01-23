@@ -8,13 +8,13 @@
 	</li>
 	<li class="nav-item col-md-2 p-0">
 		<a href="#tab1" class="tab_profil nav-link legitRipple" id="verifikator" data-toggle="tab">
-		<i class="icon-user-tie mr-2"></i>
+			<i class="icon-user-tie mr-2"></i>
 			Verifikator
 		</a>
 	</li>
 	<li class="nav-item col-md-2 p-0">
 		<a href="#tab1" class="tab_profil nav-link legitRipple" id="akun" data-toggle="tab">
-		<i class="icon-key mr-2"></i>
+			<i class="icon-key mr-2"></i>
 			Akun
 		</a>
 	</li>
@@ -31,32 +31,32 @@
 
 <script type="text/javascript">
 	
-$(document).ready(function() {
-	 load_profil('biodata');
-});
+	$(document).ready(function() {
+		load_profil('biodata');
+	});
 
 
 
- $('.tab_profil').click(function(){ 
-    var id = $(this).attr('id');
-    load_profil(id);
- });
+	$('.tab_profil').click(function(){ 
+		var id = $(this).attr('id');
+		load_profil(id);
+	});
 
-  function load_profil(id) {
-    $.ajax({
-        url: "<?php echo site_url('app/profile/AjaxGet') ?>",
-        data: {id: id},
-        dataType :"html",
-		error:function(){
-			$('#load').unblock();
-		},
-		beforeSend:function(){
-			load_dt('#load');
-		},
-		success: function(res){
-		    $('#load').html(res);
-		}
-    });
-}
-    
+	function load_profil(id) {
+		$.ajax({
+			url: "<?php echo site_url('app/profile/AjaxGet') ?>",
+			data: {id: id},
+			dataType :"html",
+			error:function(){
+				$('#load').unblock();
+			},
+			beforeSend:function(){
+				load_dt('#load');
+			},
+			success: function(res){
+				$('#load').html(res);
+			}
+		});
+	}
+	
 </script>

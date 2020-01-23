@@ -10,8 +10,6 @@
 	</div>
 
 	<div class="card-body">
-
-		<?php echo form_open('kepegawaian/cuti/AjaxGet','class="form-horizontal" id="formAjax"'); ?>
 		<div class="col-lg-12">
           <div class="form-group row">
               <label class="col-form-label col-lg-2">Instansi <span class="text-danger">*</span></label>
@@ -29,56 +27,56 @@
           <div class="form-group row">
               <label class="col-form-label col-lg-2">Pegawai <span class="text-danger">*</span></label>
               <div class="col-lg-10">
-                  <div class="form-group-feedback form-group-feedback-left">
-                      <div class="form-control-feedback">
-                        <i class="icon-pencil3"></i>
-                      </div>
-                        <select class="form-control advanced2AutoComplete" type="text" autocomplete="off" placeholder="Cari NIP/Nama" name="user">
-                          <option></option>
-                        </select>
-                      <span><i>* cari nip atau nama pegawai</i></span>
+                  <div class="table-responsive">
+                    <table id="datatable" class="table table-sm table-hover table-bordered">
+                      <thead>
+                        <tr class="table-active">
+                          <th width="1%">No</th>
+                          <th class="text-nowrap">Nama<hr class="m-0">NIP</th>
+                          <th width="1%">Jumlah Cuti</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      </tbody>
+                    </table>
                   </div>
               </div>
           </div>
-          <input type="hidden" name="mod" value="next">
-          <div class="text-left offset-lg-2" >
-              <button type="reset" class="btn btn-sm bg-orange-300 result">Batal <i class="icon-cross3 ml-2"></i></button>                 
-              <button type="submit" class="btn btn-sm btn-info result">Pilih dan Lanjutkan <i class="icon-next2 ml-2"></i></button>
-              <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
-          </div>
+         
         </div>
         <?php echo form_close() ?>  
 	</div>
 </div>
+<input type="hidden" name="stag" value="0">
 <script type="text/javascript">
-$('.advanced2AutoComplete').autoComplete({
-	  resolver: 'custom',
-	  formatResult: function (item) {
-	    return {
-	      value: item.id,
-	      text: item.nama +"(" + item.nip + ")",
-	      html: [ 
-	          $('<img>').attr('src', item.icon).css("height", 18), ' ',
-	          item.nama+'('+item.nip+')'
-	        ] 
-	    };
-  },
-  events: {
-    search: function (qry, callback) {
-      // let's do a custom ajax call
-      var user = $('[name="instansi"]').val();
-      $.ajax(
-        uri_dasar+'kepegawaian/cuti/AjaxGet',
-        {
-          data: {modul:"listuser", 'qry': qry, id:user},
-          dataType :"JSON",
-        }
-      ).done(function (res) {
-        callback(res.results);
-      });
-    }
-  }
-});
+// $('.advanced2AutoComplete').autoComplete({
+// 	  resolver: 'custom',
+// 	  formatResult: function (item) {
+// 	    return {
+// 	      value: item.id,
+// 	      text: item.nama +"(" + item.nip + ")",
+// 	      html: [ 
+// 	          $('<img>').attr('src', item.icon).css("height", 18), ' ',
+// 	          item.nama+'('+item.nip+')'
+// 	        ] 
+// 	    };
+//   },
+//   events: {
+//     search: function (qry, callback) {
+//       // let's do a custom ajax call
+//       var user = $('[name="instansi"]').val();
+//       $.ajax(
+//         uri_dasar+'kepegawaian/cuti/AjaxGet',
+//         {
+//           data: {modul:"listuser", 'qry': qry, id:user},
+//           dataType :"JSON",
+//         }
+//       ).done(function (res) {
+//         callback(res.results);
+//       });
+//     }
+//   }
+// });
 
 $('#formAjax').submit(function() {
   var result  = $('.result');
@@ -109,4 +107,82 @@ $('#formAjax').submit(function() {
     });
     return false;
 });
+
+$(document).ready(function(){
+     table = $('#datatable').DataTable({ 
+      processing: true, 
+      serverSide: true, 
+      "ordering": false,
+      stateSave: true,
+      language: {
+            search: '<span></span> _INPUT_',
+            searchPlaceholder: 'Cari...',
+            processing: '<i class="icon-spinner9 spinner text-blue"></i> Loading..'
+        },  
+        "lengthMenu": [[10, 25, 50, 100, 200], [10, 25, 50, 100, 200]],
+      ajax: {
+          url : uri_dasar+'kepegawaian/cuti/indexJson',
+          type:"post",
+          "data": function ( data ) { 
+                data.csrf_sikap_token_name= csrf_value;
+            if ($('[name="stag"]').val() == 1) {
+              data.instansi=$('[name="instansi"]').val();
+            }else {
+                data.instansi= localStorage.index_instansi;
+            } 
+              },
+      },
+      "columns": [
+          {"data": "id", searchable:false},
+          {"data": "nama_nip", searchable:false},
+          {"data": "jum", searchable:false},
+      ],
+      rowCallback: function(row, data, iDisplayIndex) {
+          var info = this.fnPagingInfo();
+          var page = info.iPage;
+          var length = info.iLength;
+          var index = page * length + (iDisplayIndex + 1);
+          $('td:eq(0)', row).html(index);
+      },
+       createdRow: function(row, data, index) {
+          // $('td', row).eq(5).addClass('text-center');
+          $('td', row).eq(6).addClass('text-nowrap');
+        },
+
+
+  });
+
+   // Initialize
+   dt_componen();
+   loadSettings();
+});
+
+$(window).on('unload', function(){
+    saveSettings();
+});
+
+$('[name="instansi"]').change(function() {
+    if ($('[name="stag"]').val() == 1) {
+        table.ajax.reload();
+    }else {
+          $('[name="stag"]').val(1);
+    }
+})
+
+function loadSettings() {
+  if (localStorage.index_instansi) {
+     $('[name="instansi"]').val(localStorage.index_instansi).trigger('change');
+     if (!$('[name="instansi"]').val()) {
+        $('[name="instansi"]').val($('[name="instansi"] option:first').val()).trigger('change');
+     }
+  }
+}
+
+function saveSettings() {
+    var instansi = $('[name="instansi"]').val();
+    if (instansi) {
+      localStorage.index_instansi = instansi;
+    }
+    
+}
 </script>

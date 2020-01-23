@@ -75,26 +75,26 @@
 				<table class="table text-nowrap">
 					<?php
 					foreach ($pos->result() as $row ) { ?>
-					<thead>
-						<tr>
-							<td>
-								<a href="#" class="text-default font-weight-semibold"><?php echo $row->title  ?> <span class="badge badge-info"><?php echo $row->kategori ?></span></a>
-								<div class="text-muted font-size-sm">
-									<span class="font-weight-semibold"><i class="icon-calendar3 mr-1"></i><?php echo format_waktu_ind($row->created_at)  ?></span><br>
-									<span class="badge badge-mark border-blue mr-1"></span>
-									<?php echo $row->description  ?>
-								</div>
-								<span class="text-muted"><?php echo $row->content  ?></span>
-							</td>
-						</tr>
-					</thead>
+						<thead>
+							<tr>
+								<td>
+									<a href="#" class="text-default font-weight-semibold"><?php echo $row->title  ?> <span class="badge badge-info"><?php echo $row->kategori ?></span></a>
+									<div class="text-muted font-size-sm">
+										<span class="font-weight-semibold"><i class="icon-calendar3 mr-1"></i><?php echo format_waktu_ind($row->created_at)  ?></span><br>
+										<span class="badge badge-mark border-blue mr-1"></span>
+										<?php echo $row->description  ?>
+									</div>
+									<span class="text-muted"><?php echo $row->content  ?></span>
+								</td>
+							</tr>
+						</thead>
 					<?php } ?>
 				</table>
 			</div>
 			<a href="<?php echo base_url('app/article') ?>" class="list-group-item legitRipple">
-					<i class="icon-arrow-right22 mr-3"></i>
-					Tampilkan Semua (<?php echo $pos->num_rows() ?>)
-				</a>
+				<i class="icon-arrow-right22 mr-3"></i>
+				Tampilkan Semua (<?php echo $pos->num_rows() ?>)
+			</a>
 			
 		</div>
 	</div>
@@ -309,54 +309,54 @@
 <script type="text/javascript">
 	$(function () {
 
-    $(document).ready(function () {
+		$(document).ready(function () {
 
         // Build the chart
         $('#pengguna').highcharts({
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-            title: {
-                text: 'Grafik Pengguna Kabupaten Agam'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: false
-                    },
-                    showInLegend: true
-                }
-            },
-            series: [{
-                name: "Persentase",
-                colorByPoint: true,
-                data: [
-                                
-                {
-                    name: "OPD",
-                    y: 179                }, 
-                                
-                {
-                    name: "Puskesmas",
-                    y: 152                }, 
-                                
-                {
-                    name: "Sekolah",
-                    y: 171                }, 
-                              
-                ]
-            }]
-        });
+        	chart: {
+        		plotBackgroundColor: null,
+        		plotBorderWidth: null,
+        		plotShadow: false,
+        		type: 'pie'
+        	},
+        	title: {
+        		text: 'Grafik Pengguna Kabupaten Agam'
+        	},
+        	tooltip: {
+        		pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        	},
+        	plotOptions: {
+        		pie: {
+        			allowPointSelect: true,
+        			cursor: 'pointer',
+        			dataLabels: {
+        				enabled: false
+        			},
+        			showInLegend: true
+        		}
+        	},
+        	series: [{
+        		name: "Persentase",
+        		colorByPoint: true,
+        		data: [
+        		
+        		{
+        			name: "OPD",
+        			y: 179                }, 
+        			
+        			{
+        				name: "Puskesmas",
+        				y: 152                }, 
+        				
+        				{
+        					name: "Sekolah",
+        					y: 171                }, 
+        					
+        					]
+        				}]
+        			});
     });
-});
+	});
 
 </script>
 

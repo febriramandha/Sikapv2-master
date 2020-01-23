@@ -55,3 +55,7 @@
     border: 1.5px solid #ddd;
 }
 
+table tr td.normal_text {
+    white-space: normal;
+}
+

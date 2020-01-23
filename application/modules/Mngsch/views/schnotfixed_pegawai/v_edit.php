@@ -126,6 +126,7 @@ $('#checkAll').click(function () {
       "ordering": false,
       "paging": false,
       stateSave: true,
+      "searching": false,
       language: {
             search: '<span></span> _INPUT_',
             searchPlaceholder: 'Cari...',

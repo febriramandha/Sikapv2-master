@@ -52,7 +52,7 @@
           <input type="hidden" name="user_id" value="<?php echo encrypt_url($user->id,'user_id_cuti') ?>">
           <input type="hidden" name="mod" value="add">
           <div class="text-left offset-lg-2" >
-              <button type="reset" class="btn btn-sm bg-orange-300 result">Batal <i class="icon-cross3 ml-2"></i></button>                 
+             <a href="javascript:history.back()" class="btn btn-sm bg-success-300 result">Kembali <i class="icon-arrow-left5 ml-2"></i></a>                    
               <button type="submit" class="btn btn-sm btn-info result" id="result">Tambah Cuti <i class="icon-pen-plus ml-2"></i></button>
               <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
           </div>

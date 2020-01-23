@@ -1,4 +1,4 @@
-<?php
+	<?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
@@ -14,6 +14,7 @@ class Schlkh extends App_Controller {
 		$this->_init();
 		$this->breadcrumbs->push('Jadwal LKH', 'mnglkh/schlkh');
 		$this->data['title'] = "Manajemen LKH";
+		$this->load->model('m_instansi');
 	}
 
 	private function _init()
@@ -22,6 +23,7 @@ class Schlkh extends App_Controller {
 		$this->load->css('public/themes/plugin/datepicker/css/bootstrap-datepicker.css');
     	$this->load->js('public/themes/plugin/datepicker/js/bootstrap-datepicker.js');
     	$this->load->js('public/themes/plugin/ckeditor/ckeditor.js');
+    	$this->load->js('public/themes/material/global_assets/js/plugins/forms/selects/bootstrap_multiselect.js');
     	
 	}
 
@@ -37,6 +39,7 @@ class Schlkh extends App_Controller {
 		$this->data['sub_title'] 	= "Tambah Jadwal LKH";
 		$this->breadcrumbs->push('Tambah Jadwal LKH', '/');
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
+		$this->data['instansi']		= $this->m_instansi->GetInstasiDeptIDCountParent($this->session->userdata('tpp_dept_id'))->result();
 		$this->load->view('schlkh/v_add', $this->data);
 	}
 
@@ -57,9 +60,11 @@ class Schlkh extends App_Controller {
 			$this->form_validation->set_rules('rank1', 'tanggal mulai dan tanggal berakhir', 'tidak sesuai');
 		}
 		if ($this->form_validation->run() == TRUE) {
-			$this->mod = $this->input->post('mod');			
+			$this->mod = $this->input->post('mod');	
+			$instansi = str_replace(['[', ']', '"'],['{', '}',''], json_encode($this->input->post('instansi')));		
 			if ($this->mod == "add") {
 				$data = array(
+							  'dept_id' 		=> $instansi,
 							  'name' 		    => $this->input->post('nama'),
 							  'start_date' 		=> $rank1,
 							  'end_date' 		=> $rank2,
@@ -80,6 +85,7 @@ class Schlkh extends App_Controller {
 				}
 			}elseif ($this->mod == "edit") {
 				$data = array(
+							  'dept_id' 		=> $instansi,
 							  'name' 		    => $this->input->post('nama'),
 							  'start_date' 		=> $rank1,
 							  'end_date' 		=> $rank2,
@@ -116,11 +122,19 @@ class Schlkh extends App_Controller {
 	{
 		$this->output->unset_template();
 		$this->load->library('datatables');
-        $this->datatables->select('id, name, start_date, end_date, count_inday, count_verday, ket')
-        	->from('sch_lkh')
-        	->order_by('id','desc')
+        $this->datatables->select('a.id, name, start_date, end_date, count_inday, count_verday, ket,json_data_instansi')
+        	->from('sch_lkh a')
+        	->join("(select a.id as schlkh_id, 
+					json_build_object(
+							'data_instansi', json_agg((dept_name, path_info::text, level) ORDER BY path_info)
+					) as json_data_instansi
+					from (SELECT id, unnest(dept_id) as dept_id FROM sch_lkh) as a
+					join v_instansi_all b on a.dept_id=b.id
+					GROUP BY 1) as instansi_all",'instansi_all.schlkh_id=a.id','left')
+        	->order_by('a.id','desc')
         	->add_column('start_date','$1 - $2','format_tgl_ind(start_date), format_tgl_ind(end_date)')
         	->add_column('sch_name','$1','sch_name(name, start_date)')
+        	->add_column('dept_name','<div class="m-0 p-1 panel-geser">$1</div>','instansi_expl(json_data_instansi)')
         	->add_column('action', '<a href="'.base_url('mnglkh/schlkh/edit/').'$1">
         							<i class="icon-pencil5 text-info-400"></i>
 					                </a>
@@ -140,6 +154,7 @@ class Schlkh extends App_Controller {
 		$this->data['sub_title'] 	= "Edit Jadwal LKH";
 		$this->breadcrumbs->push('Edit Jadwal LKH', '/');
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
+		$this->data['instansi']		= $this->m_instansi->GetInstasiDeptIDCountParent($this->session->userdata('tpp_dept_id'))->result();
 		$this->data['sch_lkh']		= $this->db->get_where('sch_lkh',['id' => $id])->row();
 		$this->load->view('schlkh/v_edit', $this->data);
 	}

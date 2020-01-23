@@ -10,7 +10,7 @@
 	</div>
 
 	<div class="card-body">
-		 <?php echo nama_icon_nip("Kominfo") ?>
+		 <?php echo nama_icon_nip($instansi->dept_name) ?>
     		<hr>
 
 	     <div class="text-left">
@@ -156,7 +156,7 @@ $(document).ready(function(){
 
 function confirmAksi(id) {
         $.ajax({
-            url: uri_dasar+'mngsch/setsch-start/AjaxDel',
+            url: uri_dasar+'kepegawaian/dl-manual/AjaxDel',
             data: {id: id},
             dataType :"json",
             error:function(){

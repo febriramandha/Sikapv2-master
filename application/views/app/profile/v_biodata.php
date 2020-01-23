@@ -28,7 +28,7 @@
 					</div>
 				</div>
 				<div class="col-md-9">
-					 <div class="table-responsive ">
+					<div class="table-responsive ">
 						<table class="table" style="white-space: nowrap;">
 							<tr >
 								<th width="200">Nama Lengkap</th>
@@ -114,68 +114,68 @@
 
 <script type="text/javascript">
 	// Initialize
-        $('[data-popup="tooltip"]').tooltip();
+	$('[data-popup="tooltip"]').tooltip();
         // Demo tooltips, remove in production
         var demoTooltipSelector = '[data-popup="tooltip-demo"]';
         if($(demoTooltipSelector).is(':visible')) {
-            $(demoTooltipSelector).tooltip('show');
-            setTimeout(function() {
-                $(demoTooltipSelector).tooltip('hide');
-            }, 2000);
+        	$(demoTooltipSelector).tooltip('show');
+        	setTimeout(function() {
+        		$(demoTooltipSelector).tooltip('hide');
+        	}, 2000);
         }
-	
+        
 	// $(document).on('click', '#tukarphoto', function(e){
-	 $("#tukarphoto").click(function(e){
-        e.preventDefault();
-        $("#file").trigger('click');
-     });
-    
+		$("#tukarphoto").click(function(e){
+			e.preventDefault();
+			$("#file").trigger('click');
+		});
+		
    // $(document).on('change', '#file', function(){
-     $("#file").change(function(){
-        var photo=$(this).val();
-        if(photo=="")
-        {
-            return false;
-        }else{
-            $("#formphoto").trigger('submit');
-        }
-    });
+   	$("#file").change(function(){
+   		var photo=$(this).val();
+   		if(photo=="")
+   		{
+   			return false;
+   		}else{
+   			$("#formphoto").trigger('submit');
+   		}
+   	});
 
     // $(document).on('submit', '#formphoto', function(e){
-	$("#formphoto").submit(function(e){
-        e.preventDefault();
-        var formData = new FormData($(this)[0]);
-        $.ajax({
-            url: '<?=base_url();?>app/profile/AjaxGet',
-            type: 'POST',
-            dataType:'JSON',
-            data: formData,
-            async: true,
-            cache: false,
-            contentType: false,
-            processData: false,
-             error:function(){
-             		$('.card-img-actions').unblock();
-	       			toastr["warning"]('reques data gagal, mohon coba kembali');	
-		      },
-            beforeSend:function(){
-            	load_dt('.card-img-actions'); 
-            },
-            success: function (res) {
-              if(res.status== true)
-              {
-              	$('.card-img-actions').unblock();
-			  	$(".image_avatar").attr('src',res.url);	
-			  	$(".image_avatar").attr('href',res.url);	
-			  	bx_alert_ok(res.msg,'success');
-			  }else{
-			  	$('.card-img-actions').unblock();
-			  	 bx_alert(res.msg);
-			  }			  
-            }
-        });
-     
-          return false;
-    });
+    	$("#formphoto").submit(function(e){
+    		e.preventDefault();
+    		var formData = new FormData($(this)[0]);
+    		$.ajax({
+    			url: '<?=base_url();?>app/profile/AjaxGet',
+    			type: 'POST',
+    			dataType:'JSON',
+    			data: formData,
+    			async: true,
+    			cache: false,
+    			contentType: false,
+    			processData: false,
+    			error:function(){
+    				$('.card-img-actions').unblock();
+    				toastr["warning"]('reques data gagal, mohon coba kembali');	
+    			},
+    			beforeSend:function(){
+    				load_dt('.card-img-actions'); 
+    			},
+    			success: function (res) {
+    				if(res.status== true)
+    				{
+    					$('.card-img-actions').unblock();
+    					$(".image_avatar").attr('src',res.url);	
+    					$(".image_avatar").attr('href',res.url);	
+    					bx_alert_ok(res.msg,'success');
+    				}else{
+    					$('.card-img-actions').unblock();
+    					bx_alert(res.msg);
+    				}			  
+    			}
+    		});
+    		
+    		return false;
+    	});
 
-</script>
+    </script>

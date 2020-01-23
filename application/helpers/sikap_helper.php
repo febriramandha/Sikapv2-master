@@ -392,6 +392,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         return $nama_icon;
     }
 
+    function nama_icon_pegawai($name='', $gl_d='', $gl_b='', $nip='',$link='',$id='',$str3='') { 
+
+        if ($link) {
+              $link = base_url($link."/").$id;
+        }else {
+              $link = "#";
+        }
+
+        $nama_gelar = nama_gelar($name, $gl_d, $gl_b);
+        $awal       = _str_limit($name,1);
+        $nama_icon = _nama_icon($nama_gelar,$nip,$awal,$link,$str3);
+        return $nama_icon;
+    }
+
     function nama_icon_nip_link($name='', $gl_d='', $gl_b='', $nip='',$link='') { 
 
         if ($link) {
@@ -500,7 +514,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             $path_info  = $instansi[$i]['f2'];
             $level      = $instansi[$i]['f3'];
             $path_new   = level_instansiF($level, $path_info);
-            $a .= $path_new.$dept_name.'<br>';
+            $a .= $path_new.$dept_name.'<hr class="m-1">';
         }
         return $a;
     }
@@ -508,7 +522,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     function pegawai_expl($json)
     {
         $pgarray_nama = json_decode($json, true);
-        $a ='<table>';
+        $a ='';
         $nip  = $pgarray_nama['data_pegawai'];
         $no = 1;
         for ($i=0; $i < count($nip); $i++) { 
@@ -516,12 +530,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
               $nama_ = $nip[$i]['f2'];
               $gelar_dpn_ = $nip[$i]['f3'];
               $gelar_blk_ = $nip[$i]['f4'];
-              $a .= '<tr><td class="p-1">'.$no++.'.'.nama_gelar($nama_,$gelar_dpn_,$gelar_blk_).'('.$nip_.')</td><tr>';
+              $a .= $no++.'.'.nama_gelar($nama_,$gelar_dpn_,$gelar_blk_).'('.$nip_.')<hr class="m-1">';
         }
-        $a .='</table>';
 
         return $a;
     }
+
+    function konversi_nip($nip, $batas = " ") { 
+      $nip = trim($nip," ");
+      $panjang = strlen($nip);
+
+      if($panjang == 18) {
+        $sub[] = substr($nip, 0, 8); // tanggal lahir
+        $sub[] = substr($nip, 8, 6); // tanggal pengangkatan
+        $sub[] = substr($nip, 14, 1); // jenis kelamin
+        $sub[] = substr($nip, 15, 3); // nomor urut
+
+        return $sub[0].$batas.$sub[1].$batas.$sub[2].$batas.$sub[3];
+      } else {
+        return $nip;
+      }
+    }
+
 
 
 

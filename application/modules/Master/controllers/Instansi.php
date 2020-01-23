@@ -37,10 +37,10 @@ class Instansi extends App_Controller {
 		$this->load->js('public/themes/plugin/jquery_treetable/jquery.treetable.js');
 		$this->data['sub_title'] = "Instansi";
 		$this->db->select('a.id, dept_name, dept_alias, a.parent_id, level, path_info, position_order, status_instansi, b.nama as kecamatan, jum_user, jum_sub')
-		        	->from('v_instansi_all_master a')
-		        	->join('(SELECT count(*) as jum_user, dept_id FROM "mf_users" GROUP BY dept_id) as tot_user','a.id=tot_user.dept_id','left')
-		        	->join('_kecamatan b','a.kecamatan_id=b.id','left')
-		        	->join('(select count(*) as jum_sub, parent_id from mf_departments GROUP BY parent_id) as c','a.id=c.parent_id','left');
+		->from('v_instansi_all_master a')
+		->join('(SELECT count(*) as jum_user, dept_id FROM "mf_users" GROUP BY dept_id) as tot_user','a.id=tot_user.dept_id','left')
+		->join('_kecamatan b','a.kecamatan_id=b.id','left')
+		->join('(select count(*) as jum_sub, parent_id from mf_departments GROUP BY parent_id) as c','a.id=c.parent_id','left');
 		$this->data['instansi']	 = $this->db->get()->result();
 
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
@@ -52,28 +52,28 @@ class Instansi extends App_Controller {
 		$this->output->unset_template();
 		//header('Content-Type: application/json');
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, dept_name, dept_alias, parent_id, level, path_info, position_order, status_instansi, b.nama as kecamatan, jum_user')
-        	->from('v_instansi_all_master a')
-        	->join('(SELECT count(*) as jum_user, dept_id FROM "mf_users" GROUP BY dept_id) as tot_user','a.id=tot_user.dept_id','left')
-        	->join('_kecamatan b','a.kecamatan_id=b.id','left')
-        	->add_column('dept_alias', '$1', 'level_instansi_tabel(dept_alias,dept_name,level, path_info)')
-        	->add_column('instansi_status', '$1', 'status_user(status_instansi)')
-        	->add_column('action', '<a href="'.base_url('master/instansi/add/').'$1">
-        								<i class="icon-file-plus2 text-orange-300 mr-1"></i>
-					                </a>
-        							<a href="'.base_url('master/instansi/edit/').'$1">
-        								<i class="icon-pencil5 text-info-400 mr-1"></i>
-					                </a>
-					              	<span class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus akun" style="cursor:pointer;" id="$1">
-					              		<i class="icon-bin"></i>
-					              	</span>', 'encrypt_url(id,"instansi")');
-        	 if ($this->input->post('search[value]')) {
-	        	$this->datatables->like('lower(dept_name)', strtolower($this->input->post('search[value]')));
-	        	$this->datatables->or_like('lower(dept_alias)', strtolower($this->input->post('search[value]')));
-	        	$this->datatables->or_like('(path_info)::text', $this->input->post('search[value]'));
+		$this->datatables->select('a.id, dept_name, dept_alias, parent_id, level, path_info, position_order, status_instansi, b.nama as kecamatan, jum_user')
+		->from('v_instansi_all_master a')
+		->join('(SELECT count(*) as jum_user, dept_id FROM "mf_users" GROUP BY dept_id) as tot_user','a.id=tot_user.dept_id','left')
+		->join('_kecamatan b','a.kecamatan_id=b.id','left')
+		->add_column('dept_alias', '$1', 'level_instansi_tabel(dept_alias,dept_name,level, path_info)')
+		->add_column('instansi_status', '$1', 'status_user(status_instansi)')
+		->add_column('action', '<a href="'.base_url('master/instansi/add/').'$1">
+			<i class="icon-file-plus2 text-orange-300 mr-1"></i>
+			</a>
+			<a href="'.base_url('master/instansi/edit/').'$1">
+			<i class="icon-pencil5 text-info-400 mr-1"></i>
+			</a>
+			<span class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus akun" style="cursor:pointer;" id="$1">
+			<i class="icon-bin"></i>
+			</span>', 'encrypt_url(id,"instansi")');
+		if ($this->input->post('search[value]')) {
+			$this->datatables->like('lower(dept_name)', strtolower($this->input->post('search[value]')));
+			$this->datatables->or_like('lower(dept_alias)', strtolower($this->input->post('search[value]')));
+			$this->datatables->or_like('(path_info)::text', $this->input->post('search[value]'));
 
-	        }
-        return $this->output->set_output($this->datatables->generate());
+		}
+		return $this->output->set_output($this->datatables->generate());
 	}
 
 	public function add($id)
@@ -83,7 +83,7 @@ class Instansi extends App_Controller {
 		if ($position) {
 			$position_ = $position->max+1;
 		}else {
-		 	$position_ =1;
+			$position_ =1;
 		}
 		$this->data['sub_title'] 		= "Tambah Instansi";
 		$this->breadcrumbs->push('Tambah Instansi', '/');
@@ -100,9 +100,9 @@ class Instansi extends App_Controller {
 		$this->mod = $this->input->post('mod');
 		$this->output->unset_template();
 		$this->form_validation->set_rules('nama', 'nama instansi', 'required')
-								->set_rules('alias', 'nama singkatan', 'required')
-								->set_rules('kecamatan', 'kecamatan', 'required')
-								->set_rules('order', 'urutan', 'required|numeric');
+		->set_rules('alias', 'nama singkatan', 'required')
+		->set_rules('kecamatan', 'kecamatan', 'required')
+		->set_rules('order', 'urutan', 'required|numeric');
 		if ($this->mod == "add") {
 			$this->form_validation->set_rules('parent', 'instansi induk', 'required');
 		}
@@ -118,14 +118,14 @@ class Instansi extends App_Controller {
 					$supdeptid = -1;
 				}
 				$data = array('dept_name' 	 	=> $this->input->post('nama'),
-							  'dept_alias' 		=> $this->input->post('alias'),
-							  'kecamatan_id' 	=> decrypt_url($this->input->post('kecamatan'),'kecamatan_id'),
-							  'position_order' 	=> $this->input->post('order'),
-							  'parent_id' 	 	=> decrypt_url($this->input->post('parent'),'instansi'),
-							  'created_at' 		=> date('Y-m-d H:i:s'),
-							  'status'			=> $status,
-							  'created_by' 	 	=> $this->session->userdata('tpp_user_id'),
-				 );
+					'dept_alias' 		=> $this->input->post('alias'),
+					'kecamatan_id' 	=> decrypt_url($this->input->post('kecamatan'),'kecamatan_id'),
+					'position_order' 	=> $this->input->post('order'),
+					'parent_id' 	 	=> decrypt_url($this->input->post('parent'),'instansi'),
+					'created_at' 		=> date('Y-m-d H:i:s'),
+					'status'			=> $status,
+					'created_by' 	 	=> $this->session->userdata('tpp_user_id'),
+				);
 				$res_ = $this->db->insert('mf_departments',$data);
 				$id_new = $this->db->insert_id();
 
@@ -133,19 +133,19 @@ class Instansi extends App_Controller {
 					$path = $this->db->select('path_info')->get_where('v_instansi_all_master', ['id' => $id_new])->row();
 					$new_path = attConverPathNumber($path->path_info);
 					$data_att_dept = array( 'deptid' 	=> $id_new,
-											'deptname'  => $new_path.'_'.$this->input->post('alias'),
-											'supdeptid' => $supdeptid,
-											 );
+						'deptname'  => $new_path.'_'.$this->input->post('alias'),
+						'supdeptid' => $supdeptid,
+					);
 					$this->return = $this->m_server_att->Newdepartments($data_att_dept);
 				}
 
 				if ($this->return) {
-					 $this->result = array('status' => true,
-				    			    		'message' => 'Data berhasil disimpan');
+					$this->result = array('status' => true,
+						'message' => 'Data berhasil disimpan');
 				}else{
-					 $this->result = array('status' => false,
-				    			    		'message' => 'Data gagal disimpan');
-					 $this->db->delete('mf_departments', ['id' => $id_new]);
+					$this->result = array('status' => false,
+						'message' => 'Data gagal disimpan');
+					$this->db->delete('mf_departments', ['id' => $id_new]);
 				}
 			}elseif ($this->mod == "edit") {
 				if ($this->input->post('status')) {
@@ -156,13 +156,13 @@ class Instansi extends App_Controller {
 					$supdeptid = -1;
 				}
 				$data = array('dept_name' 	 	=> $this->input->post('nama'),
-							  'dept_alias' 		=> $this->input->post('alias'),
-							  'kecamatan_id' 		=> decrypt_url($this->input->post('kecamatan'),'kecamatan_id'),
-							  'position_order' 	=> $this->input->post('order'),
-							  'updated_at' 		=> date('Y-m-d H:i:s'),
-							  'status'			=> $status,
-							  'updated_by' 	 	=> $this->session->userdata('tpp_user_id'),
-				 );
+					'dept_alias' 		=> $this->input->post('alias'),
+					'kecamatan_id' 		=> decrypt_url($this->input->post('kecamatan'),'kecamatan_id'),
+					'position_order' 	=> $this->input->post('order'),
+					'updated_at' 		=> date('Y-m-d H:i:s'),
+					'status'			=> $status,
+					'updated_by' 	 	=> $this->session->userdata('tpp_user_id'),
+				);
 				$this->return = $this->db->update('mf_departments', $data, ['id' => decrypt_url($this->input->post('id'),'instansi')]);
 
 				$path = $this->db->select('path_info')->get_where('v_instansi_all_master', ['id' => decrypt_url($this->input->post('id'),'instansi')])->row();
@@ -170,21 +170,21 @@ class Instansi extends App_Controller {
 				$new_path = attConverPathNumber($path->path_info);
 
 				$data_att_dept = array('deptname' => $new_path.'_'.$this->input->post('alias'),
-									   'supdeptid' => $supdeptid, );
+					'supdeptid' => $supdeptid, );
 				$this->return = $this->m_server_att->Updatedepartments($data_att_dept, ['deptid' => decrypt_url($this->input->post('id'),'instansi')]);
 
 				if ($this->return) {
-					 $this->result = array('status' => true,
-				    			   		   'message' => 'Data berhasil disimpan');
+					$this->result = array('status' => true,
+						'message' => 'Data berhasil disimpan');
 				}else{
-					 $this->result = array('status' => false,
-				    			   		   'message' => 'Data gagal disimpan');
+					$this->result = array('status' => false,
+						'message' => 'Data gagal disimpan');
 				}
 			}
 
 		}else {
 			$this->result = array('status' => false,
-				    			  'message' => validation_errors(),);
+				'message' => validation_errors(),);
 		}
 
 		if ($this->result) {

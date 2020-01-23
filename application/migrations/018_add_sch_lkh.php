@@ -10,6 +10,10 @@ class Migration_Add_sch_lkh extends CI_Migration {
                                 'type' => 'integer',
                                 'auto_increment' => TRUE
                         ),
+                        'dept_id' => array(
+                               'type'   => 'integer[]',
+                                'null' => TRUE,
+                        ),
                         'name' => array(
                                 'type' 	=> 'varchar',
                                 'null'  => TRUE,
@@ -35,6 +39,11 @@ class Migration_Add_sch_lkh extends CI_Migration {
                         'end_date' => array(
                                 'type' 	=> 'date',
                                 'null' => TRUE,
+                        ),
+                        'type' => array(
+                               'type'   => 'integer',
+                                'null' => TRUE,
+                                'default'   => 1, // 1 tetap 2 tidak tetap
                         ),
                         'created_at' => array(
                                 'type' => 'TIMESTAMP',

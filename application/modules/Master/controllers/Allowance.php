@@ -35,31 +35,31 @@ class Allowance extends App_Controller {
 		$this->output->unset_template();
 		
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, a.name, b.eselon, c.golongan, a.tpp, a.position, a.status')
-        	->from('_allowances a')
-        	->join('_eselon b','b.id=a.eselon_id')
-        	->join('_golongan c','c.id=a.golongan_id')
-        	->order_by('position')
-        	->where('deleted',1)
-        	->add_column('status_tunjangan','$1','status_user(status)')
-        	->add_column('tpp','$1','rupiah(tpp)')
-        	->add_column('action', '<a href="'.base_url('master/allowance/edit/').'$1">
-        								<i class="icon-pencil5 text-info-400"></i>
-					                </a>
-						            <span class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus akun" style="cursor:pointer;" id="$1">
-						             	<i class="icon-bin"></i>
-						            </span>', 'encrypt_url(id,"allowance_id")');
-        return $this->output->set_output($this->datatables->generate());
+		$this->datatables->select('a.id, a.name, b.eselon, c.golongan, a.tpp, a.position, a.status')
+		->from('_allowances a')
+		->join('_eselon b','b.id=a.eselon_id')
+		->join('_golongan c','c.id=a.golongan_id')
+		->order_by('position')
+		->where('deleted',1)
+		->add_column('status_tunjangan','$1','status_user(status)')
+		->add_column('tpp','$1','rupiah(tpp)')
+		->add_column('action', '<a href="'.base_url('master/allowance/edit/').'$1">
+			<i class="icon-pencil5 text-info-400"></i>
+			</a>
+			<span class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus akun" style="cursor:pointer;" id="$1">
+			<i class="icon-bin"></i>
+			</span>', 'encrypt_url(id,"allowance_id")');
+		return $this->output->set_output($this->datatables->generate());
 	}
 
 	public function AjaxSave()
 	{
 		$this->output->unset_template();
 		$this->form_validation->set_rules('nama', 'uraian', 'required')
-								->set_rules('eselon', 'eselon', 'required|numeric')
-								->set_rules('golongan', 'golongan', 'required|numeric')
-								->set_rules('tpp', 'tpp', 'required|numeric')
-								->set_rules('order', 'nomor urut', 'required|numeric');
+		->set_rules('eselon', 'eselon', 'required|numeric')
+		->set_rules('golongan', 'golongan', 'required|numeric')
+		->set_rules('tpp', 'tpp', 'required|numeric')
+		->set_rules('order', 'nomor urut', 'required|numeric');
 		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 		if ($this->form_validation->run() == TRUE) {
 			$this->mod = $this->input->post('mod');			
@@ -71,48 +71,48 @@ class Allowance extends App_Controller {
 			if ($this->mod == "add") {
 				
 				$data = array(
-							  'name' 		    => $this->input->post('nama'),
-							  'eselon_id' 		=> $this->input->post('eselon'),
-							  'golongan_id' 	=> $this->input->post('golongan'),
-							  'tpp' 	 		=> $this->input->post('tpp'),
-							  'position' 	 	=> $this->input->post('order'),
-							  'status' 	 		=> $status,
-							  'created_at'		=> date('Y-m-d H:i:s'),
-							  'created_by'		=> $this->session->userdata('tpp_user_id')
-				 );
+					'name' 		    => $this->input->post('nama'),
+					'eselon_id' 		=> $this->input->post('eselon'),
+					'golongan_id' 	=> $this->input->post('golongan'),
+					'tpp' 	 		=> $this->input->post('tpp'),
+					'position' 	 	=> $this->input->post('order'),
+					'status' 	 		=> $status,
+					'created_at'		=> date('Y-m-d H:i:s'),
+					'created_by'		=> $this->session->userdata('tpp_user_id')
+				);
 				$this->return = $this->db->insert('_allowances',$data);
 				if ($this->return) {
-					 $this->result = array('status' => true,
-				    			    'message' => 'Data berhasil disimpan');
+					$this->result = array('status' => true,
+						'message' => 'Data berhasil disimpan');
 				}else{
-					 $this->result = array('status' => false,
-				    			    'message' => 'Data gagal disimpan');
+					$this->result = array('status' => false,
+						'message' => 'Data gagal disimpan');
 				}
 			}elseif ($this->mod == "edit") {
 				
 				$data = array(
-							  'name' 		    => $this->input->post('nama'),
-							  'eselon_id' 		=> $this->input->post('eselon'),
-							  'golongan_id' 	=> $this->input->post('golongan'),
-							  'tpp' 	 		=> $this->input->post('tpp'),
-							  'position' 	 	=> $this->input->post('order'),
-							  'status' 	 		=> $status,
-							  'updated_at'		=> date('Y-m-d H:i:s'),
-							  'updated_by'		=> $this->session->userdata('tpp_user_id')
-				 );
+					'name' 		    => $this->input->post('nama'),
+					'eselon_id' 		=> $this->input->post('eselon'),
+					'golongan_id' 	=> $this->input->post('golongan'),
+					'tpp' 	 		=> $this->input->post('tpp'),
+					'position' 	 	=> $this->input->post('order'),
+					'status' 	 		=> $status,
+					'updated_at'		=> date('Y-m-d H:i:s'),
+					'updated_by'		=> $this->session->userdata('tpp_user_id')
+				);
 				$this->return = $this->db->update('_allowances', $data, ['id' => decrypt_url($this->input->post('id'),'allowance_id')]);
 				if ($this->return) {
-					 $this->result = array('status' => true,
-				    			   'message' => 'Data berhasil disimpan');
+					$this->result = array('status' => true,
+						'message' => 'Data berhasil disimpan');
 				}else{
-					 $this->result = array('status' => false,
-				    			   'message' => 'Data gagal disimpan');
+					$this->result = array('status' => false,
+						'message' => 'Data gagal disimpan');
 				}
 			}
 
 		}else {
 			$this->result = array('status' => false,
-				    		'message' => validation_errors(),);
+				'message' => validation_errors(),);
 		}
 
 		if ($this->result) {

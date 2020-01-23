@@ -25,8 +25,8 @@
 </head>
 
 <body>
-		
-<!-- Main navbar -->
+	
+	<!-- Main navbar -->
 	<div class="navbar navbar-expand-md navbar-light navbar-static">
 		<div class="navbar-brand">
 			<a href="<?php echo config_item('base_url') ?>" class="d-inline-block">
@@ -114,14 +114,14 @@
 	var url = "<?php echo config_item('base_url') ?>"; // url tujuan
             var count = 30; // dalam detik
             function countDown() {
-                if (count > 0) {
-                    count--;
-                    var waktu = count + 1;
-                    $('#pesan').html(waktu);
-                    setTimeout("countDown()", 1000);
-                } else {
-                    window.location.href = url;
-                }
+            	if (count > 0) {
+            		count--;
+            		var waktu = count + 1;
+            		$('#pesan').html(waktu);
+            		setTimeout("countDown()", 1000);
+            	} else {
+            		window.location.href = url;
+            	}
             }
             countDown();
-</script>
+        </script>

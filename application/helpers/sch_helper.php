@@ -29,11 +29,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	function sch_name($str='',$str2='')
 	{
-		$a = '<span class="text-default font-weight-semibold letter-icon-title">
-						'.$str.'</span>
-					<div class="text-muted font-size-sm">
-					<i class="icon-alarm font-size-sm mr-1"></i> 
-			  '.$str2.'</div>';
+		// $a = '<span class="text-default font-weight-semibold letter-icon-title">
+		// 				'.$str.'</span>
+		// 			<div class="text-muted font-size-sm">
+		// 			<i class="icon-alarm font-size-sm mr-1"></i> 
+		// 	  '.$str2.'</div>';
+
+		$a = '<div class="d-flex align-items-center">
+				<a href="#" class="btn bg-transparent border-teal text-teal rounded-round border-2 btn-icon mr-3">
+					<i class="icon-alarm-check"></i>
+				</a>
+				<div>
+					<div class="font-weight-semibold">'.$str.'</div>
+					<span class="text-muted">'.$str2.'</span>
+				</div>
+			</div>';
 
 		return $a;
 	}
@@ -101,6 +111,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		return $a;
 	}
+
+
+	function span_label($cek='',$str='',$clr='')
+    {
+    	$a ='';
+    	if ($cek) {
+    		$a = '<span class="badge bg-'.$clr.' badge-pill">'.$str.'</span>';
+    	}        
+        return $a;
+    }
+
+    function status_absnmanual($str='',$type='')
+    {
+    	$a = '';
+    	if ($str == 1) {
+    		 $a = "H";
+    	}elseif ($str ==2) {
+    		if ($type == "in") {
+    			$a = "T";
+    		}else {
+    			$a = "CP";
+    		}
+    	}elseif ($str ==3) {
+    		$a = "TK";
+    	}
+
+    	return $a;
+    }
 
 
 	

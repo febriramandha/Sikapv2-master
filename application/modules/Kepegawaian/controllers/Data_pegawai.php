@@ -34,9 +34,7 @@ class Data_pegawai extends App_Controller {
 	{
 		$this->output->unset_template();
 		$instansi = decrypt_url($this->input->post('instansi'),'instansi');
-		if ($instansi) {
-			$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $instansi])->row()->level;
-		}
+		$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $instansi])->row()->level;
 		$this->load->library('datatables');
         $this->datatables->select('a.id, a.nip, a.nama, a.dept_name, b.level, status, status_pegawai,gelar_dpn,gelar_blk,tpp')
         	->from('v_users_all a')
@@ -51,9 +49,7 @@ class Data_pegawai extends App_Controller {
         	->add_column('action','<a href="'.base_url('kepegawaian/data-pegawai/edit/').'$1">
         							<i class="icon-pencil5 text-info-400"></i>
 					                </a>', 'encrypt_url(id,"user_id")');
-        	 if ($instansi) {
-		        $this->datatables->where("path_id['".$level."']='".$instansi."'");
-		     }
+		     $this->datatables->where("path_id['".$level."']='".$instansi."'");
         	 if ($this->input->post('search[value]')) {
         	 	$this->db->group_start();
 		        	$this->datatables->like('lower(nama)', strtolower($this->input->post('search[value]')));

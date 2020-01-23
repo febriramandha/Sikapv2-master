@@ -40,6 +40,7 @@ class Dl_manual extends App_Controller {
 		$this->data['sub_title'] 	= "Dinas Luar";
 		$this->breadcrumbs->push('Dinas Luar', '/');
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
+		$this->data['instansi']		= $this->m_instansi->GetInstansi(decrypt_url($id,'instansi_dl'))->row();
 		$this->load->view('dl_manual/v_view', $this->data);
 	}
 
@@ -121,10 +122,11 @@ class Dl_manual extends App_Controller {
 		}
 	}
 
-	public function indexJson($id)
+	public function indexJson()
 	{
 		$this->output->unset_template();
-		$instansi = decrypt_url($id,'instansi');
+		$instansi = decrypt_url($this->input->post('instansi'),'instansi');
+		$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $instansi])->row()->level;
 		$this->load->library('datatables');
         $this->datatables->select('a.id, a.tanggal, a.uraian, a.hasil, a.user_id, json_nama_nip as nama_nip')
         	->from('dinasluar_manual a')
@@ -136,6 +138,8 @@ class Dl_manual extends App_Controller {
 					from (select id, 	unnest(user_id) as user_id from dinasluar_manual) as a
 					left join v_users_all b on a.user_id=b.id) as a
 					GROUP BY 1) as b",'a.id=b.dl_id')
+        	->join('v_instansi_all c','a.dept_id=c.id','left')
+        	->order_by('a.id','desc')
         	->add_column('tanggal','$1','tgl_ind_bulan(tanggal)')
         	->add_column('uraian','<div class="m-0 p-1 panel-geser" style="max-height: 100px;border:none;">$1</div>','uraian')
         	->add_column('hasil','<div class="m-0 p-1 panel-geser" style="max-height: 100px;border:none; ">$1</div>','hasil')
@@ -146,9 +150,7 @@ class Dl_manual extends App_Controller {
 					              <span class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus data" style="cursor:pointer;" id="$1">
 					              <i class="icon-bin"></i>
 					              </span>', 'encrypt_url(id,"dl_id")');
-        	 if ($instansi) {
-		        $this->datatables->where('a.dept_id', $instansi);
-		     }
+		     $this->datatables->where("path_id['".$level."']='".$instansi."'");
         	 if ($this->input->post('search[value]')) {
         	 	$this->db->group_start();
 		        	$this->datatables->like('lower(uraian)', strtolower($this->input->post('search[value]')));
@@ -157,6 +159,18 @@ class Dl_manual extends App_Controller {
 	         }
 	       
         return $this->output->set_output($this->datatables->generate());
+	}
+
+	public function AjaxDel()
+	{
+		$this->output->unset_template();
+		$this->del = $this->db->delete('dinasluar_manual',['id' => decrypt_url($this->input->get('id'),"dl_id")]);
+
+		if ($this->del) {
+			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil dihapus.']));
+		} else{
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal dihapus atau data sedang digunakan.']));	
+		}
 	}
 
 }

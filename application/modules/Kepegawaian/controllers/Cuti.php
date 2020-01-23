@@ -33,6 +33,36 @@ class Cuti extends App_Controller {
 		$this->load->view('cuti/v_index', $this->data);
 	}
 
+	public function indexJson()
+	{
+		$this->output->unset_template();
+		$instansi = decrypt_url($this->input->post('instansi'),'instansi');
+		if ($instansi) {
+			$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $instansi])->row()->level;
+		}
+		$this->load->library('datatables');
+        $this->datatables->select('a.id, a.nip, a.nama, a.dept_name,gelar_dpn,gelar_blk, b.jum')
+        	->from('v_users_all a')
+        	->join('(select user_id, count(*) as jum from data_cuti where deleted=1 group by user_id) as b','a.id=b.user_id','left')
+        	->where('key > 0')
+        	->where('att_status',1)
+        	->order_by('no_urut')
+        	->add_column('id','$1','encrypt_url(id,"user_id_cuti")')
+        	->add_column('jum','$1','jum')
+        	->add_column('nama_nip','$1','nama_icon_pegawai(nama,gelar_dpn,gelar_blk,nip,"kepegawaian/cuti/view",id)');
+        	 if ($instansi) {
+		        $this->datatables->where("path_id['".$level."']='".$instansi."'");
+		     }
+        	 if ($this->input->post('search[value]')) {
+        	 	$this->db->group_start();
+		        	$this->datatables->like('lower(nama)', strtolower($this->input->post('search[value]')));
+		        	$this->datatables->or_like('lower(nip)', strtolower($this->input->post('search[value]')));
+	        	$this->db->group_end();
+	        }
+	       
+        return $this->output->set_output($this->datatables->generate());
+	}
+
 
 	public function view($id)
 	{

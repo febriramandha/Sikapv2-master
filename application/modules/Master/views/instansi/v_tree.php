@@ -57,7 +57,7 @@
                                           <a href="<?php echo base_url('master/instansi/edit/'.$id) ?>">
                                                 <i class="icon-pencil5 text-info-400 mr-1"></i>
                                         </a>
-                                          <a class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus data" style="cursor:pointer;" id="$1">
+                                          <a class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus data" style="cursor:pointer;" id="<?php echo $id ?>">
                                                 <i class="icon-bin"></i>
                                           </a>
                                     </td>

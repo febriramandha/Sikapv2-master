@@ -157,6 +157,10 @@ function bx_alert_success(msg, redirec) {
 }
 
 function bx_alert_successUpadate(msg, redirec) {
+	var uri_rec = 'javascript:history.back()';
+	if (redirec) {
+		uri_rec = uri_dasar+redirec;
+	}
 	bootbox.dialog({
 	    message: '<i class="icon-checkmark4 ml-2 text-success"></i> '+msg,
 	    closeButton: false,
@@ -166,7 +170,7 @@ function bx_alert_successUpadate(msg, redirec) {
 	        className: 'bg-success-400',
 	        callback:function(result){
 	        	if (result) {
-					window.location.href = 'javascript:history.back()';
+					window.location.href = uri_rec;
 				}
 	    	}
 	      }

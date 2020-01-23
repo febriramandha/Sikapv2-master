@@ -5,7 +5,7 @@
 				<a href="#" class="sidebar-mobile-main-toggle">
 					<i class="icon-arrow-left8"></i>
 				</a>
-					Navigation
+				Navigation
 				<a href="#" class="sidebar-mobile-expand">
 					<i class="icon-screen-full"></i>
 					<i class="icon-screen-normal"></i>
@@ -14,11 +14,11 @@
 			<!-- /sidebar mobile toggler -->
 			<!-- Sidebar content -->
 			<div class="sidebar-content " style="overflow-y: auto;"> 
-					<!-- User menu -->
+				<!-- User menu -->
 				<div class="sidebar-user-material">
 					<div class="sidebar-user-material-body pb-1">
 						<div class="card-body text-center  pb-0">
-			                  <?php echo nama_icon_nip($this->session->userdata('tpp_name'),'','',level_alias($this->session->userdata('tpp_level')),) ?>
+							<?php echo nama_icon_nip($this->session->userdata('tpp_name'),'','',level_alias($this->session->userdata('tpp_level')),) ?>
 						</div>
 					</div>
 				</div>
