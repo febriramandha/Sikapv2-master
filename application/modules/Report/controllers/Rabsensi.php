@@ -28,6 +28,7 @@ class Rabsensi extends App_Controller {
 	{
 		$this->data['sub_title']  = "Laporan Kehadiran";
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
+		$this->data['instansi']	  = $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
 		$this->load->view('rabsensi/v_index', $this->data);
 	}
 

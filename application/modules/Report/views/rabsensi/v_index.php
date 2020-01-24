@@ -10,6 +10,42 @@
 	</div>
 	<div class="card-body">
 		<div class="form-group row">
+			<label class="col-form-label col-lg-2">Instansi <span class="text-danger">*</span></label>
+			<div class="col-lg-10">
+				<div class="form-group">
+					<select class="form-control select-search" name="instansi"> 
+						<?php foreach ($instansi as $row) { ?>
+							<option value="<?php echo encrypt_url($row->id,'instansi') ?>"><?php echo '['.$row->level.']'.carakteX($row->level, '-','|').filter_path($row->path_info)." ".strtoupper($row->dept_name) ?></option>
+						<?php } ?>
+					</select> 
+				</div>
+			</div>
+		</div>
+		<div class="form-group row">
+	        <label class="col-form-label col-lg-2">Ketegori Pengguna <span class="text-danger">*</span></label>
+	        <div class="col-lg-10">
+	          <div class="form-group">
+	           <select class="form-control select-nosearch" name="ketegori" >  
+	            <option value="0">Semua..</option> 
+	            <option value="1">PNS/CPNS</option>
+	            <option value="2">NON PNS</option>
+	          </select> 
+	        </div>
+	      </div>
+	    </div>
+	    <div class="form-group row">
+	        <label class="col-form-label col-lg-2">Pegawai <span class="text-danger">*</span></label>
+	        <div class="col-lg-10">
+	          <div class="form-group">
+	           <select class="form-control select-nosearch" name="ketegori" >  
+	            <option value="0">Semua..</option> 
+	            <option value="1">PNS/CPNS</option>
+	            <option value="2">NON PNS</option>
+	          </select> 
+	        </div>
+	      </div>
+	    </div>
+		<div class="form-group row">
 			<label class="col-form-label col-lg-2"> Rentang Waktu <span class="text-danger">*</span></label>
 			<div class="col-lg-4">
 				<div class="form-group-feedback form-group-feedback-left">
@@ -44,14 +80,22 @@
 			<table id="datatable" class="table table-sm table-hover table-bordered">
 				<thead>
 					<tr class="table-active">
-						<th width="1%" >No</th>
-						<th class="text-nowrap text-center" width="1%">Tanggal</th>
-						<th class="text-nowrap text-center p-1" width="1%">Jam <hr class="m-0">(mulai - selesai)</th>
-						<th class="text-nowrap text-center pl-md-3 pl-5 pr-md-3 pr-5" >Uraian Kegiatan</th>
-						<th class="text-nowrap text-center pl-md-3 pl-5 pr-md-3 pr-5" >Hasil</th>
-						<th width="1%" class="p-1">Status</th>
-						<th width="1%" style="font-size: 80%;" class="normal_text p-1">Pejabat <br>pemeriksa</th>
-						<th width="1%" class="p-1">Aksi</th>
+						<th width="1%" rowspan="2">No</th>
+						<th class="text-nowrap" rowspan="2">Tanggal</th>
+						<th class="text-nowrap" colspan="3">Masuk</th>
+						<th class="text-nowrap" colspan="3">Pulang</th>
+						<th rowspan="2">DL</th>
+						<th rowspan="2">Cuti</th>
+						<th rowspan="2">Ket</th>
+					</tr>
+					<tr class="table-active">
+						<th class="px-1" >Jam Masuk</th>
+						<th class="px-1">Masuk Kerja</th>
+						<th class="px-1">Terlambat</th>
+
+						<th class="px-1">Jam Pulang</th>
+						<th class="px-1">Pulang Kerja</th>
+						<th class="px-1">Pulang Cepat</th>
 					</tr>
 				</thead>
 				<tbody>
