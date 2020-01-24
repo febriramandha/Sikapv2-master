@@ -1,7 +1,7 @@
 <!-- Basic table -->
 <div class="card">
 	<div class="card-header bg-white header-elements-inline py-2">
-		<h5 class="card-title">Laporan Kehadiran</h5>
+		<h5 class="card-title">Laporan Lembur</h5>
 		<div class="header-elements">
 			<div class="list-icons">
 				<a class="list-icons-item" data-action="collapse"></a>
@@ -69,6 +69,30 @@
 				</div>
 			</div>
 		</div>
+		<div class="form-group row">
+			<label class="col-form-label col-lg-2"> Rentang Jam <span class="text-danger">*</span></label>
+			<div class="col-lg-4">
+				<div class="form-group-feedback form-group-feedback-left">
+					<div class="form-control-feedback">
+						<i class="icon-pencil3"></i>
+					</div>
+					<input type="text" name="rank1" class="form-control datepicker" placeholder="Tanggal awal" >
+				</div>
+			</div>
+			<div class="col-lg-1">
+				<div class="form-group">
+					<span>s/d</span>
+				</div>
+			</div>
+			<div class="col-lg-4">
+				<div class="form-group-feedback form-group-feedback-left">
+					<div class="form-control-feedback">
+						<i class="icon-pencil3"></i>
+					</div>
+					<input type="text" name="rank2" class="form-control datepicker" placeholder="Tanggal akhir" >
+				</div>
+			</div>
+		</div>
 		<div class="text-left offset-lg-2">                
 			<button class="btn btn-sm btn-info result" id="kalkulasi">Kalkulasi <i class="icon-search4 ml-2"></i></button>
 			<button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1" id="cetak">
@@ -104,23 +128,3 @@
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript">
- $(".datepicker").datepicker({
-    format: 'dd-mm-yyyy',
-    autoclose: true,
-    todayHighlight: true,
-  });
-$('#cetak').click(function() {
-		var rank1 = $('[name="rank1"]').val();
-		var rank2 = $('[name="rank2"]').val();
-		if (rank1 && rank2) {
-			newWindow = window.open(uri_dasar + 'report/rabsensi/cetak/'+rank1+'/'+rank2,"open",'height=600,width=800');
-			if (window.focus) {newWindow.focus()}
-				return false;
-		}else{
-			bx_alert('rentang waktu hurus diisi');
-		}
-		
-	})
-</script>

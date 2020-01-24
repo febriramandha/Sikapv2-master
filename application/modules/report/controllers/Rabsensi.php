@@ -32,6 +32,21 @@ class Rabsensi extends App_Controller {
 		$this->load->view('rabsensi/v_index', $this->data);
 	}
 
+	public function cetak($rank1,$rank2)
+	{
+		$this->output->unset_template();
+		ini_set('memory_limit', '-1');
+		ini_set('max_execution_time', 300); //300 seconds = 5 minutes
+		$this->output->unset_template();
+
+		$rank1 = format_tgl_eng(str_replace('_', '-', $rank1));
+		$rank2 = format_tgl_eng(str_replace('_', '-', $rank2));
+		$this->data['rank1'] 	= $rank1;
+		$this->data['priode']		= tgl_ind_bulan($rank1).' - '.tgl_ind_bulan($rank2);
+		$this->load->library('Tpdf');
+		$this->load->view('rabsensi/v_cetak', $this->data);
+	}
+
 }
 
 /* End of file Rabsensi.php */

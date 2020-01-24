@@ -69,13 +69,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="text-left offset-lg-2">                
-			<button class="btn btn-sm btn-info result" id="kalkulasi">Kalkulasi <i class="icon-search4 ml-2"></i></button>
-			<button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1" id="cetak">
-				<span><i class="icon-printer mr-2"></i> Cetak</span>
-			</button> 
-			<i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
-		</div>
 		<div class="table-responsive">
 			<table id="datatable" class="table table-sm table-hover table-bordered">
 				<thead>
@@ -104,23 +97,3 @@
 		</div>
 	</div>
 </div>
-
-<script type="text/javascript">
- $(".datepicker").datepicker({
-    format: 'dd-mm-yyyy',
-    autoclose: true,
-    todayHighlight: true,
-  });
-$('#cetak').click(function() {
-		var rank1 = $('[name="rank1"]').val();
-		var rank2 = $('[name="rank2"]').val();
-		if (rank1 && rank2) {
-			newWindow = window.open(uri_dasar + 'report/rabsensi/cetak/'+rank1+'/'+rank2,"open",'height=600,width=800');
-			if (window.focus) {newWindow.focus()}
-				return false;
-		}else{
-			bx_alert('rentang waktu hurus diisi');
-		}
-		
-	})
-</script>
