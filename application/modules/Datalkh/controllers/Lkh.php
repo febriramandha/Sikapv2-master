@@ -59,7 +59,7 @@ class Lkh extends App_Controller {
 		$this->output->unset_template();
 		$tglshow = $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
 		$jumlkh  = $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
-
+		$data_tgl_lkh ='';
 		if ($tglshow) {
 		      if ($tglshow->shiftuserrun_id) {
 		          $data_tgl_lkh = array();
@@ -72,11 +72,9 @@ class Lkh extends App_Controller {
 
 		 }
 		 $data_tgl ='';
-		 if ($data_tgl) {
+		 if ($data_tgl_lkh) {
 		 	$data_tgl = str_replace(['[', ']', '"',','],['', '','','+'],json_encode($data_tgl_lkh));
 		 }
-
-		
 
 		$rank1 = format_tgl_eng($this->input->post('rank1'));
 		$rank2 = format_tgl_eng($this->input->post('rank2'));
@@ -213,6 +211,7 @@ class Lkh extends App_Controller {
 							  'kegiatan' 		=> $this->input->post('kegiatan'),
 							  'hasil' 			=> $this->input->post('hasil'),
 							  'jenis' 			=> $jenis,
+							  'status'			=> 0,
 							  'verifikator' 	=> $verifikator,
 							  'created_at' 		=> date('Y-m-d H:i:s'),
 				 );
@@ -309,12 +308,11 @@ class Lkh extends App_Controller {
 		ini_set('max_execution_time', 300); //300 seconds = 5 minutes
 		$this->output->unset_template();
 
-		$rank1_ = format_tgl_eng(str_replace('_', '-', $rank1));
-		$rank2_ = format_tgl_eng(str_replace('_', '-', $rank2));
-
-		$this->data['priode']		= str_replace('_', '-', $rank1).' - '.str_replace('_', '-', $rank2);
+		$rank1 = format_tgl_eng(str_replace('_', '-', $rank1));
+		$rank2 = format_tgl_eng(str_replace('_', '-', $rank2));
+		$this->data['priode']		= tgl_ind_bulan($rank1).' - '.tgl_ind_bulan($rank2);
 		$this->load->library('Tpdf');
-		$this->data['datalkh']		= $this->m_data_lkh->GetDatalkhRank($this->session->userdata('tpp_user_id'),$rank1_,$rank2_,1);
+		$this->data['datalkh']		= $this->m_data_lkh->GetDatalkhRank($this->session->userdata('tpp_user_id'),$rank1,$rank2,1);
 		$this->data['ttd_data']		= $this->m_verifikator->GetVerifikatorCetak($this->session->userdata('tpp_user_id'))->row();
 		$this->data['instansi']		= $this->m_instansi->GetInstansi($this->session->userdata('tpp_dept_id'))->row();
 		$this->load->view('lkh/v_cetak', $this->data);

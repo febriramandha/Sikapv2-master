@@ -42,6 +42,7 @@
 						<th width="1%" style="font-size: 80%;">Status Pegawai</th>
 						<th width="1%" style="font-size: 80%;">Status Pengguna</th>
 						<th width="1%" style="font-size: 80%;">Status Akun</th>
+						<th width="1%" style="font-size: 60%;" class="p-1">Kewanangan</th>
 						<th width="1%">Aksi</th>
 					</tr>
 				</thead>
@@ -87,6 +88,7 @@
 			{"data": "pegawai_status", searchable:false},
 			{"data": "status_att", searchable:false},
 			{"data": "status_user", searchable:false},
+			{"data": "level", searchable:false},
 			{"data": "action", searchable:false},
 			],
 			rowCallback: function(row, data, iDisplayIndex) {
@@ -98,7 +100,7 @@
 			},
 			createdRow: function(row, data, index) {
           // $('td', row).eq(5).addClass('text-center');
-          $('td', row).eq(7).addClass('text-nowrap');
+          $('td', row).eq(8).addClass('text-nowrap');
       },
 
 

@@ -39,11 +39,11 @@ if ($tglshow) {
       <span class="font-weight-semibold">Anda tidak berhak mengisi form LKH.
     </div>
     <?php }?>
-    <?php echo form_open('datalkh/lkh/AjaxSave','class="form-horizontal" id="formAjax"'); ?>
+    <?php echo form_open('datalkh/worship/AjaxSave','class="form-horizontal" id="formAjax"'); ?>
       <div class="col-lg-12">
           <div class="form-group row">
             <label class="col-form-label col-lg-2">Tanggal kegiatan <span class="text-danger">*</span></label>
-            <div class="col-lg-8">
+            <div class="col-lg-6">
               <div class="form-group">
                 <select class="form-control select-nosearch" name="tgl" data-fouc>
                         <?php $no=1; foreach ($data_tgl_lkh as $r_value) { ?>
@@ -104,7 +104,7 @@ if ($tglshow) {
                     </div>
                 </div>
             </div>
-            <?php if ($user->gender==1): ?>
+            <?php if ($user->gender==2): ?>
             <div class="form-group row">
                 <label class="col-form-label col-lg-2" >Lainnya</label>
                 <div class="col-md-5">
@@ -138,23 +138,91 @@ if ($tglshow) {
 </div>
 
 <script type="text/javascript">
+var w_zuhur = "12:30:00";
+var w_asar  = "15:50:00";
+var jam_ini = "<?= date('H:i:s') ?>";
+var gender = "<?= $user->gender ?>";
+var hari = "<?= date('D') ?>";
 
-// $('[name="tgl"]').change(function() {
-//     $.ajax({
-//         type: 'get',
-//         url: uri_dasar+"datalkh/lkh/AjaxGet",
-//         data: {mod:"time",tgl_id:$(this).val()},
-//         dataType : "JSON",
-//         error:function(){
-//            bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
-//         },
-//         success: function(res) {
-//             if (res.status == true) {
-//                $('[name="jam1"]').val(res.data.jam_masuk);
-//             }
-//         }
-//     });
-// })
+ $(document).ready(function(){
+    jumat(hari, gender);
+    cek_waktu(jam_ini, w_zuhur, 1, hari, gender);
+    load_data(1)
+
+});
+
+$('[name="tgl"]').change(function() {
+    da = $(this).val();
+    cek_waktu(jam_ini, w_zuhur, da, hari, gender);
+    jumat(hari, gender);
+
+    load_data(da)
+})
+
+function load_data(id) {
+    $.ajax({
+        type: 'get',
+        url: uri_dasar+"datalkh/worship/AjaxGet",
+        data: {mod:"time",tgl_id:id},
+        dataType : "JSON",
+        error:function(){
+           bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+        },
+        success: function(res) {
+            if (res.status == true) {
+               // $('[name="jam1"]').val(res.data.jam_masuk);
+               if (res.data.data_ibadah) {
+                     var a = res.data.data_ibadah;
+                    $('[name="zuhur"]').prop('checked', a.cek_zuhur);
+                    $('[name="ashar"]').prop('checked', a.cek_ashar);
+                    $('[name="t_zuhur"]').val(a.t_zuhur);
+                    $('[name="t_ashar"]').val(a.t_ashar);
+                    $('[name="pms"]').prop('checked', a.cek_pms);
+                    $('[name="dl"]').prop('checked', a.cek_dl);
+                    jumat(a.hari, gender);
+               }
+               
+            }
+        }
+    });
+}
+
+function jumat(hari, gender) {
+    if (hari == "Fri" && gender == 1) {
+        $('#text_zuhur').text("Sholat Jumat");
+    }else $('#text_zuhur').text("Zhuhur berjamaah");    
+}
+
+function cek_waktu(jam_ini, waktu, da, hari, gender) {
+
+        zuhur_dis = false;
+        ashar_dis = false;
+        ew_zuhur = '';
+        ew_ashar = '';
+
+        if (jam_ini < w_zuhur && da == 1 ) {
+            zuhur_dis = true;
+
+            ew_zuhur = "Waktu sholat zuhur belum masuk";
+            if (hari == "Fri" && gender == 1) {
+                ew_zuhur = "Waktu sholat jumat belum masuk";
+            }
+
+        }
+
+        if (jam_ini < w_asar && da == 1 ) {
+            ashar_dis = true;
+            ew_ashar = "Waktu sholat Ashar belum masuk";
+        }
+
+         $('[name="zuhur"]').prop("disabled", zuhur_dis);
+         $('[name="t_zuhur"]').prop("disabled", zuhur_dis);
+         $('[name="ashar"]').prop("disabled", ashar_dis);
+         $('[name="t_ashar"]').prop("disabled", ashar_dis);
+         $("#ew_zuhur").html(ew_zuhur);
+         $("#ew_ashar").html(ew_ashar);
+    }
+
 
   $('#formAjax').submit(function() {
       var result  = $('.result');
@@ -175,7 +243,7 @@ if ($tglshow) {
        },
         success: function(res) {
           if (res.status == true) {
-            bx_alert_success(res.message, 'datalkh/lkh');
+            bx_alert_success(res.message, 'datalkh/worship');
           }else {
             bx_alert(res.message);
           }

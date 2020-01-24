@@ -20,6 +20,7 @@ class User extends App_Controller {
 	private function _init()
 	{
 		$this->output->set_template('app');
+		$this->load->css('public/themes/plugin/toplipcss/rrtooltip/rrtooltip.css');
 	}
 
 	public function index()
@@ -38,7 +39,7 @@ class User extends App_Controller {
 			$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $instansi])->row()->level;
 		}
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, att_status, count_finger,gelar_dpn,gelar_blk')
+        $this->datatables->select('a.id, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, att_status, count_finger,gelar_dpn,gelar_blk, level')
         	->from('v_users_all a')
         	->where('key > 0')
         	->join('users_login b','a.id=b.user_id','left')
@@ -47,6 +48,7 @@ class User extends App_Controller {
         	->add_column('status_att','$1','status_user(att_status)')
         	->add_column('status_user','$1','status_user(status)')
         	->add_column('pegawai_status','$1','status_pegawai(status_pegawai)')
+        	->add_column('level','$1','kewenangan_tabelicon(level)')
         	->add_column('action','<a href="'.base_url('administrator/user/edit/').'$1">
         							<i class="icon-pencil5 text-info-400"></i>
 					                </a>

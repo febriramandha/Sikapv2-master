@@ -50,7 +50,7 @@
 					<tr class="table-active">
 						<th width="1%" rowspan="2">No</th>
 						<th class="text-nowrap" rowspan="2" width="1%">Tanggal</th>
-						<th class="text-nowrap text-center" colspan="2">Tempat Sholat</th>
+						<th class="text-nowrap text-center" colspan="2">Tempat Sholat Berjamaah</th>
 						<th rowspan="2" width="1%">Aksi</th>
 					</tr>
 					<tr class="table-active">
@@ -140,7 +140,7 @@ var result  = $('.result');
  	function confirmAksi(id) {
 		$.ajax({
 			type: 'get',
-			url: uri_dasar+'datalkh/lkh/AjaxDel',
+			url: uri_dasar+'datalkh/worship/AjaxDel',
 			data: {id:id},
 			dataType : "JSON",
 			error:function(){
@@ -167,7 +167,7 @@ var result  = $('.result');
 		var rank1 = $('[name="rank1"]').val();
 		var rank2 = $('[name="rank2"]').val();
 		if (rank1 && rank2) {
-			newWindow = window.open(uri_dasar + 'datalkh/lkh/cetak/'+rank1+'/'+rank2,"open",'height=600,width=800');
+			newWindow = window.open(uri_dasar + 'datalkh/worship/cetak/'+rank1+'/'+rank2,"open",'height=600,width=800');
 			if (window.focus) {newWindow.focus()}
 				return false;
 		}else{

@@ -87,7 +87,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }else if($id == 5) {
             $level = "Piminan Instansi";
         }else if($id == 4) {
-            $level = "Admin Monitoring";
+            $level = "User Eksekutif";
         }else{
             $level = "Belum Ada Akses";
         }
@@ -550,6 +550,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       } else {
         return $nip;
       }
+    }
+
+    function nama_icon_nip_key($name='', $gl_d='', $gl_b='', $nip='',$link='',$id='',$str3='',$key='') { 
+
+        if ($link) {
+              $link = base_url($link."/").encrypt_url($id,$key);
+        }else {
+              $link = "#";
+        }
+
+        $nama_gelar = nama_gelar($name, $gl_d, $gl_b);
+        $awal       = _str_limit($name,1);
+        $nama_icon = _nama_icon($nama_gelar,$nip,$awal,$link,$str3);
+        return $nama_icon;
+    }
+
+    function kewenangan_tabelicon($level='')
+    {
+          $a ='';
+          if ($level) {
+              $a = '<span tooltip="'.level_alias($level).'" flow="left"><i class="icon-user-tie msclick cekpejabat '.color_level($level).'"></i></span>';
+          }
+
+          return $a;
+    }
+
+    function color_level($id='')
+    {
+          if($id == 1) {
+            $level = "text-warning-600";
+          }else if($id == 2) {
+              $level = "text-info-600";
+          }else if($id == 3) {
+              $level = "text-success-600";
+          }else if($id == 5) {
+              $level = "text-brown-400";
+          }else if($id == 4) {
+              $level = "";
+          }else{
+              $level = "";
+          }
+          return $level;
     }
 
 

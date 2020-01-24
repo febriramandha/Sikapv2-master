@@ -8,14 +8,14 @@ CKEDITOR.editorConfig = function( config ) {
     { name: 'tools', groups: [ 'tools' ] },
     { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
     { name: 'others', groups: [ 'others' ] },
-    '/',
     { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
     { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
     { name: 'styles', groups: [ 'styles' ] },
+    '/',
     { name: 'colors', groups: [ 'colors' ] },
     { name: 'about', groups: [ 'about' ] }
   ];
 
-  config.removeButtons = 'Underline,Subscript,Superscript,Image,SpecialChar,Styles,About,Anchor,Blockquote,Scayt,Source';
+  config.removeButtons = 'Underline,Subscript,Superscript,Blockquote,About,Styles,SpecialChar,Anchor,Image,Source,Scayt,RemoveFormat';
   config.enterMode = CKEDITOR.ENTER_BR;
 };

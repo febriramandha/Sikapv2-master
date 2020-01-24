@@ -145,13 +145,22 @@ function tgl_minus_lkh($tgl='', $nilai='', $hari_id=array())
         $a ='';
         if ($allow_ya) {
                $ibadahmus_id_edit = encrypt_url($id,'ibadahmus_id_edit');
-               $a = '<a href="'.base_url('datalkh/worship/edit/'.$ibadahmus_id_edit).'" class="edit list-icons-item text-info-400"  tooltip="ubah data" flow="left" style="cursor:pointer;"><i class="icon-pencil5"></i>
-                </a>
+               $a = '
               <span class="confirm-aksi list-icons-item text-warning-600" tooltip="hapus data" flow="left" msg="Benar ingin hapus data ini?" title="hapus akun" style="cursor:pointer;" id="'.$ibadahmus_id_edit.'"><i class="icon-bin"></i>
               </span>';
         }
        
         return $a;
+    }
+
+    function jum_non_ver($jum='')
+    {
+      $a = '<i class="icon-checkmark2 text-teal mr-1"></i>';
+      if ($jum) {
+        $a = '<span class="badge bg-danger mr-1">'.$jum.'</span>';
+      }
+
+      return $a;
     }
 
 

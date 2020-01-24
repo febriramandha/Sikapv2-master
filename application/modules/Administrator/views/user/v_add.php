@@ -119,7 +119,7 @@
         <option value="<?php echo encrypt_url(2,'level') ?>">Admin Instansi</option>
         <option value="<?php echo encrypt_url(5,'level') ?>">Pimpinan</option>
         <option value="<?php echo encrypt_url(3,'level') ?>" selected>Pegawai</option>
-        <option value="<?php echo encrypt_url(4,'level') ?>">Admin Monitoring</option>
+        <option value="<?php echo encrypt_url(4,'level') ?>">User Eksekutif</option>
       </select> 
     </div>
   </div>
