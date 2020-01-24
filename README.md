@@ -8,7 +8,7 @@ konfigurasi git
 
 instal app #server
 - cd /var/www/html/
-- git clone git@github.com:rianreski/Sikap-Agamkab.git
+- git clone git@github.com:rianreski/Sikapv2-master.git
 - download folder uploads
 - $ cp index.example.php index.php
 - $ cp database.example.php database.php
