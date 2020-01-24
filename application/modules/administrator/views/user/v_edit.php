@@ -124,7 +124,7 @@
                               <option value="<?php echo encrypt_url(2,'level') ?>" <?php if ($user->level == 2) { echo "selected";} ?>>Admin Instansi</option>
                               <option value="<?php echo encrypt_url(5,'level') ?>" <?php if ($user->level == 5) { echo "selected";} ?>>Pimpinan</option>
                               <option value="<?php echo encrypt_url(3,'level') ?>" <?php if ($user->level == 3) { echo "selected";} ?>>Pegawai</option>
-                              <option value="<?php echo encrypt_url(4,'level') ?>" <?php if ($user->level == 4) { echo "selected";} ?>>Admin Monitoring</option>
+                              <option value="<?php echo encrypt_url(4,'level') ?>" <?php if ($user->level == 4) { echo "selected";} ?>>User Eksekutif</option>
                       </select> 
                   </div>
               </div>
