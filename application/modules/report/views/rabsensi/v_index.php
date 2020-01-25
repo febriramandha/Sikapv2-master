@@ -125,37 +125,11 @@
 $('#cetak').click(function() {
 		var rank1 = $('[name="rank1"]').val();
 		var rank2 = $('[name="rank2"]').val();
+
 		if (rank1 && rank2) {
-			$.ajax({
-			      	type: 'get',
-			      	processData: false,
-				    url: uri_dasar + 'report/rabsensi/cetak/'+rank1+'/'+rank2,
-				    data: '',
-				    contentType: 'application/json',
-			      	error:function(){
-			      			bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
-			     	},
-			     	beforeSend:function(){
-			      			result.attr("disabled", true);
-        					spinner.show();
-			    	},
-			    	success: function(res) {
-					  	const win = window.open("","_blank");
-						let html = '';
-						html += '<html>';
-						html += '<body style="margin:0!important">';
-						html += '<embed width="100%" height="100%" src="data:application/pdf;base64,'+res+'" type="application/pdf" />';
-						html += '</body>';
-						html += '</html>';
-
-						setTimeout(() => {
-						  win.document.write(html);
-						}, 0);
-
-						result.attr("disabled", false);
-	          			spinner.hide();
-					}
-				  });
+			newWindow = window.open(uri_dasar + 'report/rabsensi/cetak/'+rank1+'/'+rank2,"open",'height=600,width=800');
+			if (window.focus) {newWindow.focus()}
+				return false;
 		}else{
 			bx_alert('rentang waktu hurus diisi');
 		}

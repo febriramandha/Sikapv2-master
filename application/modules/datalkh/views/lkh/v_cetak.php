@@ -129,6 +129,13 @@
                 </tr>';              
     $ttd .='</table>';
     $pdf->writeHTML($ttd, true, false, true, false, '');
-    $pdf->Output('LaporanKerjaHarian_'.$ttd_data->nip.'_'.$priode.'.pdf', 'I');
+    //$pdf->Output('LaporanKerjaHarian_'.$ttd_data->nip.'_'.$priode.'.pdf', 'I');
 
+    $pdfString = $pdf->Output('LaporanKerjaHarian_'.$ttd_data->nip.'_'.$priode.'.pdf', 'S');
+    $pdfBase64 = base64_encode($pdfString);
 ?>
+<html>
+<body style="margin:0!important">
+    <embed width="100%" height="100%" src="data:application/pdf;base64,<?php echo $pdfBase64 ?>" type="application/pdf" />
+</body>
+</html>
