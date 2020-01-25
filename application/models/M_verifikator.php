@@ -56,6 +56,17 @@ class M_verifikator extends CI_Model {
         return $this->db->get();
   }
 
+  public function GetUserByverifikator($id)
+  {
+        $this->db->select('a.id, a.user_id, b.dept_id, b.nama, b.nip, b.gelar_dpn, b.gelar_blk, c.jabatan')
+          ->from('verifikator a')
+          ->join('v_users_all b','a.user_id=b.id','left')
+          ->join('sp_pegawai c','b.id=c.user_id','left')
+          ->where('a.id',$id);
+        return $this->db->get();
+  }
+
+
 }
 
 /* End of file M_verifikator.php */

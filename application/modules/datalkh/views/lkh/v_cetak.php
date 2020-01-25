@@ -1,6 +1,6 @@
 <?php
     $pdf = new Tpdf('P', 'mm', 'A4', true, 'UTF-8', false);
-    $pdf->SetFont('times', '', 10, '', false);
+    $pdf->SetFont('tahoma', '', 10, '', false);
     $pdf->setHeaderFont(Array('times', 'sikap', 10));
     $pdf->SetTitle('Laporan kerja harian');
     //$pdf->SetTopMargin(10);
@@ -11,15 +11,15 @@
     $pdf->SetMargins(7, 10, 7);
     
     $pdf->AddPage();
-    $pdf->SetFont('times', 'B', 12);
-    $pdf->SetY(20);
+    $pdf->SetFont('arial', '', 12);
+    $pdf->SetY(15);
     $txt = <<<EOD
             LAPORAN KERJA HARIAN
             EOD;
     // print a block of text using Write()
     $pdf->Write(0, $txt, '', 0, 'C', true, 1, false, false, 0);
-    $pdf->SetY(30);
-    $pdf->SetFont('times', '', 8, '', false);
+    $pdf->SetY(25);
+    $pdf->SetFont('arial    ', '', 8, '', false);
     $html ='<hr style="height: 2px;">';
     $pdf->writeHTML($html, true, false, true, false, '');
 
@@ -34,24 +34,24 @@
      // tabel 
     $tbl ='
         
-        <table cellpadding="3" border="1" width="100%" >
+        <table cellpadding="2.5" border="1" width="100%" >
             <tr align="center"> 
                   <td width="5%" rowspan="2"><br><br><b>No</b></td>
-                  <th width="12%" rowspan="2" ><br><br><b>Tanggal</b></th>
-                  <th width="14%" rowspan="1" colspan="2"><b>Jam</b></th>
+                  <th width="13%" rowspan="2" ><br><br><b>Tanggal</b></th>
+                  <th width="13%" rowspan="1" colspan="2"><b>Jam</b></th>
                   <th width="37%" rowspan="2" ><br><br><b>Uraian Kegiatan</b></th>
                   <th width="32%" rowspan="2" ><br><br><b>Hasil</b></th>
             </tr>
             <tr align="center">
-                  <th width="7%"><b>Mulai</b></th>
-                  <th width="7%"><b>Selesai</b></th>
+                  <th width="6.5%"><b>Mulai</b></th>
+                  <th width="6.5%"><b>Selesai</b></th>
             </tr>
             <thead cellpadding="2">
                 <tr align="center" >
                     <td width="5%">1</td>
-                    <td width="12%">2</td>
-                    <td width="7%">3</td>
-                    <td width="7%">4</td>
+                    <td width="13%">2</td>
+                    <td width="6.5%">3</td>
+                    <td width="6.5%">4</td>
                     <td width="37%">5</td>
                     <td width="32%">6</td>
                 </tr>
@@ -77,7 +77,7 @@
         $no=1; foreach ($arrayForTable as $id=>$values) :
                     foreach ($values as $key=> $value) :
 
-        $tbl .='<tr>';
+        $tbl .='<tr nobr="true">';
                 if($key == 0) :
 
         $tbl .='<td align="center" rowspan="'.count($values).'">'.$no++.'</td>

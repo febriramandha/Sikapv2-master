@@ -1,7 +1,7 @@
 <?php
     $pdf = new Tpdf('P', 'mm', 'A4', true, 'UTF-8', false);
-    $pdf->SetFont('times', '', 10, '', false);
-    $pdf->setHeaderFont(Array('times', 'sikap', 10));
+    $pdf->SetFont('arial', '', 10, '', false);
+    $pdf->setHeaderFont(Array('arial', 'sikap', 10));
     $pdf->SetTitle('Laporan Data Pengguna');
     //$pdf->SetTopMargin(10);
     $pdf->setFooterMargin(20);
@@ -11,14 +11,14 @@
     $pdf->SetMargins(7, 10, 7);
     
     $pdf->AddPage();
-    $pdf->SetFont('times', 'B', 12);
-    $pdf->SetY(20);
+    $pdf->SetFont('arial', 'B', 12);
+    $pdf->SetY(15);
     $txt = <<<EOD
             LAPORAN DATA PENGGUNA
             EOD;
     // print a block of text using Write()
     $pdf->Write(0, $txt, '', 0, 'C', true, 1, false, false, 0);
-    $pdf->SetY(30);
+    $pdf->SetY(25);
     $pdf->SetFont('times', '', 8, '', false);
     $html ='<hr style="height: 2px;">';
     $pdf->writeHTML($html, true, false, true, false, '');
@@ -36,10 +36,10 @@
                       <td width="5%" ><b>No</b></td>
                       <th width="5%"><b>ID</b></th>
                       <th width="20%"><b>NAMA</b></th>
-                      <th width="15%"><b>NIP</b></th>
+                      <th width="17%"><b>NIP</b></th>
                       <th width="20%"><b>INSTANSI</b></th>
                       <th width="15%"><b>STATUS</b></th>
-                      <th width="20%"><b>JUMLAH SIDIK JARI</b></th>
+                      <th width="18%"><b>JUMLAH SIDIK JARI</b></th>
                 </tr>';
     $no=1;
           foreach ($user as $row) {

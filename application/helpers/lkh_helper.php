@@ -163,6 +163,46 @@ function tgl_minus_lkh($tgl='', $nilai='', $hari_id=array())
       return $a;
     }
 
+    function cekbox_verifikasi($id='', $status='')
+    {
+        if($status==0 || $status==4) {
+            $class = 'class="checkbox" name="ver[]" value="'.encrypt_url($id,'lkh_id_verifikasi').'"';
+          }elseif ($status==1) {
+              $class = 'class="" checked="checked" disabled'; 
+          }elseif ($status==2) {
+              $class = 'class="" checked="checked" disabled'; 
+          }elseif ($status==3) {
+              $class = 'class="" checked="checked" disabled';
+          }
+
+          $a = '<label class="pure-material-checkbox ml-1">
+            <input type="checkbox" '.$class.' >
+            <span></span>
+              </label>';
+
+            return $a;
+    }
+
+    function aksi_verifikasi_lkh($id='', $status='')
+    {
+       if($status==0 || $status==4) {
+                $a = '<span style="margin-right:2px;" data_id="'.$id.'" class="ver btn-sm bg-success-400 btn-icon legitRipple loading'.$id.'" tooltip="Verifikasi" flow="left">
+                <i class="icon-checkbox-checked" ></i>
+              </span>
+              <span data_id="'.$id.'" class="tol btn-sm btn-danger btn-icon legitRipple loading'.$id.'" tooltip="Tolak" flow="left">
+                <i class="icon-cancel-circle2 "></i>
+              </span>';
+            }elseif ($status==1) {
+               $a = '<span class="badge badge-success"><i class="icon-checkmark2"></i></span>';
+            }elseif ($status==2) {
+                $a = '<span class="text-danger" tooltip="laporan telah ditolak" flow="left" style="cursor:pointer;"><i class="icon-checkmark-circle2"></i></span>';
+            }elseif ($status==3) {
+               $a = '<span class="text-warning" tooltip="telah diperbaiki" flow="left" style="cursor:pointer;"><i class="icon-checkmark-circle2"></i></span>';
+            }
+
+            return $a;
+    }
+
 
 
 

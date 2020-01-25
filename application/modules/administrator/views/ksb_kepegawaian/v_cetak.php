@@ -11,15 +11,15 @@
     $pdf->SetMargins(7, 10, 7);
     
     $pdf->AddPage();
-    $pdf->SetFont('times', 'B', 12);
-    $pdf->SetY(20);
+    $pdf->SetFont('arial', 'B', 12);
+    $pdf->SetY(15);
     $txt = <<<EOD
             LAPORAN DATA KASUBAG KEPEGAWAIAN
             EOD;
     // print a block of text using Write()
     $pdf->Write(0, $txt, '', 0, 'C', true, 1, false, false, 0);
-    $pdf->SetY(30);
-    $pdf->SetFont('times', '', 8, '', false);
+    $pdf->SetY(25);
+    $pdf->SetFont('arial', '', 8, '', false);
     $html ='<hr style="height: 2px;">';
     $pdf->writeHTML($html, true, false, true, false, '');
 

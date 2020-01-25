@@ -22,6 +22,7 @@ class Rabsensi extends App_Controller {
 		$this->output->set_template('app');
 		$this->load->css('public/themes/plugin/datepicker/css/bootstrap-datepicker.css');
     	$this->load->js('public/themes/plugin/datepicker/js/bootstrap-datepicker.js');
+    	$this->load->css('public/themes/plugin/chekbox/rrcheckbox.css');
 	}
 
 	public function index()

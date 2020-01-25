@@ -15,7 +15,7 @@
         <i class="icon-checkmark2 text-teal mr-1 ml-2"></i> Telah Diverifikasi
     </div>
 		<div class="table-responsive">
-			<table id="datatable" class="table table-sm table-hover">
+			<table id="datatable" class="table table-sm table-hover table-bordered">
 				<tbody>
 				</tbody>
 			</table>
@@ -49,7 +49,6 @@
           {"data": "jumlah", searchable:false},
           {"data": "nama_nip", searchable:false},
       ],
-      rowsGroup: [1],
       rowCallback: function(row, data, iDisplayIndex) {
           var info = this.fnPagingInfo();
           var page = info.iPage;

@@ -151,6 +151,10 @@ if ($tglshow) {
     autoclose: true,
  });
 
+$(document).ready(function(){
+    load_jam(1);
+});
+
 CKEDITOR.replaceClass = 'ckeditor';
 $('.ckeditor').each(function(e){
       CKEDITOR.replace( this.id, {  height:'80px',
@@ -164,10 +168,14 @@ for ( instance in CKEDITOR.instances )
 }
 
 $('[name="tgl"]').change(function() {
+    load_jam($(this).val());
+})
+
+function load_jam(tgl_id) {
     $.ajax({
         type: 'get',
         url: uri_dasar+"datalkh/lkh/AjaxGet",
-        data: {mod:"time",tgl_id:$(this).val()},
+        data: {mod:"time",tgl_id:tgl_id},
         dataType : "JSON",
         error:function(){
            bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
@@ -178,7 +186,7 @@ $('[name="tgl"]').change(function() {
             }
         }
     });
-})
+}
 
   $('#formAjax').submit(function() {
       CKupdate();
