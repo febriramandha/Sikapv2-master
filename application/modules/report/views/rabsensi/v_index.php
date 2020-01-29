@@ -13,7 +13,7 @@
 			<label class="col-form-label col-lg-2">Instansi <span class="text-danger">*</span></label>
 			<div class="col-lg-10">
 				<div class="form-group">
-					<select class="form-control select-search" name="instansi"> 
+					<select class="form-control select-search result" name="instansi"> 
 						<?php foreach ($instansi as $row) { ?>
 							<option value="<?php echo encrypt_url($row->id,'instansi') ?>"><?php echo '['.$row->level.']'.carakteX($row->level, '-','|').filter_path($row->path_info)." ".strtoupper($row->dept_name) ?></option>
 						<?php } ?>
@@ -25,7 +25,7 @@
 	        <label class="col-form-label col-lg-2">Ketegori Pengguna <span class="text-danger">*</span></label>
 	        <div class="col-lg-10">
 	          <div class="form-group">
-	           <select class="form-control select-nosearch" name="ketegori" >  
+	           <select class="form-control select-nosearch result" name="kategori" >  
 	            <option value="0">Semua..</option> 
 	            <option value="1">PNS/CPNS</option>
 	            <option value="2">NON PNS</option>
@@ -37,19 +37,19 @@
 	      <label class="col-form-label col-lg-2">Ketagori Lainnya </label>
 	      <div class="col-lg-10">
 	          <label class="pure-material-checkbox mt-2"> 
-		          <input type="checkbox"  name="tpp" /> <span>pernerima TPP</span>
+		          <input type="checkbox" class="result"  name="tpp" value="1" /> <span>Pernerima TPP</span>
 		        </label>
 	      </div>
 	    </div>
 	    <div class="form-group row">
-	        <label class="col-form-label col-lg-2">Pegawai <span class="text-danger">*</span></label>
+	        <label class="col-form-label col-lg-2">Pegawai <span class="text-danger">*</span> 
+	        	<i class="icon-spinner2 spinner" style="display: none" id="spinner_pegawai"></i>
+	        </label>
 	        <div class="col-lg-10">
 	          <div class="form-group">
-	           <select class="form-control select-nosearch" name="ketegori" >  
-	            <option value="0">Semua..</option> 
-	            <option value="1">PNS/CPNS</option>
-	            <option value="2">NON PNS</option>
-	          </select> 
+	          	<div id="pegawai">
+												
+				</div>
 	        </div>
 	      </div>
 	    </div>
@@ -79,7 +79,7 @@
 		</div>
 		<div class="text-left offset-lg-2">                
 			<button class="btn btn-sm btn-info result" id="kalkulasi">Kalkulasi <i class="icon-search4 ml-2"></i></button>
-			<button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1" id="cetak">
+			<button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1 result" id="cetak">
 				<span><i class="icon-printer mr-2"></i> Cetak</span>
 			</button> 
 			<i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
@@ -112,13 +112,63 @@
 		</div>
 	</div>
 </div>
-
 <script type="text/javascript">
  $(".datepicker").datepicker({
     format: 'dd-mm-yyyy',
     autoclose: true,
     todayHighlight: true,
   });
+
+$('.multiselect-clickable-groups').multiselect({
+    includeSelectAllOption: true,
+    enableFiltering: true,
+    enableCaseInsensitiveFiltering: true,
+    placeholder: 'Pilih Pegawai',
+});
+
+
+
+$(document).ready(function(){
+	DataPegawai();
+});
+
+$('[name="instansi"]').change(function() {
+	DataPegawai();
+})
+
+$('[name="kategori"]').change(function() {
+	DataPegawai();
+})
+
+
+function DataPegawai() {
+	var dept_id = $('[name="instansi"]').val();
+	var pns 	= $('[name="kategori"]').val();
+	var result  = $('.result');
+	var spinner = $('#spinner_pegawai');
+	$.ajax({
+		type: 'get',
+		url: uri_dasar+'report/rabsensi/AjaxGet',
+		data: {mod:'DataPegawai',id:dept_id,pns:pns},
+		dataType : "html",
+		error:function(){
+			result.attr("disabled", false);
+       		spinner.hide();
+			bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+		},
+		beforeSend:function(){
+			result.attr("disabled", true);
+      		spinner.show();
+		},
+		success: function(res) {
+			$('#pegawai').html(res);
+			result.attr("disabled", false);
+      		spinner.hide();
+		}
+	});
+	
+}
+
  
 var result  = $('.result');
 var spinner = $('#spinner');

@@ -23,6 +23,7 @@ class Rabsensi extends App_Controller {
 		$this->load->css('public/themes/plugin/datepicker/css/bootstrap-datepicker.css');
     	$this->load->js('public/themes/plugin/datepicker/js/bootstrap-datepicker.js');
     	$this->load->css('public/themes/plugin/chekbox/rrcheckbox.css');
+    	$this->load->js('public/themes/material/global_assets/js/plugins/forms/selects/bootstrap_multiselect.js');
 	}
 
 	public function index()
@@ -31,6 +32,49 @@ class Rabsensi extends App_Controller {
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
 		$this->data['instansi']	  = $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
 		$this->load->view('rabsensi/v_index', $this->data);
+	}
+
+	public function AjaxGet()
+	{
+		$this->output->unset_template();
+		$this->mod = $this->input->get('mod');
+		if ($this->mod == "DataPegawai") {
+			$dept_id = decrypt_url($this->input->get('id'),'instansi');
+			$pns 	 = $this->input->get('pns');
+				$this->db->select('*')
+						->from('v_users_all')
+						->where('key > 0')
+        				->where('att_status',1)
+        				->where('dept_id', $dept_id);
+        		if ($pns) {
+        			$this->db->where('pns',$pns);
+        		}
+        		$data_pegawai = $this->db->get()->result();
+
+        		$res='<select class="form-control multiselect-clickable-groups" name="pegawai[]" multiple="multiple" data-fouc>';
+        		$no = 1;
+        		foreach ($data_pegawai as $row ){
+		          		$res.= "<option value='".$row->id."'>($no) $row->nama/$row->nip</option>";
+		          		$no++;
+		          }
+		        $res .='</select>
+		        		<script type="text/javascript" language="javascript" > 
+		        			$(".multiselect-clickable-groups").multiselect({
+							    includeSelectAllOption: true,
+							    enableFiltering: true,
+							    enableCaseInsensitiveFiltering: true,
+							    placeholder: "Pilih Pegawai",
+							});
+		        		</script>';
+
+		        $this->output->set_output($res);
+		}elseif ($this->mod == "a") {
+			
+			
+		}
+
+		
+			
 	}
 
 	public function cetak($rank1,$rank2)
