@@ -10,27 +10,27 @@
     $pdf->SetDisplayMode('real', 'default');
     $pdf->SetMargins(7, 10, 7);
     
-    $pdf->AddPage('L','A4');
+    $pdf->AddPage('P','A4');
     $pdf->SetFont('arial', '', 12);
     $pdf->SetY(15);
     $txt = <<<EOD
-            LAPORAN KEHADIRAN PEGAWAI PER PERIODE
+            LAPORAN LEMBUR PEGAWAI
             EOD;
     // print a block of text using Write()
     $pdf->Write(0, $txt, '', 0, 'C', true, 1, false, false, 0);
     $pdf->SetY(25);
-    $pdf->SetFont('arial', '', 6, '', false);
+    $pdf->SetFont('arial', '', 9, '', false);
     $html ='<hr style="height: 2px;">';
     $pdf->writeHTML($html, true, false, true, false, '');
 
     $html ='<table align="left" width="100%">
                 <tr>
-                    <td width="4%"><b>INSTANSI</b></td>
+                    <td width="10%"><b>INSTANSI</b></td>
                     <td width="2%">:</td>
                     <td>'.$datainstansi->dept_name.'</td>
                 </tr>
                 <tr>
-                    <td width="4%"><b>PERIODE</b></td>
+                    <td width="10%"><b>PERIODE</b></td>
                     <td width="2%">:</td>
                     <td>'.$priode.'</td>
                 </tr>
@@ -39,28 +39,23 @@
      // tabel 
     $tbl ='  
         <table cellpadding="2.5" border="1" width="100%" >
-           <thead>
-            <tr align="center"> 
-                  <td width="2.5%" rowspan="2"><br><br><b>No</b></td>
-                  <th width="15%" rowspan="2" ><br><br><b>Nama(NIP)</b></th>';
-    for ($i=0; $i < 31; $i++) { 
-          $tbl .='<th width="2.657%"><b>'.tanggal_format(tgl_plus($rank1, $i),'d').'/'.tanggal_format(tgl_plus($rank1, $i),'m').'</b></th>';
-    }
-     $tbl .='</tr>
-     <tr align="center">';
-            for ($i=0; $i < 31; $i++) { 
-                  $tbl .='<th width="2.657%"><b>'.substr(hari_tgl(tgl_plus($rank1, $i)), 0,1).'</b></th>';
-            }
-        $tbl .='</tr>
-            </thead>';
+                <tr align="center"> 
+                      <td width="5%"><b>No</b></td>
+                      <th width="50%"><b>Nama(NIP)</b></th>
+                      <th width="15%">Tanggal</th>
+                      <th width="10%">Jam Masuk</th>
+                      <th width="10%">Jam Pulang</th>
+                      <th width="10%">Jumlah</th>
+                </tr>';
         
         $tbl .='<tr nobr="true">
-                <td width="2.5%" align="center">1</td> 
-                <td width="15%"><b>Fauzan Helmy Hutasuhut, AP, S.Sos, MAP (12312324324234)</b></td>';
-        for ($i=0; $i < 31; $i++) {  
-         $tbl .='<td width="2.657%">TL<br>07:16<br>16:16</td>'; 
-            }      
-     $tbl .='</tr>';
+                    <td align="center">1</td> 
+                    <td><b>Fauzan Helmy Hutasuhut, AP, S.Sos, MAP (12312324324234)</b></td>
+                    <td>Rab, 07 jan 2020</td> 
+                    <td>17:00</td>
+                    <td>17:00</td>
+                    <td>17:00</td>
+                </tr>';
 
           
     $tbl .='</table><br><br>';
@@ -69,13 +64,9 @@
     $ttd ='<div align="center">
             <table width="100%">
                 <tr nobr="true">
-                    <td width="70%" align="left"><b>Ket :</b>  <br>- H : Hadir Normal - TM : Telat Masuk - PC : Pulang Cepat - TC : Telat Masuk Pulang Cepat - C* : Cuti - DL : Dinas Luar
-                    <br>- TK : Tanpa Ketetangan
-                    <br>- L : Hari Libur Kerja
-
-                                    
+                    <td width="60%" align="left">
                     </td> 
-                    <td width="30%"><b>'.$datainstansi->kecamatan.', '.tgl_ind_bulan(date('Y-m-d')).'</b><br>
+                    <td width="40%"><b>'.$datainstansi->kecamatan.', '.tgl_ind_bulan(date('Y-m-d')).'</b><br>
                         '.$datainstansi->jabatan.'
                         <br><br><br><br>
                         <br><b><u>'.nama_gelar($datainstansi->nama, $datainstansi->gelar_dpn, $datainstansi->gelar_blk).'</u></b>

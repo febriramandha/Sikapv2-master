@@ -304,18 +304,19 @@ class Lkh extends App_Controller {
 	public function cetak($rank1,$rank2)
 	{
 		$this->output->unset_template();
-		ini_set('memory_limit', '-1');
-		ini_set('max_execution_time', 300); //300 seconds = 5 minutes
-		$this->output->unset_template();
-
 		$rank1 = format_tgl_eng(str_replace('_', '-', $rank1));
 		$rank2 = format_tgl_eng(str_replace('_', '-', $rank2));
-		$this->data['priode']		= tgl_ind_bulan($rank1).' - '.tgl_ind_bulan($rank2);
-		$this->load->library('Tpdf');
-		$this->data['datalkh']		= $this->m_data_lkh->GetDatalkhRank($this->session->userdata('tpp_user_id'),$rank1,$rank2,1);
-		$this->data['ttd_data']		= $this->m_verifikator->GetVerifikatorCetak($this->session->userdata('tpp_user_id'))->row();
-		$this->data['instansi']		= $this->m_instansi->GetInstansi($this->session->userdata('tpp_dept_id'))->row();
-		$this->load->view('lkh/v_cetak', $this->data);
+
+		if (jumlah_hari_rank($rank1, $rank2) > 31) {
+			echo 'maksimat tanggal yang diizinkan 31 hari';
+		}else{
+			$this->data['priode']		= tgl_ind_bulan($rank1).' s/d '.tgl_ind_bulan($rank2);
+			$this->load->library('Tpdf');
+			$this->data['datalkh']		= $this->m_data_lkh->GetDatalkhRank($this->session->userdata('tpp_user_id'),$rank1,$rank2,1);
+			$this->data['ttd_data']		= $this->m_verifikator->GetVerifikatorCetak($this->session->userdata('tpp_user_id'))->row();
+			$this->data['instansi']		= $this->m_instansi->GetInstansi($this->session->userdata('tpp_dept_id'))->row();
+			$this->load->view('lkh/v_cetak', $this->data);
+		}
 	}
 
 

@@ -14,7 +14,7 @@ class Rlembur extends App_Controller {
 		$this->_init();
 		$this->breadcrumbs->push('Laporan Lembur', 'report/rlembur');
 		$this->data['title'] = "Laporan Umum";
-		$this->load->model('m_instansi');
+		$this->load->model(['m_instansi','m_pejabat_instansi']);
 	}
 
 	private function _init()
@@ -32,6 +32,25 @@ class Rlembur extends App_Controller {
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
 		$this->data['instansi']	  = $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
 		$this->load->view('rlembur/v_index', $this->data);
+	}
+
+	public function cetak($rank1,$rank2)
+	{
+		$this->output->unset_template();
+		$dept_id = decrypt_url($this->input->get('in'),'instansi');
+		$rank1 = format_tgl_eng(str_replace('_', '-', $rank1));
+		$rank2 = format_tgl_eng(str_replace('_', '-', $rank2));
+
+		if (jumlah_hari_rank($rank1, $rank2) > 31) {
+			echo 'maksimat tanggal yang diizinkan 31 hari';
+		}else{
+			$this->data['rank1'] 		= $rank1;
+			$this->data['priode']		= tgl_ind_bulan($rank1).' s/d '.tgl_ind_bulan($rank2);
+			$this->data['datainstansi'] = $this->m_pejabat_instansi->GetPajabatByInstansi($dept_id, 3)->row();
+			$this->load->library('Tpdf');
+			$this->load->view('rlembur/v_cetak', $this->data);
+		}
+		
 	}
 
 }

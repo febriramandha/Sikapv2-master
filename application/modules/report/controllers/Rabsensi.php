@@ -14,7 +14,7 @@ class Rabsensi extends App_Controller {
 		$this->_init();
 		$this->breadcrumbs->push('Laporan Kehadiran', 'mnglkh/schlkh');
 		$this->data['title'] = "Laporan Umum";
-		$this->load->model('m_instansi');
+		$this->load->model(['m_instansi','m_pejabat_instansi']);
 	}
 
 	private function _init()
@@ -36,16 +36,20 @@ class Rabsensi extends App_Controller {
 	public function cetak($rank1,$rank2)
 	{
 		$this->output->unset_template();
-		ini_set('memory_limit', '-1');
-		ini_set('max_execution_time', 300); //300 seconds = 5 minutes
-		$this->output->unset_template();
-
+		$dept_id = decrypt_url($this->input->get('in'),'instansi');
 		$rank1 = format_tgl_eng(str_replace('_', '-', $rank1));
 		$rank2 = format_tgl_eng(str_replace('_', '-', $rank2));
-		$this->data['rank1'] 	= $rank1;
-		$this->data['priode']		= tgl_ind_bulan($rank1).' - '.tgl_ind_bulan($rank2);
-		$this->load->library('Tpdf');
-		$this->load->view('rabsensi/v_cetak', $this->data);
+
+		if (jumlah_hari_rank($rank1, $rank2) > 31) {
+			echo 'maksimat tanggal yang diizinkan 31 hari';
+		}else{
+			$this->data['rank1'] 	= $rank1;
+			$this->data['priode']		= tgl_ind_bulan($rank1).' s/d '.tgl_ind_bulan($rank2);
+			$this->data['datainstansi'] = $this->m_pejabat_instansi->GetPajabatByInstansi($dept_id, 7)->row();
+			$this->load->library('Tpdf');
+			$this->load->view('rabsensi/v_cetak', $this->data);
+		}
+		
 	}
 
 }

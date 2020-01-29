@@ -14,7 +14,7 @@
     $pdf->SetFont('arial', '', 12);
     $pdf->SetY(15);
     $txt = <<<EOD
-            LAPORAN KERJA HARIAN
+            LAPORAN KERJA HARIAN PER PERIODE
             EOD;
     // print a block of text using Write()
     $pdf->Write(0, $txt, '', 0, 'C', true, 1, false, false, 0);
@@ -25,7 +25,7 @@
 
     $html ='<table align="left" width="100%">
                 <tr>
-                    <td width="8%"><b>Priode</b></td>
+                    <td width="8%"><b>PERIODE</b></td>
                     <td width="2%">:</td>
                     <td>'.$priode.'</td>
                 </tr>

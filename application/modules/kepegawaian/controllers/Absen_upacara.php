@@ -191,8 +191,6 @@ class Absen_upacara extends App_Controller {
 
 	public function cetak($dept_id,$schupacara_id)
 	{
-		ini_set('memory_limit', '-1');
-		ini_set('max_execution_time', 300); //300 seconds = 5 minutes
 		$this->output->unset_template();
 		$this->load->library('Tpdf');
 		$this->load->helper('absen');

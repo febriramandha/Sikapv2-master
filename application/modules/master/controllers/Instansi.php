@@ -233,8 +233,6 @@ class Instansi extends App_Controller {
 
 	public function cetak()
 	{
-		ini_set('memory_limit', '-1');
-		ini_set('max_execution_time', 300); //300 seconds = 5 minutes
 		$this->output->unset_template();
 		$this->load->library('Tpdf');
 		$this->data['instansi'] = $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();

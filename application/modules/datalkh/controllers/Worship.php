@@ -427,30 +427,31 @@ class Worship extends App_Controller {
 	public function cetak($rank1,$rank2)
 	{
 		$this->output->unset_template();
-		ini_set('memory_limit', '-1');
-		ini_set('max_execution_time', 300); //300 seconds = 5 minutes
-		$this->output->unset_template();
-
 		$rank1 = format_tgl_eng(str_replace('_', '-', $rank1));
 		$rank2 = format_tgl_eng(str_replace('_', '-', $rank2));
-		$this->data['priode']		= tgl_ind_bulan($rank1).' - '.tgl_ind_bulan($rank2);
-		$this->load->library('Tpdf');
-		$this->data['ttd_data']		= $this->m_verifikator->GetVerifikatorCetak($this->session->userdata('tpp_user_id'))->row();
-		$this->data['instansi']		= $this->m_instansi->GetInstansi($this->session->userdata('tpp_dept_id'))->row();
 
-		$agam_cek = $this->db->select('agama_id')->get_where('sp_pegawai',['user_id' => $this->session->userdata('tpp_user_id')])->row();
+		if (jumlah_hari_rank($rank1, $rank2) > 31) {
+			echo 'maksimat tanggal yang diizinkan 31 hari';
+		}else{
+			$this->data['priode']		= tgl_ind_bulan($rank1).' s/d '.tgl_ind_bulan($rank2);
+			$this->load->library('Tpdf');
+			$this->data['ttd_data']		= $this->m_verifikator->GetVerifikatorCetak($this->session->userdata('tpp_user_id'))->row();
+			$this->data['instansi']		= $this->m_instansi->GetInstansi($this->session->userdata('tpp_dept_id'))->row();
 
-		if ($agam_cek) {
-				if ($agam_cek->agama_id == 1 || $agam_cek->agama_id == 0 || $agam_cek->agama_id == '') {
-					$this->data['data_ibadah']		= $this->m_ibadah->GetDataIbadahRank($this->session->userdata('tpp_user_id'),$rank1,$rank2);
-					$this->load->view('worship/v_cetak', $this->data);
-				}else{
-					$this->data['data_ibadah']		= $this->m_ibadah->GetDataIbadahRankNonmuslim($this->session->userdata('tpp_user_id'),$rank1,$rank2);
-					$this->load->view('worship/non_muslim/v_cetak', $this->data);
-				}
-		}else {
-			$this->data['data_ibadah']		= $this->m_ibadah->GetDataIbadahRank($this->session->userdata('tpp_user_id'),$rank1,$rank2);
-			$this->load->view('worship/v_cetak', $this->data);
+			$agam_cek = $this->db->select('agama_id')->get_where('sp_pegawai',['user_id' => $this->session->userdata('tpp_user_id')])->row();
+
+			if ($agam_cek) {
+					if ($agam_cek->agama_id == 1 || $agam_cek->agama_id == 0 || $agam_cek->agama_id == '') {
+						$this->data['data_ibadah']		= $this->m_ibadah->GetDataIbadahRank($this->session->userdata('tpp_user_id'),$rank1,$rank2);
+						$this->load->view('worship/v_cetak', $this->data);
+					}else{
+						$this->data['data_ibadah']		= $this->m_ibadah->GetDataIbadahRankNonmuslim($this->session->userdata('tpp_user_id'),$rank1,$rank2);
+						$this->load->view('worship/non_muslim/v_cetak', $this->data);
+					}
+			}else {
+				$this->data['data_ibadah']		= $this->m_ibadah->GetDataIbadahRank($this->session->userdata('tpp_user_id'),$rank1,$rank2);
+				$this->load->view('worship/v_cetak', $this->data);
+			}
 		}
 	}
 
