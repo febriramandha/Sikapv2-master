@@ -92,7 +92,7 @@ $(document).ready(function(){
 	        $('td:eq(0)', row).html(index);
 	    },
        createdRow: function(row, data, index) {
-          // $('td', row).eq(5).addClass('text-center');
+          $('td', row).eq(1).addClass('text-nowrap');
           $('td', row).eq(6).addClass('text-nowrap');
         },
 
