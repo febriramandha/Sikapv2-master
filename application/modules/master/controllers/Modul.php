@@ -22,6 +22,7 @@ class Modul extends  App_Controller {
 		$this->load->css('public/themes/plugin/jquery_treetable/css/jquery.treetable.css');
 		$this->load->css('public/themes/plugin/jquery_treetable/css/jquery.treetable.theme.default.css');
 		$this->load->js('public/themes/plugin/jquery_treetable/jquery.treetable.js');
+		$this->load->css('public/themes/plugin/toplipcss/rrtooltip/rrtooltip.css');
 	}
 
 	public function index()

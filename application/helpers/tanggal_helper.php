@@ -194,7 +194,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     function tgl_ind_bulan($tanggal='')
   {
         $pecahkan = explode('-', $tanggal);
-        return $pecahkan[2] . ' ' . _str_limit(_bulan((int)$pecahkan[1]),3) . ' ' . $pecahkan[0];
+        return $pecahkan[2] . '-' . _str_limit(_bulan((int)$pecahkan[1]),3) . '-' . $pecahkan[0];
   }
 
    function _bulan($blnint)
@@ -220,6 +220,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   function tglInd_hrtabel($tanggal)
   {
         $pecahkan = explode('-', $tanggal);
-        return _str_limit(hari_tgl($tanggal),3). '/'. $pecahkan[2] . ' ' . _str_limit(_bulan((int)$pecahkan[1]),3) . ' ' . $pecahkan[0];
+        return _str_limit(hari_tgl($tanggal),3). '/'. $pecahkan[2] . '-' . _str_limit(_bulan((int)$pecahkan[1]),3) . '-' . $pecahkan[0];
+  }
+
+  function sisa_waktu($waktu='')
+  {
+    // $awal  = strtotime('2017-08-10 10:05:25');
+    // $akhir = strtotime('2017-08-11 11:07:33');
+    // $diff  = $akhir - $awal;
+
+    $jam   = floor($waktu / (60 * 60));
+    $menit = $waktu - $jam * (60 * 60);
+    if ($jam==0) {
+        return  floor( $menit / 60 ) . ' menit';
+      }else {
+         return  $jam .  ' jam, ' . floor( $menit / 60 ) . ' menit';
+      }
+   
   }
 

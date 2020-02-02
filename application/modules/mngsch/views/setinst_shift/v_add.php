@@ -27,6 +27,17 @@
               </div>
           </div>
           <div class="form-group row">
+              <label class="col-form-label col-lg-2">Jumlah Hari<span class="text-danger">*</span></label>
+              <div class="col-lg-9">
+                  <div class="form-group-feedback form-group-feedback-left">
+                      <div class="form-control-feedback">
+                        <i class="icon-pencil3"></i>
+                      </div>
+                      <input type="number" name="jumlah" class="form-control" placeholder="jumlah hari" value="1">
+                  </div>
+              </div>
+          </div>
+          <div class="form-group row">
               <label class="col-form-label col-lg-2">Buat Kode <span class="text-danger">*</span></label>
               <div class="col-lg-10">
                   <div class="form-group-feedback form-group-feedback-left">

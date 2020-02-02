@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class M_schabsen_manual extends CI_Model {
 
 	public function userAll_schabsen_manual($id, $user_id='')

@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class M_data_lkh extends CI_Model {
 
 	public function cek_jam_lkh($user_id, $tgl)

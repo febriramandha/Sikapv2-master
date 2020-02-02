@@ -55,6 +55,7 @@ class Setinst_shift extends App_Controller {
 	{
 		$this->output->unset_template();
 		$this->form_validation->set_rules('class', 'jam shift', 'required');
+		$this->form_validation->set_rules('jumlah', 'jumlah hari', 'required');
 		$this->form_validation->set_rules('kode', 'kode', 'required');
 		$this->form_validation->set_rules('ket', 'detail', 'required');
 		$this->form_validation->set_rules('instansi[]', 'instansi', 'required');
@@ -72,6 +73,7 @@ class Setinst_shift extends App_Controller {
 				$data = array(
 							  'kd_shift' 		=> $this->input->post('kode'),
 							  'class_id' 		=> $this->input->post('class'),
+							  'count_day' 		=> $this->input->post('jumlah'),
 							  'dept_id' 		=> $instansi,
 							  'ket' 			=> $this->input->post('ket'),
 							  'status' 		=> $status,
@@ -91,6 +93,7 @@ class Setinst_shift extends App_Controller {
 				
 				$data = array(
 							  'kd_shift' 		=> $this->input->post('kode'),
+							  'count_day' 		=> $this->input->post('jumlah'),
 							  'class_id' 		=> $this->input->post('class'),
 							  'dept_id' 		=> $instansi,
 							  'ket' 			=> $this->input->post('ket'),

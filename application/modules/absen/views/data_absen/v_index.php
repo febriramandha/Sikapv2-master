@@ -10,6 +10,7 @@
 	</div>
 
 	<div class="card-body">
+		<?php echo form_open('absen/data-absen/cetak','class="form-horizontal" target="popup" id="formAjax"'); ?>
 		<div class="form-group row">
 			<label class="col-form-label col-lg-2"> Rentang Waktu <span class="text-danger">*</span></label>
 			<div class="col-lg-4">
@@ -35,12 +36,13 @@
 			</div>
 		</div>
 		<div class="text-left offset-lg-2" >                
-			<button type="submit" class="btn btn-sm btn-info result">Kalkulasi <i class="icon-search4 ml-2"></i></button>
+			<span class="btn btn-sm btn-info result" id="kalkulasi">Kalkulasi <i class="icon-search4 ml-2"></i></span>
 			<button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1" id="cetak">
 				<span><i class="icon-printer mr-2"></i> Cetak</span>
 			</button> 
 			<i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
-		</div>	
+		</div>
+		<?php echo form_close() ?>	
 		<div class="table-responsive">
 			<table id="datatable" class="table table-sm table-hover table-bordered">
 				<thead>
@@ -76,4 +78,74 @@
     autoclose: true,
     todayHighlight: true,
   });
+
+ $('#kalkulasi').click(function() {
+	table.ajax.reload();
+})
+
+ $(document).ready(function(){
+		table = $('#datatable').DataTable({ 
+			processing: true, 
+			serverSide: true, 
+			"ordering": false,
+			"searching": false,
+			language: {
+				search: '<span></span> _INPUT_',
+				searchPlaceholder: 'Cari...',
+				processing: '<i class="icon-spinner9 spinner text-blue"></i> Loading..'
+			},  
+			"lengthMenu": [[10, 25, 50, 100, 200], [10, 25, 50, 100, 200]],
+			ajax: {
+				url : uri_dasar+'absen/data-absen/indexJson',
+				type:"post",
+				"data": function ( data ) {	
+					data.csrf_sikap_token_name= csrf_value;
+					data.rank1  = $('[name="rank1"]').val();
+					data.rank2  = $('[name="rank2"]').val();
+				},
+			},
+			"columns": [
+			{"data": "id", searchable:false},
+			{"data": "tanggal", searchable:false},
+			{"data": "start_time_tabel", searchable:false},
+			{"data": "jam_masuk_tabel", searchable:false},
+			{"data": "terlambat_tabel", searchable:false},
+			{"data": "end_time_tabel", searchable:false},
+			{"data": "jam_pulang_tabel", searchable:false},
+			{"data": "pulang_cepat_tabel", searchable:false},
+			{"data": "dinas_luar_tabel", searchable:false},
+			{"data": "cuti", searchable:false},
+			{"data": "ket", searchable:false},
+			],
+			rowCallback: function(row, data, iDisplayIndex) {
+				var info = this.fnPagingInfo();
+				var page = info.iPage;
+				var length = info.iLength;
+				var index = page * length + (iDisplayIndex + 1);
+				$('td:eq(0)', row).html(index);
+
+			},
+			createdRow: function(row, data, index) {
+	     		 $('td', row).eq(1).addClass('text-nowrap p-2');
+	     		 $('td', row).eq(2).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(3).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(4).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(5).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(6).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(7).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(8).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(9).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(10).addClass('text-nowrap p-2 text-center');
+	  },
+	});
+ // Initialize
+ dt_componen();
+
+});
+
+ $('#cetak').click(function() {
+		window.open('about:blank','popup','width=1000,height=600')
+		$('#formID').submit();	
+})
+
 </script>

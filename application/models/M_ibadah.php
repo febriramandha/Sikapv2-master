@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class M_ibadah extends CI_Model {
 
 	public function GetDataIbadahRank($user_id, $rank1, $rank2)

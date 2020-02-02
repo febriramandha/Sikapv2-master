@@ -1,6 +1,6 @@
 <?php
     $pdf = new Tpdf('P', 'mm', 'A4', true, 'UTF-8', false);
-    $pdf->SetFont('times', '', 10, '', false);
+    $pdf->SetFont('arial', '', 10, '', false);
     $pdf->setHeaderFont(Array('times', 'sikap', 10));
     $pdf->SetTitle('Laporan Data Pegawai');
     //$pdf->SetTopMargin(10);
@@ -11,23 +11,23 @@
     $pdf->SetMargins(7, 10, 7);
     
     $pdf->AddPage();
-    $pdf->SetFont('times', 'B', 12);
-    $pdf->SetY(20);
+    $pdf->SetFont('arial', '', 12);
+    $pdf->SetY(15);
     $txt = <<<EOD
             LAPORAN DATA PEGAWAI
             EOD;
     // print a block of text using Write()
     $pdf->Write(0, $txt, '', 0, 'C', true, 1, false, false, 0);
-    $pdf->SetY(30);
-    $pdf->SetFont('times', '', 8, '', false);
+    $pdf->SetY(25);
+    $pdf->SetFont('arial', '', 8, '', false);
     $html ='<hr style="height: 2px;">';
-    $pdf->writeHTML($html, true, false, true, false, '');
+    $pdf->writeHTML($html, true, false, true, false, ''); 
 
     $html ='<table align="left" width="100%">
                 <tr>
                     <td width="8%"><b>INSTANSI</b></td>
                     <td width="2%">:</td>
-                    <td>'.$instansi->dept_name.'</td>
+                    <td width="80%">'.$instansi->dept_name.'</td>
                 </tr>
             </table><br><br>';
 
@@ -35,8 +35,8 @@
                 <tr align="center"> 
                       <td width="5%" ><b>No</b></td>
                       <th width="5%"><b>ID</b></th>
-                      <th width="30%"><b>NAMA</b></th>
-                      <th width="15%"><b>NIP</b></th>
+                      <th width="25%"><b>NAMA</b></th>
+                      <th width="20%"><b>NIP</b></th>
                       <th width="30%"><b>INSTANSI</b></th>
                       <th width="15%"><b>STATUS</b></th>
                 </tr>';

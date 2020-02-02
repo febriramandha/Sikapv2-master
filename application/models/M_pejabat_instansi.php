@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class M_pejabat_instansi extends CI_Model {
 
 	public function GetPajabatByInstansi($dept_id, $id)

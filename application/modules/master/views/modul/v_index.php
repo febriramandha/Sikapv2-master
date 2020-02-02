@@ -16,7 +16,7 @@
         <tr>
           <th>Title</th>
           <th>Url</th>
-          <th>Level</th>
+          <th width="1%">Level</th>
           <th width="1%">Status</th>
           <th width="1%" class="text-nowrap">No Urut</th>
           <th width="1%">Aksi</th>
@@ -30,6 +30,11 @@
         }else {
           $class = "file";
         }
+        $level ='';
+        $data_level = pg_to_array($row->level);
+        foreach ($data_level as $v) {
+              $level .= kewenangan_tabelicon($v);
+        }
         ?>
         <tr data-tt-id="<?php echo $row->id ?>" data-tt-parent-id="<?php echo $row->parent ?>">
           <td class="text-nowrap">
@@ -38,7 +43,7 @@
           </span>
         </td>
         <td><?php echo $row->url ?></td>
-        <td class="text-center"><?php echo $row->level ?></td>
+        <td class="text-center text-nowrap p-0 pr-3"><?php echo $level ?></td>
         <td class="text-center"><?php echo status_tree($row->status) ?></td>
         <td class="text-center"><?php echo $row->position ?></td>
         <td class="text-nowrap">

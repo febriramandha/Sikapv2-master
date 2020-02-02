@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class M_sch_run extends CI_Model {
 
 	public function GetSchRunInstansi($id='',$dept_id='',$level='')

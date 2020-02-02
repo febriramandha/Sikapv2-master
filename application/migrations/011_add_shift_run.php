@@ -16,9 +16,8 @@ class Migration_Add_shift_run extends CI_Migration {
                                 'constraint' => '30',
                         ),
                         'class_id' => array(
-                               'type'   => 'varchar',
+                               'type'   => 'integer',
                                 'null' => TRUE,
-                                'constraint' => '30',
                         ),
                         'dept_id' => array(
                                'type' => 'integer[]',
@@ -28,6 +27,11 @@ class Migration_Add_shift_run extends CI_Migration {
                                'type'   => 'varchar',
                                 'null' => TRUE,
                                 'constraint' => '255',
+                        ),
+                        'count_day' => array(
+                               'type'   => 'integer',
+                                'null' => TRUE,
+                                'default' => 1
                         ),
                         'created_at' => array(
                                 'type' => 'TIMESTAMP',

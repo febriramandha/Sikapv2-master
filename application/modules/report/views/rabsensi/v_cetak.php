@@ -53,14 +53,63 @@
             }
         $tbl .='</tr>
             </thead>';
+        $no = 1;
+        foreach ($pegawai_absen as $row) {
+            $pgarray_data = json_decode($row->json_absen, true);
+            $json_absen  = $pgarray_data['data_absen'];
         
-        $tbl .='<tr nobr="true">
-                <td width="2.5%" align="center">1</td> 
-                <td width="15%"><b>Fauzan Helmy Hutasuhut, AP, S.Sos, MAP (12312324324234)</b></td>';
-        for ($i=0; $i < 31; $i++) {  
-         $tbl .='<td width="2.657%">TL<br>07:16<br>16:16</td>'; 
-            }      
-     $tbl .='</tr>';
+            $tbl .='<tr nobr="true">
+                        <td width="2.5%" align="center">'.$no++.'</td> 
+                        <td width="15%"><b>'.nama_gelar($row->nama, $row->gelar_dpn, $row->gelar_blk).' ('.$row->nip.')</b></td>';
+                $count = count($json_absen);
+                for ($i=0; $i < 31; $i++) { 
+                    
+                    $jam_masuk_tabel    = '-';
+                    $jam_pulang_tabel   = '-';
+                    $absen_ket_tabel    = '-';
+                    if ($i < $jum_hari+1) {
+                        //jam masuk
+                        $jam_masuk          = $json_absen[$i]['f7'];
+                        $jam_masuk_shift    = $json_absen[$i]['f12'];
+                        $status_in          = $json_absen[$i]['f17'];
+                        $start_time_notfixed= $json_absen[$i]['f20'];
+                        $jam_masuk_notfixed = $json_absen[$i]['f22'];
+                        
+                        $jam_masuk_tabel = jam_masuk_tabel($jam_masuk, $jam_masuk_shift,$status_in,$start_time_notfixed, $jam_masuk_notfixed);
+
+                        //jam pulang
+                        $jam_pulang         = $json_absen[$i]['f8'];
+                        $jam_pulang_shift   = $json_absen[$i]['f13'];
+                        $status_out         = $json_absen[$i]['f18'];
+                        $end_time_notfixed  = $json_absen[$i]['f21'];
+                        $jam_pulang_notfixed= $json_absen[$i]['f23'];
+                        $jam_pulang_tabel = jam_pulang_tabel($jam_pulang, $jam_pulang_shift, $status_out);
+
+                        // keterangan 
+                        $daysoff_id       = $json_absen[$i]['f19'];
+                        $lkhdl_id         = $json_absen[$i]['f15'];
+                        $dinasmanual_id   = $json_absen[$i]['f16'];
+                        $kode_cuti        = $json_absen[$i]['f14'];
+                        $rentan_tanggal   = $json_absen[$i]['f1'];
+
+                        $start_time   = $json_absen[$i]['f5'];
+                        $end_time     = $json_absen[$i]['f6'];
+
+                        $start_time_shift  = $json_absen[$i]['f10'];
+                        $end_time_shift    = $json_absen[$i]['f11'];
+
+
+
+                        $absen_ket_tabel = absen_ket_tabel($daysoff_id, $jam_masuk, $jam_pulang, $jam_masuk_shift, $jam_pulang_shift, $lkhdl_id, $dinasmanual_id, $kode_cuti, $rentan_tanggal, $start_time, $start_time_shift, $status_in, $status_out, $end_time, $end_time_shift,$start_time_notfixed, $jam_masuk_notfixed, $end_time_notfixed, $jam_pulang_notfixed);
+                        
+
+                    }
+                    
+
+                 $tbl .='<td width="2.657%">'.$absen_ket_tabel.'<br>'.$jam_masuk_tabel.'<br>'.$jam_pulang_tabel.'</td>'; 
+                    }      
+             $tbl .='</tr>';
+        }
 
           
     $tbl .='</table><br><br>';
@@ -70,10 +119,9 @@
             <table width="100%">
                 <tr nobr="true">
                     <td width="70%" align="left"><b>Ket :</b>  <br>- H : Hadir Normal - TM : Telat Masuk - PC : Pulang Cepat - TC : Telat Masuk Pulang Cepat - C* : Cuti - DL : Dinas Luar
+                    <br>- *M : * Manual
                     <br>- TK : Tanpa Ketetangan
-                    <br>- L : Hari Libur Kerja
-
-                                    
+                    <br>- L : Hari Libur Kerja              
                     </td> 
                     <td width="30%"><b>'.$datainstansi->kecamatan.', '.tgl_ind_bulan(date('Y-m-d')).'</b><br>
                         '.$datainstansi->jabatan.'
@@ -94,7 +142,14 @@
      $pdfBase64 = base64_encode($pdfString);
 ?>
 <html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="<?php echo base_url() ?>public/themes/material/css/bootstrap.css" rel="stylesheet" type="text/css">
+</head>
 <body style="margin:0!important">
+    <div class="d-lg-none">
+         <a class="btn btn-sm btn-info m-2" href="data:application/pdf;base64,<?php echo $pdfBase64 ?>" download="FileLaporanKehadiranPeriode_<?php echo $priode ?>">Download</a>
+    </div>
     <embed width="100%" height="100%" src="data:application/pdf;base64,<?php echo $pdfBase64 ?>" type="application/pdf" />
 </body>
 </html>

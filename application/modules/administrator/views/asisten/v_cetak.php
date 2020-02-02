@@ -11,7 +11,7 @@
     $pdf->SetMargins(7, 10, 7);
     
     $pdf->AddPage();
-    $pdf->SetFont('arial', 'B', 12);
+    $pdf->SetFont('arial', '', 12);
     $pdf->SetY(15);
     $txt = <<<EOD
             LAPORAN DATA PEJABAT ASISTEN DAERAH

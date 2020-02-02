@@ -20,6 +20,7 @@ class Instansi extends App_Controller {
 	private function _init()
 	{
 		$this->output->set_template('app');
+		$this->load->css('public/themes/plugin/toplipcss/rrtooltip/rrtooltip.css');
 	}
 
 	public function index()

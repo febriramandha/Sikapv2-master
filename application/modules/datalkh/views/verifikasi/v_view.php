@@ -9,7 +9,7 @@
 		</div>
 	</div>
 	<?php 
-
+	$tgl_verifikasi = array();
 	$data_tgl_lkh = '';
 	if ($tglshow) {
 	      if ($tglshow->shiftuserrun_id) {
@@ -42,7 +42,8 @@
 		  <label class="col-lg-2 col-form-label">Tanggal verifikasi </label>
 		  <div class="col-lg-10">
 				<ul class="nav nav-pills nav-pills-bordered nav-pills-toolbar">
-					<?php $no=1; foreach ($data_tgl_lkh as $v) {  $tgl_verifikasi[] = $v;?>
+					<?php $no=1;
+					 foreach ($data_tgl_lkh as $v) {  $tgl_verifikasi[] = $v;?>
 						<li class="nav-item col-md-4 p-0 m-0">
 							<a href="#pill" class="tanggal nav-link " da="<?php echo $no++ ?>" data-toggle="tab">
 								<?php echo tglInd_hrtabel($v) ?>

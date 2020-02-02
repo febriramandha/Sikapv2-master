@@ -95,14 +95,14 @@
               </div>
           </div>
           <div class="form-group row">
-              <label class="col-form-label col-lg-3">Hitungan Hari <span class="text-danger">*</span></label>
+              <label class="col-form-label col-lg-3">Jumlah Rentang Hari <span class="text-danger">*</span></label>
               <div class="col-lg-4">
                   <div class="form-group-feedback form-group-feedback-left">
                       <div class="form-control-feedback">
                         <i class="icon-pencil3"></i>
                       </div>
                       <input type="number" name="hari" class="form-control" placeholder="Jam Akhir Scan Pulang" value="1" >
-                       <span><i>* sesuaikan jumlah hari jika jadwal shift</i></span>
+                       <span><i>* sesuaikan jumlah hari jika jadwal shift (ex: jika jumlah 3, maka dihitung ceklok masuk di tanggal pertama dan ceklok pulang dhari ke 3)</i></span>
                   </div>
               </div>
           </div>
@@ -122,12 +122,12 @@
            <div class="form-group row">
               <div class="col-lg-3">
                     <label class="pure-material-checkbox"> 
-                        <input type="checkbox"  name="cekin"  /> <span>Harus Ceklok Masuk</span>
+                        <input type="checkbox"  name="cekin"  checked /> <span>Harus Ceklok Masuk</span>
                     </label>
               </div>
               <div class="col-lg-3">
                     <label class="pure-material-checkbox"> 
-                        <input type="checkbox" name="cekout" /> <span>Harus Ceklok Pulang</span>
+                        <input type="checkbox" name="cekout" checked/> <span>Harus Ceklok Pulang</span>
                     </label>
               </div>
           </div>     

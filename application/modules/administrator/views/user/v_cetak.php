@@ -11,7 +11,7 @@
     $pdf->SetMargins(7, 10, 7);
     
     $pdf->AddPage();
-    $pdf->SetFont('arial', 'B', 12);
+    $pdf->SetFont('arial', '', 12);
     $pdf->SetY(15);
     $txt = <<<EOD
             LAPORAN DATA PENGGUNA
@@ -19,7 +19,7 @@
     // print a block of text using Write()
     $pdf->Write(0, $txt, '', 0, 'C', true, 1, false, false, 0);
     $pdf->SetY(25);
-    $pdf->SetFont('times', '', 8, '', false);
+    $pdf->SetFont('arial', '', 8, '', false);
     $html ='<hr style="height: 2px;">';
     $pdf->writeHTML($html, true, false, true, false, '');
 
@@ -27,7 +27,7 @@
                 <tr>
                     <td width="8%"><b>INSTANSI</b></td>
                     <td width="2%">:</td>
-                    <td>'.$instansi->dept_name.'</td>
+                    <td width="80%">'.$instansi->dept_name.'</td>
                 </tr>
             </table><br><br>';
 
@@ -35,11 +35,11 @@
                 <tr align="center"> 
                       <td width="5%" ><b>No</b></td>
                       <th width="5%"><b>ID</b></th>
-                      <th width="20%"><b>NAMA</b></th>
+                      <th width="28%"><b>Nama</b></th>
                       <th width="17%"><b>NIP</b></th>
-                      <th width="20%"><b>INSTANSI</b></th>
-                      <th width="15%"><b>STATUS</b></th>
-                      <th width="18%"><b>JUMLAH SIDIK JARI</b></th>
+                      <th width="20%"><b>Instansi</b></th>
+                      <th width="15%"><b>Status</b></th>
+                      <th width="10%"><b>Jumlah Sidik Jari</b></th>
                 </tr>';
     $no=1;
           foreach ($user as $row) {

@@ -29,7 +29,8 @@ class M_user extends CI_Model {
 				->join('_statpeg f','c.statpeg_id=f.id','left')
 				->join('_golongan g','c.golongan_id=g.id','left')
 				->join('_eselon h','c.eselon_id=h.id','left')
-				->join('v_last_login_users i','d.id=i.login_id','left');
+				->join('v_last_login_users i','d.id=i.login_id','left')
+        ->limit(1);
 		return $this->db->get();
 	}
 

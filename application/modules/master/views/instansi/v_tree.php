@@ -51,15 +51,16 @@
                                     <td class="text-center"><?php echo status_tree($row->status_instansi) ?></td>
                                     <td class="text-nowrap"><?php echo $row->kecamatan ?></td>
                                     <td class="text-center"><?php echo $row->position_order ?></td>
-                                    <td class="text-nowrap"> <a href="<?php echo base_url('master/instansi/add/'.$id) ?>">
-                                                <i class="icon-file-plus2 text-orange-300 mr-1"></i>
-                                        </a>
-                                          <a href="<?php echo base_url('master/instansi/edit/'.$id) ?>">
-                                                <i class="icon-pencil5 text-info-400 mr-1"></i>
-                                        </a>
-                                          <a class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus data" style="cursor:pointer;" id="<?php echo $id ?>">
-                                                <i class="icon-bin"></i>
-                                          </a>
+                                    <td class="text-nowrap"> 
+                                      <a href="<?php echo base_url('master/instansi/add/'.$id) ?>" tooltip="tambah sub instansi" flow="left">
+                                          <i class="icon-file-plus2 text-orange-300 mr-1"></i>
+                                      </a>
+                                      <a href="<?php echo base_url('master/instansi/edit/'.$id) ?>" tooltip="edit instansi" flow="left">
+                                          <i class="icon-pencil5 text-info-400 mr-1"></i>
+                                      </a>
+                                      <a class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus data" tooltip="hapus instansi" flow="left" style="cursor:pointer;" id="<?php echo $id ?>">
+                                          <i class="icon-bin"></i>
+                                      </a>
                                     </td>
                               </tr>
 

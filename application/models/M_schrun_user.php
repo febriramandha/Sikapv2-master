@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class M_schrun_user extends CI_Model {
 
 	public function CekTanggalLkh($user_id, $tgl)

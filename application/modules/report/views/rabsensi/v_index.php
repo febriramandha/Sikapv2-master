@@ -8,6 +8,7 @@
 			</div>
 		</div>
 	</div>
+	<?php echo form_open('report/rabsensi/cetak','class="form-horizontal" target="popup" id="formAjax"'); ?>
 	<div class="card-body">
 		<div class="form-group row">
 			<label class="col-form-label col-lg-2">Instansi <span class="text-danger">*</span></label>
@@ -37,7 +38,7 @@
 	      <label class="col-form-label col-lg-2">Ketagori Lainnya </label>
 	      <div class="col-lg-10">
 	          <label class="pure-material-checkbox mt-2"> 
-		          <input type="checkbox" class="result"  name="tpp" value="1" /> <span>Pernerima TPP</span>
+		          <input type="checkbox" class="result"  name="tpp" /> <span>Pernerima TPP</span>
 		        </label>
 	      </div>
 	    </div>
@@ -48,7 +49,8 @@
 	        <div class="col-lg-10">
 	          <div class="form-group">
 	          	<div id="pegawai">
-												
+						<select class="form-control multiselect-clickable-groups" name="pegawai[]" multiple="multiple" data-fouc>
+						</select>						
 				</div>
 	        </div>
 	      </div>
@@ -78,23 +80,25 @@
 			</div>
 		</div>
 		<div class="text-left offset-lg-2">                
-			<button class="btn btn-sm btn-info result" id="kalkulasi">Kalkulasi <i class="icon-search4 ml-2"></i></button>
-			<button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1 result" id="cetak">
+			<span class="btn btn-sm btn-info result" id="kalkulasi">Kalkulasi <i class="icon-search4 ml-2"></i></span>
+			<button type="submit" class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1 result" id="cetak">
 				<span><i class="icon-printer mr-2"></i> Cetak</span>
 			</button> 
 			<i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
 		</div>
+		<?php echo form_close() ?>
 		<div class="table-responsive">
 			<table id="datatable" class="table table-sm table-hover table-bordered">
 				<thead>
 					<tr class="table-active">
 						<th width="1%" rowspan="2">No</th>
+						<th class="text-nowrap" rowspan="2">Nama<hr class="m-0">NIP</th>
 						<th class="text-nowrap" rowspan="2">Tanggal</th>
 						<th class="text-nowrap" colspan="3">Masuk</th>
 						<th class="text-nowrap" colspan="3">Pulang</th>
 						<th rowspan="2">DL</th>
 						<th rowspan="2">Cuti</th>
-						<th rowspan="2">Ket</th>
+						<th rowspan="2" width="1%">Ket</th>
 					</tr>
 					<tr class="table-active">
 						<th class="px-1" >Jam Masuk</th>
@@ -140,16 +144,89 @@ $('[name="kategori"]').change(function() {
 	DataPegawai();
 })
 
+$('[name="tpp"]').change(function() {
+	DataPegawai();
+})
+
+$('#kalkulasi').click(function() {
+	table.ajax.reload();
+})
+
+$(document).ready(function(){
+		table = $('#datatable').DataTable({ 
+			processing: true, 
+			serverSide: true, 
+			"ordering": false,
+			"searching": false,
+			language: {
+				search: '<span></span> _INPUT_',
+				searchPlaceholder: 'Cari...',
+				processing: '<i class="icon-spinner9 spinner text-blue"></i> Loading..'
+			},  
+			"lengthMenu": [[10, 25, 50, 100, 200], [10, 25, 50, 100, 200]],
+			ajax: {
+				url : uri_dasar+'report/rabsensi/indexJson',
+				type:"post",
+				"data": function ( data ) {	
+					data.csrf_sikap_token_name= csrf_value;
+					data.pegawai= $('[name="pegawai[]"]').val();
+					data.rank1  = $('[name="rank1"]').val();
+					data.rank2  = $('[name="rank2"]').val();
+				},
+			},
+			rowsGroup: [1],
+			"columns": [
+			{"data": "id", searchable:false},
+			{"data": "nama_nip", searchable:false},
+			{"data": "tanggal", searchable:false},
+			{"data": "start_time_tabel", searchable:false},
+			{"data": "jam_masuk_tabel", searchable:false},
+			{"data": "terlambat_tabel", searchable:false},
+			{"data": "end_time_tabel", searchable:false},
+			{"data": "jam_pulang_tabel", searchable:false},
+			{"data": "pulang_cepat_tabel", searchable:false},
+			{"data": "dinas_luar_tabel", searchable:false},
+			{"data": "cuti", searchable:false},
+			{"data": "ket", searchable:false},
+			],
+			rowCallback: function(row, data, iDisplayIndex) {
+				var info = this.fnPagingInfo();
+				var page = info.iPage;
+				var length = info.iLength;
+				var index = page * length + (iDisplayIndex + 1);
+				$('td:eq(0)', row).html(index);
+
+			},
+			createdRow: function(row, data, index) {
+	     		 $('td', row).eq(1).addClass('text-nowrap p-1');
+	     		 $('td', row).eq(2).addClass('text-nowrap p-1 text-center');
+	     		 $('td', row).eq(3).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(4).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(5).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(6).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(7).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(8).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(9).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(10).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(11).addClass('text-nowrap p-2 text-center');
+	  },
+	});
+ // Initialize
+ dt_componen();
+
+});
+
 
 function DataPegawai() {
 	var dept_id = $('[name="instansi"]').val();
 	var pns 	= $('[name="kategori"]').val();
+	var tpp 	= $('[name="tpp"]').is(':checked');
 	var result  = $('.result');
 	var spinner = $('#spinner_pegawai');
 	$.ajax({
 		type: 'get',
 		url: uri_dasar+'report/rabsensi/AjaxGet',
-		data: {mod:'DataPegawai',id:dept_id,pns:pns},
+		data: {mod:'DataPegawai',id:dept_id,pns:pns,tpp:tpp},
 		dataType : "html",
 		error:function(){
 			result.attr("disabled", false);
@@ -173,17 +250,12 @@ function DataPegawai() {
 var result  = $('.result');
 var spinner = $('#spinner');
 $('#cetak').click(function() {
-		var rank1 		= $('[name="rank1"]').val();
-		var rank2 		= $('[name="rank2"]').val();
-		var instansi 	= $('[name="instansi"]').val();
-
-		if (rank1 && rank2) {
-			newWindow = window.open(uri_dasar + 'report/rabsensi/cetak/'+rank1+'/'+rank2+'/?in='+instansi,"open",'height=600,width=800');
-			if (window.focus) {newWindow.focus()}
-				return false;
-		}else{
-			bx_alert('rentang waktu hurus diisi');
-		}
+			// newWindow = window.open(uri_dasar + 'report/rabsensi/cetak/'+rank1+'/'+rank2+'/?in='+instansi,"open",'height=600,width=800');
+			// if (window.focus) {newWindow.focus()}
+			// 	return false;
+			window.open('about:blank','popup','width=1000,height=600')
+			$('#formID').submit();
+		
 		
 })
 
