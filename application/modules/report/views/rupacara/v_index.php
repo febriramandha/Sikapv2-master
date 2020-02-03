@@ -167,7 +167,7 @@ function jadwalUpacara() {
 }
 
  $('#cetak').click(function() {
-		newWindow = window.open(uri_dasar + 'kepegawaian/absen-upacara/cetak/'+$('[name="instansi"]').val()+'/'+$('[name="jadwal"]').val(),"open",'height=600,width=800');
+		newWindow = window.open(uri_dasar + 'report/rupacara/cetak/'+$('[name="instansi"]').val()+'/'+$('[name="jadwal"]').val(),"open",'height=600,width=800');
 		if (window.focus) {newWindow.focus()}
 			return false;
 	})
