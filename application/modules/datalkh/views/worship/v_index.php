@@ -167,7 +167,7 @@ var result  = $('.result');
 		var rank1 = $('[name="rank1"]').val();
 		var rank2 = $('[name="rank2"]').val();
 		if (rank1 && rank2) {
-			newWindow = window.open(uri_dasar + 'datalkh/worship/cetak/'+rank1+'/'+rank2,"open",'height=600,width=800');
+			newWindow = window.open(uri_dasar + 'datalkh/worship/cetak/'+rank1+'/'+rank2,"open",'height=600,width=1000');
 			if (window.focus) {newWindow.focus()}
 				return false;
 		}else{

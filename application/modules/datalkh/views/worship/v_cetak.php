@@ -65,7 +65,7 @@
             <table width="100%" nobr="true">
                 <tr>
                     <td width="55%"></td> 
-                    <td width="45%"><b>'.$instansi->alamat.', '.tgl_ind_bulan(date('Y-m-d')).'</b><br></td>
+                    <td width="45%"><b>'.$instansi->kecamatan.', '.tgl_ind_bulan(date('Y-m-d')).'</b><br></td>
                 </tr>
                 <tr>
                     <td width="50%"><b>Disahkan Oleh:</b></td> 

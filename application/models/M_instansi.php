@@ -18,9 +18,10 @@ class M_instansi extends CI_Model {
 
 	public function GetInstansi($id='')
 	{
-		$this->db->select('*')
-			     ->where('id', $id);
-		return $this->db->get('mf_departments');
+		$this->db->select('a.*,b.nama as kecamatan')
+			     ->where('a.id', $id)
+			     ->join('_kecamatan b','a.kecamatan_id=b.id');
+		return $this->db->get('mf_departments a');
 
 	}
 
