@@ -20,6 +20,7 @@ class Data_pegawai extends App_Controller {
 	private function _init()
 	{
 		$this->output->set_template('app');
+		$this->load->js('public/themes/material/global_assets/js/plugins/forms/wizards/steps.min.js');
 	}
 
 	public function index()
@@ -67,6 +68,9 @@ class Data_pegawai extends App_Controller {
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
 		$this->data['user']			= $this->m_user->GetUser(decrypt_url($id, 'user_id'))->row();
 		$this->data['instansi']		= $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
+		$this->data['agama']		= $this->db->order_by('id')->get('_agama')->result();
+		$this->data['eselon']		= $this->db->order_by('id')->get('_eselon')->result();
+		$this->data['golongan']		= $this->db->order_by('id')->get('_golongan')->result();
 		$this->load->view('data_pegawai/v_edit', $this->data);
 	}
 
@@ -118,6 +122,23 @@ class Data_pegawai extends App_Controller {
 						$data['recovery'] = $this->encryption->encrypt($this->input->post('password'));
 					}
 					$return = $this->db->update('users_login', $data, ['id' => decrypt_url($this->input->post('login_id'),'login_id')]);
+
+					// biodata pegawai
+					$biodata_cek = $this->db->get_where('sp_pegawai', ['user_id' => decrypt_url($this->input->post('user_id'),'user_id')])->row();
+
+					$data_biodata = array('agama_id'   => $this->input->post('agama'),
+										  'gelar_dpn'  => $this->input->post('gelar_dpn'),
+										  'gelar_blk'  => $this->input->post('gelar_blk'),
+										  'gender'     => $this->input->post('gender'),
+										  'jabatan'    => $this->input->post('jabatan'),
+									);
+					if ($biodata_cek) {
+						$return = $this->db->update('sp_pegawai',$data_biodata, ['id' => $biodata_cek->id]);
+					}else {
+						$data_biodata['user_id']  = decrypt_url($this->input->post('user_id'),'user_id');
+						$return = $this->insert('sp_pegawai',$data_biodata);
+					}
+
 
 					if ($return) {
 						$result = array('status'   => true,

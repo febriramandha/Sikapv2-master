@@ -21,6 +21,7 @@ class User extends App_Controller {
 	{
 		$this->output->set_template('app');
 		$this->load->css('public/themes/plugin/toplipcss/rrtooltip/rrtooltip.css');
+		$this->load->js('public/themes/material/global_assets/js/plugins/forms/wizards/steps.min.js');
 	}
 
 	public function index()
@@ -74,6 +75,9 @@ class User extends App_Controller {
 		$this->breadcrumbs->push('Tambah Pengguna', '/');
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
 		$this->data['instansi']		= $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
+		$this->data['agama']		= $this->db->order_by('id')->get('_agama')->result();
+		$this->data['eselon']		= $this->db->order_by('id')->get('_eselon')->result();
+		$this->data['golongan']		= $this->db->order_by('id')->get('_golongan')->result();
 		$this->load->view('user/v_add', $this->data);
 	}
 
@@ -84,6 +88,9 @@ class User extends App_Controller {
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
 		$this->data['user']			= $this->m_user->GetUser(decrypt_url($id, 'user_id'))->row();
 		$this->data['instansi']		= $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
+		$this->data['agama']		= $this->db->order_by('id')->get('_agama')->result();
+		$this->data['eselon']		= $this->db->order_by('id')->get('_eselon')->result();
+		$this->data['golongan']		= $this->db->order_by('id')->get('_golongan')->result();
 		$this->load->view('user/v_edit', $this->data);
 	}
 
@@ -108,7 +115,10 @@ class User extends App_Controller {
 			$this->form_validation->set_rules('password', 'ulangi kata sandi', 'trim|required');
 		}
 		$this->form_validation->set_rules('ketegori', 'kategori', 'required')
-							  ->set_rules('nama', 'nama lengkap', 'required');
+							  ->set_rules('nama', 'nama lengkap', 'required')
+							  ->set_rules('jabatan', 'jabatan', 'required')
+							  ->set_rules('agama', 'agama', 'required')
+							  ->set_rules('gender', 'jenis kelamin', 'required');
 		if ($this->input->post('ketegori') == 1) {
 			$this->form_validation->set_rules('nip', 'NIP', 'required|min_length[18]|max_length[18]|numeric|'.$nip_cek.'');
 		}
@@ -175,6 +185,21 @@ class User extends App_Controller {
 									  'created_by'  => $this->session->userdata('tpp_user_id'), );
 						$return = $this->db->insert('users_login', $data);
 
+						// biodata pegawai
+						$data_biodata = array('agama_id'   => $this->input->post('agama'),
+											  'jabatan'    => $this->input->post('jabatan'),
+											  'gelar_dpn'  => $this->input->post('gelar_dpn'),
+											  'gelar_blk'  => $this->input->post('gelar_blk'),
+											  'gender'     => $this->input->post('gender'),
+											  'user_id'    => $user_id,
+										);
+						if ($this->input->post('ketegori') == 1) {
+							$data_biodata['statpeg_id'] = 3;
+							$data_biodata['golongan_id']= $this->input->post('golongan');
+							$data_biodata['eselon_id']  = $this->input->post('eselon');
+						}
+						$return = $this->db->insert('sp_pegawai',$data_biodata);
+						
 						if ($return) {
 							$result = array('status'   => true,
 				    	     		  		'message' => 'Data berhasil ditambahkan',);
@@ -228,6 +253,27 @@ class User extends App_Controller {
 					}
 					$return = $this->db->update('users_login', $data, ['id' => decrypt_url($this->input->post('login_id'),'login_id')]);
 
+					// biodata pegawai
+					$biodata_cek = $this->db->get_where('sp_pegawai', ['user_id' => decrypt_url($this->input->post('user_id'),'user_id')])->row();
+
+					$data_biodata = array('agama_id'   => $this->input->post('agama'),
+										  'gelar_dpn'  => $this->input->post('gelar_dpn'),
+										  'gelar_blk'  => $this->input->post('gelar_blk'),
+										  'gender'     => $this->input->post('gender'),
+										  'jabatan'    => $this->input->post('jabatan'),
+									);
+					if ($this->input->post('ketegori') == 1) {
+						$data_biodata['statpeg_id'] = 3;
+						$data_biodata['golongan_id']= $this->input->post('golongan');
+						$data_biodata['eselon_id']  = $this->input->post('eselon');
+					}
+					if ($biodata_cek) {
+						$return = $this->db->update('sp_pegawai',$data_biodata, ['id' => $biodata_cek->id]);
+					}else {
+						$data_biodata['user_id']  = decrypt_url($this->input->post('user_id'),'user_id');
+						$return = $this->insert('sp_pegawai',$data_biodata);
+					}
+
 					if ($return) {
 						$result = array('status'   => true,
 			    	     		  		'message' => 'Data berhasil disimpan',);
@@ -259,6 +305,7 @@ class User extends App_Controller {
 			if ($del) {
 				   $this->m_server_att->DelUserinfo(['userid' =>  decrypt_url($this->input->get('id'),"user_id")]);
 				   $this->db->delete('users_login',['user_id' => decrypt_url($this->input->get('id'),"user_id")]);
+				   $this->db->delete('sp_pegawai',['user_id' => decrypt_url($this->input->get('id'),"user_id")]);
 			}
 		}
 		if ($del) {
