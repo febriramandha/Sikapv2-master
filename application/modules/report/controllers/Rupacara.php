@@ -102,7 +102,7 @@ class Rupacara extends App_Controller {
         	->where('a.dept_id', decrypt_url($dept_id, 'instansi'));  
 		$this->data['user_upacara']		= $this->db->get()->result();
 		$this->data['jadwal']			= $this->db->get_where('sch_upacara',['id' => $schupacara_id])->row();
-		$this->load->view('absen_upacara/v_cetak', $this->data);
+		$this->load->view('rupacara/v_cetak', $this->data);
 	}
 
 }
