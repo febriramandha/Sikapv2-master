@@ -85,6 +85,26 @@ class Rupacara extends App_Controller {
         return $this->output->set_output($this->datatables->generate());
 	}
 
+	public function cetak($dept_id,$schupacara_id)
+	{
+		$this->output->unset_template();
+		$this->load->library('Tpdf');
+		$this->load->helper('absen');
+		$schupacara_id = decrypt_url($schupacara_id,'schupacara_id');
+		$this->data['instansi'] = $this->m_instansi->GetInstansi(decrypt_url($dept_id, 'instansi'))->row();
+		$this->db->select('a.id, a.nip, a.nama,status_pegawai,gelar_dpn,gelar_blk,b.golongan, b.pangkat, a.eselon_id, c.hadir, c.id as absenupacara_id')
+        	->from('v_users_all a')
+        	->join('_golongan b','a.golongan_id=b.id','left')
+        	->join("(select id, user_id, hadir from absen_upacara where sch_upacara_id=$schupacara_id) c",'a.id=c.user_id','left')
+        	->where('key > 0')
+        	->where('att_status',1)
+        	->order_by('no_urut')
+        	->where('a.dept_id', decrypt_url($dept_id, 'instansi'));  
+		$this->data['user_upacara']		= $this->db->get()->result();
+		$this->data['jadwal']			= $this->db->get_where('sch_upacara',['id' => $schupacara_id])->row();
+		$this->load->view('absen_upacara/v_cetak', $this->data);
+	}
+
 }
 
 /* End of file Rupacara.php */
