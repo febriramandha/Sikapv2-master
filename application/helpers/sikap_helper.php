@@ -579,7 +579,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     function color_level($id='')
     {
           if($id == 1) {
-            $level = "text-warning-600";
+            $level = "";
           }else if($id == 2) {
               $level = "text-info-600";
           }else if($id == 3) {
@@ -587,7 +587,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           }else if($id == 5) {
               $level = "text-brown-400";
           }else if($id == 4) {
-              $level = "";
+              $level = "text-warning-600";
           }else{
               $level = "";
           }
