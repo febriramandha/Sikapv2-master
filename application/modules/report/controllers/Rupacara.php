@@ -40,15 +40,11 @@ class Rupacara extends App_Controller {
 		if ($this->mod == "jadwalUpacara") {
 			    $tahun = $this->input->get('tahun');
         		$data_upacara = $this->m_sch_upacara->GetJadwal($tahun)->result();
-
         		$res='';
         		foreach ($data_upacara as $row ){
 		          		$res.= "<option value='".encrypt_url($row->id,'schupacara_id')."'>".tgl_ind_bulan($row->tanggal)." (".jm($row->jam_mulai).") : $row->ket</option>";
 		          }
 		        $this->output->set_output($res);
-		}elseif ($this->mod == "a") {
-			
-			
 		}
 		
 	}
