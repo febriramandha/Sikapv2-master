@@ -194,4 +194,18 @@ function DataPegawai() {
 	});
 	
 }
+
+$('#cetak').click(function() {
+		var rank1 	= $('[name="rank1"]').val();
+		var rank2 	= $('[name="rank2"]').val();
+		var pegawai = $('[name="pegawai"]').val();
+		if (rank1 && rank2) {
+			newWindow = window.open(uri_dasar + 'report/rtlkh/cetak/'+rank1+'/'+rank2+'?pg='+pegawai,"open",'height=600,width=1000');
+			if (window.focus) {newWindow.focus()}
+				return false;
+		}else{
+			bx_alert('rentang waktu hurus diisi');
+		}
+		
+	})
 </script>
