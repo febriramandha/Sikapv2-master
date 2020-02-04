@@ -102,6 +102,14 @@ class M_sch_run extends CI_Model {
 		return $this->db->get();
 	}
 
+	public function GetTahun()
+	{
+		$this->db->select("date_part('year',start_date) as tahun")
+						 ->group_by("date_part('year',start_date)")
+						 ->order_by("date_part('year',start_date)",'desc',false);
+		 return $this->db->get('sch_run');
+	}
+
 	
 
 

@@ -14,7 +14,7 @@ class Rtibadah extends App_Controller {
 		$this->_init();
 		$this->breadcrumbs->push('Laporan Ibadah', 'report/rtibadah');
 		$this->data['title'] = "Laporan Umum";
-		$this->load->model(['m_data_lkh','m_verifikator','m_instansi','m_user']);
+		$this->load->model(['m_data_lkh','m_verifikator','m_instansi','m_user','m_ibadah']);
 	}
 
 	private function _init()
@@ -55,7 +55,11 @@ class Rtibadah extends App_Controller {
 				
 				$agama_id = 1;
 				if ($data_agama) {
-						$agama_id = $data_agama->agama_id;
+						if ($data_agama->agama_id == 1 || $data_agama->agama_id == 0 || $data_agama->agama_id == '') {
+							$agama_id = 1;
+						}else {
+							$agama_id = $data_agama->agama_id;
+						}
 				}
 
 				$data = array('agama_id' => $agama_id, );
@@ -103,6 +107,41 @@ class Rtibadah extends App_Controller {
     		$this->datatables->where('user_id', '0');
     	}
         return $this->output->set_output($this->datatables->generate());
+	}
+
+	public function cetak($rank1,$rank2)
+	{
+		$this->output->unset_template();
+		$rank1 = format_tgl_eng(str_replace('_', '-', $rank1));
+		$rank2 = format_tgl_eng(str_replace('_', '-', $rank2));
+		$user_id = decrypt_url($this->input->get('pg'),'user_id_ibadah');
+
+		if (jumlah_hari_rank($rank1, $rank2) > 31) {
+			echo 'maksimat tanggal yang diizinkan 31 hari';
+		}else{
+			$this->data['priode']		= tgl_ind_bulan($rank1).' s/d '.tgl_ind_bulan($rank2);
+			$this->load->library('Tpdf');
+
+			$ttd_data = $this->m_verifikator->GetVerifikatorCetak($user_id)->row();
+
+			$this->data['ttd_data']		= $ttd_data;
+			$this->data['instansi']		= $this->m_instansi->GetInstansi($ttd_data->dept_id)->row();
+
+			$agam_cek = $this->db->select('agama_id')->get_where('sp_pegawai',['user_id' => $user_id])->row();
+
+			if ($agam_cek) {
+					if ($agam_cek->agama_id == 1 || $agam_cek->agama_id == 0 || $agam_cek->agama_id == '') {
+						$this->data['data_ibadah']		= $this->m_ibadah->GetDataIbadahRank($user_id,$rank1,$rank2);
+						$this->load->view('rtibadah/v_cetak_muslim', $this->data);
+					}else{
+						$this->data['data_ibadah']		= $this->m_ibadah->GetDataIbadahRankNonmuslim($user_id,$rank1,$rank2);
+						$this->load->view('rtibadah/v_cetak_nonmuslim', $this->data);
+					}
+			}else {
+				$this->data['data_ibadah']		= $this->m_ibadah->GetDataIbadahRank($user_id,$rank1,$rank2);
+				$this->load->view('rtibadah/v_cetak_muslim', $this->data);
+			}
+		}
 	}
 
 

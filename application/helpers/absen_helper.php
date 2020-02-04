@@ -413,3 +413,187 @@ defined('BASEPATH') OR exit('No direct script access allowed');
      
     }
 
+    function start_time_tabel_rekap($start_time='',$start_time_shift='', $start_time_notfixed='',$daysoff_id='')
+	{
+		 $resul = 2;
+		 if ($start_time && !$start_time_shift && $start_time != "00:00:00") {
+		 			$resul = jm($start_time);
+		 }elseif (!$start_time && $start_time_shift) {
+		 			$resul = jm($start_time_shift);
+		 }elseif ($start_time && $start_time_shift) {
+		 			$resul = jm($start_time);
+		 }elseif ($start_time == "00:00:00" || $start_time_shift == "00:00:00") {
+		 			// $resul = 'Libur';
+		 			$resul = 2;
+		 }else{
+		 		// $resul = '<span tooltip="Tidak ada jadwal" flow="left"><i class="icon-help msclick"></i></span>';
+		 		$resul = 2;
+		 }
+
+		 if ($start_time_notfixed) {
+		 		$resul = jm($start_time).'F';
+		 }elseif ($start_time_notfixed == "00:00:00") {
+		 		// $resul = 'Libur';
+		 		$resul = 2;
+		 }
+
+		 if ($daysoff_id) {
+		 		$resul = 2;
+		 }
+
+		 return $resul;
+	}
+
+    function jum_hari_kerja_rekap($json_data)
+    {
+    	 $pgarray_data = json_decode($json_data, true);
+    	 $json_absen  = $pgarray_data['data_absen'];
+
+    	 $count = count($json_absen);
+
+    	 $hari_kerja = array();
+         for ($i=0; $i < $count; $i++) { 
+         		 $start_time   = $json_absen[$i]['f5'];
+         		 $start_time_shift  = $json_absen[$i]['f10'];
+                 $start_time_notfixed= $json_absen[$i]['f20'];
+                 $daysoff_id       = $json_absen[$i]['f19'];
+                 $cek = start_time_tabel_rekap($start_time, $start_time_shift,$start_time_notfixed,$daysoff_id);
+                 if ($cek != 2) {
+                 	 $hari_kerja[] = 1;
+                 }
+         		
+         }
+
+         $jumlah_hari_kerja = count($hari_kerja);
+
+         return  $jumlah_hari_kerja;
+    }
+
+    function jum_hadir_kerja_rekap($json_data)
+    {
+    	$pgarray_data = json_decode($json_data, true);
+    	 $json_absen  = $pgarray_data['data_absen'];
+
+    	 $count = count($json_absen);
+
+    	 $hari_kerja = array();
+         for ($i=0; $i < $count; $i++) { 
+						//jam masuk
+					$jam_masuk          = $json_absen[$i]['f7'];
+					$jam_masuk_shift    = $json_absen[$i]['f12'];
+					$status_in          = $json_absen[$i]['f17'];
+					$start_time_notfixed= $json_absen[$i]['f20'];
+					$jam_masuk_notfixed = $json_absen[$i]['f22'];
+
+					//jam pulang
+					$jam_pulang         = $json_absen[$i]['f8'];
+					$jam_pulang_shift   = $json_absen[$i]['f13'];
+					$status_out         = $json_absen[$i]['f18'];
+					$end_time_notfixed  = $json_absen[$i]['f21'];
+					$jam_pulang_notfixed= $json_absen[$i]['f23'];
+
+					// keterangan 
+					$daysoff_id       = $json_absen[$i]['f19'];
+					$lkhdl_id         = $json_absen[$i]['f15'];
+					$dinasmanual_id   = $json_absen[$i]['f16'];
+					$kode_cuti        = $json_absen[$i]['f14'];
+					$rentan_tanggal   = $json_absen[$i]['f1'];
+
+					$start_time   = $json_absen[$i]['f5'];
+					$end_time     = $json_absen[$i]['f6'];
+
+					$start_time_shift  = $json_absen[$i]['f10'];
+					$end_time_shift    = $json_absen[$i]['f11'];
+                 
+                 $cek = cek_hadir_kerja($daysoff_id, $jam_masuk, $jam_pulang,$jam_masuk_shift, $jam_pulang_shift, $lkhdl_id, $dinasmanual_id, $kode_cuti, $rentan_tanggal, $start_time, $start_time_shift, $status_in, $status_out,$end_time,$end_time_shift, $start_time_notfixed, $jam_masuk_notfixed, $end_time_notfixed, $jam_pulang_notfixed);
+
+                 if ($cek == 1) {
+                 		$hari_kerja[] = 1;
+                 }
+         		
+         }
+
+         $jumlah_hari_kerja = count($hari_kerja);
+
+         return  $jumlah_hari_kerja;
+    }
+
+        function cek_hadir_kerja($daysoff_id='', $jam_masuk='', $jam_pulang='',$jam_masuk_shift='', $jam_pulang_shift='', $lkhdl_id='', $dinasmanual_id='', $kode_cuti='', $rentan_tanggal='', $start_time='', $start_time_shift='', $status_in='', $status_out='',$end_time ='',$end_time_shift='', $start_time_notfixed='', $jam_masuk_notfixed='', $end_time_notfixed='', $jam_pulang_notfixed='')
+    {
+    	$ket = 2;
+		$hari_ini = date('Y-m-d');
+
+		if ($rentan_tanggal <= $hari_ini && !$daysoff_id && !$jam_masuk && !$jam_pulang && !$jam_masuk_shift && !$jam_pulang_shift && !$lkhdl_id && !$dinasmanual_id && !$kode_cuti ) {
+			// $ket = 'TK'; 
+			$ket = 2;
+		}
+
+		if ($jam_masuk || $jam_pulang || $jam_masuk_shift || $jam_pulang_shift || $jam_masuk_notfixed || $jam_pulang_notfixed) {
+			 //$ket = 'H'; 
+			 $ket = 1; 
+		}
+		if ($lkhdl_id) {
+			 // $ket = 'DL'; 
+			$ket = 1; 
+		}
+
+		if ($dinasmanual_id) {
+			 // $ket = 'DLM'; 
+			$ket = 1; 
+		}
+
+		if ($kode_cuti) {
+			 // $ket = $kode_cuti; 
+			 $ket = 1; 
+		}
+
+		if ($start_time == "00:00:00"  || $start_time_shift == "00:00:00") {
+			// $ket = 'L';
+			$ket = 2; 
+		}
+
+		if (!$start_time  && !$start_time_shift) {
+			// $ket = '?';
+			$ket = 2;
+		}
+
+		if ($status_in) {
+				if ($status_in == 1) {
+						// $ket = 'HM';
+						$ket = 1;
+				}elseif ($status_in == 2) {
+						// $ket = 'TMM';
+						$ket = 1;
+				}elseif ($status_in == 3) {
+						// $ket = 'TKM';
+						$ket = 2;
+				}else {
+					// $ket = 'HM';
+					$ket = 1;
+				}
+		}
+
+		if ($status_out) {
+				if ($status_out == 1) {
+						// $ket = 'HM';
+						$ket = 1;
+				}elseif ($status_out == 2) {
+						// $ket = 'PCM';
+						$ket = 1;
+				}elseif ($status_out == 3) {
+						// $ket = 'TKM';
+						$ket = 2;
+				}else {
+					// $ket = 'HM';
+					$ket = 1;
+				}
+		}
+
+		if ($daysoff_id) {
+			 // $ket = 'L'; 
+			$ket = 2;
+		}
+
+		return $ket;
+    }
+

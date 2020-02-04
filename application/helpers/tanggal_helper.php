@@ -239,3 +239,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
    
   }
 
+  function tanggal_rentang_from_bulan($tgl)
+  {
+    # code...
+  }
+

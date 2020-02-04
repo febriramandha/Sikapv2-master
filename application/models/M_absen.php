@@ -164,6 +164,99 @@ class M_absen extends CI_Model {
         	return $this->db->get();
 	}
 
+	public function PegawaiAbsenQueryRekapitulasi($user_id=array(), $start_date, $end_date)
+	{	
+			$this->db->select('a.id, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, b.json_absen')
+					 ->from('v_users_all a')
+					 ->join("(select a.id,
+								json_build_object(
+										'data_absen',json_agg(
+										(	rentan_tanggal, 
+											schrun_id,
+											start_date, 
+											end_date, 
+											start_time, 
+											end_time,
+											jam_masuk,
+											jam_pulang,
+											kd_shift,
+											start_time_shift,
+											end_time_shift,
+											jam_masuk_shift,
+											jam_pulang_shift,
+											kode_cuti,
+											lkhdl_id,
+											dinasmanual_id,
+											status_in,
+											status_out,
+											daysoff_id,
+											start_time_notfixed,
+											end_time_notfixed,
+											jam_masuk_notfixed,
+											jam_pulang_notfixed,
+											count_day_shift,
+											jumtidak_upacara,
+											jumibadah_muslim
+										) ORDER BY rentan_tanggal)
+								) as json_absen
+							from mf_users a
+							left join (
+											select a.id, 
+											rentan_tanggal,
+											b.schrun_id, 
+											b.start_date, 
+											b.end_date, 
+											b.start_time, 
+											b.end_time,
+											min((c.checktime)::time without time zone) AS jam_masuk,
+											max((d.checktime)::time without time zone) AS jam_pulang,
+											e.kd_shift,
+											e.start_time as start_time_shift,
+											e.end_time as end_time_shift,
+											min((f.checktime)::time without time zone) AS jam_masuk_shift,
+											max((g.checktime)::time without time zone) AS jam_pulang_shift,
+											i.kode as kode_cuti,
+											j.tgl_lkh as lkhdl_id,
+											k.dinasmanual_id,
+											l.status_in,
+											l.status_out,
+											m.id as daysoff_id,
+											n.start_time as start_time_notfixed, 
+											n.end_time as end_time_notfixed,
+											min((o.checktime)::time) AS jam_masuk_notfixed,
+											max((p.checktime)::time) AS jam_pulang_notfixed,
+											e.count_day as count_day_shift,
+											q.jum as jumtidak_upacara,
+											r.jum as jumibadah_muslim
+											from 
+											(select a.id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$start_date','$end_date')) as tanggal) as a
+											left join v_jadwal_kerja_users b on ((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day)and b.user_id=a.id)
+											left join mf_checkinout c on ((a.id = c.user_id) AND (a.rentan_tanggal = date(c.checktime)) AND ((c.checktime)::time without time zone >= b.check_in_time1) AND ((c.checktime)::time without time zone <= b.check_in_time2))
+											left join mf_checkinout d on ((a.id = d.user_id) AND (a.rentan_tanggal = date(d.checktime)) AND ((d.checktime)::time without time zone >= b.check_out_time1) AND ((d.checktime)::time without time zone <= b.check_out_time2))
+											left join v_jadwal_kerja_users_shift e on (a.id = e.user_id and e.start_shift=a.rentan_tanggal)
+											left join mf_checkinout f on ((a.id = f.user_id) AND (e.start_shift = date(f.checktime)) AND ((f.checktime)::time without time zone >= e.check_in_time1) AND ((f.checktime)::time without time zone <= e.check_in_time2))
+											left join mf_checkinout g on ((a.id = g.user_id) AND (e.end_shift = date(f.checktime)) AND ((f.checktime)::time without time zone >= e.check_in_time1) AND ((f.checktime)::time without time zone <= e.check_in_time2))
+											left join data_cuti h on (a.id = h.user_id and h.deleted =1 and (rentan_tanggal >= h.start_date and rentan_tanggal <= h.end_date)) 
+											left join _cuti i on h.cuti_id=i.id
+											left join data_lkh j on (a.id = j.user_id and a.rentan_tanggal=j.tgl_lkh and j.status=1 and j.jenis=3)
+											left join v_dinas_manual k on (a.id = k.user_id and k.tanggal=a.rentan_tanggal)
+											left join v_absenmanual_data l on (a.id = l.user_id and l.tanggal=a.rentan_tanggal)
+											left join days_off m on (rentan_tanggal >= m.start_date and rentan_tanggal <= m.end_date)
+											left join v_jadwal_kerja_users_notfixed n on ((rentan_tanggal >= n.start_date and rentan_tanggal <= n.end_date and extract('isodow' from a.rentan_tanggal) = n.day_id)and n.user_id=a.id)
+											left join mf_checkinout o on ((a.id = o.user_id) AND (a.rentan_tanggal = date(o.checktime)) AND ((o.checktime)::time without time zone >= n.check_in_time1) AND ((o.checktime)::time without time zone <= n.check_in_time2))
+											left join mf_checkinout p on ((a.id = p.user_id) AND (a.rentan_tanggal = date(p.checktime)) AND ((p.checktime)::time without time zone >= n.check_out_time1) AND ((p.checktime)::time without time zone <= n.check_out_time2))
+											left join v_tidak_hadir_upacara q on (a.id=q.user_id and a.rentan_tanggal=q.tanggal)
+											left join v_jum_ibadah_muslim r on (a.id=l.user_id and a.rentan_tanggal=r.tgl_ibadah)
+											group by 1,2,3,4,5,6,7,10,11,12,15,16,17,18,19,20,21,22,25,26,27
+							) as b on a.id=b.id
+							group by 1
+							) as b",'a.id=b.id','left',false)
+					 ->where_in('a.id', $user_id)
+					 ->order_by('no_urut');
+			return $this->db->get();
+
+	}
+
 }
 
 /* End of file M_absen.php */
