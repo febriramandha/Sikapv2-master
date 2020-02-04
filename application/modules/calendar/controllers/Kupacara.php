@@ -61,6 +61,7 @@ class Kupacara extends App_Controller {
 				$data = array('tanggal' 	 	=> $this->input->post('start'),
 							  'jam_mulai' 		=> $this->input->post('jam'),
 							  'ket' 			=> $this->input->post('ket'),
+							  'created_at' 		=> date('Y-m-d H:i:s'),
 				 );
 				$this->return = $this->db->insert('sch_upacara',$data);
 
