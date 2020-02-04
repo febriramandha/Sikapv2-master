@@ -202,7 +202,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		return $resul;
 	}
 
-	function terlambat_tabel($start_time='',$start_time_shift='', $jam_masuk='', $jam_masuk_shift='', $status_in='',$start_time_notfixed='', $jam_masuk_notfixed='')
+	function terlambat_tabel($start_time='',$start_time_shift='', $jam_masuk='', $jam_masuk_shift='', $status_in='',$start_time_notfixed='', $jam_masuk_notfixed='', $jam_pulang='', $jam_pulang_shift='', $jam_pulang_notfixed='')
 	{
 		 $terlambat = '';
 		 if ($start_time && $jam_masuk) {
@@ -210,30 +210,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     $j_masuk = strtotime($jam_masuk);
                     $r_masuk = strtotime($start_time);
                     $terlambat = sisa_waktu($j_masuk-$r_masuk);
-                }else{
-                    $terlambat = '';
                 }
-		 }
+		 }elseif ($jam_masuk =='' && $jam_pulang) {
+                	$terlambat = 'TM';
+         }
 
 		 if ($start_time_shift && $jam_masuk_shift) {
 		 		if(jm($jam_masuk_shift) > jm($start_time_shift)) {
                     $j_masuk = strtotime($jam_masuk_shift);
                     $r_masuk = strtotime($start_time_shift);
                     $terlambat = sisa_waktu($j_masuk-$r_masuk);
-                }else{
-                    $terlambat = '';
                 }
-		 }
+		 }elseif ($jam_masuk_shift =='' && $jam_pulang_shift) {
+                	$terlambat = 'TM';
+         }
 
 		 if ($start_time_notfixed && $jam_masuk_notfixed) {
 		 		if(jm($jam_masuk_notfixed) > jm($start_time_notfixed)) {
                     $j_masuk = strtotime($jam_masuk_notfixed);
                     $r_masuk = strtotime($start_time_notfixed);
                     $terlambat = sisa_waktu($j_masuk-$r_masuk);
-                }else{
-                    $terlambat = '';
                 }
-		 }
+		 }elseif ($jam_masuk_notfixed =='' && $jam_pulang_notfixed) {
+                	$terlambat = 'TM';
+         }
 
 		 if ($status_in == 2) {
 		 		$terlambat = 'TMM';
@@ -242,7 +242,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		 return $terlambat;
 	}
 
-	 function pulang_cepat_tabel($end_time='',$end_time_shift='', $jam_pulang='', $jam_pulang_shift='', $status_out='',$end_time_notfixed='', $jam_pulang_notfixed='')
+	 function pulang_cepat_tabel($end_time='',$end_time_shift='', $jam_pulang='', $jam_pulang_shift='', $status_out='',$end_time_notfixed='', $jam_pulang_notfixed='',$jam_masuk='', $jam_masuk_shift='', $jam_masuk_notfixed='')
 	{
 		$cepat = '';
 		if ($end_time && $jam_pulang) {
@@ -250,30 +250,30 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	              $j_pulang = strtotime($jam_pulang);
 	              $r_pulang = strtotime($end_time);
 	              $cepat = sisa_waktu($r_pulang-$j_pulang);
-	          }else{
-	              $cepat = '';
 	          }
-	     }
+	     }elseif ($jam_pulang =='' && $jam_masuk) {
+                	$cepat = 'PC';
+         }
 
 	     if ($end_time_shift && $jam_pulang_shift) {
 			if(jm($jam_pulang_shift) < jm($end_time_shift)) {
 	              $j_pulang = strtotime($jam_pulang_shift);
 	              $r_pulang = strtotime($end_time_shift);
 	              $cepat = sisa_waktu($r_pulang-$j_pulang);
-	          }else{
-	              $cepat = '';
 	          }
-	     }
+	     }elseif ($jam_pulang_shift =='' && $jam_masuk_shift) {
+                	$cepat = 'PC';
+         }
 
 	     if ($end_time_notfixed && $jam_pulang_notfixed) {
 		 		if(jm($jam_pulang_notfixed) < jm($end_time_notfixed)) {
 	                  $j_pulang = strtotime($jam_pulang_notfixed);
 		              $r_pulang = strtotime($end_time_notfixed);
 		              $cepat 	= sisa_waktu($r_pulang-$j_pulang);
-                }else{
-                    $terlambat = '';
                 }
-		 }
+		 }elseif ($jam_pulang_notfixed =='' && $jam_masuk_notfixed) {
+                	$cepat = 'PC';
+         }
 
 	     if ($status_out == 2) {
 		 		$terlambat = 'PCM';
@@ -299,12 +299,59 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$ket ='';
 		$hari_ini = date('Y-m-d');
 
+		
+
 		if ($rentan_tanggal <= $hari_ini && !$daysoff_id && !$jam_masuk && !$jam_pulang && !$jam_masuk_shift && !$jam_pulang_shift && !$lkhdl_id && !$dinasmanual_id && !$kode_cuti ) {
 			$ket = 'TK'; 
 		}
 
-		if ($jam_masuk || $jam_pulang || $jam_masuk_shift || $jam_pulang_shift || $jam_masuk_notfixed || $jam_pulang_notfixed) {
-			 $ket = 'H'; 
+		if ($jam_masuk || $jam_pulang || $jam_masuk_shift || $jam_pulang_shift || $jam_masuk_notfixed || $jam_pulang_notfixed || $status_in || $status_out) {
+
+			$ket = 'H'; 
+			$terlambat =  terlambat_tabel($start_time,$start_time_shift, $jam_masuk, $jam_masuk_shift, $status_in,$start_time_notfixed, $jam_masuk_notfixed, $jam_pulang, $jam_pulang_shift, $jam_pulang_notfixed);
+
+			if ($terlambat) {
+				$ket = 'TM';
+			}
+
+			$pulang_cepat = pulang_cepat_tabel($end_time,$end_time_shift, $jam_pulang, $jam_pulang_shift, $status_out,$end_time_notfixed, $jam_pulang_notfixed,$jam_masuk, $jam_masuk_shift, $jam_masuk_notfixed);
+
+			if ($pulang_cepat) {
+				$ket = 'PC';
+			}
+
+			if ($terlambat && $pulang_cepat) {
+				$ket = 'TC';
+			}
+
+			if ($status_in) {
+				if ($status_in == 1) {
+							$ket = 'HM';
+					}elseif ($status_in == 2) {
+							$ket = 'TMM';
+					}elseif ($status_in == 3) {
+							$ket = 'TKM';
+					}else {
+						$ket = 'HM';
+					}
+			}
+
+			if ($status_out) {
+					if ($status_out == 1) {
+							$ket = 'HM';
+					}elseif ($status_out == 2) {
+							$ket = 'PCM';
+					}elseif ($status_out == 3) {
+							$ket = 'TKM';
+					}else {
+						$ket = 'HM';
+					}
+			}
+
+			if ($status_in == 2 && $status_out) {
+				  $ket = 'TCM';
+			}
+			 
 		}
 		if ($lkhdl_id) {
 			 $ket = 'DL'; 
@@ -326,45 +373,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$ket = '?';
 		}
 
-		if ($status_in) {
-				if ($status_in == 1) {
-						$ket = 'HM';
-				}elseif ($status_in == 2) {
-						$ket = 'TMM';
-				}elseif ($status_in == 3) {
-						$ket = 'TKM';
-				}else {
-					$ket = 'HM';
-				}
-		}
-
-		if ($status_out) {
-				if ($status_out == 1) {
-						$ket = 'HM';
-				}elseif ($status_out == 2) {
-						$ket = 'PCM';
-				}elseif ($status_out == 3) {
-						$ket = 'TKM';
-				}else {
-					$ket = 'HM';
-				}
-		}
-
-		$terlambat =  terlambat_tabel($start_time,$start_time_shift, $jam_masuk, $jam_masuk_shift, $start_time_notfixed, $jam_masuk_notfixed);
-
-		if ($terlambat) {
-			$ket = 'TM';
-		}
-
-		$pulang_cepat = pulang_cepat_tabel($end_time,$end_time_shift, $jam_pulang, $jam_pulang_shift,$end_time_notfixed, $jam_pulang_notfixed);
-
-		if ($pulang_cepat) {
-			$ket = 'PC';
-		}
-
-		if ($terlambat && $pulang_cepat) {
-			$ket = 'TC';
-		}
+		
 
 		if ($daysoff_id) {
 			 $ket = 'L'; 
@@ -596,4 +605,320 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		return $ket;
     }
+
+    function jum_terlambar_rekap($json_data)
+    {
+    	$pgarray_data = json_decode($json_data, true);
+    	 $json_absen  = $pgarray_data['data_absen'];
+
+    	 $count = count($json_absen);
+
+    	 $hari_kerja = array();
+         for ($i=0; $i < $count; $i++) { 
+						//jam masuk
+					$jam_masuk          = $json_absen[$i]['f7'];
+					$jam_masuk_shift    = $json_absen[$i]['f12'];
+					$status_in          = $json_absen[$i]['f17'];
+					$start_time_notfixed= $json_absen[$i]['f20'];
+					$jam_masuk_notfixed = $json_absen[$i]['f22'];
+
+					//jam pulang
+					$jam_pulang         = $json_absen[$i]['f8'];
+					$jam_pulang_shift   = $json_absen[$i]['f13'];
+					$status_out         = $json_absen[$i]['f18'];
+					$end_time_notfixed  = $json_absen[$i]['f21'];
+					$jam_pulang_notfixed= $json_absen[$i]['f23'];
+
+					// keterangan 
+					$daysoff_id       = $json_absen[$i]['f19'];
+					$lkhdl_id         = $json_absen[$i]['f15'];
+					$dinasmanual_id   = $json_absen[$i]['f16'];
+					$kode_cuti        = $json_absen[$i]['f14'];
+					$rentan_tanggal   = $json_absen[$i]['f1'];
+
+					$start_time   = $json_absen[$i]['f5'];
+					$end_time     = $json_absen[$i]['f6'];
+
+					$start_time_shift  = $json_absen[$i]['f10'];
+					$end_time_shift    = $json_absen[$i]['f11'];
+                 
+
+                  $cek = absen_ket_tabel($daysoff_id, $jam_masuk, $jam_pulang,$jam_masuk_shift, $jam_pulang_shift, $lkhdl_id, $dinasmanual_id, $kode_cuti, $rentan_tanggal, $start_time, $start_time_shift, $status_in, $status_out,$end_time,$end_time_shift, $start_time_notfixed, $jam_masuk_notfixed, $end_time_notfixed, $jam_pulang_notfixed);
+
+                 if ($cek == "TM" || $cek == "TMM" || $cek == "TC" || $cek == "TCM") {
+                 		$hari_kerja[] = 1;
+                 }
+         		
+         }
+
+         $jumlah_hari_kerja = count($hari_kerja);
+
+         return  $jumlah_hari_kerja;
+    }
+
+    function jum_pulang_cepat_rekap($json_data)
+    {
+    	$pgarray_data = json_decode($json_data, true);
+    	 $json_absen  = $pgarray_data['data_absen'];
+
+    	 $count = count($json_absen);
+
+    	 $hari_kerja = array();
+         for ($i=0; $i < $count; $i++) { 
+						//jam masuk
+					$jam_masuk          = $json_absen[$i]['f7'];
+					$jam_masuk_shift    = $json_absen[$i]['f12'];
+					$status_in          = $json_absen[$i]['f17'];
+					$start_time_notfixed= $json_absen[$i]['f20'];
+					$jam_masuk_notfixed = $json_absen[$i]['f22'];
+
+					//jam pulang
+					$jam_pulang         = $json_absen[$i]['f8'];
+					$jam_pulang_shift   = $json_absen[$i]['f13'];
+					$status_out         = $json_absen[$i]['f18'];
+					$end_time_notfixed  = $json_absen[$i]['f21'];
+					$jam_pulang_notfixed= $json_absen[$i]['f23'];
+
+					// keterangan 
+					$daysoff_id       = $json_absen[$i]['f19'];
+					$lkhdl_id         = $json_absen[$i]['f15'];
+					$dinasmanual_id   = $json_absen[$i]['f16'];
+					$kode_cuti        = $json_absen[$i]['f14'];
+					$rentan_tanggal   = $json_absen[$i]['f1'];
+
+					$start_time   = $json_absen[$i]['f5'];
+					$end_time     = $json_absen[$i]['f6'];
+
+					$start_time_shift  = $json_absen[$i]['f10'];
+					$end_time_shift    = $json_absen[$i]['f11'];
+                 
+
+                  $cek = absen_ket_tabel($daysoff_id, $jam_masuk, $jam_pulang,$jam_masuk_shift, $jam_pulang_shift, $lkhdl_id, $dinasmanual_id, $kode_cuti, $rentan_tanggal, $start_time, $start_time_shift, $status_in, $status_out,$end_time,$end_time_shift, $start_time_notfixed, $jam_masuk_notfixed, $end_time_notfixed, $jam_pulang_notfixed);
+
+                 if ($cek == "PC" || $cek == "PCM" || $cek == "TC" || $cek == "TCM") {
+                 		$hari_kerja[] = 1;
+                 }
+         		
+         }
+
+         $jumlah_hari_kerja = count($hari_kerja);
+
+         return  $jumlah_hari_kerja;
+    }
+
+    function jum_tk_rekap($json_data)
+    {
+    	$pgarray_data = json_decode($json_data, true);
+    	 $json_absen  = $pgarray_data['data_absen'];
+
+    	 $count = count($json_absen);
+
+    	 $hari_kerja = array();
+         for ($i=0; $i < $count; $i++) { 
+						//jam masuk
+					$jam_masuk          = $json_absen[$i]['f7'];
+					$jam_masuk_shift    = $json_absen[$i]['f12'];
+					$status_in          = $json_absen[$i]['f17'];
+					$start_time_notfixed= $json_absen[$i]['f20'];
+					$jam_masuk_notfixed = $json_absen[$i]['f22'];
+
+					//jam pulang
+					$jam_pulang         = $json_absen[$i]['f8'];
+					$jam_pulang_shift   = $json_absen[$i]['f13'];
+					$status_out         = $json_absen[$i]['f18'];
+					$end_time_notfixed  = $json_absen[$i]['f21'];
+					$jam_pulang_notfixed= $json_absen[$i]['f23'];
+
+					// keterangan 
+					$daysoff_id       = $json_absen[$i]['f19'];
+					$lkhdl_id         = $json_absen[$i]['f15'];
+					$dinasmanual_id   = $json_absen[$i]['f16'];
+					$kode_cuti        = $json_absen[$i]['f14'];
+					$rentan_tanggal   = $json_absen[$i]['f1'];
+
+					$start_time   = $json_absen[$i]['f5'];
+					$end_time     = $json_absen[$i]['f6'];
+
+					$start_time_shift  = $json_absen[$i]['f10'];
+					$end_time_shift    = $json_absen[$i]['f11'];
+                 
+
+                  $cek = absen_ket_tabel($daysoff_id, $jam_masuk, $jam_pulang,$jam_masuk_shift, $jam_pulang_shift, $lkhdl_id, $dinasmanual_id, $kode_cuti, $rentan_tanggal, $start_time, $start_time_shift, $status_in, $status_out,$end_time,$end_time_shift, $start_time_notfixed, $jam_masuk_notfixed, $end_time_notfixed, $jam_pulang_notfixed);
+
+                 if ($cek == "TK" || $cek == "TKM") {
+                 		$hari_kerja[] = 1;
+                 }
+         		
+         }
+
+         $jumlah_hari_kerja = count($hari_kerja);
+
+         return  $jumlah_hari_kerja;
+    }
+
+    function jum_tidak_upacara_rekap($json_data)
+    {
+    	$pgarray_data = json_decode($json_data, true);
+    	 $json_absen  = $pgarray_data['data_absen'];
+
+    	 $count = count($json_absen);
+
+    	 $hari_kerja = array(0);
+         for ($i=0; $i < $count; $i++) { 
+	
+				 $jumtidak_upacara = $json_absen[$i]['f25'];
+
+                 if ($jumtidak_upacara) {
+                 		$hari_kerja[] = $jumtidak_upacara;
+                 }
+         		
+         }
+
+         $jumlah_hari_kerja = array_sum($hari_kerja);
+
+         return  $jumlah_hari_kerja;
+    }
+
+    function jum_tidak_sholatza_rekap($json_data, $agama_id='')
+    {
+    	$pgarray_data = json_decode($json_data, true);
+    	 $json_absen  = $pgarray_data['data_absen'];
+
+    	 $count = count($json_absen);
+
+    	 $hari_kerja = array(0);
+         for ($i=0; $i < $count; $i++) { 
+	
+				 $ibadah_id        = $json_absen[$i]['f26'];
+				 $daysoff_id       = $json_absen[$i]['f19'];
+				 $kode_cuti        = $json_absen[$i]['f14'];
+
+				 $start_time   = $json_absen[$i]['f5'];
+				 $start_time_shift  = $json_absen[$i]['f10'];
+				 $start_time_notfixed= $json_absen[$i]['f20'];
+
+				 $cek = cek_jum_shalat_id($ibadah_id, $daysoff_id, $kode_cuti, $start_time, $start_time_shift,$start_time_notfixed);
+
+				 if ($agama_id == 1 || $agama_id == '' || $agama_id == 0) {
+				 	 $hari_kerja[] = $cek;
+				 }
+         		
+         }
+
+         $jumlah_hari_kerja = array_sum($hari_kerja);
+
+         return  $jumlah_hari_kerja;
+    }
+
+    function cek_jum_shalat_id($ibadah_id ='',$daysoff_id='', $kode_cuti='', $start_time='', $start_time_shift='',$start_time_notfixed='')
+    {
+    	$result = 2;
+    	if ($ibadah_id == 1) {
+    			$result = 1;
+    	}elseif ($ibadah_id == 2) {
+    			$result = 1;
+    	}elseif ($ibadah_id == 3 || $ibadah_id == 4 || $ibadah_id == 5) {
+    			$result = 0;
+    	}
+
+    	if ($kode_cuti || $start_time == "00:00:00" || $start_time_shift == "00:00:00" || $start_time_notfixed == "00:00:00" || $daysoff_id) {
+    			$result = 0;
+    	}
+
+    	return $result;
+
+    }
+
+    function jum_dinas_luar_rekap($json_data)
+    {
+    	$pgarray_data = json_decode($json_data, true);
+    	 $json_absen  = $pgarray_data['data_absen'];
+
+    	 $count = count($json_absen);
+
+    	 $hari_kerja = array();
+         for ($i=0; $i < $count; $i++) { 
+	
+				 $lkhdl_id         = $json_absen[$i]['f15'];
+				 $dinasmanual_id   = $json_absen[$i]['f16'];
+				 $daysoff_id       = $json_absen[$i]['f19'];
+				 $kode_cuti        = $json_absen[$i]['f14'];
+
+				 $start_time   = $json_absen[$i]['f5'];
+				 $start_time_shift  = $json_absen[$i]['f10'];
+				 $start_time_notfixed= $json_absen[$i]['f20'];
+
+				 $cek = cek_dinas_luar_rekap($lkhdl_id , $dinasmanual_id,$daysoff_id,$kode_cuti, $start_time,$start_time_shift, $start_time_notfixed);
+
+				 if ($cek == 1) {
+				 	 $hari_kerja[] = $cek;
+				 }
+         		
+         }
+
+         $jumlah_hari_kerja = count($hari_kerja);
+
+         return  $jumlah_hari_kerja;
+    }
+
+    function cek_dinas_luar_rekap($lkhdl_id='', $dinasmanual_id='',$daysoff_id='',$kode_cuti='', $start_time='',$start_time_shift='', $start_time_notfixed='')
+    {
+    	$result = 0;
+    	if ($lkhdl_id || $dinasmanual_id) {
+    			$result = 1;
+    	}
+
+    	if ($daysoff_id || $kode_cuti || $start_time == "00:00:00" || $start_time_shift == "00:00:00" || $start_time_notfixed == "00:00:00") {
+    			$result = 0;
+    	}
+
+    	return $result;
+    }
+
+    function jum_cuti_rekap($json_data)
+    {
+    	$pgarray_data = json_decode($json_data, true);
+    	 $json_absen  = $pgarray_data['data_absen'];
+
+    	 $count = count($json_absen);
+
+    	 $hari_kerja = array();
+         for ($i=0; $i < $count; $i++) { 
+	
+				 $daysoff_id       = $json_absen[$i]['f19'];
+				 $kode_cuti        = $json_absen[$i]['f14'];
+
+				 $start_time   = $json_absen[$i]['f5'];
+				 $start_time_shift  = $json_absen[$i]['f10'];
+				 $start_time_notfixed= $json_absen[$i]['f20'];
+
+				 $cek = cek_cuti_rekap($daysoff_id,$kode_cuti, $start_time,$start_time_shift, $start_time_notfixed);
+
+				 if ($cek == 1) {
+				 	 $hari_kerja[] = $cek;
+				 }
+         		
+         }
+
+         $jumlah_hari_kerja = count($hari_kerja);
+
+         return  $jumlah_hari_kerja;
+    }
+
+    function cek_cuti_rekap($daysoff_id='',$kode_cuti='', $start_time='',$start_time_shift='', $start_time_notfixed='')
+    {
+    	$result = 0;
+    	if ($kode_cuti) {
+    			$result = 1;
+    	}
+
+    	if ($daysoff_id || $start_time == "00:00:00" || $start_time_shift == "00:00:00" || $start_time_notfixed == "00:00:00") {
+    			$result = 0;
+    	}
+
+    	return $result;
+    }
+
+
+
 

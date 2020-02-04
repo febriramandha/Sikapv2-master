@@ -58,7 +58,7 @@ class Data_absen extends App_Controller {
 									max((g.checktime)::time ) AS jam_pulang_shift,
 									i.kode as kode_cuti,
 									j.tgl_lkh as lkhdl_id,
-									k.dinasmanual_id,
+									k.user_id as dinasmanual_id,
 									l.status_in,
 									l.status_out,
 									m.id as daysoff_id,

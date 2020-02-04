@@ -142,10 +142,16 @@ $('[name="tpp"]').change(function() {
 	DataPegawai();
 })
 
+
+
+var result  = $('.result');
+var spinner = $('#spinner');
+
 $('#kalkulasi').click(function() {
+	result.attr("disabled", true);
+    spinner.show();
 	table.ajax.reload();
 })
-
 $(document).ready(function(){
 		table = $('#datatable').DataTable({ 
 			processing: true, 
@@ -167,20 +173,25 @@ $(document).ready(function(){
 					data.tahun  = $('[name="tahun"]').val();
 					data.bulan  = $('[name="bulan"]').val();
 				},
+				"dataSrc": function ( json ) {
+	                //Make your callback here.
+	                result.attr("disabled", false);
+		          	spinner.hide();
+	                return json.data;
+	            } 
 			},
-			rowsGroup: [1],
 			"columns": [
 			{"data": "id", searchable:false},
 			{"data": "nama_nip", searchable:false},
 			{"data": "jum_hari_kerja", searchable:false},
 			{"data": "jum_hadir_kerja_rekap", searchable:false},
-			{"data": "jum_hari_kerja", searchable:false},
-			{"data": "jum_hari_kerja", searchable:false},
-			{"data": "jum_hari_kerja", searchable:false},
-			{"data": "jum_hari_kerja", searchable:false},
-			{"data": "jum_hari_kerja", searchable:false},
-			{"data": "jum_hari_kerja", searchable:false},
-			{"data": "jum_hari_kerja", searchable:false},
+			{"data": "jum_terlambar_rekap", searchable:false},
+			{"data": "jum_pulang_cepat_rekap", searchable:false},
+			{"data": "jum_tk_rekap", searchable:false},
+			{"data": "jum_tidak_upacara_rekap", searchable:false},
+			{"data": "jum_tidak_sholatza_rekap", searchable:false},
+			{"data": "jum_dinas_luar_rekap", searchable:false},
+			{"data": "jum_cuti_rekap", searchable:false},
 			
 			],
 			rowCallback: function(row, data, iDisplayIndex) {

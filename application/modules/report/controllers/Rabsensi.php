@@ -72,7 +72,7 @@ class Rabsensi extends App_Controller {
 									i.kode as kode_cuti,
 									a.gelar_dpn, a.gelar_blk,
 									j.tgl_lkh as lkhdl_id,
-									k.dinasmanual_id,
+									k.user_id as dinasmanual_id,
 									l.status_in,
 									l.status_out,
 									m.id as daysoff_id,
