@@ -102,13 +102,13 @@
 						
 					</tr>
 					<tr class="table-active">
-						<th width="1%">Terlambat Masuk Kerja</th>
-						<th width="1%">Pulang Kerja Lebih Awal</th>
-						<th width="1%">Tidak Hadir Tanpa Keterangan</th>
-						<th width="1%">Tidak Mengikuti Upacara</th>
-						<th width="1%">Tidak Shalat Zuhur/Ashar Berjamaah</th>
-						<th width="1%">DL</th>
-						<th width="1%">Cuti</th>
+						<th width="1%" class="p-1">Terlambat Masuk Kerja</th>
+						<th width="1%" class="p-1">Pulang Kerja Lebih Awal</th>
+						<th width="1%" class="p-1">Tidak Hadir Tanpa Keterangan</th>
+						<th width="1%" class="p-1">Tidak Mengikuti Upacara</th>
+						<th width="1%" class="p-1">Tidak Shalat Zuhur/Ashar Berjamaah</th>
+						<th width="1%" class="p-1">DL</th>
+						<th width="1%" class="p-1">Cuti</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -205,14 +205,14 @@ $(document).ready(function(){
 			createdRow: function(row, data, index) {
 	     		 $('td', row).eq(1).addClass('text-nowrap p-1');
 	     		 $('td', row).eq(2).addClass('text-nowrap p-1 text-center');
-	     		 $('td', row).eq(3).addClass('text-nowrap p-2 text-center');
-	     		 $('td', row).eq(4).addClass('text-nowrap p-2 text-center');
-	     		 $('td', row).eq(5).addClass('text-nowrap p-2 text-center');
-	     		 $('td', row).eq(6).addClass('text-nowrap p-2 text-center');
-	     		 $('td', row).eq(7).addClass('text-nowrap p-2 text-center');
-	     		 $('td', row).eq(8).addClass('text-nowrap p-2 text-center');
-	     		 $('td', row).eq(9).addClass('text-nowrap p-2 text-center');
-	     		 $('td', row).eq(10).addClass('text-nowrap p-2 text-center');
+	     		 $('td', row).eq(3).addClass('text-nowrap p-1 text-center');
+	     		 $('td', row).eq(4).addClass('text-nowrap p-1 text-center');
+	     		 $('td', row).eq(5).addClass('text-nowrap p-1 text-center');
+	     		 $('td', row).eq(6).addClass('text-nowrap p-1 text-center');
+	     		 $('td', row).eq(7).addClass('text-nowrap p-1 text-center');
+	     		 $('td', row).eq(8).addClass('text-nowrap p-1 text-center');
+	     		 $('td', row).eq(9).addClass('text-nowrap p-1 text-center');
+	     		 $('td', row).eq(10).addClass('text-nowrap p-1 text-center');
 	  },
 	});
  // Initialize
