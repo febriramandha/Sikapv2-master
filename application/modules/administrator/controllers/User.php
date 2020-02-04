@@ -78,6 +78,7 @@ class User extends App_Controller {
 		$this->data['agama']		= $this->db->order_by('id')->get('_agama')->result();
 		$this->data['eselon']		= $this->db->order_by('id')->get('_eselon')->result();
 		$this->data['golongan']		= $this->db->order_by('id')->get('_golongan')->result();
+		$this->data['status_peg']	= $this->db->order_by('id')->get('_statpeg')->result();
 		$this->load->view('user/v_add', $this->data);
 	}
 
@@ -91,6 +92,7 @@ class User extends App_Controller {
 		$this->data['agama']		= $this->db->order_by('id')->get('_agama')->result();
 		$this->data['eselon']		= $this->db->order_by('id')->get('_eselon')->result();
 		$this->data['golongan']		= $this->db->order_by('id')->get('_golongan')->result();
+		$this->data['status_peg']	= $this->db->order_by('id')->get('_statpeg')->result();
 		$this->load->view('user/v_edit', $this->data);
 	}
 
@@ -118,7 +120,8 @@ class User extends App_Controller {
 							  ->set_rules('nama', 'nama lengkap', 'required')
 							  ->set_rules('jabatan', 'jabatan', 'required')
 							  ->set_rules('agama', 'agama', 'required')
-							  ->set_rules('gender', 'jenis kelamin', 'required');
+							  ->set_rules('gender', 'jenis kelamin', 'required')
+							  ->set_rules('status_pegawai', 'status pegawai', 'required');
 		if ($this->input->post('ketegori') == 1) {
 			$this->form_validation->set_rules('nip', 'NIP', 'required|min_length[18]|max_length[18]|numeric|'.$nip_cek.'');
 		}
@@ -191,10 +194,10 @@ class User extends App_Controller {
 											  'gelar_dpn'  => $this->input->post('gelar_dpn'),
 											  'gelar_blk'  => $this->input->post('gelar_blk'),
 											  'gender'     => $this->input->post('gender'),
+											  'statpeg_id' => $this->input->post('status_pegawai'),
 											  'user_id'    => $user_id,
 										);
 						if ($this->input->post('ketegori') == 1) {
-							$data_biodata['statpeg_id'] = 3;
 							$data_biodata['golongan_id']= $this->input->post('golongan');
 							$data_biodata['eselon_id']  = $this->input->post('eselon');
 						}
@@ -261,9 +264,9 @@ class User extends App_Controller {
 										  'gelar_blk'  => $this->input->post('gelar_blk'),
 										  'gender'     => $this->input->post('gender'),
 										  'jabatan'    => $this->input->post('jabatan'),
+										  'statpeg_id' => $this->input->post('status_pegawai'),
 									);
 					if ($this->input->post('ketegori') == 1) {
-						$data_biodata['statpeg_id'] = 3;
 						$data_biodata['golongan_id']= $this->input->post('golongan');
 						$data_biodata['eselon_id']  = $this->input->post('eselon');
 					}

@@ -54,9 +54,10 @@
             <div class="form-group">
              <select class="form-control select-nosearch" name="ketegori" >  
               <option disabled="">Pilih Ketegori</option> 
-              <option value="1">PNS/CPNS</option>
+              <option value="1">PNS</option>
               <option value="2">NON PNS</option>
             </select> 
+            <span class="text-danger"><i>* pilih PNS jika memiliki NIP</i></span>
           </div>
         </div>
       </div>
@@ -152,6 +153,19 @@
         </div>
       </div>
 
+      <div class="form-group row nip_pegawai">
+          <label class="col-form-label col-lg-2">Status Pegawai <span class="text-danger">*</span></label>
+          <div class="col-lg-10">
+            <div class="form-group">
+             <select class="form-control select-nosearch" name="status_pegawai" >  
+              <option value="">Pilih Status Pegawai</option> 
+              <?php foreach ($status_peg as $row) {?>    
+                  <option value="<?php echo $row->id ?>"><?php echo $row->nama ?></option>
+              <?php } ?>
+            </select> 
+          </div>
+        </div>
+      </div>
       
       <div class="form-group row">
         <label class="col-form-label col-lg-2">Instansi <span class="text-danger">*</span></label>
@@ -166,6 +180,8 @@
         </div>
       </div>
     </div>
+
+
 
      <div class="form-group row">
             <label class="col-form-label col-lg-2">Jenis Kelamin <span class="text-danger">*</span></label>

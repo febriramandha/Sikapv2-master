@@ -28,7 +28,7 @@
 	          <div class="form-group">
 	           <select class="form-control select-nosearch result" name="kategori" >  
 	            <option value="0">Semua..</option> 
-	            <option value="1">PNS/CPNS</option>
+	            <option value="1">PNS</option>
 	            <option value="2">NON PNS</option>
 	          </select> 
 	        </div>

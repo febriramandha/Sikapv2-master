@@ -10,7 +10,7 @@ class M_user extends CI_Model {
 
 	public function GetUser($user_id)
 	{
-		$this->db->select('a.id as user_id, b.id as login_id, b.username, a.nama, a.nip, a.tpp, a.dept_id, b.level, a.att_status, a.pns, b.status, c.gelar_dpn, c.gelar_blk, c.jabatan, c.golongan_id, c.eselon_id, c.gender, c.agama_id')
+		$this->db->select('a.id as user_id, b.id as login_id, b.username, a.nama, a.nip, a.tpp, a.dept_id, b.level, a.att_status, a.pns, b.status, c.gelar_dpn, c.gelar_blk, c.jabatan, c.golongan_id, c.eselon_id, c.gender, c.agama_id,c.statpeg_id')
 				 ->from('mf_users a')
 				 ->join('users_login b','a.id=b.user_id')
          ->join('sp_pegawai c','a.id=c.user_id','left')

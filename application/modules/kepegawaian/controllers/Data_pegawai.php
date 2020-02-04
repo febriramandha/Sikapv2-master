@@ -71,6 +71,7 @@ class Data_pegawai extends App_Controller {
 		$this->data['agama']		= $this->db->order_by('id')->get('_agama')->result();
 		$this->data['eselon']		= $this->db->order_by('id')->get('_eselon')->result();
 		$this->data['golongan']		= $this->db->order_by('id')->get('_golongan')->result();
+		$this->data['status_peg']	= $this->db->order_by('id')->get('_statpeg')->result();
 		$this->load->view('data_pegawai/v_edit', $this->data);
 	}
 

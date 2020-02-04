@@ -8,7 +8,7 @@
 			</div>
 		</div>
 	</div>
-	<?php echo form_open('report/rabsensi/cetak','class="form-horizontal" target="popup" id="formAjax"'); ?>
+	<?php echo form_open('report/rekap-kehadiran/cetak','class="form-horizontal" target="popup" id="formAjax"'); ?>
 	<div class="card-body">
 		<div class="form-group row">
 			<label class="col-form-label col-lg-2">Instansi <span class="text-danger">*</span></label>
@@ -28,7 +28,7 @@
 	          <div class="form-group">
 	           <select class="form-control select-nosearch result" name="kategori" >  
 	            <option value="0">Semua..</option> 
-	            <option value="1">PNS/CPNS</option>
+	            <option value="1">PNS</option>
 	            <option value="2">NON PNS</option>
 	          </select> 
 	        </div>
@@ -150,6 +150,7 @@ var spinner = $('#spinner');
 $('#kalkulasi').click(function() {
 	result.attr("disabled", true);
     spinner.show();
+    $('#kalkulasi').hide();
 	table.ajax.reload();
 })
 $(document).ready(function(){
@@ -173,10 +174,16 @@ $(document).ready(function(){
 					data.tahun  = $('[name="tahun"]').val();
 					data.bulan  = $('[name="bulan"]').val();
 				},
+				beforeSend:function(){
+					result.attr("disabled", true);
+					$('#kalkulasi').hide();
+		      		spinner.show();
+				},
 				"dataSrc": function ( json ) {
 	                //Make your callback here.
 	                result.attr("disabled", false);
 		          	spinner.hide();
+		          	$('#kalkulasi').show();
 	                return json.data;
 	            } 
 			},
@@ -248,4 +255,11 @@ function DataPegawai() {
 	});
 	
 }
+
+$('#cetak').click(function() {
+		window.open('about:blank','popup','width=1000,height=600')
+		$('#formID').submit();
+		
+		
+})
 </script>

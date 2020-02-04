@@ -216,6 +216,50 @@ class Rekap_kehadiran extends App_Controller {
         return $this->output->set_output($this->datatables->generate());
 	}
 
+	public function cetak()
+	{
+		$this->output->unset_template();
+		$dept_id = decrypt_url($this->input->post('instansi'),'instansi');
+		
+
+		$this->form_validation->set_rules('instansi', 'nama instansi', 'required')
+							  ->set_rules('pegawai[]', 'pegawai', 'required')
+							  ->set_rules('tahun', 'tahun', 'required')
+							  ->set_rules('bulan', 'bulan', 'required');
+		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
+		if ($this->form_validation->run() == TRUE) {
+			$tahun  	= $this->input->post('tahun');
+			$bulan  	= $this->input->post('bulan');
+
+			$hari_ini 		= "$tahun-$bulan-01";
+ 			$rank1 			= date('Y-m-01', strtotime($hari_ini));
+ 			$rank2 			= date('Y-m-t', strtotime($hari_ini));
+			$jum_hari = jumlah_hari_rank($rank1, $rank2);
+			if ($jum_hari > 31) {
+				echo 'maksimat tanggal yang diizinkan 31 hari';
+			}else{
+				$user_id  	= $this->input->post('pegawai');
+				$user_id_in =array();
+				if ($user_id) {
+					foreach ($user_id as $r_v ) {
+						$user_id_in[] = $r_v;
+					}
+				}
+				$this->data['jum_hari']	= $jum_hari;
+				$this->data['rank1'] 	= $rank1;
+				$this->data['pegawai_absen'] = $this->m_absen->PegawaiAbsenQueryRekapitulasi($user_id_in, $rank1, $rank2)->result();
+				$this->data['priode']		 = tgl_ind_bulan($rank1).' s/d '.tgl_ind_bulan($rank2);
+				$this->data['datainstansi']  		= $this->m_pejabat_instansi->GetPajabatByInstansi($dept_id, 7)->row();
+				$this->data['datainstansi_kepala']  = $this->m_pejabat_instansi->GetPajabatByInstansi($dept_id, 3)->row();
+				$this->load->library('Tpdf');
+				$this->load->view('rekap_kehadiran/v_cetak', $this->data);
+			}
+		}else {
+			echo  validation_errors();
+		}
+	}
+
+
 
 }
 
