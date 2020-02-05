@@ -106,10 +106,10 @@
 			</div>
 			<div class="table-responsive m-0 naikturun">
 				<table class="table text-nowrap table-bordered">
-					<tr>
-						<th>Hari</th>
-						<th>Jam Masuk<hr class="m-0">(Mulai C/in - Akhir C/in)</th>
-						<th>Jam Pulang<hr class="m-0">(Mulai C/Out - Akhir C/Out)</th>
+					<tr class="table-active text-center">
+						<th class="py-0">Hari</th>
+						<th class="py-0">Jam Masuk<hr class="m-0">(Mulai C/in - Akhir C/in)</th>
+						<th class="py-0">Jam Pulang<hr class="m-0">(Mulai C/Out - Akhir C/Out)</th>
 					</tr>
 					<tr>
 						<td>Senin</td>
