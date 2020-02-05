@@ -80,6 +80,87 @@ class Rekap_lkh extends App_Controller {
 		}
 		
 	}
+
+	public function indexJson()
+	{
+		$this->output->unset_template();
+		$user_id  	= $this->input->post('pegawai');
+		$user_id_in =array();
+		if ($user_id) {
+			foreach ($user_id as $r_v ) {
+				$user_id_in[] = $r_v;
+			}
+		}
+		
+		$tahun  	= $this->input->post('tahun');
+		$bulan  	= $this->input->post('bulan');
+
+		if ($tahun && $bulan) {
+			$hari_ini 		= "$tahun-$bulan-01";
+ 			$rank1 			= date('Y-m-01', strtotime($hari_ini));
+ 			$rank2 			= date('Y-m-t', strtotime($hari_ini));
+			
+		}else {
+			$rank1  	   = date('Y-m-d');
+			$rank2  	   = date('Y-m-d');
+		}
+		$this->load->library('datatables');
+        $this->datatables->select('a.id, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, json_jadwal_lkh')
+        	->from("v_users_all a")
+        	->order_by('no_urut');
+        $this->db->join("(select a.id,
+					json_build_object(
+									'data_jum_lkh',json_agg(
+									(	rentan_tanggal,
+										start_time, 
+										end_time,
+										start_time_shift,
+										end_time_shift,
+										start_time_notfixed, 
+										end_time_notfixed,
+										daysoff_id,
+										jumlah_lkh
+									) ORDER BY rentan_tanggal)
+							) as json_jadwal_lkh
+						from mf_users a
+						left join (
+						select 
+						a.id, 
+						rentan_tanggal,
+						b.start_time, 
+						b.end_time,
+						c.start_time as start_time_shift,
+						c.end_time as end_time_shift,
+						d.start_time as start_time_notfixed, 
+						d.end_time as end_time_notfixed,
+						e.tanggal as daysoff_id,
+						f.jum as jumlah_lkh
+						from 
+						(select a.id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$rank1','$rank2')) as tanggal) as a
+						left join v_jadwal_kerja_users b on ((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day)and b.user_id=a.id)
+						left join v_jadwal_kerja_users_shift c on (a.id = c.user_id and c.start_shift=a.rentan_tanggal)
+						left join v_jadwal_kerja_users_notfixed d on ((rentan_tanggal >= d.start_date and rentan_tanggal <= d.end_date and extract('isodow' from a.rentan_tanggal) = d.day_id)and d.user_id=a.id)
+						left join days_off e on (rentan_tanggal >= e.start_date and rentan_tanggal <= e.end_date)
+						left join jumlah_lkh_users f on (a.id = f.user_id and rentan_tanggal = f.tgl_lkh)
+						group by 1,2,3,4,5,6,7,8,9,10) as b on a.id=b.id
+						group by 1) as b",'a.id=b.id','left',false);
+        	$this->datatables->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip)');
+        	$this->datatables->add_column('jum_hari_kerja','$1','jum_hari_kerja_rekap_lkh(json_jadwal_lkh)');
+        	$this->datatables->add_column('jum_hadir_kerja_rekap','$1','jum_data_kerja_rekap_lkh(json_jadwal_lkh)');
+        	$this->datatables->add_column('total_jum_lkh_rekap','$1','total_jum_lkh_rekap(json_jadwal_lkh)');
+        	 if ($user_id_in) {
+        	 	if (!$tahun || !$bulan) {
+			     		$this->datatables->where_in('a.id','0');
+			     }else {
+			     	$this->datatables->where_in('a.id', $user_id_in);
+			     }
+		     }else {
+		     	 $this->datatables->where_in('a.id','0');
+		     }
+		     
+        return $this->output->set_output($this->datatables->generate());
+	}
+
 }
 
 /* End of file Rekap_lkh.php */

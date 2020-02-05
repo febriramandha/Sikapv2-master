@@ -98,6 +98,7 @@
 						  <th >Nama/NIP</th>
 						  <th width="1%" >Jumlah Hari kerja 1 Bulan</th>
                           <th width="1%">Jumlah Laporan Kerja Harian</th>	
+                          <th width="1%">Total Laporan</th>	
 					</tr>
 				</thead>
 				<tbody>
@@ -173,6 +174,7 @@ $(document).ready(function(){
 			{"data": "nama_nip", searchable:false},
 			{"data": "jum_hari_kerja", searchable:false},
 			{"data": "jum_hadir_kerja_rekap", searchable:false},
+			{"data": "total_jum_lkh_rekap", searchable:false},
 			
 			],
 			rowCallback: function(row, data, iDisplayIndex) {

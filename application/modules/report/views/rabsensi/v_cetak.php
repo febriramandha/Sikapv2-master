@@ -118,12 +118,12 @@
     $ttd ='<div align="center">
             <table width="100%">
                 <tr nobr="true">
-                    <td width="70%" align="left"><b>Ket :</b>  <br>- H : Hadir Normal - TM : Telat Masuk - PC : Pulang Cepat - TC : Telat Masuk Pulang Cepat - C* : Cuti - DL : Dinas Luar
+                    <td width="70%" align="left"><b>Ket :</b>  <br><br>- H : Hadir Normal - TM : Telat Masuk - PC : Pulang Cepat - TC : Telat Masuk Pulang Cepat - C* : Cuti - DL : Dinas Luar
                     <br>- *M : * Manual
                     <br>- TK : Tanpa Ketetangan
                     <br>- L : Hari Libur Kerja              
                     </td> 
-                    <td width="30%"><b>'.$datainstansi->kecamatan.', '.tgl_ind_bulan(date('Y-m-d')).'</b><br>
+                    <td width="30%"><b>'.$datainstansi->kecamatan.', '.tgl_ind_bulan(date('Y-m-d')).'</b><br><br>
                         '.$datainstansi->jabatan.'
                         <br><br><br><br>
                         <br><b><u>'.nama_gelar($datainstansi->nama, $datainstansi->gelar_dpn, $datainstansi->gelar_blk).'</u></b>

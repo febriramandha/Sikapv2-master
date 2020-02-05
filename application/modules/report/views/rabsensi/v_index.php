@@ -149,6 +149,9 @@ $('[name="tpp"]').change(function() {
 })
 
 $('#kalkulasi').click(function() {
+	result.attr("disabled", true);
+    spinner.show();
+    $('#kalkulasi').hide();
 	table.ajax.reload();
 })
 
@@ -173,6 +176,18 @@ $(document).ready(function(){
 					data.rank1  = $('[name="rank1"]').val();
 					data.rank2  = $('[name="rank2"]').val();
 				},
+				beforeSend:function(){
+					result.attr("disabled", true);
+					$('#kalkulasi').hide();
+		      		spinner.show();
+				},
+				"dataSrc": function ( json ) {
+	                //Make your callback here.
+	                result.attr("disabled", false);
+		          	spinner.hide();
+		          	$('#kalkulasi').show();
+	                return json.data;
+	            } 
 			},
 			rowsGroup: [1],
 			"columns": [
