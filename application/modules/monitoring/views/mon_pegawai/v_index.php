@@ -4,7 +4,7 @@
 		<h5 class="mb-3">Monitoring Pegawai</h5>
 			<div class="input-group mb-3">
 				<div class="form-group-feedback form-group-feedback-left">
-					<input type="text" name="pegawai" class="form-control form-control-lg" value="" placeholder="Cari nama,nip, eselon, jabatan">
+					<input type="text" name="pegawai" class="form-control form-control-lg" value="" placeholder="Cari nama,nip">
 					<div class="form-control-feedback form-control-feedback-lg">
 						<i class="icon-search4 text-muted"></i>
 					</div>
