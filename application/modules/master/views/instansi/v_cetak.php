@@ -11,14 +11,14 @@
     $pdf->SetMargins(7, 10, 7);
     
     $pdf->AddPage();
-    $pdf->SetFont('times', 'B', 12);
-    $pdf->SetY(20);
+    $pdf->SetFont('arial', '', 12);
+    $pdf->SetY(15);
     $txt = <<<EOD
             LAPORAN DATA INSTANSI
             EOD;
     // print a block of text using Write()
     $pdf->Write(0, $txt, '', 0, 'C', true, 1, false, false, 0);
-    $pdf->SetY(30);
+    $pdf->SetY(25);
     $pdf->SetFont('times', '', 8, '', false);
     $html ='<hr style="height: 2px;">';
     $pdf->writeHTML($html, true, false, true, false, '');
@@ -28,8 +28,8 @@
     $html .='<table cellpadding="3" border="1" width="100%">
                 <tr align="center"> 
                       <td width="5%" ><b>No</b></td>
-                      <th width="45%"><b>NAMA INSTANSI</b></th>
-                      <th width="40%"><b>NAMA SINGKAT</b></th>
+                      <th width="45%"><b>Nama Unit Kerja</b></th>
+                      <th width="40%"><b>Nama Singkat</b></th>
                       <th width="10%"><b>No Urut</b></th>
                 </tr>';
     $no=1;

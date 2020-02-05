@@ -125,7 +125,7 @@ class User extends App_Controller {
 		if ($this->input->post('ketegori') == 1) {
 			$this->form_validation->set_rules('nip', 'NIP', 'required|min_length[18]|max_length[18]|numeric|'.$nip_cek.'');
 		}
-		$this->form_validation->set_rules('instansi', 'instansi', 'required')
+		$this->form_validation->set_rules('instansi', 'Unit Kerja', 'required')
 							  ->set_rules('level', 'jenis pengguna', 'required');		
 		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 

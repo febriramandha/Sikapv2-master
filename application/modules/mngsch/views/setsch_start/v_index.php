@@ -24,7 +24,7 @@
 					<tr class="table-active">
 						<th width="1%">No</th>
 						<th class="text-nowrap">Nama Jadwal<hr class="m-0">Priode</th>
-						<th >instansi</th>
+						<th >Unit Kerja</th>
 						<th >Status</th>
 						<th width="1%">Aksi</th>
 					</tr>

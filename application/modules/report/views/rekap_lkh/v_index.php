@@ -11,7 +11,7 @@
 	<?php echo form_open('report/rekap-lkh/cetak','class="form-horizontal" target="popup" id="formAjax"'); ?>
 	<div class="card-body">
 		<div class="form-group row">
-			<label class="col-form-label col-lg-2">Instansi <span class="text-danger">*</span></label>
+			<label class="col-form-label col-lg-2">Unit Kerja <span class="text-danger">*</span></label>
 			<div class="col-lg-10">
 				<div class="form-group">
 					<select class="form-control select-search result" name="instansi"> 

@@ -1,7 +1,7 @@
 <!-- Basic table -->
 <div class="card">
       <div class="card-header bg-white header-elements-inline py-2">
-            <h5 class="card-title">Data Instansi</h5>
+            <h5 class="card-title">Data Unit Kerja</h5>
             <div class="header-elements">
                   <div class="list-icons">
                   <a class="list-icons-item" data-action="collapse"></a>
@@ -16,13 +16,13 @@
               </button> 
           </div>
           <div class="card-body">
-            <input type="text"  class="form-control" name="cari" id="search" placeholder="Cari Instansi">
+            <input type="text"  class="form-control" name="cari" id="search" placeholder="Cari Unit Kerja">
           </div>    
           <div class="table-responsive">
                   <table id="example-advanced" class="table table-sm table-hover table-bordered">
                     <thead>
                       <tr>
-                        <th>Nama Instansi</th>
+                        <th>Nama Unit Kerja</th>
                         <th width="1%" style="font-size: 80%;">Jumlah Pengguna</th>
                         <th width="1%">Status</th>
                         <th width="1%" class="text-nowrap">Kecamatan</th>

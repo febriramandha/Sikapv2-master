@@ -91,7 +91,7 @@ class Asisten extends App_Controller {
 	{
 		$this->output->unset_template();
 		$this->form_validation->set_rules('pejabat', 'pejabat', 'required')
-								->set_rules('instansi[]', 'instansi', 'required');
+								->set_rules('instansi[]', 'Unit Kerja', 'required');
 		$this->form_validation->set_error_delimiters('<div>', '</div>');
 
 		if ($this->form_validation->run() == TRUE) {

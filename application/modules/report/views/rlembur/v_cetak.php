@@ -29,12 +29,12 @@
     $pdf->SetMargins(20, 10, 20);
     $tbl ='<table width="100%">
                 <tr>
-                    <td width="10%"><b> INSTANSI</b></td>
+                    <td width="12%"><b> UNIT KERJA</b></td>
                     <td width="2%">:</td>
                     <td width="80%"> '.$datainstansi->dept_name.'</td>
                 </tr>
                 <tr>
-                    <td width="10%"><b> PERIODE</b></td>
+                    <td width="12%"><b> PERIODE</b></td>
                     <td width="2%">:</td>
                     <td width="80%"> '.$priode.'</td>
                 </tr>

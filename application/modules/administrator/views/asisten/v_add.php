@@ -25,14 +25,14 @@
 	            </div>
           </div>
           <div class="form-group row">
-	           <label class="col-form-label col-lg-2">Pilih Instansi</label>
+	           <label class="col-form-label col-lg-2">Pilih Unit Kerja</label>
 	           <div class="col-lg-10">
 	              	<div class="table-responsive">
 						<table id="datatable" class="table table-sm table-hover">
 							<thead>
 								<tr>
 									<th width="1%">#</th>
-									<th class="text-nowrap">Nama Instansi</th>
+									<th class="text-nowrap">Unit Kerja</th>
 								</tr>
 							</thead>
 							<tbody id="load_dt">

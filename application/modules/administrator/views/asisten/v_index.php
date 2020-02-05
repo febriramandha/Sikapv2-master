@@ -25,7 +25,7 @@
 						<th width="1%">No</th>
 						<th class="text-nowrap">Nama(nip)</th>
 						<th>Jabatan</th>
-						<th>Instansi</th>
+						<th>Unit Kerja</th>
 						<th width="1%">Aksi</th>
 					</tr>
 				</thead>

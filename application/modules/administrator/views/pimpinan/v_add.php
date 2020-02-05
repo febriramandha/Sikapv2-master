@@ -27,11 +27,11 @@
               </div>
           </div>
           <div class="form-group row">
-              <label class="col-form-label col-lg-2">Instansi <span class="text-danger">*</span></label>
+              <label class="col-form-label col-lg-2">Unit Kerja <span class="text-danger">*</span></label>
               <div class="col-lg-10">
                   <div class="form-group">
                        <select class="form-control select-search" name="instansi" >  
-                              <option disabled="">Pilih Instansi</option> 
+                              <option disabled="">Pilih Unit Kerja</option> 
                               <?php foreach ($instansi as $row) { ?>
                                 <option value="<?php echo encrypt_url($row->id,'instansi') ?>"><?php echo '['.$row->level.']'.carakteX($row->level, '-','|').filter_path($row->path_info)." ".strtoupper($row->dept_name) ?></option>
                               <?php } ?>

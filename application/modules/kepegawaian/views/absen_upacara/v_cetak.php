@@ -25,17 +25,17 @@
 
     $html ='<table align="left" width="100%">
                 <tr>
-                    <td width="9%"><b>Instansi</b></td>
+                    <td width="10%"><b>UNIT KERJA</b></td>
                     <td width="2%">:</td>
                     <td width="89%">'.$instansi->dept_name.'</td>
                 </tr>
                 <tr>
-                    <td width="9%"><b>Hari/Tanggal</b></td>
+                    <td width="10%"><b>Hari/Tanggal</b></td>
                     <td width="2%">:</td>
                     <td width="89%">'.tgl_ind_hari($jadwal->tanggal).' '.jm($jadwal->jam_mulai).'</td>
                 </tr>
                 <tr>
-                    <td width="9%"><b>Acara</b></td>
+                    <td width="10%"><b>Acara</b></td>
                     <td width="2%">:</td>
                     <td width="89%">'.$jadwal->ket.'</td>
                 </tr>

@@ -14,7 +14,6 @@
 					<button type="submit" class="btn btn-primary btn-sm	" id="cari"><i class="icon-search4 mr-2"></i> Cari</button>
 				</div>
 			</div> -->
-		<i class="icon-spinner2 spinner icon-2x" style="display: none" id="spinner"></i>
 		<div class="table-responsive">
 			<table id="datatable" class="table table-sm table-hover table-bordered">
 				<thead>

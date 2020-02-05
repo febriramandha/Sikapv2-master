@@ -25,7 +25,7 @@
 						<th width="1%">No</th>
 						<th width="1%">Kode</th>
 						<th class="text-nowrap">Jam Shift (masuk - pulang)</th>
-						<th >Instansi</th>
+						<th >Unit Kerja</th>
 						<th >Keterangan</th>
 						<th width="1%">status</th>
 						<th width="1%">Aksi</th>

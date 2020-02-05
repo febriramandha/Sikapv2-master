@@ -25,12 +25,12 @@
 
     $html ='<table align="left" width="100%">
                 <tr>
-                    <td width="4%"><b>INSTANSI</b></td>
+                    <td width="6%"><b>UNIT KERJA</b></td>
                     <td width="2%">:</td>
                     <td>'.$datainstansi->dept_name.'</td>
                 </tr>
                 <tr>
-                    <td width="4%"><b>PERIODE</b></td>
+                    <td width="6%"><b>PERIODE</b></td>
                     <td width="2%">:</td>
                     <td>'.$priode.'</td>
                 </tr>

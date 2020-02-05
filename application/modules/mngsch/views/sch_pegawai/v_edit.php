@@ -61,7 +61,7 @@
   <?php echo form_open('mngsch/sch-pegawai/AjaxSave','class="form-horizontal" id="formAjax"'); ?>
 		<div class="col-lg-12">
            <div class="form-group row">
-              <label class="col-form-label col-lg-2">Instansi <span class="text-danger">*</span></label>
+              <label class="col-form-label col-lg-2">Unit Kerja <span class="text-danger">*</span></label>
               <div class="col-lg-10">
                   <div class="form-group">
                        <select class="form-control select-search" name="instansi"> 

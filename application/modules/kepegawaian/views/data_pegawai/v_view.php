@@ -39,7 +39,7 @@
 								<td><?php echo $user->key ?></td>
 							</tr>
 							<tr>
-								<th>Instansi</th>
+								<th>Unit Kerja</th>
 								<td>:</td>
 								<td><?php echo _name($user->dept_name) ?></td>
 							</tr>

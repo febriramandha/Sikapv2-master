@@ -25,7 +25,7 @@
 
     $html ='<table align="left" width="100%">
                 <tr>
-                    <td width="8%"><b>INSTANSI</b></td>
+                    <td width="10%"><b>UNIT KERJA</b></td>
                     <td width="2%">:</td>
                     <td width="80%">'.$instansi->dept_name.'</td>
                 </tr>
@@ -35,10 +35,10 @@
                 <tr align="center"> 
                       <td width="5%" ><b>No</b></td>
                       <th width="5%"><b>ID</b></th>
-                      <th width="25%"><b>NAMA</b></th>
+                      <th width="25%"><b>Nama</b></th>
                       <th width="20%"><b>NIP</b></th>
-                      <th width="30%"><b>INSTANSI</b></th>
-                      <th width="15%"><b>STATUS</b></th>
+                      <th width="30%"><b>Unit Kerja</b></th>
+                      <th width="15%"><b>Status</b></th>
                 </tr>';
     $no=1;
           foreach ($user as $row) {

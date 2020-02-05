@@ -19,7 +19,7 @@
 					<tr class="table-active">
 						<th width="1%">No</th>
 						<th class="text-nowrap">Nama Jadwal<hr class="m-0">Priode</th>
-						<th >instansi</th>
+						<th >Unit Kerja</th>
 						<th class="text-nowrap">Pesan Pengumuman</th>
 						<th width="1%" style="font-size: 80%;">Jumlah Hari Input</th>
 						<th width="1%" style="font-size: 80%;">Jumlah Hari verifikasi</th>

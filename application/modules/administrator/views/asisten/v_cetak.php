@@ -28,9 +28,9 @@
     $html .='<table cellpadding="3" border="1" width="100%">
                 <tr align="center"> 
                       <td width="5%" ><b>No</b></td>
-                      <th width="30%"><b>NAMA(NIP)</b></th>
-                      <th width="35%"><b>JABATAN</b></th>
-                      <th width="30%"><b>INSTANSI</b></th>
+                      <th width="30%"><b>Nama(NIP)</b></th>
+                      <th width="35%"><b>Jabatan</b></th>
+                      <th width="30%"><b>Unit Kerja</b></th>
                 </tr>';
         $arrayForTable = [];
         foreach ($user as $databaseValue) {

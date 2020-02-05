@@ -91,10 +91,11 @@ class Rtlkh extends App_Controller {
 		}else{
 			$this->data['priode']		= tgl_ind_bulan($rank1).' s/d '.tgl_ind_bulan($rank2);
 			$this->load->library('Tpdf');
-			$datalkh = $this->m_data_lkh->GetDatalkhRank($user_id,$rank1,$rank2,1);
+			$datalkh  = $this->m_data_lkh->GetDatalkhRank($user_id,$rank1,$rank2,1);
+			$ttd_data = $this->m_verifikator->GetVerifikatorCetak($user_id)->row();
 			$this->data['datalkh']		= $datalkh;
-			$this->data['ttd_data']		= $this->m_verifikator->GetVerifikatorCetak($user_id)->row();
-			$this->data['instansi']		= $this->m_instansi->GetInstansi($datalkh->dept_id)->row();
+			$this->data['ttd_data']		= $ttd_data;
+			$this->data['instansi']		= $this->m_instansi->GetInstansi($ttd_data->dept_id)->row();
 			$this->load->view('rtlkh/v_cetak', $this->data);
 		}
 	}

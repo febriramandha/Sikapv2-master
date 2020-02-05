@@ -14,7 +14,7 @@
 			<a href="<?php echo base_url('mngabsenmanual/schabsen-manualin/add') ?>" class="btn btn-sm btn-info"><i class="icon-pen-plus mr-1"></i> Tambah Jadwal</a>
 		</div>
 		<div class="form-group row">
-			<label class="col-form-label col-lg-2">Instansi <span class="text-danger">*</span></label>
+			<label class="col-form-label col-lg-2">Unit Kerja <span class="text-danger">*</span></label>
 			<div class="col-lg-10">
 				<div class="form-group">
 					<select class="form-control select-search" name="instansi" >  
@@ -31,7 +31,7 @@
 					<tr class="table-active">
 						<th width="1%">No</th>
 						<th class="text-nowrap">Nama Jadwal<hr class="m-0">Priode</th>
-						<th >instansi</th>
+						<th >Unit Kerja</th>
 						<th width="1%">pegawai</th>
 						<th width="1%">Akses</th>
 						<th width="1%">Aksi</th>

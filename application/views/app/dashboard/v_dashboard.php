@@ -5,9 +5,9 @@
 	</h6>
 </div>
 <div class="row">
-	<div class="col-lg-6 d-flex">
+	<div class="col-lg-12">
 		<div class="row">
-			<div class="col-sm-6 col-xl-6">
+			<div class="col-sm-6 col-lg-3">
 				<div class="card card-body">
 					<div class="media">
 						<div class="mr-3 align-self-center">
@@ -21,7 +21,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6 col-xl-6">
+			<div class="col-sm-6 col-xl-3">
 				<div class="card card-body">
 					<div class="media">
 						<div class="mr-3 align-self-center">
@@ -30,12 +30,12 @@
 
 						<div class="media-body text-right">
 							<h3 class="font-weight-semibold mb-0"><?php if ($instansi_all) { echo $instansi_all->count; } ?></h3>
-							<span class="text-uppercase font-size-sm text-muted">total instansi</span>
+							<span class="text-uppercase font-size-sm text-muted">total unit kerja</span>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6 col-xl-6">
+			<div class="col-sm-6 col-xl-3">
 				<div class="card card-body">
 					<div class="media">
 						<div class="mr-3 align-self-center">
@@ -49,7 +49,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-6 col-xl-6">
+			<div class="col-sm-6 col-xl-3">
 				<div class="card card-body">
 					<div class="media">
 						<div class="mr-3 align-self-center">
@@ -94,6 +94,33 @@
 			<a href="<?php echo base_url('app/article') ?>" class="list-group-item legitRipple">
 				<i class="icon-arrow-right22 mr-3"></i>
 				Tampilkan Semua (<?php echo $pos->num_rows() ?>)
+			</a>
+			
+		</div>
+	</div>
+
+	<div class="col-lg-6 d-flex">
+		<div class="card col-lg-12 " style="height: 203px;">
+			<div class="card-header bg-white header-elements-sm-inline pb-0">
+				<h6 class="font-weight-semibold"> <i class="icon-alarm mr-3"></i>Jadwal Kerja</h6>
+			</div>
+			<div class="table-responsive m-0 naikturun">
+				<table class="table text-nowrap table-bordered">
+					<tr>
+						<th>Hari</th>
+						<th>Jam Masuk<hr class="m-0">(Mulai C/in - Akhir C/in)</th>
+						<th>Jam Pulang<hr class="m-0">(Mulai C/Out - Akhir C/Out)</th>
+					</tr>
+					<tr>
+						<td>Senin</td>
+						<td>07:30 (06:30 - 12:00)</td>
+						<td>16:00 (12:01 - 23:59) </td>
+					</tr>
+				</table>
+			</div>
+			<a href="<?php echo base_url('app/article') ?>" class="list-group-item legitRipple">
+				<i class="icon-arrow-right22 mr-3"></i>
+				Tampilkan Semua 
 			</a>
 			
 		</div>

@@ -11,7 +11,7 @@
 
 	<div class="card-body">
 		<div class="form-group row">
-			<label class="col-form-label col-lg-2">Instansi <span class="text-danger">*</span></label>
+			<label class="col-form-label col-lg-2">Unit Kerja <span class="text-danger">*</span></label>
 			<div class="col-lg-10">
 				<div class="form-group">
 					<select class="form-control select-search" name="instansi"> 
@@ -35,7 +35,7 @@
 						<th width="1%">No</th>
 						<th class="text-nowrap">Nama|NIP</th>
 						<th class="text-nowrap">Nama Pengguna</th>
-						<th class="text-nowrap">Nama Instansi</th>
+						<th class="text-nowrap">Unit Kerja</th>
 						<th width="1%" style="font-size: 80%;">Kewanangan</th>
 						<th width="1%" style="font-size: 80%;">Status Akun</th>
 						<th width="1%">Aksi</th>

@@ -25,7 +25,7 @@
 
     $html ='<table align="left" width="100%">
                 <tr>
-                    <td width="9%"><b>Instansi</b></td>
+                    <td width="9%"><b>Unit Kerja</b></td>
                     <td width="2%">:</td>
                     <td width="89%">'.$instansi->dept_name.'</td>
                 </tr>

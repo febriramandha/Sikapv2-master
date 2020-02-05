@@ -38,7 +38,7 @@
               </div>
           </div>
          <div class="form-group row">
-              <label class="col-form-label col-lg-2">Instansi </label>
+              <label class="col-form-label col-lg-2">Unit Kerja </label>
               <div class="col-lg-10">
                   <div class="form-group">
                        <?php 
