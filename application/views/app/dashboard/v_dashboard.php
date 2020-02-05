@@ -7,7 +7,7 @@
 <div class="row">
 	<div class="col-lg-12">
 		<div class="row">
-			<div class="col-sm-6 col-lg-3">
+			<div class="col-sm-6 col-xl-3">
 				<div class="card card-body">
 					<div class="media">
 						<div class="mr-3 align-self-center">
