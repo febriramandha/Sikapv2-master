@@ -2,7 +2,7 @@
 <div class="card">
 	<div class="card-body">
 		<h5 class="mb-3">Monitoring Pegawai</h5>
-			<div class="input-group mb-3">
+			<!-- <div class="input-group mb-3">
 				<div class="form-group-feedback form-group-feedback-left">
 					<input type="text" name="pegawai" class="form-control form-control-lg" value="" placeholder="Cari nama,nip">
 					<div class="form-control-feedback form-control-feedback-lg">
@@ -13,8 +13,7 @@
 				<div class="input-group-append">
 					<button type="submit" class="btn btn-primary btn-sm	" id="cari"><i class="icon-search4 mr-2"></i> Cari</button>
 				</div>
-			</div>
-
+			</div> -->
 		<i class="icon-spinner2 spinner icon-2x" style="display: none" id="spinner"></i>
 		<div class="table-responsive">
 			<table id="datatable" class="table table-sm table-hover table-bordered">
@@ -51,7 +50,6 @@ $(document).ready(function(){
 	    processing: true, 
 	    serverSide: true, 
 	    "ordering": false,
-	    "searching": false,
 	    language: {
             search: '<span></span> _INPUT_',
             searchPlaceholder: 'Cari...',
