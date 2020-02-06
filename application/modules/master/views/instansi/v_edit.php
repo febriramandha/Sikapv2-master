@@ -36,6 +36,21 @@
               </div>
           </div>
           <div class="form-group row">
+            <label class="col-form-label col-lg-2">Kategori Unit Kerja <span class="text-danger">*</span></label>
+            <div class="col-lg-10">
+              <div class="form-group">
+               <select class="form-control select-search" name="kategori" >  
+                    <option disabled="">Pilih Ketegori</option> 
+                    <option value="nonunit" <?php if($instansi->dept_type == "nonunit") { echo "selected";} ?>>Non Unit Kerja</option> 
+                    <option value="opd" <?php if($instansi->dept_type == "opd") { echo "selected";} ?>>OPD</option> 
+                    <option value="subopd" <?php if($instansi->dept_type == "subopd") { echo "selected";} ?>>Sub OPD</option> 
+                    <option value="puskesmas" <?php if($instansi->dept_type == "puskesmas") { echo "selected";} ?>>Puskesmas</option> 
+                    <option value="sekolah" <?php if($instansi->dept_type == "sekolah") { echo "selected";} ?>>Sekolah</option> 
+              </select> 
+            </div>
+          </div>
+        </div>
+          <div class="form-group row">
               <label class="col-form-label col-lg-2">Kecamatan <span class="text-danger">*</span></label>
               <div class="col-lg-10">
                   <div class="form-group">

@@ -102,6 +102,7 @@ class Instansi extends App_Controller {
 		$this->output->unset_template();
 		$this->form_validation->set_rules('nama', 'nama instansi', 'required')
 		->set_rules('alias', 'nama singkatan', 'required')
+		->set_rules('kategori', 'kategori', 'required')
 		->set_rules('kecamatan', 'kecamatan', 'required')
 		->set_rules('order', 'urutan', 'required|numeric');
 		if ($this->mod == "add") {
@@ -119,13 +120,14 @@ class Instansi extends App_Controller {
 					$supdeptid = -1;
 				}
 				$data = array('dept_name' 	 	=> $this->input->post('nama'),
-					'dept_alias' 		=> $this->input->post('alias'),
-					'kecamatan_id' 	=> decrypt_url($this->input->post('kecamatan'),'kecamatan_id'),
-					'position_order' 	=> $this->input->post('order'),
-					'parent_id' 	 	=> decrypt_url($this->input->post('parent'),'instansi'),
-					'created_at' 		=> date('Y-m-d H:i:s'),
-					'status'			=> $status,
-					'created_by' 	 	=> $this->session->userdata('tpp_user_id'),
+							'dept_alias' 		=> $this->input->post('alias'),
+							'kecamatan_id' 		=> decrypt_url($this->input->post('kecamatan'),'kecamatan_id'),
+							'position_order' 	=> $this->input->post('order'),
+							'parent_id' 	 	=> decrypt_url($this->input->post('parent'),'instansi'),
+							'created_at' 		=> date('Y-m-d H:i:s'),
+							'status'			=> $status,
+							'dept_type'			=> $this->input->post('kategori'),
+							'created_by' 	 	=> $this->session->userdata('tpp_user_id'),
 				);
 				$res_ = $this->db->insert('mf_departments',$data);
 				$id_new = $this->db->insert_id();
@@ -162,6 +164,7 @@ class Instansi extends App_Controller {
 					'position_order' 	=> $this->input->post('order'),
 					'updated_at' 		=> date('Y-m-d H:i:s'),
 					'status'			=> $status,
+					'dept_type'			=> $this->input->post('kategori'),
 					'updated_by' 	 	=> $this->session->userdata('tpp_user_id'),
 				);
 				$this->return = $this->db->update('mf_departments', $data, ['id' => decrypt_url($this->input->post('id'),'instansi')]);

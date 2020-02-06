@@ -47,6 +47,21 @@
         </div>
       </div>
       <div class="form-group row">
+        <label class="col-form-label col-lg-2">Kategori Unit Kerja <span class="text-danger">*</span></label>
+        <div class="col-lg-10">
+          <div class="form-group">
+           <select class="form-control select-search" name="kategori" >  
+                <option disabled="">Pilih Ketegori</option> 
+                <option value="nonunit">Non Unit Kerja</option> 
+                <option value="opd">OPD</option> 
+                <option value="subopd">Sub OPD</option> 
+                <option value="puskesmas">Puskesmas</option> 
+                <option value="sekolah">Sekolah</option> 
+          </select> 
+        </div>
+      </div>
+    </div>
+      <div class="form-group row">
         <label class="col-form-label col-lg-2">Kecamatan <span class="text-danger">*</span></label>
         <div class="col-lg-10">
           <div class="form-group">
