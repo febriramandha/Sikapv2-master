@@ -31,7 +31,7 @@
 			
 
 			<div class="text-center">
-				<input type="checkbox" name="remember"  id="checkbox_id" data-fouc>
+				<input type="checkbox" name="remember"  id="checkbox_id" checked data-fouc>
 				<label class="txt2 m-b-0" for="checkbox_id">Biarkan Tetap Masuk</label>
 			</div>
 			
