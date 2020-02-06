@@ -1,7 +1,7 @@
 <!-- Basic table -->
 <div class="card">
 	<div class="card-header bg-white header-elements-inline py-2">
-		<h5 class="card-title">Edit Instansi</h5>
+		<h5 class="card-title">Edit Unit Kerja</h5>
 		<div class="header-elements">
 			<div class="list-icons">
         		<a class="list-icons-item" data-action="collapse"></a>
@@ -14,7 +14,7 @@
 		<?php echo form_open('master/instansi/AjaxSave','class="form-horizontal" id="formAjax"'); ?>
 		<div class="col-lg-12">
           <div class="form-group row">
-              <label class="col-form-label col-lg-2">Nama Instansi <span class="text-danger">*</span></label>
+              <label class="col-form-label col-lg-2">Nama Unit Kerja <span class="text-danger">*</span></label>
               <div class="col-lg-10">
                   <div class="form-group-feedback form-group-feedback-left">
                       <div class="form-control-feedback">
