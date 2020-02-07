@@ -8,26 +8,12 @@
 			</div>
 		</div>
 	</div>
-<?php 
-if ($tglshow) {
-      if ($tglshow->shiftuserrun_id) {
-          $data_tgl_lkh = array();
-          for ($i=0; $i < $jumlkh->count_inday; $i++) { 
-                $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-          }
-      }else {
-         $data_tgl_lkh = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_inday, $tglshow->hari_kerja);
-      }
-
- }
-
- ?>
 	<div class="card-body">
-		<?php if ($tglshow) { ?>
+		<?php if ($tanggal_lkh) { ?>
 		<div class="alert alert-warning alert-dismissible">
 		    <span class="font-weight-semibold">Perhatian!</span> untuk penambahan dan perubahan data hanya dapat dilakukan pada tanggal: 
-		    <?php foreach ($data_tgl_lkh as $v ){
-		    	  echo '<span class="badge badge-success">('.format_tgl_ind($v).')</span> ';
+		    <?php foreach ($tanggal_lkh as $row ){
+		    	  echo '<span class="badge badge-success">('.format_tgl_ind($row->rentan_tanggal).')</span> ';
 		    } ?>
 		</div>	
 		<?php } ?>

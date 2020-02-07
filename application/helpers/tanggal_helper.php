@@ -94,6 +94,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  return  $tgl2; //print tanggal
 	}
 
+   function bulan_plus($tgl='', $nilai='')
+  {
+     return  date('Y-m-d', strtotime('+'.$nilai.' month', strtotime($tgl)));
+  }
+
 
 	function format_tgl_eng($tgl='')
 	{	
@@ -133,6 +138,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       $interval        = $start_date->diff($end_date);
       
       return $interval->days;
+
+  }
+
+   function jumlah_bulan_rank($start='', $end='')
+  {
+      $start_date      = new DateTime($start);
+      $end_date        = new DateTime($end);
+      $diff =  $start_date->diff($end_date);
+
+      $months = $diff->y * 12 + $diff->m + $diff->d / 30;
+
+      return (int) round($months);
 
   }
 
@@ -237,6 +254,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          return  $jam .  ' jam, ' . floor( $menit / 60 ) . ' menit';
       }
    
+  }
+
+  function Cek_tanggalValid($tanggal='')
+  {
+      $tgl = format_tgl_eng($tanggal);
+      $pecah = explode("-", $tgl);
+
+      if (checkdate($pecah[1], $pecah[2], $pecah[0])) {
+          return true;
+      }else return false;
   }
 
   function tanggal_rentang_from_bulan($tgl)

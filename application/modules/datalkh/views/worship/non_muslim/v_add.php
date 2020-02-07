@@ -1,55 +1,32 @@
 <!-- Basic table -->
 <div class="card">
 	<div class="card-header bg-white header-elements-inline py-2">
-		<h5 class="card-title">Tambah Laporan</h5>
+		<h5 class="card-title">Tambah Laporan Ibadah</h5>
 		<div class="header-elements">
 			<div class="list-icons">
         <a class="list-icons-item" data-action="collapse"></a>
       </div>
     </div>
   </div>
-
-<?php 
-$jam_mulai = date('H:i');
-if ($tglshow) {
-      // tanggal awal
-      if ($tglshow->shiftuserrun_id) {
-          $data_tgl_lkh = array();
-          for ($i=0; $i < $jumlkh->count_inday; $i++) { 
-                $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-          }
-      }else {
-         $data_tgl_lkh = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_inday, $tglshow->hari_kerja);
-        
-      }
-  }
-
- ?>
+  <?php 
+    $date_now = date('Y-m-d');
+  ?>
   <div class="card-body">
-    <?php if ($jumlkh) { ?>
-    <div class="alert alert-primary alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-      <span class="font-weight-semibold">Info!</span> <?php echo $jumlkh->ket  ?>.
-    </div>
-    <?php }else { ?>
-    <div class="alert alert-primary alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-      <span class="font-weight-semibold">Anda tidak berhak mengisi form LKH.
-    </div>
-    <?php }?>
     <?php echo form_open('datalkh/worship/AjaxSaveNonMuslim','class="form-horizontal" id="formAjax"'); ?>
       <div class="col-lg-12">
           <div class="form-group row">
             <label class="col-form-label col-lg-2">Tanggal kegiatan <span class="text-danger">*</span></label>
             <div class="col-lg-6">
               <div class="form-group">
-                <select class="form-control select-nosearch" name="tgl" data-fouc>
-                        <?php $no=1; foreach ($data_tgl_lkh as $r_value) { ?>
-                        <option value="<?php echo $no++ ?>"><?php echo tgl_ind_hari($r_value) ?></option>
-                        <?php } ?>  
+                <select class="form-control select-nosearch" name="tgl" data-fouc> 
+                        <?php for ($i=0; $i < 8; $i++) {
+                                  $tgl_minus = tgl_minus($date_now, $i);
+                            ?>
+                              <option value="<?php echo encrypt_url($tgl_minus,"tanggal_lkh_add_$date_now") ?>"><?php echo tgl_ind_hari($tgl_minus) ?></option>
+                        <?php } ?>
                 </select>
                 <span class="text-danger"><i>* pilih tanggal yang tersedia</i></span>
-                 <?php if (!$tglshow) { ?>
+                 <?php if (!$tanggal_lkh) { ?>
                   <div class="alert alert-warning border-0 alert-dismissible mb-0">
                     <span class="font-weight-semibold">Peringatan!</span> Jadwal anda belum ada mohon hubungi admin tentang jadwal anda.
                   </div>
@@ -97,7 +74,7 @@ if ($tglshow) {
 <script type="text/javascript">
 
 $(document).ready(function(){
-    load_data(1)
+    load_data($('[name="tgl"]').val());
 
 });
 

@@ -11,37 +11,9 @@
 
 <?php 
 $jam_mulai = date('H:i');
-if ($tglshow) {
-      // tanggal awal
-      if ($tglshow->shiftuserrun_id) {
-          $data_tgl_lkh = array();
-          for ($i=0; $i < $jumlkh->count_inday; $i++) { 
-                $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-          }
+$date_now = date('Y-m-d');
 
-      }else {
-         $data_tgl_lkh = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_inday, $tglshow->hari_kerja);
-          //cek hari kerja
-          $for_hari = json_decode($tglshow->hari_kerja, true);
-
-          $masuk_kerja = array('0' => '');
-          $i = 0;
-          foreach ($for_hari as $v) {
-              $masuk_kerja[$for_hari[$i]['f1']] = jm($for_hari[$i]['f2']);
-
-              $i++;
-          }
-          $jam_mulai = $masuk_kerja[format_tanggal($data_tgl_lkh[0],'N')];
-
-          if ($last_jam) {
-               $jam_mulai =  jm($last_jam->jam_selesai);
-          }
-
-      }
-  }
-
- ?>
-
+?>
   <div class="card-body">
     <?php if ($jumlkh) { ?>
     <div class="alert alert-primary alert-dismissible">
@@ -61,12 +33,12 @@ if ($tglshow) {
             <div class="col-lg-8">
               <div class="form-group">
                 <select class="form-control select-nosearch" name="tgl" data-fouc>
-                        <?php $no=1; foreach ($data_tgl_lkh as $r_value) { ?>
-                        <option value="<?php echo $no++ ?>"><?php echo tgl_ind_hari($r_value) ?></option>
+                        <?php $no=1; foreach ($tanggal_lkh as $row) { ?>
+                        <option value="<?php echo encrypt_url($row->rentan_tanggal,"tanggal_lkh_add_$date_now") ?>"><?php echo tgl_ind_hari($row->rentan_tanggal) ?></option>
                         <?php } ?>  
                 </select>
                 <span class="text-danger"><i>* pilih tanggal yang tersedia</i></span>
-                 <?php if (!$tglshow) { ?>
+                 <?php if (!$tanggal_lkh) { ?>
                   <div class="alert alert-warning border-0 alert-dismissible mb-0">
                     <span class="font-weight-semibold">Peringatan!</span> Jadwal anda belum ada mohon hubungi admin tentang jadwal anda.
                   </div>
@@ -75,13 +47,15 @@ if ($tglshow) {
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-form-label col-lg-2"> Waktu Kegiatan <span class="text-danger">*</span></label>
+            <label class="col-form-label col-lg-2"> Waktu Kegiatan <span class="text-danger">*</span> 
+                <i class="icon-spinner2 spinner" style="display: none" id="spinner_waktu"></i>
+            </label>
             <div class="col-lg-3">
               <div class="form-group-feedback form-group-feedback-left">
                 <div class="form-control-feedback">
                   <i class="icon-pencil3"></i>
                 </div>
-                <input type="text" name="jam1" class="form-control clockpicker" placeholder="jam mulai" value="<?php echo $jam_mulai; ?>">
+                <input type="text" name="jam1" class="form-control clockpicker result" placeholder="jam mulai">
               </div>
             </div>
             <div class="col-lg-1">
@@ -152,7 +126,7 @@ if ($tglshow) {
  });
 
 $(document).ready(function(){
-    load_jam(1);
+    load_jam($('[name="tgl"]').val());
 });
 
 CKEDITOR.replaceClass = 'ckeditor';
@@ -172,18 +146,28 @@ $('[name="tgl"]').change(function() {
 })
 
 function load_jam(tgl_id) {
+    var result  = $('.result');
+    var spinner = $('#spinner_waktu');
     $.ajax({
         type: 'get',
         url: uri_dasar+"datalkh/lkh/AjaxGet",
         data: {mod:"time",tgl_id:tgl_id},
         dataType : "JSON",
         error:function(){
+           result.attr("disabled", false);
+           spinner.hide();
            bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+        },
+        beforeSend:function(){
+          result.attr("disabled", true);
+          spinner.show();
         },
         success: function(res) {
             if (res.status == true) {
-               $('[name="jam1"]').val(res.data.jam_masuk);
+               $('[name="jam1"]').val(res.data.jam_mulai);
             }
+            result.attr("disabled", false);
+            spinner.hide();
         }
     });
 }

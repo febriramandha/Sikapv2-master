@@ -1,7 +1,7 @@
 <!-- Basic table -->
 <div class="card">
 	<div class="card-header bg-white header-elements-inline py-2">
-		<h5 class="card-title">Edit Jadwal Absen Manual</h5>
+		<h5 class="card-title">Edit Jadwal Piket Manual</h5>
 		<div class="header-elements">
 			<div class="list-icons">
         <a class="list-icons-item" data-action="collapse"></a>
@@ -10,7 +10,7 @@
   </div>
 
   <div class="card-body">
-    <?php echo form_open('mngabsenmanual/schabsen-manualin/AjaxSave','class="form-horizontal" id="formAjax"'); ?>
+    <?php echo form_open('mngabsenmanual/schpiket-manual/AjaxSave','class="form-horizontal" id="formAjax"'); ?>
     <div class="col-lg-12">
       <div class="form-group row">
         <label class="col-form-label col-lg-2">Nama Jadwal<span class="text-danger">*</span></label>
@@ -143,7 +143,7 @@
       processing: '<i class="icon-spinner9 spinner text-blue"></i> Loading..'
     },  
     ajax: {
-      url : uri_dasar+'mngabsenmanual/schabsen-manualin/PegawaiJsonEdit/<?php echo $this->uri->segment(4) ?>',
+      url : uri_dasar+'mngabsenmanual/schpiket-manual/PegawaiJsonEdit/<?php echo $this->uri->segment(4) ?>',
       type:"post",
       "data": function ( data ) { 
         data.csrf_sikap_token_name= csrf_value;
@@ -191,7 +191,7 @@
           },
           success: function(res) {
               if (res.status == true) {
-                  bx_alert_successUpadate(res.message, 'mngabsenmanual/schabsen-manualin');
+                  bx_alert_successUpadate(res.message, 'mngabsenmanual/schpiket-manual');
               }else {
                   bx_alert(res.message);
               }

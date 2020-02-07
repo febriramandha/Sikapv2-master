@@ -8,25 +8,9 @@
       </div>
     </div>
   </div>
-
-<?php 
-$jam_mulai = date('H:i');
-if ($tglshow) {
-      // tanggal awal
-      if ($tglshow->shiftuserrun_id) {
-          $data_tgl_lkh = array();
-          for ($i=0; $i < $jumlkh->count_inday; $i++) { 
-                $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-          }
-
-      }else {
-         $data_tgl_lkh = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_inday, $tglshow->hari_kerja);
-        
-      }
-  }
-
- ?>
-
+  <?php 
+    $date_now = date('Y-m-d');
+   ?>
   <div class="card-body">
     <?php if ($jumlkh) { ?>
     <div class="alert alert-primary alert-dismissible">
@@ -46,12 +30,12 @@ if ($tglshow) {
             <div class="col-lg-6">
               <div class="form-group">
                 <select class="form-control select-nosearch" name="tgl" data-fouc>
-                        <?php $no=1; foreach ($data_tgl_lkh as $r_value) { ?>
-                        <option value="<?php echo $no++ ?>"><?php echo tgl_ind_hari($r_value) ?></option>
+                        <?php $no=1; foreach ($tanggal_lkh as $row) { ?>
+                        <option value="<?php echo encrypt_url($row->rentan_tanggal,"tanggal_lkh_add_$date_now") ?>"><?php echo tgl_ind_hari($row->rentan_tanggal) ?></option>
                         <?php } ?>  
                 </select>
                 <span class="text-danger"><i>* pilih tanggal yang tersedia</i></span>
-                 <?php if (!$tglshow) { ?>
+                 <?php if (!$tanggal_lkh) { ?>
                   <div class="alert alert-warning border-0 alert-dismissible mb-0">
                     <span class="font-weight-semibold">Peringatan!</span> Jadwal anda belum ada mohon hubungi admin tentang jadwal anda.
                   </div>
@@ -147,7 +131,7 @@ var hari = "<?= date('D') ?>";
  $(document).ready(function(){
     jumat(hari, gender);
     cek_waktu(jam_ini, w_zuhur, 1, hari, gender);
-    load_data(1)
+    load_data($('[name="tgl"]').val());
 
 });
 

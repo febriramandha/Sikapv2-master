@@ -6,14 +6,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 * 2019
 */
 
-class Schabsen_manualin extends App_Controller {
+class Schpiket_manual extends App_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->_init();
-		$this->breadcrumbs->push('Jadwal Absen Manual', 'mngabsenmanual/schabsen-manualin');
-		$this->data['title'] = "Absen Manual";
+		$this->breadcrumbs->push('Jadwal Piket Manual', 'mngabsenmanual/schabsen-manualin');
+		$this->data['title'] = "Piket Manual";
 		$this->load->model(['m_instansi']);
 	}
 
@@ -27,10 +27,10 @@ class Schabsen_manualin extends App_Controller {
 
 	public function index()
 	{
-		$this->data['sub_title']  = "Jadwal Absen Manual";
+		$this->data['sub_title']  = "Jadwal Piket Manual";
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
 		$this->data['instansi']	  = $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
-		$this->load->view('schabsen_manualin/v_index', $this->data);
+		$this->load->view('schpiket_manual/v_index', $this->data);
 	}
 
 	public function indexJson()
@@ -51,12 +51,12 @@ class Schabsen_manualin extends App_Controller {
 					GROUP BY 1) as b",'a.id=b.schabsenmanual_id')
         	->join('v_instansi_all c','a.dept_id=c.id','left')
         	->order_by('a.id','desc')
-        	->where('a.type_absen','absen')
+        	->where('a.type_absen','piket')
         	->add_column('start_date','$1 - $2','format_tgl_ind(start_date), format_tgl_ind(end_date)')
         	->add_column('sch_name','$1','sch_name(name, start_date)')
         	->add_column('pegawai','<div class="m-0 p-1 panel-geser" style="max-height: 100px;max-width: 300px">$1</div>','pegawai_expl(nama_nip)')
         	->add_column('akses','$1$2','span_label(absen_in,"Masuk","success"),span_label(absen_out,"Pulang","info")')
-        	->add_column('action', '<a href="'.base_url('mngabsenmanual/schabsen-manualin/edit/').'$1">
+        	->add_column('action', '<a href="'.base_url('mngabsenmanual/schpiket-manual/edit/').'$1">
         							<i class="icon-pencil5 text-info-400"></i>
 					                </a>
 					              <span class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus data" style="cursor:pointer;" id="$1">
@@ -73,7 +73,7 @@ class Schabsen_manualin extends App_Controller {
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
 		$this->data['instansi']		= $this->m_instansi->GetInstasiDeptIDCountParent($this->session->userdata('tpp_dept_id'))->result();
 		$this->data['hari']			= $this->db->order_by('id')->get('days');
-		$this->load->view('schabsen_manualin/v_add', $this->data);
+		$this->load->view('schpiket_manual/v_add', $this->data);
 	}
 
 	public function PegawaiJson()
@@ -119,7 +119,7 @@ class Schabsen_manualin extends App_Controller {
 		$rank1 = format_tgl_eng($this->input->post('rank1'));
 		$rank2 = format_tgl_eng($this->input->post('rank2'));
 
-		if (jumlah_hari_rank($rank1,$rank2) > 31) {
+		if (jumlah_hari_rank($rank1,$rank2) > 365) {
 			$this->form_validation->set_rules('rank1', 'jumlah tanggal maksimal 31 hari', 'tidak sesuai');
 		}
 		
@@ -164,7 +164,7 @@ class Schabsen_manualin extends App_Controller {
 							  'absen_out' 		=> $absen_out,
 							  'created_at' 		=> date('Y-m-d H:i:s'),
 							  'created_by' 		=> $this->session->userdata('tpp_user_id'),
-							  'type_absen' 		=> 'absen',
+							  'type_absen' 		=> 'piket',
 				 );
 				$this->return = $this->db->insert('schabsen_manual',$data);
 
@@ -211,7 +211,7 @@ class Schabsen_manualin extends App_Controller {
 		$this->data['schabsenmanual']	= $schabsenmanual;
 		$this->data['instansi']		= $this->m_instansi->GetInstansi($schabsenmanual->dept_id)->row();
 		$this->data['hari']			= $this->db->order_by('id')->get('days');
-		$this->load->view('schabsen_manualin/v_edit', $this->data);
+		$this->load->view('schpiket_manual/v_edit', $this->data);
 	}	
 
 	public function PegawaiJsonEdit($id)
@@ -252,8 +252,7 @@ class Schabsen_manualin extends App_Controller {
 			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal dihapus atau data sedang digunakan.']));	
 		}
 	}	
-
 }
 
-/* End of file Schabsen_manualin.php */
-/* Location: ./application/modules/MngAbsenManual/controllers/Schabsen_manualin.php */
+/* End of file Schpiket_manual.php */
+/* Location: ./application/modules/mngabsenmanual/controllers/Schpiket_manual.php */

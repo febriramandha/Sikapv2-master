@@ -24,6 +24,19 @@ class M_schabsen_manual extends CI_Model {
 		return $this->db->get();
 	}
 
+	public function userAll_schpiket_manual($id, $user_id='')
+	{
+		$this->db->select('b.id, a.id as schabsmanual_id, a.name, a.dept_id, b.nip, b.nama,b.gelar_dpn, b.gelar_blk, start_date, end_date, hari_id, absen_in, absen_out')
+				->from('(SELECT id, unnest(user_id) as user_id, dept_id, start_date, end_date, name, hari_id, absen_in, absen_out FROM schabsen_manual) as a')
+				->join('v_users_all b','a.user_id=b.id','left')
+				->where('a.id', $id)
+				->order_by('b.no_urut');
+				if ($user_id) {
+					$this->db->where('b.id', $user_id);
+				}
+		return $this->db->get();
+	}
+
 }
 
 /* End of file M_schabsen_manual.php */

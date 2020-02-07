@@ -58,49 +58,44 @@ class Verifikasi extends App_Controller {
 	{
 		$verifikator_id 		= decrypt_url($id, 'verifikator_id');
 		$user 					= $this->m_verifikator->GetUserByverifikator($verifikator_id)->row();
-		$tglshow = $this->m_schrun_user->CekTanggalLkh($user->user_id, date('Y-m-d'))->row();
-		$jumlkh  = $this->m_sch_lkh->Getsch_lkh($user->dept_id,date('Y-m-d'))->row();
-		if ($tglshow) {
-		      if ($tglshow->shiftuserrun_id) {
-		          $data_tgl_lkh = array();
-		          for ($i=0; $i < $jumlkh->count_verday; $i++) { 
-		                $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-		          }
-		      }else {
-		         $data_tgl_lkh = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_verday, $tglshow->hari_kerja);
-		      }
-		      $this->m_data_lkh->update_status($user->user_id, $data_tgl_lkh);
+
+		$jumlkh = $this->m_sch_lkh->Getsch_lkh($user->dept_id,date('Y-m-d'))->row();
+		$tanggal_lkh_ver = $this->m_data_lkh->jadwal_lkh_limit($user->user_id, $jumlkh->count_verday)->result();
+		$rank_tanggal = array();
+		if ($tanggal_lkh_ver) {
+				foreach ($tanggal_lkh_ver as $row) {
+					$rank_tanggal[] = $row->rentan_tanggal;
+				}
+				$this->m_data_lkh->update_status($user->user_id, $rank_tanggal);
 		}
 
 		$this->data['sub_title'] 	= "Verifiikasi LKH";
 		$this->breadcrumbs->push('Verifiikasi LKH', '/');
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
 		$this->data['user']			= $user;
-		$this->data['tglshow'] 		= $tglshow;
+		$this->data['tanggal_lkh']  = $tanggal_lkh_ver;
 		$this->data['jumlkh']		= $jumlkh;
 		$this->load->view('verifikasi/v_view', $this->data);
 	}
 
 	public function viewJson($id)
 	{
+		$date_now = date('Y-m-d');
 		$this->output->unset_template();
 		$verifikator_id 		= decrypt_url($id, 'verifikator_id');
 		$user 					= $this->m_verifikator->GetUserByverifikator($verifikator_id)->row();
-		$tglshow = $this->m_schrun_user->CekTanggalLkh($user->user_id, date('Y-m-d'))->row();
-		$jumlkh  = $this->m_sch_lkh->Getsch_lkh($user->dept_id,date('Y-m-d'))->row();
-		$data_tgl_lkh = array('0000:00:00');
-		if ($tglshow) {
-		      if ($tglshow->shiftuserrun_id) {
-		          $data_tgl_lkh = array();
-		          for ($i=0; $i < $jumlkh->count_verday; $i++) { 
-		                $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-		          }
-		      }else {
-		         $data_tgl_lkh = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_verday, $tglshow->hari_kerja);
-		      }
+
+		$jumlkh = $this->m_sch_lkh->Getsch_lkh($user->dept_id,date('Y-m-d'))->row();
+		$tanggal_lkh_ver = $this->m_data_lkh->jadwal_lkh_limit($user->user_id, $jumlkh->count_verday)->result();
+		$rank_tanggal =  array('0000:00:00');
+		if ($tanggal_lkh_ver) {
+				foreach ($tanggal_lkh_ver as $row) {
+					$data_tgl_lkh[] = $row->rentan_tanggal;
+				}
 		}
+
 		if ($this->input->post('tgl_id')) {
-			$data_tgl_lkh = $data_tgl_lkh[$this->input->post('tgl_id')-1];
+			$data_tgl_lkh = decrypt_url($this->input->post('tgl_id'),"tanggal_lkh_verifikasi_$date_now");
 		}
 		$this->load->library('datatables');
         $this->datatables->select('a.id, tgl_lkh, jam_mulai, jam_selesai, kegiatan, hasil, jenis, a.status, verifikasi_by, b.nama as ver_nama, b.gelar_dpn as ver_gelar_dpn, b.gelar_blk as ver_gelar_blk, comment, a.jenis')
@@ -134,6 +129,7 @@ class Verifikasi extends App_Controller {
 						 ->group_by('1,2');
 				$data_count = $this->db->get('data_lkh')->result();
 
+				$date_now = date('Y-m-d');
 				foreach ($tanggal as $r_t) {
 					$jum ='';
 					foreach ($data_count as $r_v ) {

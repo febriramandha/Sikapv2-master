@@ -51,10 +51,11 @@ class Absen_manualpe extends App_Controller {
 					GROUP BY 1) as b",'a.id=b.schabsenmanual_id')
         	->join('v_instansi_all c','a.dept_id=c.id','left')
         	->order_by('a.id','desc')
+        	->where('a.type_absen','absen')
         	->add_column('start_date','$1 - $2','format_tgl_ind(start_date), format_tgl_ind(end_date)')
         	->add_column('sch_name','$1','sch_name(name, start_date)')
         	->add_column('pegawai','<div class="m-0 p-1 panel-geser" style="max-height: 100px;max-width: 300px">$1</div>','pegawai_expl(nama_nip)')
-        	->add_column('akses','$1$2','span_label(absen_in,"Masuk","success"),span_label(absen_in,"Pulang","info")')
+        	->add_column('akses','$1$2','span_label(absen_in,"Masuk","success"),span_label(absen_out,"Pulang","info")')
         	->add_column('action', '<a href="'.base_url('mngabsenmanual/absen-manualpe/view/').'$1" class="badge bg-info">
         							<i class="icon-pencil5"></i> Input Absen
 					                </a>

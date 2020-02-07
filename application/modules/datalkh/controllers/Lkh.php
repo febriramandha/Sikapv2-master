@@ -32,50 +32,39 @@ class Lkh extends App_Controller {
 
 	public function index()
 	{
-		$tglshow = $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
-		$jumlkh  = $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
-		if ($tglshow) {
-		      if ($tglshow->shiftuserrun_id) {
-		          $data_tgl_lkh = array();
-		          for ($i=0; $i < $jumlkh->count_verday; $i++) { 
-		                $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-		          }
-		      }else {
-		         $data_tgl_lkh = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_verday, $tglshow->hari_kerja);
-		      }
-		      $this->m_data_lkh->update_status($this->session->userdata('tpp_user_id'), $data_tgl_lkh);
+		$jumlkh = $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
+		$tanggal_lkh_ver = $this->m_data_lkh->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_verday)->result();
+		$rank_tanggal = array();
+		if ($tanggal_lkh_ver) {
+				foreach ($tanggal_lkh_ver as $row) {
+					$rank_tanggal[] = $row->rentan_tanggal;
+				}
+				$this->m_data_lkh->update_status($this->session->userdata('tpp_user_id'), $rank_tanggal);
 		}
-		
+		$tanggal_lkh_inday = $this->m_data_lkh->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_inday)->result();
 		$this->data['sub_title']  = "Semua LKH";
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
 		$this->data['verifikator']	= $this->m_verifikator->GetVerifikator($this->session->userdata('tpp_user_id'))->row();
-		$this->data['tglshow'] 		= $tglshow;
-		$this->data['jumlkh']		= $jumlkh;
+		$this->data['tanggal_lkh'] 		= $tanggal_lkh_inday;
+		$this->data['jumlkh']			= $jumlkh;
 		$this->load->view('lkh/v_index', $this->data);
 	}
 
 	public function indexJson()
 	{
 		$this->output->unset_template();
-		$tglshow = $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
 		$jumlkh  = $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
-		$data_tgl_lkh ='';
-		if ($tglshow) {
-		      if ($tglshow->shiftuserrun_id) {
-		          $data_tgl_lkh = array();
-		          for ($i=0; $i < $jumlkh->count_inday; $i++) { 
-		                $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-		          }
-		      }else {
-		         $data_tgl_lkh = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_inday, $tglshow->hari_kerja);
-		      }
-
-		 }
-		 $data_tgl ='';
-		 if ($data_tgl_lkh) {
-		 	$data_tgl = str_replace(['[', ']', '"',','],['', '','','+'],json_encode($data_tgl_lkh));
-		 }
-
+		$tanggal_lkh_inday = $this->m_data_lkh->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_inday)->result();
+		$rank_tanggal = array();
+		if ($tanggal_lkh_inday) {
+				foreach ($tanggal_lkh_inday as $row) {
+					$rank_tanggal[] = $row->rentan_tanggal;
+				}
+		}
+		$data_tgl ='';
+		if ($tanggal_lkh_inday) {
+			$data_tgl = str_replace(['[', ']', '"',','],['', '','','+'],json_encode($rank_tanggal));
+		}
 		$rank1 = format_tgl_eng($this->input->post('rank1'));
 		$rank2 = format_tgl_eng($this->input->post('rank2'));
 		$this->load->library('datatables');
@@ -100,10 +89,11 @@ class Lkh extends App_Controller {
 	{
 		$this->data['sub_title'] 	= "Tambah LKH";
 		$this->breadcrumbs->push('Tambah LKH', '/');
+		$jumlkh = $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
+		$tanggal_lkh = $this->m_data_lkh->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_inday);
+		$this->data['tanggal_lkh']  = $tanggal_lkh->result();
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
-		$this->data['tglshow'] 		= $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
-		$this->data['jumlkh']		= $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
-		$this->data['last_jam']		= $this->m_data_lkh->cek_jam_lkh($this->session->userdata('tpp_user_id'),date('Y-m-d'))->row();
+		$this->data['jumlkh']		= $jumlkh;
 		$this->data['verifikator']	= $this->m_verifikator->GetVerifikator($this->session->userdata('tpp_user_id'))->row();
 		$this->load->view('lkh/v_add', $this->data);
 	}
@@ -114,48 +104,52 @@ class Lkh extends App_Controller {
 		$this->mod = $this->input->get('mod');
 
 		if ($this->mod == "time" && $this->input->get('tgl_id')) {
-			$tgl_id = $this->input->get('tgl_id')-1;
-			$jumlkh = $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
-			$tglshow = $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
-			if ($jumlkh && $tglshow) {
-				$tglshow = $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
+				$jam_mulai = date('H:i');
+				$date_now = date('Y-m-d');
+				$tgl_id = decrypt_url($this->input->get('tgl_id'),"tanggal_lkh_add_$date_now");
 
-				if ($tglshow->shiftuserrun_id) {
-					$jam_mulai = date('H:i');
-					$data_tgl_lkh = array();
-					for ($i=0; $i < $jumlkh->count_inday; $i++) { 
-					    $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-					}
-					$last_jam = $this->m_data_lkh->cek_jam_lkh($this->session->userdata('tpp_user_id'),$data_tgl_lkh[$tgl_id])->row();
-					if ($last_jam) {
-						$jam_mulai =  jm($last_jam->jam_selesai);
-					}
+				$cekJadwal = $this->m_data_lkh->cekJadwalLkh($this->session->userdata('tpp_user_id'), $tgl_id)->row();
+				if ($cekJadwal) {
+						$start_time 				= $cekJadwal->start_time;
+						$end_time   				= $cekJadwal->end_time;
+						$start_time_shift   		= $cekJadwal->start_time_shift;
+						$end_time_shift   			= $cekJadwal->end_time_shift;
+						$start_time_notfixed   		= $cekJadwal->start_time_notfixed;
+						$end_time_notfixed   		= $cekJadwal->end_time_notfixed;
 
-				}else {
-					$data_tgl_lkh = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_inday, $tglshow->hari_kerja);
-					$for_hari = json_decode($tglshow->hari_kerja, true);
+						if ($start_time && $end_time) {
+								$jam_masuk  = jm($start_time);
+								$jam_pulang = jm($end_time);
+						}
 
-					$masuk_kerja = array();
-					$i = 0;
-					foreach ($for_hari as $v) {
-					  $masuk_kerja[$for_hari[$i]['f1']] = jm($for_hari[$i]['f2']);
-					  $i++;
-					}
+						if ($start_time_shift && $end_time_shift) {
+								$jam_masuk  = jm($start_time_shift);
+								$jam_pulang = jm($end_time_shift);
+						}
 
-					$hari_id = tanggal_format($data_tgl_lkh[$tgl_id],'N');
-					$jam_mulai = $masuk_kerja[$hari_id];
-
-					$last_jam = $this->m_data_lkh->cek_jam_lkh($this->session->userdata('tpp_user_id'),$data_tgl_lkh[$tgl_id])->row();
-					if ($last_jam) {
-						$jam_mulai =  jm($last_jam->jam_selesai);
-					}
+						if ($start_time_notfixed && $end_time_notfixed) {
+								$jam_masuk  = jm($start_time_notfixed);
+								$jam_pulang = jm($end_time_notfixed);
+						}
 				}
-				$data = array('jam_masuk' => $jam_mulai, );
+
+				if ($jam_masuk) {
+					$jam_mulai =  $jam_masuk;
+				}
+
+
+				$last_jam = $this->m_data_lkh->cek_jam_lkh($this->session->userdata('tpp_user_id'),$tgl_id)->row();
+				if ($last_jam) {
+					$jam_mulai =  jm($last_jam->jam_selesai);
+				}
+
+				$data = array('jam_mulai' => $jam_mulai,
+							  'jam_masuk' => $jam_masuk,
+							  'jam_pulang'=> $jam_pulang, );
 
 				$this->result = array('status' => true,
 			    			   		   'message' => 'Berhasil mengabil data',
 			    			   		   'data' => $data);
-			}
 				
 		}
 
@@ -187,25 +181,12 @@ class Lkh extends App_Controller {
 			}
 
 			if ($this->mod == "add") {
-				$tgl_id 		= $this->input->post('tgl')-1;
-				$data_tgl_lkh 	= array();
-				$jumlkh 		= $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
-				$tglshow 		= $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
-				if ($tglshow->shiftuserrun_id) {
-					for ($i=0; $i < $jumlkh->count_inday; $i++) { 
-					    $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-					}
-				}else {
-			         $data_tgl = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_inday, $tglshow->hari_kerja);
-			         foreach ($data_tgl as $v) {
-			         	 $data_tgl_lkh[] = $v;
-			         }
-			    }
-
+				$date_now = date('Y-m-d');
+				$tgl = decrypt_url($this->input->post('tgl'),"tanggal_lkh_add_$date_now");
 				$data = array(
 							  'user_id' 		=> $this->session->userdata('tpp_user_id'),
 							  'dept_id' 		=> $this->session->userdata('tpp_dept_id'),
-							  'tgl_lkh' 		=> $data_tgl_lkh[$tgl_id],
+							  'tgl_lkh' 		=> $tgl,
 							  'jam_mulai' 		=> $this->input->post('jam1'),
 							  'jam_selesai' 	=> $this->input->post('jam2'),
 							  'kegiatan' 		=> $this->input->post('kegiatan'),

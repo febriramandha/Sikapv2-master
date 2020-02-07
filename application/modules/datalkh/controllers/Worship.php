@@ -14,7 +14,7 @@ class Worship extends App_Controller {
 		$this->_init();
 		$this->breadcrumbs->push('Data Ibadah', 'datalkh/lkh');
 		$this->data['title'] = "Data Ibadah";
-		$this->load->model(['m_schrun_user','m_sch_lkh','m_ibadah','m_verifikator','m_instansi','m_user']);
+		$this->load->model(['m_schrun_user','m_sch_lkh','m_ibadah','m_verifikator','m_instansi','m_user','m_data_lkh']);
 	}
 
 	private function _init()
@@ -58,24 +58,19 @@ class Worship extends App_Controller {
 	public function indexJson()
 	{
 		$this->output->unset_template();
-		$tglshow = $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
 		$jumlkh  = $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
-		$data_tgl_lkh ='';
-		if ($tglshow) {
-		      if ($tglshow->shiftuserrun_id) {
-		          $data_tgl_lkh = array();
-		          for ($i=0; $i < $jumlkh->count_inday; $i++) { 
-		                $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-		          }
-		      }else {
-		         $data_tgl_lkh = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_inday, $tglshow->hari_kerja);
-		      }
+		$tanggal_lkh_inday = $this->m_data_lkh->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_inday)->result();
+		$rank_tanggal = array();
+		if ($tanggal_lkh_inday) {
+				foreach ($tanggal_lkh_inday as $row) {
+					$rank_tanggal[] = $row->rentan_tanggal;
+				}
+		}
+		$data_tgl ='';
+		if ($tanggal_lkh_inday) {
+			$data_tgl = str_replace(['[', ']', '"',','],['', '','','+'],json_encode($rank_tanggal));
+		}
 
-		 }
-		 $data_tgl ='';
-		 if ($data_tgl_lkh) {
-		 		$data_tgl = str_replace(['[', ']', '"',','],['', '','','+'],json_encode($data_tgl_lkh));
-		 }
 		$rank1 = format_tgl_eng($this->input->post('rank1'));
 		$rank2 = format_tgl_eng($this->input->post('rank2'));
 		$this->load->library('datatables');
@@ -95,24 +90,25 @@ class Worship extends App_Controller {
 	public function indexJsonNonMuslim()
 	{
 		$this->output->unset_template();
-		$tglshow = $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
 		$jumlkh  = $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
-		$data_tgl_lkh ='';
-		if ($tglshow) {
-		      if ($tglshow->shiftuserrun_id) {
-		          $data_tgl_lkh = array();
-		          for ($i=0; $i < $jumlkh->count_inday; $i++) { 
-		                $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-		          }
-		      }else {
-		         $data_tgl_lkh = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_inday, $tglshow->hari_kerja);
-		      }
+		$tanggal_lkh_inday = $this->m_data_lkh->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_inday)->result();
+		$rank_tanggal = array();
+		// if ($tanggal_lkh_inday) {
+		// 		foreach ($tanggal_lkh_inday as $row) {
+		// 			$rank_tanggal[] = $row->rentan_tanggal;
+		// 		}
+		// }
 
-		 }
-		 $data_tgl ='';
-		 if ($data_tgl_lkh) {
-		 		$data_tgl = str_replace(['[', ']', '"',','],['', '','','+'],json_encode($data_tgl_lkh));
-		 }
+		$date_now = date('Y-m-d');
+
+		for ($i=0; $i < 8; $i++) {
+                  $rank_tanggal[] = tgl_minus($date_now, $i);
+            }
+
+		$data_tgl ='';
+		if ($rank_tanggal) {
+			$data_tgl = str_replace(['[', ']', '"',','],['', '','','+'],json_encode($rank_tanggal));
+		}
 		$rank1 = format_tgl_eng($this->input->post('rank1'));
 		$rank2 = format_tgl_eng($this->input->post('rank2'));
 		$this->load->library('datatables');
@@ -132,9 +128,12 @@ class Worship extends App_Controller {
 	{
 		$this->data['sub_title'] 	= "Tambah Ibadah";
 		$this->breadcrumbs->push('Tambah Ibadah', '/');
+
+		$jumlkh = $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
+		$tanggal_lkh = $this->m_data_lkh->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_inday);
+		$this->data['tanggal_lkh']  = $tanggal_lkh->result();
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
-		$this->data['tglshow'] 		= $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
-		$this->data['jumlkh']		= $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
+		$this->data['jumlkh']		= $jumlkh;
 		$this->data['verifikator']	= $this->m_verifikator->GetVerifikator($this->session->userdata('tpp_user_id'))->row();
 		$this->data['user']			= $this->m_user->GetDetailBiodata($this->session->userdata('tpp_user_id'))->row();
 
@@ -157,24 +156,8 @@ class Worship extends App_Controller {
 		$this->mod = $this->input->get('mod');
 
 		if ($this->mod == "time" && $this->input->get('tgl_id')) {
-			$tgl_id = $this->input->get('tgl_id')-1;
-			$jumlkh = $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
-			$tglshow = $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
-			if ($jumlkh && $tglshow) {
-				$tglshow = $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
-
-				if ($tglshow->shiftuserrun_id) {
-					$data_tgl_lkh = array();
-					for ($i=0; $i < $jumlkh->count_inday; $i++) { 
-					    $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-					}
-
-				}else {
-					$data_tgl_lkh = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_inday, $tglshow->hari_kerja);
-				}
-
-				$tgl_cek = $data_tgl_lkh[$tgl_id];
-
+				$date_now = date('Y-m-d');
+				$tgl_cek = decrypt_url($this->input->get('tgl_id'),"tanggal_lkh_add_$date_now");
 				$data_ibadah = $this->db->get_where('ibadah_muslim',['tgl_ibadah' => $tgl_cek, 'user_id' => $this->session->userdata('tpp_user_id')])->row();
 
 				$cek_zuhur = '';
@@ -219,26 +202,11 @@ class Worship extends App_Controller {
 				$this->result = array('status' => true,
 			    			   		   'message' => 'Berhasil mengabil data',
 			    			   		   'data' => $data);
-			}
+			
 				
 		}elseif ($this->mod == "ibadah_nonmuslim") {
-			$tgl_id = $this->input->get('tgl_id')-1;
-			$jumlkh = $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
-			$tglshow = $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
-			if ($jumlkh && $tglshow) {
-				$tglshow = $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
-
-				if ($tglshow->shiftuserrun_id) {
-					$data_tgl_lkh = array();
-					for ($i=0; $i < $jumlkh->count_inday; $i++) { 
-					    $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-					}
-
-				}else {
-					$data_tgl_lkh = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_inday, $tglshow->hari_kerja);
-				}
-
-				$tgl_cek = $data_tgl_lkh[$tgl_id];
+				$date_now = date('Y-m-d');
+				$tgl_cek = decrypt_url($this->input->get('tgl_id'),"tanggal_lkh_add_$date_now");
 
 				$data_ibadah = $this->db->get_where('ibadah_muslim',['tgl_ibadah' => $tgl_cek, 'user_id' => $this->session->userdata('tpp_user_id')])->row();
 
@@ -247,7 +215,6 @@ class Worship extends App_Controller {
 				$this->result = array('status' => true,
 			    			   		   'message' => 'Berhasil mengabil data',
 			    			   		   'data' => $data_ibadah);
-			}
 		}
 
 		if ($this->result) {
@@ -293,23 +260,9 @@ class Worship extends App_Controller {
 
 		if ($this->form_validation->run() == TRUE) {
 			$this->mod = $this->input->post('mod');	
-			
-			$tgl_id 		= $this->input->post('tgl')-1;
-			$data_tgl_lkh 	= array();
-			$jumlkh 		= $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
-			$tglshow 		= $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
-			if ($tglshow->shiftuserrun_id) {
-				for ($i=0; $i < $jumlkh->count_inday; $i++) { 
-				    $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-				}
-			}else {
-		         $data_tgl = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_inday, $tglshow->hari_kerja);
-		         foreach ($data_tgl as $v) {
-		         	 $data_tgl_lkh[] = $v;
-		         }
-		    }
 
-		    $tanggal  = $data_tgl_lkh[$tgl_id];
+		    $date_now = date('Y-m-d');
+			$tanggal = decrypt_url($this->input->post('tgl'),"tanggal_lkh_add_$date_now");
 
 		    $cek = $this->db->get_where('ibadah_muslim',['user_id' => $this->session->userdata('tpp_user_id'), 'tgl_ibadah' => $tanggal])->row();
 
@@ -465,22 +418,8 @@ class Worship extends App_Controller {
 		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 
 		if ($this->form_validation->run() == TRUE) {
-				$tgl_id 		= $this->input->post('tgl')-1;
-				$data_tgl_lkh 	= array();
-				$jumlkh 		= $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
-				$tglshow 		= $this->m_schrun_user->CekTanggalLkh($this->session->userdata('tpp_user_id'), date('Y-m-d'))->row();
-				if ($tglshow->shiftuserrun_id) {
-					for ($i=0; $i < $jumlkh->count_inday; $i++) { 
-					    $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-					}
-				}else {
-			         $data_tgl = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_inday, $tglshow->hari_kerja);
-			         foreach ($data_tgl as $v) {
-			         	 $data_tgl_lkh[] = $v;
-			         }
-			    }
-
-			    $tanggal  = $data_tgl_lkh[$tgl_id];
+				$date_now = date('Y-m-d');
+				$tanggal = decrypt_url($this->input->post('tgl'),"tanggal_lkh_add_$date_now");
 
 			    $cek = $this->db->get_where('ibadah_nonmus',['user_id' => $this->session->userdata('tpp_user_id'), 'tgl_ibadah' => $tanggal])->row();
 

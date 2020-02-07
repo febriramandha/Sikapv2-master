@@ -8,25 +8,13 @@
 			</div>
 		</div>
 	</div>
-	<?php 
-	$tgl_verifikasi = array();
-	$data_tgl_lkh = '';
-	if ($tglshow) {
-	      if ($tglshow->shiftuserrun_id) {
-	          $data_tgl_lkh = array();
-	          for ($i=0; $i < $jumlkh->count_verday; $i++) { 
-	                $data_tgl_lkh[] = tgl_minus(date('Y-m-d'), $i);
-	          }
-	      }else {
-	         $data_tgl_lkh = tgl_minus_lkh(date('Y-m-d'), $jumlkh->count_verday, $tglshow->hari_kerja);
-	      }
-	}
-
-	 ?>
+<?php 
+$date_now = date('Y-m-d');
+?>
 	<div class="card-body">
 		<div class="alert alert-warning alert-dismissible">
-			<?php if ($data_tgl_lkh) { ?>
-		    <span class="font-weight-semibold"> H - <?php echo count($data_tgl_lkh)-1 ?> verifikasi</span> 
+			<?php if ($tanggal_lkh) { ?>
+		    <span class="font-weight-semibold"> H - <?php echo $jumlkh->count_verday-1 ?> verifikasi</span> 
 			<?php }else { echo "tidak ada laporan yang harus diverifikasi";} ?>
 		</div>	
 		
@@ -37,17 +25,17 @@
 		  </div>
 		</div>
 
-		<?php if ($data_tgl_lkh): ?>
+		<?php if ($tanggal_lkh): ?>
 		<div class="form-group row mb-0">
 		  <label class="col-lg-2 col-form-label">Tanggal verifikasi </label>
 		  <div class="col-lg-10">
 				<ul class="nav nav-pills nav-pills-bordered nav-pills-toolbar">
 					<?php $no=1;
-					 foreach ($data_tgl_lkh as $v) {  $tgl_verifikasi[] = $v;?>
+					 foreach ($tanggal_lkh as $row) {  $tgl_verifikasi[] = $row->rentan_tanggal;?>
 						<li class="nav-item col-md-4 p-0 m-0">
-							<a href="#pill" class="tanggal nav-link " da="<?php echo $no++ ?>" data-toggle="tab">
-								<?php echo tglInd_hrtabel($v) ?>
-								<span class="badge bg-danger" id="<?php echo $v ?>" ></span>
+							<a href="#pill" class="tanggal nav-link " da="<?php echo encrypt_url($row->rentan_tanggal,"tanggal_lkh_verifikasi_$date_now") ?>" data-toggle="tab">
+								<?php echo tglInd_hrtabel($row->rentan_tanggal) ?>
+								<span class="badge bg-danger" id="<?php echo $row->rentan_tanggal ?>" ></span>
 							</a>
 						</li>
 					<?php } ?>
@@ -242,6 +230,7 @@ $('.tanggal').click(function(){
         success: function(res) {
           if (res.status == true) {
           	table.ajax.reload();
+          	load_notif(tgl_lkh);
             bx_alert_ok(res.message, 'success');
           }else {
             bx_alert(res.message);
@@ -273,6 +262,7 @@ $('.tanggal').click(function(){
         success: function(res) {
           if (res.status == true) {
           	table.ajax.reload();
+          	load_notif(tgl_lkh);
             bx_alert_ok(res.message, 'success');
             $('#modal_default').modal('hide');
           }else {
@@ -314,6 +304,7 @@ $('.tanggal').click(function(){
 	      },
           success: function(res){
 	           if (res.status == true) {
+	           		load_notif(tgl_lkh);
 	           		toastr["success"](res.message);
 	                table.ajax.reload();
 	                load_notif(tgl_lkh);
