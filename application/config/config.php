@@ -52,7 +52,7 @@ $config['maintenance_mode'] = FALSE;
 |
 */
 $http = 'http' . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '') . '://';
-$newurl = str_replace("index.php","", $_SERVER['SCRIPT_NAME']);
+$newurl = str_replace("index.php","", $_SERVER['SCRIPT_NAME']).(isset($_SERVER['HTTP_X_ORIGINAL_REQUEST']));
 
 $config['base_url'] = "$http" . $_SERVER['SERVER_NAME'] . "" . $newurl;
 
