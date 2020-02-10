@@ -51,15 +51,8 @@ $config['maintenance_mode'] = FALSE;
 | a PHP script and you can easily do that on your own.
 |
 */
-
-
 $http = 'http' . ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? 's' : '') . '://';
-if((isset($_SERVER['HTTP_X_ORIGINAL_REQUEST']))) {
-	$server_name = $_SERVER['HTTP_X_ORIGINAL_REQUEST'];
-}else {
-	$server_name = $_SERVER['SCRIPT_NAME'];
-}
-$newurl = str_replace("index.php","", $server_name);
+$newurl = str_replace("index.php","", $_SERVER['SCRIPT_NAME']);
 
 $config['base_url'] = "$http" . $_SERVER['SERVER_NAME'] . "" . $newurl;
 
