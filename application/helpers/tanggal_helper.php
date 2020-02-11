@@ -258,8 +258,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
   function Cek_tanggalValid($tanggal='')
   {
-      $tgl = format_tgl_eng($tanggal);
-      $pecah = explode("-", $tgl);
+      $pecah = explode("-", $tanggal);
 
       if (checkdate($pecah[1], $pecah[2], $pecah[0])) {
           return true;

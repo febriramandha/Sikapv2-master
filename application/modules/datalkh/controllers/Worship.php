@@ -263,6 +263,7 @@ class Worship extends App_Controller {
 
 		    $date_now = date('Y-m-d');
 			$tanggal = decrypt_url($this->input->post('tgl'),"tanggal_lkh_add_$date_now");
+			$verifikator 	  = decrypt_url($this->input->post('verifikator'),'verifikator');
 
 		    $cek = $this->db->get_where('ibadah_muslim',['user_id' => $this->session->userdata('tpp_user_id'), 'tgl_ibadah' => $tanggal])->row();
 
@@ -309,6 +310,7 @@ class Worship extends App_Controller {
 								'hadir' 	     	 => 1,
 								'created_at' 		 => date('Y-m-d H:i:s'),
 								'created_by' 		 => $this->session->userdata('tpp_user_id'),
+								'verifikator'		 => $verifikator
 							);
 
 				 	if ($zuhur && $asar) {
@@ -420,6 +422,7 @@ class Worship extends App_Controller {
 		if ($this->form_validation->run() == TRUE) {
 				$date_now = date('Y-m-d');
 				$tanggal = decrypt_url($this->input->post('tgl'),"tanggal_lkh_add_$date_now");
+				$verifikator 	  = decrypt_url($this->input->post('verifikator'),'verifikator');
 
 			    $cek = $this->db->get_where('ibadah_nonmus',['user_id' => $this->session->userdata('tpp_user_id'), 'tgl_ibadah' => $tanggal])->row();
 
@@ -437,6 +440,7 @@ class Worship extends App_Controller {
 							  'tempat' 			=> $this->input->post('tempat'),
 							  'created_at' 		=> date('Y-m-d H:i:s'),
 							  'created_by' 		=> $this->session->userdata('tpp_user_id'),
+							  'verifikator'		=> $verifikator
 				 	);
 					$this->return = $this->db->insert('ibadah_nonmus',$data);
 			    }

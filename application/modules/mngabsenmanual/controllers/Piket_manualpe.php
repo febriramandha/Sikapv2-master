@@ -22,6 +22,7 @@ class Piket_manualpe extends App_Controller {
 		$this->output->set_template('app');
 		$this->load->css('public/themes/plugin/datepicker/css/bootstrap-datepicker.css');
     	$this->load->js('public/themes/plugin/datepicker/js/bootstrap-datepicker.js');
+    	$this->load->css('public/themes/plugin/chekbox/rrcheckbox.css');
     	$this->load->js('public/themes/material/global_assets/js/plugins/forms/selects/bootstrap_multiselect.js');
 	}
 
@@ -74,6 +75,126 @@ class Piket_manualpe extends App_Controller {
 		$this->data['instansi']		= $this->m_instansi->GetInstansi($user_data->row()->dept_id)->row();
 		$this->load->view('piket_manualpe/v_view', $this->data);
 	}
+
+	public function AjaxSave()
+	{
+		$this->output->unset_template();
+		$this->form_validation->set_rules('u', 'pegawai', 'required');
+
+		if (!$this->input->post('in') && !$this->input->post('out')) {
+			$this->form_validation->set_rules('cekout1', 'jenis piket', 'required');
+		}
+
+		$tahun 	= decrypt_url($this->input->post('tahun'),'tahun_piket');
+		$bulan 	=  decrypt_url($this->input->post('bulan'),'bulan_piket');
+		$tanggal=  decrypt_url($this->input->post('tanggal'),'tanggal_piket');
+
+		$tanggal_full = "$tahun-$bulan-$tanggal";
+
+		$cek_valit_tanggal = Cek_tanggalValid($tanggal_full);
+
+		if ($cek_valit_tanggal == false) {
+			$this->form_validation->set_rules('tanggal_valid', 'tanggal valid', 'required');
+		}
+
+		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
+
+		if ($this->form_validation->run() == TRUE) {
+			$this->mod = $this->input->post('mod');	
+			
+			$schabsenmanual_id 	  = decrypt_url($this->input->post('sch'),'schabsmanual_id_piket');
+			$user_id  			  = decrypt_url($this->input->post('u'),'user_id_absenmanual_piket');
+
+			$in_c 		= $this->input->post('in');
+			$out_c 		= $this->input->post('out');
+
+			$check_in  	= decrypt_url($this->input->post('cekin'),'absen_in_piket');
+			$check_out  = decrypt_url($this->input->post('cekout'),'absen_out_piket');
+
+			$in_data = "{NULL}";
+			if ($in_c && $check_in) {
+				$in_data 	  = "{1}";
+			}
+			$out_data = "{NULL}";
+			if ($out_c && $check_out) {
+				$out_data 	  = "{1}";
+			}
+
+			$tanggal_data = "{{$tanggal_full}}";
+
+			$cek_id = $this->db->select('id')->get_where('absenmanual_data',['user_id' => $user_id, 'schabsmanual_id' => $schabsenmanual_id, 'tanggal' => $tanggal_data ])->row();
+
+			if (!$cek_id) {
+				$data = array(
+							  'user_id' 		=> $user_id,
+							  'schabsmanual_id' => $schabsenmanual_id,
+							  'tanggal' 		=> $tanggal_data,
+							  'status_in' 		=> $in_data,
+							  'status_out' 		=> $out_data,
+							  'created_at' 		=> date('Y-m-d H:i:s'),
+							  'created_by' 		=> $this->session->userdata('tpp_user_id'),
+				 );
+				$this->return = $this->db->insert('absenmanual_data',$data);
+	
+			}elseif ($cek_id) {
+				$data = array(
+							  'tanggal' 		=> $tanggal_data,
+							  'status_in' 		=> $in_data,
+							  'status_out' 		=> $out_data,
+							  'created_at' 		=> date('Y-m-d H:i:s'),
+							  'created_by' 		=> $this->session->userdata('tpp_user_id'),
+				 );
+				$this->return = $this->db->update('absenmanual_data',$data,['id' => $cek_id->id]);
+			}
+
+			if ($this->return) {
+				 $this->result = array('status' => true,
+			    			    'message' => 'Data berhasil disimpan');
+			}else{
+				 $this->result = array('status' => false,
+			    			    'message' => 'Data gagal disimpan');
+			}
+
+		}else {
+			$this->result = array('status' => false,
+				    		'message' => validation_errors(),);
+		}
+
+		if ($this->result) {
+			$this->output->set_output(json_encode($this->result));	
+		}else {
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal mengambil data.']));
+		}
+	}
+
+	public function absenJson()
+	{
+		$this->output->unset_template();
+		$this->load->library('datatables');
+		$schabsenmanual_id = decrypt_url($this->input->post('sch'),'schabsmanual_id_piket');
+        $this->datatables->select('a.id, unnest(tanggal) as tanggal, b.nama,unnest(status_in) as status_in, unnest(status_out) as status_out, nip')
+        	->from('absenmanual_data a')
+        	->join('mf_users b','a.user_id=b.id','left')
+        	->order_by('a.id','desc')
+        	->where('schabsmanual_id', $schabsenmanual_id)
+        	->add_column('nama', '$1($2)','nama,nip')
+        	->add_column('tanggal','$1','tglInd_hrtabel(tanggal)')
+        	->add_column('action', '<span class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus data" style="cursor:pointer;" id="$1">
+					              <i class="icon-bin"></i>
+					              </span>', 'encrypt_url(id,"schabsenmanual_data_id")');
+        return $this->output->set_output($this->datatables->generate());
+	}	
+
+	public function AjaxDel()
+	{
+		$this->output->unset_template();
+		$this->del = $this->db->delete('absenmanual_data',['id' => decrypt_url($this->input->get('id'),"schabsenmanual_data_id")]);
+		if ($this->del) {
+			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil dihapus.']));
+		} else{
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal dihapus atau data sedang digunakan.']));	
+		}
+	}	
 
 }
 
