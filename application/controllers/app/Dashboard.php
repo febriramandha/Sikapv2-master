@@ -16,6 +16,7 @@ class Dashboard extends App_Controller {
 	{
 		$this->output->set_template('app');
 		$this->load->js('public/themes/plugin/Highcharts-7.2.0/code/highcharts.js');
+		$this->load->css('public/themes/plugin/toplipcss/rrtooltip/rrtooltip.css');
 	}
 
 	public function index()

@@ -164,7 +164,7 @@ class M_absen extends CI_Model {
         	return $this->db->get();
 	}
 
-	public function PegawaiAbsenQueryRekapitulasi($user_id=array(), $start_date, $end_date)
+	public function PegawaiAbsenQueryRekapitulasi($user_id='', $start_date, $end_date, $dept_id='')
 	{	
 			$this->db->select('a.id, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, b.json_absen, a.agama_id')
 					 ->from('v_users_all a')
@@ -250,14 +250,18 @@ class M_absen extends CI_Model {
 											group by 1,2,3,4,5,6,7,10,11,12,15,16,17,18,19,20,21,22,25,26,27
 							) as b on a.id=b.id
 							group by 1
-							) as b",'a.id=b.id','left',false)
-					 ->where_in('a.id', $user_id)
-					 ->order_by('no_urut');
+							) as b",'a.id=b.id','left',false);
+					 if ($user_id) {
+					 		$this->db->where_in('a.id', $user_id);
+					 }else {
+					 		$this->db->where('a.dept_id', $dept_id);
+					 }
+					 $this->db->order_by('no_urut');
 			return $this->db->get();
 
 	}
 
-	public function PegawaiAbsenQueryRekapitulasiLkh($user_id=array(), $rank1, $rank2)
+	public function PegawaiAbsenQueryRekapitulasiLkh($user_id=array(), $rank1, $rank2, $dept_id='')
 	{
 		 $this->db->select('a.id, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, json_jadwal_lkh')
 		        	->from("v_users_all a")
@@ -295,10 +299,75 @@ class M_absen extends CI_Model {
 						left join v_jadwal_kerja_users_shift c on (a.id = c.user_id and c.start_shift=a.rentan_tanggal)
 						left join v_jadwal_kerja_users_notfixed d on ((rentan_tanggal >= d.start_date and rentan_tanggal <= d.end_date and extract('isodow' from a.rentan_tanggal) = d.day_id)and d.user_id=a.id)
 						left join days_off e on (rentan_tanggal >= e.start_date and rentan_tanggal <= e.end_date)
-						left join jumlah_lkh_users f on (a.id = f.user_id and rentan_tanggal = f.tgl_lkh)
+						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where status=1 GROUP BY 1,2) as f on (a.id = f.user_id and rentan_tanggal = f.tgl_lkh)
 						group by 1,2,3,4,5,6,7,8,9,10) as b on a.id=b.id
 						group by 1) as b",'a.id=b.id','left',false);
-        $this->db->where_in('a.id', $user_id);
+         if ($user_id) {
+		 		$this->db->where_in('a.id', $user_id);
+		 }else {
+		 		$this->db->where('a.dept_id', $dept_id);
+		 }
+       return $this->db->get();
+	}
+
+	public function PegawaiAbsenQueryRekapitulasiLkhDetail($user_id=array(), $rank1, $rank2, $dept_id='')
+	{
+		 $this->db->select('a.id, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, json_jadwal_lkh')
+		        	->from("v_users_all a")
+		        	->order_by('no_urut');
+        $this->db->join("(select a.id,
+					json_build_object(
+									'data_jum_lkh',json_agg(
+									(	rentan_tanggal,
+										start_time, 
+										end_time,
+										start_time_shift,
+										end_time_shift,
+										start_time_notfixed, 
+										end_time_notfixed,
+										daysoff_id,
+										jumlah_lkh_terverifasi,
+										jumlah_lkh_menunggu,
+										jumlah_lkh_ditolak,
+										jumlah_lkh_terverikasi_atasan,
+										jumlah_lkh_terverikasi_otomatis
+									) ORDER BY rentan_tanggal)
+							) as json_jadwal_lkh
+						from mf_users a
+						left join (
+						select 
+						a.id, 
+						rentan_tanggal,
+						b.start_time, 
+						b.end_time,
+						c.start_time as start_time_shift,
+						c.end_time as end_time_shift,
+						d.start_time as start_time_notfixed, 
+						d.end_time as end_time_notfixed,
+						e.tanggal as daysoff_id,
+						f.jum as jumlah_lkh_terverifasi,
+						g.jum as jumlah_lkh_menunggu,
+						h.jum as jumlah_lkh_ditolak,
+						i.jum as jumlah_lkh_terverikasi_atasan,
+						j.jum as jumlah_lkh_terverikasi_otomatis
+						from 
+						(select a.id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$rank1','$rank2')) as tanggal) as a
+						left join v_jadwal_kerja_users b on ((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day)and b.user_id=a.id)
+						left join v_jadwal_kerja_users_shift c on (a.id = c.user_id and c.start_shift=a.rentan_tanggal)
+						left join v_jadwal_kerja_users_notfixed d on ((rentan_tanggal >= d.start_date and rentan_tanggal <= d.end_date and extract('isodow' from a.rentan_tanggal) = d.day_id)and d.user_id=a.id)
+						left join days_off e on (rentan_tanggal >= e.start_date and rentan_tanggal <= e.end_date)
+						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where status=1 GROUP BY 1,2) as f on (a.id = f.user_id and rentan_tanggal = f.tgl_lkh)
+						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where status in (0,4) GROUP BY 1,2) as g on (a.id = g.user_id and rentan_tanggal = g.tgl_lkh)
+						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where status in (2,3) GROUP BY 1,2) as h on (a.id = h.user_id and rentan_tanggal = h.tgl_lkh)
+						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where verifikasi_by is not null GROUP BY 1,2) as i on (a.id = i.user_id and rentan_tanggal = i.tgl_lkh)
+						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where verifikasi_by is null GROUP BY 1,2) as j on (a.id = j.user_id and rentan_tanggal = j.tgl_lkh)
+						group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14) as b on a.id=b.id
+						group by 1) as b",'a.id=b.id','left',false);
+         if ($user_id) {
+		 		$this->db->where_in('a.id', $user_id);
+		 }else {
+		 		$this->db->where('a.dept_id', $dept_id);
+		 }
        return $this->db->get();
 	}
 

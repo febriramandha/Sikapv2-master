@@ -1003,6 +1003,64 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          return  $jumlah_hari_kerja;
     }
 
+    function total_kerja_rekap_lkh_field($json_data, $field)
+    {
+    	 $pgarray_data = json_decode($json_data, true);
+    	 $json_absen  = $pgarray_data['data_jum_lkh'];
+
+    	 $count = count($json_absen);
+
+    	 $hari_kerja = array();
+         for ($i=0; $i < $count; $i++) { 
+         		 $start_time   = $json_absen[$i]['f2'];
+         		 $start_time_shift  = $json_absen[$i]['f4'];
+                 $start_time_notfixed= $json_absen[$i]['f6'];
+                 $daysoff_id       = $json_absen[$i]['f8'];
+                 $daysoff_id       = $json_absen[$i]['f8'];
+                 $jumlah_lkh       = $json_absen[$i][$field];
+                 $cek = start_time_tabel_rekap($start_time, $start_time_shift,$start_time_notfixed,$daysoff_id);
+                 if ($cek != 2) {
+                 	 if ($jumlah_lkh) {
+                 	 		 $hari_kerja[] = $jumlah_lkh;
+                 	 }
+                 }
+         		
+         }
+
+         $jumlah_hari_kerja = array_sum($hari_kerja);
+
+         return  $jumlah_hari_kerja;
+    }
+
+    function jum_data_kerja_rekap_lkh_field($json_data,$field)
+    {
+    	 $pgarray_data = json_decode($json_data, true);
+    	 $json_absen  = $pgarray_data['data_jum_lkh'];
+
+    	 $count = count($json_absen);
+
+    	 $hari_kerja = array();
+         for ($i=0; $i < $count; $i++) { 
+         		 $start_time   = $json_absen[$i]['f2'];
+         		 $start_time_shift  = $json_absen[$i]['f4'];
+                 $start_time_notfixed= $json_absen[$i]['f6'];
+                 $daysoff_id       = $json_absen[$i]['f8'];
+                 $daysoff_id       = $json_absen[$i]['f8'];
+                 $jumlah_lkh       = $json_absen[$i][$field];
+                 $cek = start_time_tabel_rekap($start_time, $start_time_shift,$start_time_notfixed,$daysoff_id);
+                 if ($cek != 2) {
+                 	 if ($jumlah_lkh) {
+                 	 		 $hari_kerja[] = 1;
+                 	 }
+                 }
+         		
+         }
+
+         $jumlah_hari_kerja = count($hari_kerja);
+
+         return  $jumlah_hari_kerja;
+    }
+
     function start_time_tabel_pegawai($start_time='',$start_time_shift='', $start_time_notfixed='', $check_in_time1='', $check_in_time2='', $check_in_time1_shift='', $check_in_time2_shift='', $check_in_time1_notfixed='', $check_in_time2_notfixed='')
 	{
 		 $resul = '<span tooltip="Tidak ada jadwal" flow="left"><i class="icon-help msclick"></i></span>';

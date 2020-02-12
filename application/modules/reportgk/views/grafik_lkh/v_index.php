@@ -14,12 +14,15 @@
 				</div>
 			</div>
 			<div class="form-group row">
-				<label class="col-form-label col-lg-2">Pegawai <span class="text-danger">*</span></label>
+				<label class="col-form-label col-lg-2">Pegawai <span class="text-danger">*</span> 
+					<i class="icon-spinner2 spinner" style="display: none" id="spinner_pegawai"></i>
+				</label>
 				<div class="col-lg-10">
 					<div class="form-group">
-						<select class="form-control select-search" name="instansi"> 
-							
-						</select> 
+						<div id="pegawai">
+							<select class="form-control multiselect-clickable-groups" name="pegawai[]" multiple="multiple" data-fouc>
+							</select>						
+						</div>
 					</div>
 				</div>
 			</div>
@@ -50,102 +53,91 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		<div class="col-lg-4">
-
-			<div class="table-responsive">
-				<table id="datatable" class="table table-sm table-hover">
-					<thead>
-						<tr>
-							<th></th>
-							<th width="1%" ></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><i class="icon-file-presentation2 mr-1"></i> Total Laporan</td>
-							<td>100</td>
-						</tr>
-						<tr>
-							<td><i class="icon-file-presentation2 mr-1"></i>Total Terverifikasi Atasan</td>
-							<td>100</td>
-						</tr>
-						<tr>
-							<td><i class="icon-file-presentation2 mr-1"></i>Total Terverifikasi Otomatis</td>
-							<td>100</td>
-						</tr>
-						<tr>
-							<td><i class="icon-file-presentation2 mr-1"></i>Total Menunggu Verifikasi</td>
-							<td>100</td>
-						</tr>
-						<tr>
-							<td><i class="icon-file-presentation2 mr-1"></i>Total Laporan ditolak</td>
-							<td>100</td>
-						</tr>
-					</tbody>
-				</table>
+			<div class="text-left offset-lg-2">                
+				<button class="btn btn-sm btn-info result" id="kalkulasi">Kalkulasi <i class="icon-search4 ml-2"></i></button>
+				<i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
 			</div>
 		</div>
-		<div class="col-lg-8 col-sm-6">
-			<div class="media" id="pengguna">
-			</div>	
+		<div id="grafik" class="col-lg-12">
+
 		</div>
 	</div>
 </div>
 
 
 <script type="text/javascript">
-	$(function () {
 
-		$(document).ready(function () {
+$(document).ready(function(){
+	DataPegawai();
+	LoadGrafik();
+});
 
-        // Build the chart
-        $('#pengguna').highcharts({
-        	chart: {
-        		plotBackgroundColor: null,
-        		plotBorderWidth: null,
-        		plotShadow: false,
-        		type: 'pie'
-        	},
-        	title: {
-        		text: 'Grafik LKH Pegawai'
-        	},
-        	tooltip: {
-        		pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        	},
-        	plotOptions: {
-        		pie: {
-        			allowPointSelect: true,
-        			cursor: 'pointer',
-        			dataLabels: {
-        				enabled: false
-        			},
-        			showInLegend: true
-        		}
-        	},
-        	series: [{
-        		name: "Persentase",
-        		colorByPoint: true,
-        		data: [
-        			{
-	        			name: "Terverifikasi Atasan",
-	        			y: 20                }, 
-        			
-        			{
-	    				name: "Terverifikasi Otomatis",
-	    				y: 1                }, 
-	    			{
-	    				name: " Menunggu Verifikasi",
-	    				y: 5                }, 
-	    			{
-	    				name: "Laporan ditolak",
-	    				y: 2                }, 
-	    					
-	    			 ]
-	    				
-    			}]
-			});
-    	});
+$('[name="instansi"]').change(function() {
+	DataPegawai();
+})
+
+$('#kalkulasi').click(function() {
+	LoadGrafik();
+})
+
+
+function DataPegawai() {
+	var dept_id = $('[name="instansi"]').val();
+	var result  = $('.result');
+	var spinner = $('#spinner_pegawai');
+	$.ajax({
+		type: 'get',
+		url: uri_dasar+'report/rekap-kehadiran/AjaxGet',
+		data: {mod:'DataPegawai',id:dept_id},
+		dataType : "html",
+		error:function(){
+			//result.attr("disabled", false);
+       		spinner.hide();
+			bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+		},
+		beforeSend:function(){
+			//result.attr("disabled", true);
+      		spinner.show();
+		},
+		success: function(res) {
+			$('#pegawai').html(res);
+			//result.attr("disabled", false);
+      		spinner.hide();
+		}
 	});
+	
+}
 
+
+function LoadGrafik() {
+	var instansi = $('[name="instansi"]').val();
+	var pegawai= $('[name="pegawai[]"]').val();
+	var tahun  = $('[name="tahun"]').val();
+	var bulan  = $('[name="bulan"]').val();
+	var result  = $('.result');
+	var spinner = $('#spinner');
+	$.ajax({
+		type: 'get',
+		url: uri_dasar+'reportgk/grafik-lkh/AjaxGet',
+		data: {mod:'Grafik',instansi:instansi, pegawai:pegawai, tahun:tahun, bulan:bulan},
+		dataType : "html",
+		error:function(){
+			result.attr("disabled", false);
+       		spinner.hide();
+			bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+			$('#grafik').unblock();
+		},
+		beforeSend:function(){
+			result.attr("disabled", true);
+      		spinner.show();
+      		load_dt('#grafik');
+		},
+		success: function(res) {
+			$('#grafik').html(res);
+			result.attr("disabled", false);
+      		spinner.hide();
+      		$('#grafik').unblock();
+		}
+	});
+}
 </script>
