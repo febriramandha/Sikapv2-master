@@ -131,6 +131,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
   }
 
+   function jumlah_tanggal_bulan_cos($y='',$m='')
+  {
+        $tahun = $y; //Mengambil tahun saat ini
+        $bulan = $m; //Mengambil bulan saat ini
+        $tanggal = cal_days_in_month(CAL_GREGORIAN, $bulan, $tahun);
+
+        return $tanggal;
+  }
+
   function jumlah_hari_rank($start='', $end='')
   {
       $start_date      = new DateTime($start);
