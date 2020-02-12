@@ -141,7 +141,7 @@ class Rekap_lkh extends App_Controller {
 						left join v_jadwal_kerja_users_shift c on (a.id = c.user_id and c.start_shift=a.rentan_tanggal)
 						left join v_jadwal_kerja_users_notfixed d on ((rentan_tanggal >= d.start_date and rentan_tanggal <= d.end_date and extract('isodow' from a.rentan_tanggal) = d.day_id)and d.user_id=a.id)
 						left join days_off e on (rentan_tanggal >= e.start_date and rentan_tanggal <= e.end_date)
-						left join jumlah_lkh_users f on (a.id = f.user_id and rentan_tanggal = f.tgl_lkh)
+						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where status=1 GROUP BY 1,2) as f on (a.id = f.user_id and rentan_tanggal = f.tgl_lkh)
 						group by 1,2,3,4,5,6,7,8,9,10) as b on a.id=b.id
 						group by 1) as b",'a.id=b.id','left',false);
         	$this->datatables->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip)');
