@@ -1003,6 +1003,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          return  $jumlah_hari_kerja;
     }
 
+    function start_time_tabel_pegawai($start_time='',$start_time_shift='', $start_time_notfixed='', $check_in_time1='', $check_in_time2='', $check_in_time1_shift='', $check_in_time2_shift='', $check_in_time1_notfixed='', $check_in_time2_notfixed='')
+	{
+		 $resul = '<span tooltip="Tidak ada jadwal" flow="left"><i class="icon-help msclick"></i></span>';
+		 if ($start_time && $start_time != "00:00:00") {
+		 			$resul = jm($start_time).'('.jm($check_in_time1).'-'.jm($check_in_time2).')';
+		 }
+
+		 if ($start_time_shift && $start_time_shift != "00:00:00") {
+		 			$resul = jm($start_time_shift).'('.jm($check_in_time1_shift).'-'.jm($check_in_time2_shift).')';
+		 }
+
+		 if ($start_time_notfixed) {
+		 		$resul = jm($start_time_notfixed).'('.jm($check_in_time1_notfixed).'-'.jm($check_in_time2_notfixed).')';
+		 }
+
+		 if ($start_time == "00:00:00" || $start_time_shift == "00:00:00" || $start_time_notfixed == "00:00:00") {
+		 			$resul = 'Libur';
+		 }
+
+		 return $resul;
+	}
+
+	function start_end_tabel_pegawai($start_time='',$start_time_shift='', $start_time_notfixed='', $check_in_time1='', $check_in_time2='', $check_in_time1_shift='', $check_in_time2_shift='', $check_in_time1_notfixed='', $check_in_time2_notfixed='')
+	{
+		 $resul = '<span tooltip="Tidak ada jadwal" flow="left"><i class="icon-help msclick"></i></span>';
+		 if ($start_time && $start_time != "00:00:00") {
+		 			$resul = jm($start_time).'('.jm($check_in_time1).'-'.jm($check_in_time2).')';
+		 }
+
+		 if ($start_time_shift && $start_time_shift != "00:00:00") {
+		 			$resul = jm($start_time_shift).'('.jm($check_in_time1_shift).'-'.jm($check_in_time2_shift).')';
+		 }
+
+		 if ($start_time_notfixed) {
+		 		$resul = jm($start_time_notfixed).'('.jm($check_in_time1_notfixed).'-'.jm($check_in_time2_notfixed).')';
+		 }
+
+		 if ($start_time == "00:00:00" || $start_time_shift == "00:00:00" || $start_time_notfixed == "00:00:00") {
+		 			$resul = 'Libur';
+		 }
+
+		 return $resul;
+	}
+
+
 
 
 

@@ -14,93 +14,51 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-4">
+		<i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
+		<div id="grafik" class="col-lg-12">
 
-			<div class="table-responsive">
-				<table id="datatable" class="table table-sm table-hover">
-					<thead>
-						<tr>
-							<th></th>
-							<th width="1%" ></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><i class="icon-file-presentation2 mr-1"></i>Total Pengguna</td>
-							<td>100</td>
-						</tr>
-						<tr>
-							<td><i class="icon-file-presentation2 mr-1"></i>Pegawai PNS</td>
-							<td>100</td>
-						</tr>
-						<tr>
-							<td><i class="icon-file-presentation2 mr-1"></i>Pegawai Non PNS</td>
-							<td>100</td>
-						</tr>
-						<tr>
-							<td><i class="icon-file-presentation2 mr-1"></i>Pegawai Non Aktif</td>
-							<td>100</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
 		</div>
-		<div class="col-lg-8 col-sm-6">
-			<div class="media" id="pengguna">
-			</div>	
-		</div>
+		
 	</div>
 </div>
 
 
 <script type="text/javascript">
-	$(function () {
+$(document).ready(function(){
+	LoadGrafik();
+});
 
-		$(document).ready(function () {
+$('[name="instansi"]').change(function() {
+	LoadGrafik();
+})
 
-        // Build the chart
-        $('#pengguna').highcharts({
-        	chart: {
-        		plotBackgroundColor: null,
-        		plotBorderWidth: null,
-        		plotShadow: false,
-        		type: 'pie'
-        	},
-        	title: {
-        		text: 'Grafik Pegawai'
-        	},
-        	tooltip: {
-        		pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        	},
-        	plotOptions: {
-        		pie: {
-        			allowPointSelect: true,
-        			cursor: 'pointer',
-        			dataLabels: {
-        				enabled: false
-        			},
-        			showInLegend: true
-        		}
-        	},
-        	series: [{
-        		name: "Persentase",
-        		colorByPoint: true,
-        		data: [
-        			{
-	        			name: "PNS",
-	        			y: 100                }, 
-        			
-        			{
-        				name: "Non PNS",
-        				y: 10                }, 
-        			{
-        				name: "Non Aktif",
-        				y: 5                }, 
-        					
-        			]
-				}]
-			});
-    	});
+function LoadGrafik() {
+	var instansi = $('[name="instansi"]').val();
+	var result  = $('.result');
+	var spinner = $('#spinner');
+	$.ajax({
+		type: 'get',
+		url: uri_dasar+'reportgk/grafik-pegawai/AjaxGet',
+		data: {mod:'Grafik',instansi:instansi},
+		dataType : "html",
+		error:function(){
+			result.attr("disabled", false);
+       		spinner.hide();
+			bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+			$('#grafik').unblock();
+		},
+		beforeSend:function(){
+			result.attr("disabled", true);
+      		spinner.show();
+      		load_dt('#grafik');
+		},
+		success: function(res) {
+			$('#grafik').html(res);
+			result.attr("disabled", false);
+      		spinner.hide();
+      		$('#grafik').unblock();
+		}
 	});
+}
 
 </script>

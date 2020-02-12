@@ -102,28 +102,150 @@
 	<div class="col-lg-6 d-flex">
 		<div class="card col-lg-12 " style="height: 203px;">
 			<div class="card-header bg-white header-elements-sm-inline pb-0">
-				<h6 class="font-weight-semibold"> <i class="icon-alarm mr-3"></i>Jadwal Kerja</h6>
+				<h6 class="font-weight-semibold"> <i class="icon-alarm mr-3"></i>Jadwal Kerja <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	</h6>
 			</div>
-			<div class="table-responsive m-0 naikturun">
-				<table class="table text-nowrap table-bordered">
-					<tr class="table-active text-center">
-						<th class="py-0">Hari</th>
-						<th class="py-0">Jam Masuk<hr class="m-0">(Mulai C/in - Akhir C/in)</th>
-						<th class="py-0">Jam Pulang<hr class="m-0">(Mulai C/Out - Akhir C/Out)</th>
-					</tr>
-					<tr>
-						<td>Senin</td>
-						<td>07:30 (06:30 - 12:00)</td>
-						<td>16:00 (12:01 - 23:59) </td>
-					</tr>
+			<div class="table-responsive m-0">
+				<table class="table text-nowrap" id="datatable_jadwal">
+					<thead>
+						<tr class="table-active text-center">
+							<th width="1%">No</th>
+							<th class="py-0">H/Tanggal</th>
+							<th class="py-0">Jam Masuk<hr class="m-0">(Mulai C/in - Akhir C/in)</th>
+							<th class="py-0">Jam Pulang<hr class="m-0">(Mulai C/Out - Akhir C/Out)</th>
+						</tr>
+					</thead>
+					<tbody>
+					
+					</tbody>
 				</table>
 			</div>
-			<a href="<?php echo base_url('app/article') ?>" class="list-group-item legitRipple">
-				<i class="icon-arrow-right22 mr-3"></i>
-				Tampilkan Semua 
-			</a>
-			
 		</div>
 	</div>
 </div>
 
+<script type="text/javascript">
+var spinner = $('#spinner_jadwal');	
+	$(document).ready(function(){
+		table = $('#datatable_jadwal').DataTable({ 
+			processing: true, 
+			serverSide: true, 
+			"ordering": false,
+			"searching": false,
+			"paging": false,
+			language: {
+				search: '<span></span> _INPUT_',
+				searchPlaceholder: 'Cari...',
+				processing: '<i class="icon-spinner9 spinner text-blue"></i> Loading..'
+			},  
+			"lengthMenu": [[10, 25, 50, 100, 200], [10, 25, 50, 100, 200]],
+			ajax: {
+				url : uri_dasar+'app/dashboard/jadwalJson',
+				type:"post",
+				"data": function ( data ) {	
+					data.csrf_sikap_token_name= csrf_value;
+				},
+				beforeSend:function(){
+		      		spinner.show();
+				},
+				"dataSrc": function ( json ) {
+	                //Make your callback here.
+		          	spinner.hide();
+	                return json.data;
+	            } 
+			},
+			"columns": [
+			{"data": "id", searchable:false},
+			{"data": "tanggal", searchable:false},
+			{"data": "start_time_tabel", searchable:false},
+			{"data": "end_time_tabel", searchable:false},
+			
+			],
+			rowCallback: function(row, data, iDisplayIndex) {
+				var info = this.fnPagingInfo();
+				var page = info.iPage;
+				var length = info.iLength;
+				var index = page * length + (iDisplayIndex + 1);
+				$('td:eq(0)', row).html(index);
+
+			},
+			createdRow: function(row, data, index) {
+				$('td', row).eq(1).addClass('py-0');
+				$('td', row).eq(2).addClass('py-0');
+				$('td', row).eq(3).addClass('py-0');
+	  },	
+	});
+	 // Initialize
+	 dt_componen();
+
+});
+
+
+</script>
+
+<?php if ($this->session->userdata('tpp_level') == 1 || $this->session->userdata('tpp_level') == 2 || $this->session->userdata('tpp_level') == 4 || $this->session->userdata('tpp_level') == 5) {
+ ?>
+<div class="card card-body" >
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="form-group row">
+				<label class="col-form-label col-lg-2">Unit Kerja <span class="text-danger">*</span></label>
+				<div class="col-lg-10">
+					<div class="form-group">
+						<select class="form-control select-search" name="instansi"> 
+							<?php foreach ($instansi as $row) { ?>
+								<option value="<?php echo encrypt_url($row->id,'instansi') ?>"><?php echo '['.$row->level.']'.carakteX($row->level, '-','|').filter_path($row->path_info)." ".strtoupper($row->dept_name) ?></option>
+							<?php } ?>
+						</select> 
+					</div>
+				</div>
+			</div>
+		</div>
+		<i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
+		<div id="grafik" class="col-lg-12">
+
+		</div>
+		
+	</div>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	LoadGrafik();
+});
+
+$('[name="instansi"]').change(function() {
+	LoadGrafik();
+})
+
+function LoadGrafik() {
+	var instansi = $('[name="instansi"]').val();
+	var result  = $('.result');
+	var spinner = $('#spinner');
+	$.ajax({
+		type: 'get',
+		url: uri_dasar+'reportgk/grafik-pegawai/AjaxGet',
+		data: {mod:'Grafik',instansi:instansi},
+		dataType : "html",
+		error:function(){
+			result.attr("disabled", false);
+       		spinner.hide();
+			// bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+			$('#grafik').unblock();
+		},
+		beforeSend:function(){
+			result.attr("disabled", true);
+      		spinner.show();
+      		load_dt('#grafik');
+		},
+		success: function(res) {
+			$('#grafik').html(res);
+			result.attr("disabled", false);
+      		spinner.hide();
+      		$('#grafik').unblock();
+		}
+	});
+}
+
+</script>
+
+<?php } ?>

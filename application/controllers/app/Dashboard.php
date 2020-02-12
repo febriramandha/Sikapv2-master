@@ -9,7 +9,7 @@ class Dashboard extends App_Controller {
 		$this->_init();
 		$this->breadcrumbs->push('Dashboard', 'dashboard');
 		$this->data['title'] = "Dashboard";
-		$this->load->model('m_article');
+		$this->load->model(['m_article','m_instansi']);
 	}
 
 	private function _init()
@@ -33,9 +33,48 @@ class Dashboard extends App_Controller {
 
 		//user
 		$this->data['user_opd_all']		= $this->db->select('count(*)')->where('parent_id',1)->get('v_users_all')->row();
-
-
+		$this->data['instansi']	  = $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
 		$this->load->view('app/dashboard/v_dashboard', $this->data);
+	}
+
+	public function jadwalJson()
+	{
+		$this->output->unset_template();
+		$this->load->library('datatables');
+
+		$rank1 = date('Y-m-d');
+		$rank2 = tgl_plus($rank1, 6);
+
+		$this->datatables->select('a.id, 
+							rentan_tanggal, 
+							b.start_time, 
+							b.end_time, 
+							b.check_in_time1, 
+							b.check_in_time2, 
+							b.check_out_time1, 
+							b.check_out_time2,
+							c.start_time as start_time_shift, 
+							c.end_time as end_time_shift, 
+							c.check_in_time1 as check_in_time1_shift, 
+							c.check_in_time2 as check_in_time2_shift, 
+							c.check_out_time1 as check_out_time1_shift, 
+							c.check_out_time2 as check_out_time2_shift,
+							d.start_time as start_time_notfixed, 
+							d.end_time as end_time_notfixed, 
+							d.check_in_time1 as check_in_time1_notfixed, 
+							d.check_in_time2 as check_in_time2_notfixed, 
+							d.check_out_time1 as check_out_time1_notfixed, 
+							d.check_out_time2 as check_out_time2_notfixed')
+			->from("(select * from mf_users a, (select * from rentan_tanggal('$rank1','$rank2')) as tanggal) as a");
+			$this->db->join("v_jadwal_kerja_users b","((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day) and b.user_id=a.id)",'left',false);
+			$this->db->join('v_jadwal_kerja_users_shift c'," (a.id = c.user_id and c.start_shift=a.rentan_tanggal)",'left',false);
+			$this->db->join('v_jadwal_kerja_users_notfixed d',"((rentan_tanggal >= d.start_date and rentan_tanggal <= d.end_date and extract('isodow' from a.rentan_tanggal) = d.day_id)and d.user_id=a.id)",'left',false);
+			$this->db->order_by('rentan_tanggal','desc');
+			$this->datatables->where('a.id',$this->session->userdata('tpp_user_id'));
+			$this->datatables->add_column('tanggal','$1','tglInd_hrtabel(rentan_tanggal)');
+			$this->datatables->add_column('start_time_tabel','$1','start_time_tabel_pegawai(start_time, start_time_shift,start_time_notfixed, check_in_time1, check_in_time2, check_in_time1_shift, check_in_time2_shift, check_in_time1_notfixed, check_in_time2_notfixed)');
+			$this->datatables->add_column('end_time_tabel','$1','start_time_tabel_pegawai(end_time,end_time_shift, end_time_notfixed, check_out_time1, check_out_time2, check_out_time1_shift, check_out_time2_shift, check_out_time1_notfixed, check_out_time2_notfixed)');
+        return $this->output->set_output($this->datatables->generate());
 	}
 
 
