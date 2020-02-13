@@ -32,7 +32,7 @@
                 <tr>
                     <td width="6%"><b>PERIODE</b></td>
                     <td width="2%">:</td>
-                    <td>'.format_tgl_ind($sch_run->start_date).'-'.format_tgl_ind($sch_run->end_date).'</td>
+                    <td>'.tgl_ind_bulan($sch_run->start_date).'-'.tgl_ind_bulan($sch_run->end_date).'</td>
                 </tr>
             </table><br><br>';
     $pdf->writeHTML($html, true, false, true, false, '');
