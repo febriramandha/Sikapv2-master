@@ -9,7 +9,7 @@ class Dashboard extends App_Controller {
 		$this->_init();
 		$this->breadcrumbs->push('Dashboard', 'dashboard');
 		$this->data['title'] = "Dashboard";
-		$this->load->model(['m_article','m_instansi']);
+		$this->load->model(['m_article','m_instansi','m_sch_run','m_absen']);
 	}
 
 	private function _init()
@@ -35,6 +35,7 @@ class Dashboard extends App_Controller {
 		//user
 		$this->data['user_opd_all']		= $this->db->select('count(*)')->where('parent_id',1)->get('v_users_all')->row();
 		$this->data['instansi']	  = $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
+		$this->data['laporan_tahun'] = $this->m_sch_run->GetTahun()->result();
 		$this->load->view('app/dashboard/v_dashboard', $this->data);
 	}
 
@@ -76,6 +77,24 @@ class Dashboard extends App_Controller {
 			$this->datatables->add_column('start_time_tabel','$1','start_time_tabel_pegawai(start_time, start_time_shift,start_time_notfixed, check_in_time1, check_in_time2, check_in_time1_shift, check_in_time2_shift, check_in_time1_notfixed, check_in_time2_notfixed)');
 			$this->datatables->add_column('end_time_tabel','$1','start_time_tabel_pegawai(end_time,end_time_shift, end_time_notfixed, check_out_time1, check_out_time2, check_out_time1_shift, check_out_time2_shift, check_out_time1_notfixed, check_out_time2_notfixed)');
         return $this->output->set_output($this->datatables->generate());
+	}
+
+	public function AjaxGet()
+	{
+		$this->output->unset_template();
+		$this->mod = $this->input->get('mod');
+		if ($this->mod == "Grafik") {
+				$tahun 		= $this->input->get('tahun');
+				$bulan 		= $this->input->get('bulan');
+
+				$hari_ini 		= "$tahun-$bulan-01";
+	 			$rank1 			= date('Y-m-01', strtotime($hari_ini));
+	 			$rank2 			= date('Y-m-t', strtotime($hari_ini));
+
+				$this->data['pegawai_lkh'] = $this->m_absen->PegawaiAbsenQueryRekapitulasiLkhDetail($this->session->userdata('tpp_user_id'), $rank1, $rank2)->result();
+				$this->load->view('app/dashboard/v_grafik_lkh', $this->data);
+		}
+		
 	}
 
 

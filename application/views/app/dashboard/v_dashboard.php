@@ -5,6 +5,8 @@
 	</h6>
 </div>
 <div class="row">
+	<?php if ($this->session->userdata('tpp_level') == 1 || $this->session->userdata('tpp_level') == 2 || $this->session->userdata('tpp_level') == 4 || $this->session->userdata('tpp_level') == 5) {
+ 	?>
 	<div class="col-lg-12">
 		<div class="row">
 			<div class="col-sm-6 col-xl-3">
@@ -65,7 +67,7 @@
 			</div>
 		</div>
 	</div>
-
+	<?php } ?>
 	<div class="col-lg-6 d-flex">
 		<div class="card col-lg-12 " style="height: 203px;">
 			<div class="card-header bg-white header-elements-sm-inline pb-0">
@@ -249,3 +251,87 @@ function LoadGrafik() {
 </script>
 
 <?php } ?>
+
+<div class="card card-body" >
+	<div class="row">
+		<div class="col-lg-12">
+			<div class="form-group row">
+				<label class="col-form-label col-lg-2"> Rentang Waktu <span class="text-danger">*</span></label>
+				<div class="col-lg-4">
+					<div class="form-group-feedback form-group-feedback-left">
+						<div class="form-group">
+				           <select class="form-control select-nosearch result" name="tahun" >  
+				            <option disabled="">Pilih Tahun..</option> 
+				             <?php foreach ($laporan_tahun as $row) {  ?> 
+				            	<option value="<?php echo $row->tahun ?>" <?php if ($row->tahun == date('Y')) { echo "selected";} ?>><?php echo $row->tahun ?></option> 
+				          	<?php } ?>
+				          </select> 
+				        </div>
+					</div>
+				</div>
+				<div class="col-lg-4">
+					<div class="form-group-feedback form-group-feedback-left">
+						<div class="form-group">
+				           <select class="form-control select-nosearch result" name="bulan" >  
+				            <option disabled="">Pilih Bulan..</option> 
+				            <?php for ($i=1; $i < 13; $i++) { ?>
+				            	<option value="<?php echo $i ?>" <?php if ($i == date('m')) { echo "selected";} ?>><?php echo _bulan($i) ?></option>
+				        	<?php } ?>
+				          </select> 
+				        </div>
+					</div>
+				</div>
+			</div>
+			<div class="text-left offset-lg-2">                
+				<button class="btn btn-sm btn-info result" id="kalkulasi">Kalkulasi <i class="icon-search4 ml-2"></i></button>
+				<i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
+			</div>
+		</div>
+		<div id="grafik_lkh" class="col-lg-12">
+
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	LoadGrafikLkh();
+});
+
+
+$('#kalkulasi').click(function() {
+	LoadGrafikLkh();
+})
+
+
+function LoadGrafikLkh() {
+	var tahun  = $('[name="tahun"]').val();
+	var bulan  = $('[name="bulan"]').val();
+	var result  = $('.result');
+	var spinner = $('#spinner');
+	$.ajax({
+		type: 'get',
+		url: uri_dasar+'app/dashboard/AjaxGet',
+		data: {mod:'Grafik',tahun:tahun, bulan:bulan},
+		dataType : "html",
+		error:function(){
+			result.attr("disabled", false);
+       		spinner.hide();
+			bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+			$('#grafik_lkh').unblock();
+		},
+		beforeSend:function(){
+			result.attr("disabled", true);
+      		spinner.show();
+      		load_dt('#grafik_lkh');
+		},
+		success: function(res) {
+			$('#grafik_lkh').html(res);
+			result.attr("disabled", false);
+      		spinner.hide();
+      		$('#grafik_lkh').unblock();
+		}
+	});
+}
+</script>
