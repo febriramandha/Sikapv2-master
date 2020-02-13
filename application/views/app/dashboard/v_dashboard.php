@@ -318,7 +318,7 @@ function LoadGrafikLkh() {
 		error:function(){
 			result.attr("disabled", false);
        		spinner.hide();
-			bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+			// bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
 			$('#grafik_lkh').unblock();
 		},
 		beforeSend:function(){

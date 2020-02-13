@@ -55,8 +55,8 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td><i class="icon-file-presentation2 mr-1"></i> Total Pengguna</td>
-						<td><?php echo $user_tot ?></td>
+						<td><i class="icon-user mr-1"></i> <?php echo $this->session->userdata('tpp_name'); ?></td>
+						<td></td>
 					</tr>
 					<tr>
 							<td><i class="icon-file-presentation2 mr-1"></i>Total Jumlah Hari Kerja</td>
