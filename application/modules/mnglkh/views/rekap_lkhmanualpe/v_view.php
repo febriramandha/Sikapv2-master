@@ -43,7 +43,7 @@
 							 ?>
 							<tr>
 								<td><?php echo $no++ ?></td>
-								<td><?php echo $row->nama ?></td>
+								<td class="text-nowrap"><?php echo $row->nama ?></td>
 								<td class="py-0"><input type="text" class="form-control" name="jumlah[<?php echo $row->id ?>]" value="<?php echo $jumlah_laporan ?>"></td>
 								<td class="py-0"><input type="text" class="form-control" name="total[<?php echo $row->id ?>]" value="<?php echo $total_laporan ?>"></td>
 

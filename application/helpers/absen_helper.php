@@ -945,7 +945,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          return  $jumlah_hari_kerja;
     }
 
-    function jum_data_kerja_rekap_lkh($json_data)
+    function jum_data_kerja_rekap_lkh($json_data, $jumlah_laporan='')
     {
     	 $pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_jum_lkh'];
@@ -971,10 +971,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
          $jumlah_hari_kerja = count($hari_kerja);
 
+         if ($jumlah_laporan) {
+         		 $jumlah_hari_kerja = $jumlah_laporan;
+         }
+
          return  $jumlah_hari_kerja;
     }
 
-    function total_jum_lkh_rekap($json_data)
+    function total_jum_lkh_rekap($json_data, $total_laporan='')
     {
     	 $pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_jum_lkh'];
@@ -999,6 +1003,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          }
 
          $jumlah_hari_kerja = array_sum($hari_kerja);
+
+          if ($total_laporan) {
+         		 $jumlah_hari_kerja = $total_laporan;
+         }
 
          return  $jumlah_hari_kerja;
     }

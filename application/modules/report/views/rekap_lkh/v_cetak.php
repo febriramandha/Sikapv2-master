@@ -53,8 +53,8 @@ $no=1;foreach ($pegawai_lkh as $row) {
                         <td width="5%">'.$no++.'</td>
                         <td width="50%">'.nama_gelar($row->nama, $row->gelar_dpn, $row->gelar_blk).' ('.$row->nip.')</td>
                         <td width="15%" align="center">'.jum_hari_kerja_rekap_lkh($row->json_jadwal_lkh).'</td>
-                        <td width="15%" align="center">'.jum_data_kerja_rekap_lkh($row->json_jadwal_lkh).'</td>
-                        <td width="15%" align="center">'.total_jum_lkh_rekap($row->json_jadwal_lkh).'</td>';     
+                        <td width="15%" align="center">'.jum_data_kerja_rekap_lkh($row->json_jadwal_lkh, $row->jumlah_laporan).'</td>
+                        <td width="15%" align="center">'.total_jum_lkh_rekap($row->json_jadwal_lkh, $row->total_laporan).'</td>';     
             $tbl .='</tr>';
         }
           

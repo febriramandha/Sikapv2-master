@@ -263,7 +263,7 @@ class M_absen extends CI_Model {
 
 	public function PegawaiAbsenQueryRekapitulasiLkh($user_id=array(), $rank1, $rank2, $dept_id='')
 	{
-		 $this->db->select('a.id, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, json_jadwal_lkh')
+		 $this->db->select('a.id, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, json_jadwal_lkh, jumlah_laporan, total_laporan')
 		        	->from("v_users_all a")
 		        	->order_by('no_urut');
         $this->db->join("(select a.id,
@@ -302,6 +302,8 @@ class M_absen extends CI_Model {
 						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where status=1 GROUP BY 1,2) as f on (a.id = f.user_id and rentan_tanggal = f.tgl_lkh)
 						group by 1,2,3,4,5,6,7,8,9,10) as b on a.id=b.id
 						group by 1) as b",'a.id=b.id','left',false);
+        $this->db->join("(select start_date, b.user_id,jumlah_laporan, total_laporan  from schlkh_manual a 				join rekaplkh_manual b on a.id=b.schlkhmanual_id
+							where start_date = '$rank1') as c",'a.id=c.user_id','left',false);
          if ($user_id) {
 		 		$this->db->where_in('a.id', $user_id);
 		 }else {
@@ -312,7 +314,7 @@ class M_absen extends CI_Model {
 
 	public function PegawaiAbsenQueryRekapitulasiLkhDetail($user_id=array(), $rank1, $rank2, $dept_id='')
 	{
-		 $this->db->select('a.id, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, json_jadwal_lkh')
+		 $this->db->select('a.id, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, json_jadwal_lkh, json_jadwal_lkh, jumlah_laporan, total_laporan')
 		        	->from("v_users_all a")
 		        	->order_by('no_urut');
         $this->db->join("(select a.id,
@@ -363,6 +365,8 @@ class M_absen extends CI_Model {
 						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where verifikasi_by is null GROUP BY 1,2) as j on (a.id = j.user_id and rentan_tanggal = j.tgl_lkh)
 						group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14) as b on a.id=b.id
 						group by 1) as b",'a.id=b.id','left',false);
+       	 $this->db->join("(select start_date, b.user_id,jumlah_laporan, total_laporan  from schlkh_manual a 				join rekaplkh_manual b on a.id=b.schlkhmanual_id
+							where start_date = '$rank1') as c",'a.id=c.user_id','left',false);
          if ($user_id) {
 		 		$this->db->where_in('a.id', $user_id);
 		 }else {
