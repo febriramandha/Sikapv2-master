@@ -69,11 +69,12 @@ class M_sch_run extends CI_Model {
 
 	public function sch_run_user($id)
 	{
-		$this->db->select('b.id, start_date, end_date')
+		$this->db->select('b.id, start_date, end_date, c.dept_name')
 				->from('sch_run_users a')
 				->join('sch_run b','a.schrun_id=b.id','left')
+				->join('mf_departments c','a.dept_id=c.id','left')
 				->where('a.id',$id)
-				->group_by('1,2,3');
+				->group_by('1,2,3,4');
 		return $this->db->get();
 	}
 

@@ -21,6 +21,8 @@
     $schrun_id = encrypt_url($sch_run->id,'schrun_id_shift');
 
     ?>
+    
+    <br>
     <div class="table-responsive">
       <table id="datatable" class="table table-sm table-hover table-bordered">
         <thead>
@@ -76,3 +78,12 @@
   <a href="javascript:history.back()" class="btn btn-sm bg-success-300 result">Kembali <i class="icon-arrow-left5 ml-2"></i></a>                  
 </div>
 </div>
+
+<script type="text/javascript">
+$('#cetak').click(function() {
+    var uri_4 = "<?php echo base_url('mngsch/schshift-pegawai/cetak/'.$this->uri->segment(4)) ?>";
+      newWindow = window.open(uri_4,"open",'height=600,width=1000');
+      if (window.focus) {newWindow.focus()}
+        return false;
+  })
+</script>

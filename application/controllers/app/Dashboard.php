@@ -71,7 +71,7 @@ class Dashboard extends App_Controller {
 			$this->db->join("v_jadwal_kerja_users b","((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day) and b.user_id=a.id)",'left',false);
 			$this->db->join('v_jadwal_kerja_users_shift c'," (a.id = c.user_id and c.start_shift=a.rentan_tanggal)",'left',false);
 			$this->db->join('v_jadwal_kerja_users_notfixed d',"((rentan_tanggal >= d.start_date and rentan_tanggal <= d.end_date and extract('isodow' from a.rentan_tanggal) = d.day_id)and d.user_id=a.id)",'left',false);
-			$this->db->order_by('rentan_tanggal','desc');
+			$this->db->order_by('rentan_tanggal','asc');
 			$this->datatables->where('a.id',$this->session->userdata('tpp_user_id'));
 			$this->datatables->add_column('tanggal','$1','tglInd_hrtabel(rentan_tanggal)');
 			$this->datatables->add_column('start_time_tabel','$1','start_time_tabel_pegawai(start_time, start_time_shift,start_time_notfixed, check_in_time1, check_in_time2, check_in_time1_shift, check_in_time2_shift, check_in_time1_notfixed, check_in_time2_notfixed)');

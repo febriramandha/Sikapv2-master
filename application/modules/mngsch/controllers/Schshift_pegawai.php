@@ -184,6 +184,18 @@ class Schshift_pegawai extends App_Controller {
 		$this->load->view('schshift_pegawai/v_shift', $this->data);
 	}
 
+	public function cetak($id)
+	{
+		$this->output->unset_template();
+		$this->data['sch_run'] 		= $this->m_sch_run->sch_run_user(decrypt_url($id,'sch_run_user_shift'))->row();
+		$this->data['user']	  		= $this->m_sch_run->userAll_schRunUser(decrypt_url($id,'sch_run_user_shift'))->result();
+		$this->load->library('Tpdf');
+		$this->load->view('schshift_pegawai/v_cetak', $this->data);
+			
+
+	}
+
+
 	public function usershift()
 	{
 		$schrun_id 	  				= decrypt_url($this->input->get('sch'),'schrun_id_shift');
