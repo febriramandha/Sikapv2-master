@@ -37,7 +37,7 @@ $date_now = date('Y-m-d');
                         <option value="<?php echo encrypt_url($row->rentan_tanggal,"tanggal_lkh_add_$date_now") ?>"><?php echo tgl_ind_hari($row->rentan_tanggal) ?></option>
                         <?php } ?>  
                 </select>
-                <span class="text-danger"><i>* pilih tanggal yang tersedia</i></span>
+                <span class="badge d-block badge-primary form-text text-left">pilih tanggal yang tersedia</span>
                  <?php if (!$tanggal_lkh) { ?>
                   <div class="alert alert-warning border-0 alert-dismissible mb-0">
                     <span class="font-weight-semibold">Peringatan!</span> Jadwal anda belum ada mohon hubungi admin tentang jadwal anda.
@@ -45,7 +45,7 @@ $date_now = date('Y-m-d');
                   <?php } ?>
               </div>
             </div>
-            <div class="col-lg-5 pt-2">
+            <div class="col-lg-5 pt-1">
               <div class="form-group">
                 <div class="p-1 m-0 alert alert-success border-0 alert-dismissible">
                     Total jam kerja: <span id="total_jam"></span>
@@ -60,15 +60,13 @@ $date_now = date('Y-m-d');
             <div class="col-lg-2">
               <div class="form-group-feedback form-group-feedback-left">
                 <div class="form-control-feedback">
-                  <i class="icon-pencil3"></i>
+                  <i class="icon-watch2"></i>
                 </div>
-                <input type="text" name="jam1" class="form-control clockpicker result" placeholder="jam mulai">
+                <input type="text" name="jam1" class="form-control result" placeholder="jam mulai" readonly="">
               </div>
             </div>
-            <div class="col-lg-1 pt-2">
-              <div class="form-group">
-                <span class="m-0">s/d</span>
-              </div>
+            <div class="col-lg-1 mt-1 mt-lg-0 align-self-center">
+              <span class="badge bg-teal">s/d</span>
             </div>
             <div class="col-lg-2">
               <div class="form-group-feedback form-group-feedback-left">
@@ -83,10 +81,10 @@ $date_now = date('Y-m-d');
                 <div class="p-1 m-0 alert alert-warning border-0 alert-dismissible">
                     Jumlah jam yang harus diisi: <span id="total_jam_reg"></span>
                 </div>
-                <div class="progress mt-1" id="persentase">
-                  <!-- <div class="progress-bar bg-teal" style="width: 85%">
-                    <span>85% Complete</span>
-                  </div> -->
+                <div class="progress mt-1">
+                  <div class="progress-bar bg-teal" id="progress-bar" style="width: 100%">
+                    <span id='percent'>0% Complete</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -125,7 +123,9 @@ $date_now = date('Y-m-d');
                 }?>
               </div>
            </div>
-
+        <input type="hidden" name="jam1_encry">
+        <input type="hidden" name="total_jam_encry">
+        <input type="hidden" name="jam_pulang_encry">
         <input type="hidden" name="mod" value="add">
         <div class="text-left offset-lg-2" >
            <a href="javascript:history.back()" class="btn btn-sm bg-success-300 result">Kembali <i class="icon-arrow-left5 ml-2"></i></a>                  
@@ -183,10 +183,15 @@ function load_jam(tgl_id) {
         },
         success: function(res) {
             if (res.status == true) {
-               $('[name="jam1"]').val(res.data.jam_mulai);
-               $('#total_jam').text(res.data.total_jam);
-               $('#total_jam_reg').text(res.data.total_jam_reg);
-               $('#persentase').html(res.data.persen);
+                $('[name="jam1"]').val(res.data.jam_mulai);
+                $('[name="jam1_encry"]').val(res.data.jam_mulai_encry);
+                $('[name="total_jam_encry"]').val(res.data.total_jam_encry);
+                $('[name="jam_pulang_encry"]').val(res.data.jam_pulang_encry);
+                $('#total_jam').text(res.data.total_jam);
+                $('#total_jam_reg').text(res.data.total_jam_reg);
+                
+                $('#progress-bar').animate({width: res.data.persen+"%"}, 100);
+                $('#percent').text(res.data.persen+"%");
                
             }
             result.attr("disabled", false);

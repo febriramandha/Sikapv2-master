@@ -68,14 +68,14 @@ class Lkh extends App_Controller {
 		$rank1 = format_tgl_eng($this->input->post('rank1'));
 		$rank2 = format_tgl_eng($this->input->post('rank2'));
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, tgl_lkh, jam_mulai, jam_selesai, kegiatan, hasil, jenis, a.status, verifikasi_by, b.nama as ver_nama, b.gelar_dpn as ver_gelar_dpn, b.gelar_blk as ver_gelar_blk, comment, a.jenis')
+        $this->datatables->select('a.id, tgl_lkh, jam_mulai, jam_selesai, kegiatan, hasil, jenis, a.status, verifikasi_by, b.nama as ver_nama, b.gelar_dpn as ver_gelar_dpn, b.gelar_blk as ver_gelar_blk, comment, a.jenis, a.persentase')
         	->from('data_lkh a')
         	->join('v_users_all b','a.verifikasi_by=b.id','left')
         	->join('lkh_rejected c','a.id=c.lkh_id','left')
         	->order_by('tgl_lkh,jam_mulai, id','desc')
         	->where('user_id', $this->session->userdata('tpp_user_id'))
         	->add_column('tgl_lkh_tabel','$1','tglInd_hrtabel(tgl_lkh)')
-        	->add_column('jam_mulai','$1 <i class="icon-arrow-right16"></i> $2 $3','jm(jam_mulai), jm(jam_selesai), cek_dltabel(jenis)')
+        	->add_column('jam_mulai','$1 <i class="icon-arrow-right16"></i> $2 $3 $4','jm(jam_mulai), jm(jam_selesai), cek_dltabel(jenis), persentase_lkh(persentase)')
         	->add_column('status_lkh','$1','status_lkh_tabel(status, comment)')
         	->add_column('ver','$1','pejabat_ptabel(verifikasi_by, ver_nama, ver_gelar_dpn, ver_gelar_blk, status)')
         	->add_column('action','<div style="white-space: nowrap;">$1</div>', "aksi_status_lkh(id, status,$data_tgl, tgl_lkh)");
@@ -143,6 +143,10 @@ class Lkh extends App_Controller {
 					$jam_mulai =  jm($last_jam->jam_selesai);
 				}
 
+				$total_jam ='';
+				$total_jam_reg ='';
+				$persen ='';
+
 				if ($jam_masuk && $jam_pulang) {
 					$data_time = array(
 					    array('masuk' => $jam_masuk, 'keluar' => $jam_pulang,),
@@ -163,10 +167,6 @@ class Lkh extends App_Controller {
 					$kurang = ($total_jam-$total_jam_reg);
 					$bagi = ($kurang/$total_jam);
 					$persen = round($bagi*100,2);
-
-					$style_persen ="<div class='progress-bar bg-teal' style='width: $persen%'>
-					                    <span>$persen% Complete</span>
-					                  </div>";
 				}
 
 				$data = array('jam_mulai' => $jam_mulai,
@@ -174,7 +174,10 @@ class Lkh extends App_Controller {
 							  'jam_pulang'=> $jam_pulang,
 							  'total_jam' => $total_jam,
 							  'total_jam_reg' => $total_jam_reg,
-							  'persen'	=> $style_persen );
+							  'persen'	=> $persen,
+							  'jam_mulai_encry' => encrypt_url($jam_mulai,'jam_mulai_lkh'),
+							  'total_jam_encry' => encrypt_url($total_jam,'total_jam_encry'),
+							  'jam_pulang_encry' => encrypt_url($jam_pulang,'jam_pulang_encry'), );
 
 				$this->result = array('status' => true,
 			    			   		   'message' => 'Berhasil mengabil data',
@@ -212,11 +215,27 @@ class Lkh extends App_Controller {
 			if ($this->mod == "add") {
 				$date_now = date('Y-m-d');
 				$tgl = decrypt_url($this->input->post('tgl'),"tanggal_lkh_add_$date_now");
+
+				$total_jam = decrypt_url($this->input->post('total_jam_encry'),'total_jam_encry');
+				$data_time_reg = array(
+				    array('masuk' => $this->input->post('jam2'), 'keluar' => decrypt_url($this->input->post('jam_pulang_encry'),'jam_pulang_encry'), ),
+				);
+
+				$total_jam_reg = hitung_total_jam($data_time_reg);
+
+				if ($total_jam_reg > $total_jam) {
+						$total_jam_reg = "00.00";	
+				}
+
+				$kurang = ($total_jam-$total_jam_reg);
+				$bagi = ($kurang/$total_jam);
+				$persen = round($bagi*100,2);
+
 				$data = array(
 							  'user_id' 		=> $this->session->userdata('tpp_user_id'),
 							  'dept_id' 		=> $this->session->userdata('tpp_dept_id'),
 							  'tgl_lkh' 		=> $tgl,
-							  'jam_mulai' 		=> $this->input->post('jam1'),
+							  'jam_mulai' 		=> decrypt_url($this->input->post('jam1_encry'),'jam_mulai_lkh'),
 							  'jam_selesai' 	=> $this->input->post('jam2'),
 							  'kegiatan' 		=> $this->input->post('kegiatan'),
 							  'hasil' 			=> $this->input->post('hasil'),
@@ -224,6 +243,7 @@ class Lkh extends App_Controller {
 							  'status'			=> 0,
 							  'verifikator' 	=> $verifikator,
 							  'created_at' 		=> date('Y-m-d H:i:s'),
+							  'persentase'		=> $persen
 				 );
 				$this->return = $this->db->insert('data_lkh',$data);
 	

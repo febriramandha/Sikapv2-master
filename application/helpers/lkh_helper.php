@@ -203,6 +203,18 @@ function tgl_minus_lkh($tgl='', $nilai='', $hari_id=array())
             return $a;
     }
 
+    function persentase_lkh($persen='')
+    {
+        $result ='';
+        if ($persen) {
+            $result = "<hr class='m-1'><div class='progress' style='height: 0.590rem;'><div class='progress-bar progress-bar-striped progress-bar-animated bg-success' style='width: $persen%;'>
+                    <span>$persen%</span>
+                  </div></div>";
+        }
+
+        return $result;
+    }
+
 
 
 
