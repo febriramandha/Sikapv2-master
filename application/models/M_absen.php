@@ -361,8 +361,8 @@ class M_absen extends CI_Model {
 						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where status=1 GROUP BY 1,2) as f on (a.id = f.user_id and rentan_tanggal = f.tgl_lkh)
 						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where status in (0,4) GROUP BY 1,2) as g on (a.id = g.user_id and rentan_tanggal = g.tgl_lkh)
 						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where status in (2,3) GROUP BY 1,2) as h on (a.id = h.user_id and rentan_tanggal = h.tgl_lkh)
-						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where verifikasi_by is not null GROUP BY 1,2) as i on (a.id = i.user_id and rentan_tanggal = i.tgl_lkh)
-						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where verifikasi_by is null GROUP BY 1,2) as j on (a.id = j.user_id and rentan_tanggal = j.tgl_lkh)
+						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where verifikasi_by is not null and status=1 GROUP BY 1,2) as i on (a.id = i.user_id and rentan_tanggal = i.tgl_lkh)
+						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where verifikasi_by is null and status=1 GROUP BY 1,2) as j on (a.id = j.user_id and rentan_tanggal = j.tgl_lkh)
 						group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14) as b on a.id=b.id
 						group by 1) as b",'a.id=b.id','left',false);
        	 $this->db->join("(select start_date, b.user_id,jumlah_laporan, total_laporan  from schlkh_manual a 				join rekaplkh_manual b on a.id=b.schlkhmanual_id
