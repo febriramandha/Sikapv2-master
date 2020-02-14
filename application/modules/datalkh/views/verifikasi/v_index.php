@@ -11,11 +11,11 @@
 
 	<div class="card-body">
     <div style="white-space: nowrap;overflow-x: auto;">
-        <span class="badge bg-danger mr-1">.</span> Belum Diverifikasi 
-        <i class="icon-checkmark2 text-teal mr-1 ml-2"></i> Telah Diverifikasi
+        <span class="badge bg-danger mr-1">|</span> Belum diverifikasi 
+        <i class="icon-checkmark2 text-teal mr-1 ml-2"></i> Telah diverifikasi
     </div>
 		<div class="table-responsive">
-			<table id="datatable" class="table table-sm table-hover table-bordered">
+			<table id="datatable" class="table table-sm table-hover">
 				<tbody>
 				</tbody>
 			</table>
@@ -60,7 +60,8 @@
           $('td:eq(1)', row).css('width', '10px');
       },
        createdRow: function(row, data, index) {
-       		$('td', row).eq(1).addClass('text-nowrap p-2');        
+       		$('td', row).eq(1).addClass('text-nowrap p-2');   
+          $('td', row).eq(2).addClass('text-nowrap p-0');           
         },
 
 

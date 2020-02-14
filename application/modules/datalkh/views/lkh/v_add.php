@@ -30,7 +30,7 @@ $date_now = date('Y-m-d');
       <div class="col-lg-12">
           <div class="form-group row">
             <label class="col-form-label col-lg-2">Tanggal kegiatan <span class="text-danger">*</span></label>
-            <div class="col-lg-8">
+            <div class="col-lg-5">
               <div class="form-group">
                 <select class="form-control select-nosearch" name="tgl" data-fouc>
                         <?php $no=1; foreach ($tanggal_lkh as $row) { ?>
@@ -45,12 +45,19 @@ $date_now = date('Y-m-d');
                   <?php } ?>
               </div>
             </div>
+            <div class="col-lg-5 pt-2">
+              <div class="form-group">
+                <div class="p-1 m-0 alert alert-success border-0 alert-dismissible">
+                    Total jam kerja: <span id="total_jam"></span>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="form-group row">
             <label class="col-form-label col-lg-2"> Waktu Kegiatan <span class="text-danger">*</span> 
                 <i class="icon-spinner2 spinner" style="display: none" id="spinner_waktu"></i>
             </label>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
               <div class="form-group-feedback form-group-feedback-left">
                 <div class="form-control-feedback">
                   <i class="icon-pencil3"></i>
@@ -58,17 +65,29 @@ $date_now = date('Y-m-d');
                 <input type="text" name="jam1" class="form-control clockpicker result" placeholder="jam mulai">
               </div>
             </div>
-            <div class="col-lg-1">
+            <div class="col-lg-1 pt-2">
               <div class="form-group">
                 <span class="m-0">s/d</span>
               </div>
             </div>
-            <div class="col-lg-3">
+            <div class="col-lg-2">
               <div class="form-group-feedback form-group-feedback-left">
                 <div class="form-control-feedback">
                   <i class="icon-pencil3"></i>
                 </div>
                 <input type="text" name="jam2" class="form-control clockpicker" placeholder="jam selesai" >
+              </div>
+            </div>
+             <div class="col-lg-5 pt-2">
+              <div class="form-group">
+                <div class="p-1 m-0 alert alert-warning border-0 alert-dismissible">
+                    Jumlah jam yang harus diisi: <span id="total_jam_reg"></span>
+                </div>
+                <div class="progress mt-1" id="persentase">
+                  <!-- <div class="progress-bar bg-teal" style="width: 85%">
+                    <span>85% Complete</span>
+                  </div> -->
+                </div>
               </div>
             </div>
           </div>
@@ -165,6 +184,10 @@ function load_jam(tgl_id) {
         success: function(res) {
             if (res.status == true) {
                $('[name="jam1"]').val(res.data.jam_mulai);
+               $('#total_jam').text(res.data.total_jam);
+               $('#total_jam_reg').text(res.data.total_jam_reg);
+               $('#persentase').html(res.data.persen);
+               
             }
             result.attr("disabled", false);
             spinner.hide();

@@ -143,9 +143,38 @@ class Lkh extends App_Controller {
 					$jam_mulai =  jm($last_jam->jam_selesai);
 				}
 
+				if ($jam_masuk && $jam_pulang) {
+					$data_time = array(
+					    array('masuk' => $jam_masuk, 'keluar' => $jam_pulang,),
+					);
+
+					$total_jam = hitung_total_jam($data_time);
+
+					$data_time_reg = array(
+					    array('masuk' => $jam_mulai, 'keluar' => $jam_pulang,),
+					);
+
+					$total_jam_reg = hitung_total_jam($data_time_reg);
+
+					if ($total_jam_reg > $total_jam) {
+							$total_jam_reg = "00.00";	
+					}
+
+					$kurang = ($total_jam-$total_jam_reg);
+					$bagi = ($kurang/$total_jam);
+					$persen = round($bagi*100,2);
+
+					$style_persen ="<div class='progress-bar bg-teal' style='width: $persen%'>
+					                    <span>$persen% Complete</span>
+					                  </div>";
+				}
+
 				$data = array('jam_mulai' => $jam_mulai,
 							  'jam_masuk' => $jam_masuk,
-							  'jam_pulang'=> $jam_pulang, );
+							  'jam_pulang'=> $jam_pulang,
+							  'total_jam' => $total_jam,
+							  'total_jam_reg' => $total_jam_reg,
+							  'persen'	=> $style_persen );
 
 				$this->result = array('status' => true,
 			    			   		   'message' => 'Berhasil mengabil data',
