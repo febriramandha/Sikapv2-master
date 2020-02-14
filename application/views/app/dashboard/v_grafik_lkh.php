@@ -33,13 +33,13 @@
 	$jum_hari_kerja_rekap_lkh_terverikasi_otomatis_sum = array_sum($jum_hari_kerja_rekap_lkh_terverikasi_otomatis);
 
 	$user_tot = count($user);
-	$jum_hari_kerja_rekap_lkh_round 				= round($jum_hari_kerja_rekap_lkh_sum/$user_tot,0);
-	$total_jum_lkh_rekap_round 	  					= round($total_jum_lkh_rekap_sum/$user_tot,0);
-	$jum_data_kerja_rekap_terverifikasi_round 	  	= round($jum_data_kerja_rekap_terverifikasi_sum/$user_tot,0);
-	$jum_hari_kerja_rekap_lkh_menunggu_round 	  	= round($jum_hari_kerja_rekap_lkh_menunggu_sum/$user_tot,0);
-	$jum_hari_kerja_rekap_lkh_ditolak_round 	  	= round($jum_hari_kerja_rekap_lkh_ditolak_sum/$user_tot,0);
-	$jum_hari_kerja_rekap_lkh_terverikasi_atasan_round 	  	= round($jum_hari_kerja_rekap_lkh_terverikasi_atasan_sum/$user_tot,0);
-	$jum_hari_kerja_rekap_lkh_terverikasi_otomatis_round 	  	= round($jum_hari_kerja_rekap_lkh_terverikasi_otomatis_sum/$user_tot,0);
+	// $jum_hari_kerja_rekap_lkh_round 				= round($jum_hari_kerja_rekap_lkh_sum/$user_tot,0);
+	// $total_jum_lkh_rekap_round 	  					= round($total_jum_lkh_rekap_sum/$user_tot,0);
+	// $jum_data_kerja_rekap_terverifikasi_round 	  	= round($jum_data_kerja_rekap_terverifikasi_sum/$user_tot,0);
+	// $jum_hari_kerja_rekap_lkh_menunggu_round 	  	= round($jum_hari_kerja_rekap_lkh_menunggu_sum/$user_tot,0);
+	// $jum_hari_kerja_rekap_lkh_ditolak_round 	  	= round($jum_hari_kerja_rekap_lkh_ditolak_sum/$user_tot,0);
+	// $jum_hari_kerja_rekap_lkh_terverikasi_atasan_round 	  	= round($jum_hari_kerja_rekap_lkh_terverikasi_atasan_sum/$user_tot,0);
+	// $jum_hari_kerja_rekap_lkh_terverikasi_otomatis_round 	  	= round($jum_hari_kerja_rekap_lkh_terverikasi_otomatis_sum/$user_tot,0);
 
  ?>
 
@@ -58,29 +58,29 @@
 						<td><i class="icon-user mr-1"></i> <?php echo $this->session->userdata('tpp_name'); ?></td>
 						<td></td>
 					</tr>
-					<tr>
+					<!-- <tr>
 							<td><i class="icon-file-presentation2 mr-1"></i>Total Jumlah Hari Kerja</td>
 							<td><?php echo $jum_hari_kerja_rekap_lkh_round ?></td>
-					</tr>
+					</tr> -->
 					<tr>
 						<td><i class="icon-file-presentation2 mr-1"></i>Total Terverifikasi</td>
-						<td><?php echo $jum_data_kerja_rekap_terverifikasi_round ?></td>
+						<td><?php echo $jum_data_kerja_rekap_terverifikasi_sum ?></td>
 					</tr>
 					<tr>
 						<td><i class="icon-file-presentation2 mr-1"></i>Total Verifikasi Atasan</td>
-						<td><?php echo $jum_hari_kerja_rekap_lkh_terverikasi_atasan_round ?></td>
+						<td><?php echo $jum_hari_kerja_rekap_lkh_terverikasi_atasan_sum ?></td>
 					</tr>
 					<tr>
 						<td><i class="icon-file-presentation2 mr-1"></i>Total Verifikasi Otomatis</td>
-						<td><?php echo $jum_hari_kerja_rekap_lkh_terverikasi_otomatis_round ?></td>
+						<td><?php echo $jum_hari_kerja_rekap_lkh_terverikasi_otomatis_sum ?></td>
 					</tr>
 					<tr>
 						<td><i class="icon-file-presentation2 mr-1"></i>Total Menunggu Verifikasi</td>
-						<td><?php echo $jum_hari_kerja_rekap_lkh_menunggu_round ?></td>
+						<td><?php echo $jum_hari_kerja_rekap_lkh_menunggu_sum ?></td>
 					</tr>
 					<tr>
 						<td><i class="icon-file-presentation2 mr-1"></i>Total Laporan ditolak</td>
-						<td><?php echo $jum_hari_kerja_rekap_lkh_ditolak_round ?></td>
+						<td><?php echo $jum_hari_kerja_rekap_lkh_ditolak_sum ?></td>
 					</tr>
 				</tbody>
 			</table>
@@ -127,17 +127,17 @@ $(function () {
         		data: [
         			{
 	        			name: "Terverifikasi Atasan",
-	        			y: <?php echo $jum_hari_kerja_rekap_lkh_terverikasi_atasan_round ?>                }, 
+	        			y: <?php echo $jum_hari_kerja_rekap_lkh_terverikasi_atasan_sum ?>                }, 
         			
         			{
 	    				name: "Terverifikasi Otomatis",
-	    				y: <?php echo $jum_hari_kerja_rekap_lkh_terverikasi_otomatis_round ?>                }, 
+	    				y: <?php echo $jum_hari_kerja_rekap_lkh_terverikasi_otomatis_sum ?>                }, 
 	    			{
 	    				name: " Menunggu Verifikasi",
-	    				y: <?php echo $jum_hari_kerja_rekap_lkh_menunggu_round ?>                }, 
+	    				y: <?php echo $jum_hari_kerja_rekap_lkh_menunggu_sum ?>                }, 
 	    			{
 	    				name: "Laporan ditolak",
-	    				y: <?php echo $jum_hari_kerja_rekap_lkh_ditolak_round ?>                }, 
+	    				y: <?php echo $jum_hari_kerja_rekap_lkh_ditolak_sum ?>                }, 
 	    					
 	    			 ]
 	    				

@@ -35,15 +35,15 @@ $jum_dinas_luar_rekap_sum	= array_sum($jum_dinas_luar_rekap);
 $jum_cuti_rekap_sum			= array_sum($jum_cuti_rekap); 
 $jum_user = count($user);
 
-$jum_hari_kerja_rekap_round 	= round($jum_hari_kerja_rekap_sum/$jum_user,0);
-$jum_hadir_kerja_rekap_round	= round($jum_hadir_kerja_rekap_sum/$jum_user,0);
-$jum_terlambar_rekap_round		= round($jum_terlambar_rekap_sum/$jum_user,0);
-$jum_pulang_cepat_rekap_round	= round($jum_pulang_cepat_rekap_sum/$jum_user,0);
-$jum_tk_rekap_round				= round($jum_tk_rekap_sum/$jum_user,0);
-$jum_tidak_upacara_rekap_round	= round($jum_tidak_upacara_rekap_sum/$jum_user,0);
-$jum_tidak_sholatza_rekap_round	= round($jum_tidak_sholatza_rekap_sum/$jum_user,0);
-$jum_dinas_luar_rekap_round		= round($jum_dinas_luar_rekap_sum/$jum_user,0);
-$jum_cuti_rekap_round			= round($jum_cuti_rekap_sum/$jum_user,0); 
+// $jum_hari_kerja_rekap_round 	= round($jum_hari_kerja_rekap_sum/$jum_user,0);
+// $jum_hadir_kerja_rekap_round	= round($jum_hadir_kerja_rekap_sum/$jum_user,0);
+// $jum_terlambar_rekap_round		= round($jum_terlambar_rekap_sum/$jum_user,0);
+// $jum_pulang_cepat_rekap_round	= round($jum_pulang_cepat_rekap_sum/$jum_user,0);
+// $jum_tk_rekap_round				= round($jum_tk_rekap_sum/$jum_user,0);
+// $jum_tidak_upacara_rekap_round	= round($jum_tidak_upacara_rekap_sum/$jum_user,0);
+// $jum_tidak_sholatza_rekap_round	= round($jum_tidak_sholatza_rekap_sum/$jum_user,0);
+// $jum_dinas_luar_rekap_round		= round($jum_dinas_luar_rekap_sum/$jum_user,0);
+// $jum_cuti_rekap_round			= round($jum_cuti_rekap_sum/$jum_user,0); 
 
 
 
@@ -65,21 +65,21 @@ $jum_cuti_rekap_round			= round($jum_cuti_rekap_sum/$jum_user,0);
 							<td><i class="icon-file-presentation2 mr-1"></i>Total Pengguna</td>
 							<td><?php echo $jum_user ?></td>
 						</tr>
-						<tr>
+						<!-- <tr>
 							<td><i class="icon-file-presentation2 mr-1"></i>Total Jumlah Hari Kerja</td>
 							<td><?php echo $jum_hari_kerja_rekap_round ?></td>
-						</tr>
+						</tr> -->
 						<tr>
 							<td><i class="icon-file-presentation2 mr-1"></i>Total Hadir</td>
-							<td><?php echo $jum_hadir_kerja_rekap_round ?></td>
+							<td><?php echo $jum_hadir_kerja_rekap_sum ?></td>
 						</tr>
 						<tr>
 							<td><i class="icon-file-presentation2 mr-1"></i>Total Terlambat</td>
-							<td><?php echo $jum_terlambar_rekap_round ?></td>
+							<td><?php echo $jum_terlambar_rekap_sum ?></td>
 						</tr>
 						<tr>
 							<td><i class="icon-file-presentation2 mr-1"></i>Total Pulang Cepat</td>
-							<td><?php echo $jum_pulang_cepat_rekap_round ?></td>
+							<td><?php echo $jum_pulang_cepat_rekap_sum ?></td>
 						</tr>
 						<tr>
 							<td><i class="icon-file-presentation2 mr-1"></i>Total TK</td>
@@ -87,19 +87,19 @@ $jum_cuti_rekap_round			= round($jum_cuti_rekap_sum/$jum_user,0);
 						</tr>
 						<tr>
 							<td><i class="icon-file-presentation2 mr-1"></i>Total Tidak Upacara</td>
-							<td><?php echo $jum_tidak_upacara_rekap_round ?></td>
+							<td><?php echo $jum_tidak_upacara_rekap_sum ?></td>
 						</tr>
 						<tr>
 							<td><i class="icon-file-presentation2 mr-1"></i>Total Tidak Shalat Zuhur/Ashar Berjamaah</td>
-							<td><?php echo $jum_tidak_sholatza_rekap_round ?></td>
+							<td><?php echo $jum_tidak_sholatza_rekap_sum ?></td>
 						</tr>
 						<tr>
 							<td><i class="icon-file-presentation2 mr-1"></i>Total Dinas Luar</td>
-							<td><?php echo $jum_dinas_luar_rekap_round ?></td>
+							<td><?php echo $jum_dinas_luar_rekap_sum ?></td>
 						</tr>
 						<tr>
 							<td><i class="icon-file-presentation2 mr-1"></i>Total Cuti</td>
-							<td><?php echo $jum_cuti_rekap_round ?></td>
+							<td><?php echo $jum_cuti_rekap_sum ?></td>
 						</tr>
 					</tbody>
 				</table>
@@ -145,29 +145,29 @@ $jum_cuti_rekap_round			= round($jum_cuti_rekap_sum/$jum_user,0);
         		data: [
         			{
 	        			name: "Hadir",
-	        			y: <?php echo $jum_hadir_kerja_rekap_round ?>                }, 
+	        			y: <?php echo $jum_hadir_kerja_rekap_sum ?>                }, 
         			
         			{
 	    				name: "Terlambat",
-	    				y: <?php echo $jum_terlambar_rekap_round ?>                }, 
+	    				y: <?php echo $jum_terlambar_rekap_sum ?>                }, 
 	    			{
 	    				name: "Pulang Cepat",
-	    				y: <?php echo $jum_pulang_cepat_rekap_round ?>                }, 
+	    				y: <?php echo $jum_pulang_cepat_rekap_sum ?>                }, 
 	    			{
 	    				name: "TK",
-	    				y: <?php echo $jum_tk_rekap_round ?>                }, 
+	    				y: <?php echo $jum_tk_rekap_sum ?>                }, 
 	    			{
 	    				name: "Tidak Upacara",
-	    				y: <?php echo $jum_tidak_upacara_rekap_round ?>               }, 
+	    				y: <?php echo $jum_tidak_upacara_rekap_sum ?>               }, 
 	    			{
 	    				name: "Tidak Shalat Zuhur/Ashar Berjamaah",
-	    				y: <?php echo $jum_tidak_sholatza_rekap_round ?>              }, 
+	    				y: <?php echo $jum_tidak_sholatza_rekap_sum ?>              }, 
 	    			{
 	    				name: "Dinas luar",
-	    				y: <?php echo $jum_dinas_luar_rekap_round ?>                }, 
+	    				y: <?php echo $jum_dinas_luar_rekap_sum ?>                }, 
 	    			{
 	    				name: "Cuti",
-	    				y: <?php echo $jum_cuti_rekap_round ?>                }, 
+	    				y: <?php echo $jum_cuti_rekap_sum ?>                }, 
 	    					
 	    			 ]
 	    				
