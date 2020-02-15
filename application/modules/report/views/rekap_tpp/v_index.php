@@ -10,6 +10,10 @@
 	</div>
 	<?php echo form_open('report/rekap-kehadiran/cetak','class="form-horizontal" target="popup" id="formAjax"'); ?>
 	<div class="card-body">
+		<div class="alert alert-warning alert-dismissible">
+	      <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+	      <span class="font-weight-semibold">Module Coming Soon</span>
+	    </div>
 		<div class="form-group row">
 			<label class="col-form-label col-lg-2">Unit Kerja <span class="text-danger">*</span></label>
 			<div class="col-lg-10">
@@ -89,6 +93,7 @@
 			</button> 
 			<i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
 		</div>
+		<br>
 		<?php echo form_close() ?>
 		<div class="table-responsive">
 			<table id="datatable" class="table table-sm table-hover table-bordered">
