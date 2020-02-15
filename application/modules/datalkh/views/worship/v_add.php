@@ -127,17 +127,17 @@ var w_asar  = "15:50:00";
 var jam_ini = "<?= date('H:i:s') ?>";
 var gender = "<?= $user->gender ?>";
 var hari = "<?= date('D') ?>";
+var tgl_ini = "<?= date('Y-m-d') ?>";
 
  $(document).ready(function(){
     jumat(hari, gender);
-    cek_waktu(jam_ini, w_zuhur, $('[name="tgl"]').val(), hari, gender);
     load_data($('[name="tgl"]').val());
 
 });
 
 $('[name="tgl"]').change(function() {
     da = $(this).val();
-    cek_waktu(jam_ini, w_zuhur, da, hari, gender);
+    // cek_waktu(jam_ini, w_zuhur, da, hari, gender);
     jumat(hari, gender);
 
     load_data(da)
@@ -164,6 +164,8 @@ function load_data(id) {
                     $('[name="pms"]').prop('checked', a.cek_pms);
                     $('[name="dl"]').prop('checked', a.cek_dl);
                     jumat(a.hari, gender);
+                    cek_waktu(jam_ini, w_zuhur,a.tgl_ibadah, hari, gender);
+                   
                }
                
             }
@@ -184,7 +186,7 @@ function cek_waktu(jam_ini, waktu, da, hari, gender) {
         ew_zuhur = '';
         ew_ashar = '';
 
-        if (jam_ini < w_zuhur && da == $('[name="tgl"]').val() ) {
+        if (jam_ini < w_zuhur && da == tgl_ini ) {
             zuhur_dis = true;
 
             ew_zuhur = "Waktu sholat zuhur belum masuk";
@@ -194,7 +196,7 @@ function cek_waktu(jam_ini, waktu, da, hari, gender) {
 
         }
 
-        if (jam_ini < w_asar && da == $('[name="tgl"]').val() ) {
+        if (jam_ini < w_asar && da == tgl_ini ) {
             ashar_dis = true;
             ew_ashar = "Waktu sholat Ashar belum masuk";
         }

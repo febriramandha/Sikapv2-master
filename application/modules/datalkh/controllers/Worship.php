@@ -195,7 +195,8 @@ class Worship extends App_Controller {
 									    'cek_dl' 	=> $cek_dl,
 									    't_zuhur' 	=> $t_zuhur,
 									    't_ashar' 	=> $t_ashar,
-									    'hari' 		=> date('D', strtotime($tgl_cek)), );
+									    'hari' 		=> date('D', strtotime($tgl_cek)), 
+									    'tgl_ibadah' => $tgl_cek);
 
 				$data = array('data_ibadah' => $data_ibadah_, );
 
