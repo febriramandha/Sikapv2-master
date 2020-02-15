@@ -130,7 +130,7 @@ var hari = "<?= date('D') ?>";
 
  $(document).ready(function(){
     jumat(hari, gender);
-    cek_waktu(jam_ini, w_zuhur, 1, hari, gender);
+    cek_waktu(jam_ini, w_zuhur, $('[name="tgl"]').val(), hari, gender);
     load_data($('[name="tgl"]').val());
 
 });
@@ -184,7 +184,7 @@ function cek_waktu(jam_ini, waktu, da, hari, gender) {
         ew_zuhur = '';
         ew_ashar = '';
 
-        if (jam_ini < w_zuhur && da == 1 ) {
+        if (jam_ini < w_zuhur && da == $('[name="tgl"]').val() ) {
             zuhur_dis = true;
 
             ew_zuhur = "Waktu sholat zuhur belum masuk";
@@ -194,7 +194,7 @@ function cek_waktu(jam_ini, waktu, da, hari, gender) {
 
         }
 
-        if (jam_ini < w_asar && da == 1 ) {
+        if (jam_ini < w_asar && da == $('[name="tgl"]').val() ) {
             ashar_dis = true;
             ew_ashar = "Waktu sholat Ashar belum masuk";
         }
