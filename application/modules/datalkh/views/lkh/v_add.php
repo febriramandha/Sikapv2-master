@@ -40,7 +40,7 @@ $date_now = date('Y-m-d');
                 <span class="badge d-block badge-primary form-text text-left">pilih tanggal yang tersedia</span>
                  <?php if (!$tanggal_lkh) { ?>
                   <div class="alert alert-warning border-0 alert-dismissible mb-0">
-                    <span class="font-weight-semibold">Peringatan!</span> Jadwal anda belum ada mohon hubungi admin tentang jadwal anda.
+                    <span class="font-weight-semibold">Peringatan!</span> Jadwal anda belum tersedia mohon hubungi administrator tentang jadwal anda.
                   </div>
                   <?php } ?>
               </div>
@@ -73,7 +73,7 @@ $date_now = date('Y-m-d');
                 <div class="form-control-feedback">
                   <i class="icon-pencil3"></i>
                 </div>
-                <input type="text" name="jam2" class="form-control clockpicker" placeholder="jam selesai" >
+                <input type="text" name="jam2" class="form-control clockpicker" placeholder="jam selesai" autocomplete="off">
               </div>
             </div>
              <div class="col-lg-5 pt-2">

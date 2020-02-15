@@ -18,7 +18,7 @@
 					<div class="form-control-feedback">
 						<i class="icon-pencil3"></i>
 					</div>
-					<input type="text" name="rank1" class="form-control datepicker" placeholder="tanggal mulai" >
+					<input type="text" name="rank1" class="form-control datepicker" placeholder="tanggal mulai" autocomplete="off">
 				</div>
 			</div>
 			<div class="col-lg-1">
@@ -31,7 +31,7 @@
 					<div class="form-control-feedback">
 						<i class="icon-pencil3"></i>
 					</div>
-					<input type="text" name="rank2" class="form-control datepicker" placeholder="tanggal berakhir" >
+					<input type="text" name="rank2" class="form-control datepicker" placeholder="tanggal berakhir" autocomplete="off">
 				</div>
 			</div>
 		</div>
