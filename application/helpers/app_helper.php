@@ -76,5 +76,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         return $output_menu;
 	}
 
+	//recursive function
+	function renderMenu($items) {
+	    $render = '<ul>';
+
+	    foreach ($items as $item) {
+	        $render .= '<li>' . $item->dept_name;
+	        if (!empty($item->subs)) {
+	            $render .= renderMenu($item->subs);
+	        }
+	        $render .= '</li>';
+	    }
+
+	    return $render . '</ul>';
+	}
+
 /* End of file app_helper.php */
 /* Location: ./application/helpers/app_helper.php */
