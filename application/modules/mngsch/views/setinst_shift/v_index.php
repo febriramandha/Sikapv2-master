@@ -13,11 +13,11 @@
 		<div class="text-left">
 			<a href="<?php echo base_url('mngsch/setinst-shift/add') ?>" class="btn btn-sm btn-info"><i class="icon-pen-plus mr-1"></i> Tambah Shift</a>
 		</div>
-		<div class="text-right mt-1">
+		<!-- <div class="text-right mt-1">
 			<button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1" id="cetak">
 				<span><i class="icon-printer mr-2"></i> Cetak</span>
 			</button> 
-		</div>
+		</div> -->
 		<div class="table-responsive">
 			<table id="datatable" class="table table-sm table-hover table-bordered">
 				<thead>
