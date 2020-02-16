@@ -81,7 +81,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	    $render = '<ul>';
 
 	    foreach ($items as $item) {
-	        $render .= '<li>' . $item->dept_name;
+	        $render .= '<li>' . $item->title;
 	        if (!empty($item->subs)) {
 	            $render .= renderMenu($item->subs);
 	        }

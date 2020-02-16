@@ -19,9 +19,18 @@
 
 		<div class="tree-default card card-body border-left-info border-left-2 shadow-0 rounded-left-0">
 			<?php 
+			$items = array();
+			foreach ($instansi as $row) {
+				$items[] = (object) array('id'  => $row->id,
+							   'title' 			=> $row->dept_name,
+							   'parent_id' 		=> $row->parent_id, );
+			}
+
+			$data_instansi = (object) $items; 
+
 			//index elements by id
-			foreach ($instansi as $item) {
-			    //$item['subs'] = array();
+			foreach ($data_instansi as $item) {
+			    // $item['subs'] = array();
 			    $indexedItems[$item->id] = (object) $item;
 			}
 			//assign to parent
@@ -33,7 +42,7 @@
 			        $indexedItems[$item->parent_id]->subs[] = $item;
 			    }
 			}
-			 echo renderMenu($topLevel);
+			echo renderMenu($topLevel);
 			?>
 		</div>
 	</div>
