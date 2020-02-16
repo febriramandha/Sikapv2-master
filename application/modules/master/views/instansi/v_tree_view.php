@@ -11,9 +11,6 @@
 		</div>
 	</div>
 
-
-
-
 	<div class="card-body">
 		<p class="mb-3">Current example</p>
 

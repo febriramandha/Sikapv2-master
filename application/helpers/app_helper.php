@@ -13,67 +13,61 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$level = $ci->session->userdata('tpp_level');
 		if ($level) {
 			$ci->load->model('M_acl');
-			$sql = $ci->M_acl->_acl($level);
-			foreach ($sql as $row) {
-				$sub_data['id'] 		= $row->id; 
-				$sub_data['title'] 		= $row->title;
-				$sub_data['icon'] 		= $row->icon;
-				$sub_data['url'] 		= $row->url;
-				$sub_data['type'] 		= $row->type;
-				$sub_data['parent'] 	= $row->parent; 
-				$data[] = $sub_data;
+			$menu = $ci->M_acl->_acl($level);
+
+			//index elements by id
+			foreach ($menu as $item) {
+			    $item->subs = array();
+			    $indexedItems[$item->id] = (object) $item;
+			}
+			//assign to parent
+			$topLevel = array();
+			foreach ($indexedItems as $item) {
+			    if ($item->parent == 0) {
+			        $topLevel[] = $item;
+			    } else {
+			        $indexedItems[$item->parent]->subs[] = $item;
+			    }
 			}
 
-			foreach($data as $key => &$value){
-			 $output[$value["id"]] = &$value;
-			}
-
-			foreach($data as $key => &$value){
-			 if($value["parent"] && isset($output[$value["parent"]]))
-			 {
-			  $output[$value["parent"]]["child"][] = &$value;
-			 }
-			}
-			foreach($data as $key => &$value){
-			 if($value["parent"] && isset($output[$value["parent"]]))
-			 {
-			  unset($data[$key]);
-			 }
-			}
-
-	        foreach($data as $m1 => $r1){ 	
-				$md_none = '';
-				if ($r1['type'] == "class-lg") {
-						$md_none = "d-md-none";
-				}
-		          if(empty($r1['child'])){
-		            $output_menu.='<li class="nav-item '.$md_none.'">
-		                <a href="'.base_url($r1['url']).'"  class="nav-link">             
-		                    <i class="'.$r1['icon'].'"></i> 
-		                    <span>'.$r1['title'].'</span>
-		                </a></li>';
-		          }else{
-		              $output_menu.='<li class="treeview-menu nav-item nav-item-submenu">
-		                              <a href="#" class="nav-link">
-		                                  <i class="'.$r1['icon'].'"></i> 
-		                                  <span>'.$r1['title'].'</span>
-		                              </a>';
-			            $output_menu.='<ul class="nav nav-group-sub" data-submenu-title="'.$r1['title'].'">';
-
-			            foreach($r1['child'] as $m2 => $r2){
-			                $output_menu.='<li class="nav-item list-feed list-feed-solid">
-			                                  <a href="'.base_url($r2['url']).'" class="nav-link"><div class="list-feed-item pl-3">'.$r2['title'].'</div></a>
-			                              </li>';
-			            }
-		            $output_menu.='</ul>';
-
-		            $output_menu.='</li>';
-		          } 
-	      	}
+			$output_menu = renderMenuSidebar($topLevel);
 	        
 		}
 		
         return $output_menu;
+	}
+
+	function renderMenuSidebar($items)
+	{
+       $render = '';
+	    foreach ($items as $item) {
+	        if (!empty($item->subs)) {
+	        	$render.='<li class="treeview-menu nav-item nav-item-submenu">
+                              <a href="#" class="nav-link">
+                                  <i class="'.$item->icon.'"></i> 
+                                  <span>'.$item->title.'</span>
+                              </a>';
+	            $render.='<ul class="nav nav-group-sub" data-submenu-title="'.$item->title.'">';
+		        $render.= renderMenuSidebar($item->subs);
+		        $render.='</ul></li>';
+	        }else {
+	        	if (empty($item->icon)) {
+		        	$render.='<li class="nav-item list-feed list-feed-solid">
+	                                  <a href="'.base_url($item->url).'" class="nav-link">
+	                                  <div class="list-feed-item pl-3">'.$item->title.'</div></a>
+	                              </li>';
+		        }else {
+		        	$render.='<li class="nav-item ">
+			                <a href="'.base_url($item->url).'"  class="nav-link">             
+			                    <i class="'.$item->icon.'"></i> 
+			                    <span>'.$item->title.'</span>
+			                </a></li>';
+		        }
+	        }
+	    }
+
+	    return $render;
+		      	
 	}
 
 	//recursive function
