@@ -1,6 +1,12 @@
 # Sikapv2-master
 
 konfigurasi git
+
+apt install git
+git config --global user.name "Your Name"
+git config --global user.email "youremail@domain.com"
+git config --list
+
 - login user ssh
 - $ ssh-keygen -t rsa
 - copy public key cat .ssh/id_rsa.pub
@@ -17,7 +23,7 @@ instal app #server
 
 instal app #local
 - htdocs
-- git clone https://github.com/rianreski/Sikap-Agamkab.git
+- git clone https://github.com/rianreski/Sikapv2-master.git
 - download folder uploads
 - $ cp index.example.php index.php
 - $ cp database.example.php database.php
