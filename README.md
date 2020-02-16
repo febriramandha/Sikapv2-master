@@ -2,10 +2,10 @@
 
 konfigurasi git
 
-apt install git
-git config --global user.name "Your Name"
-git config --global user.email "youremail@domain.com"
-git config --list
+$apt install git
+$git config --global user.name "Your Name"
+$git config --global user.email "youremail@domain.com"
+$git config --list
 
 - login user ssh
 - $ ssh-keygen -t rsa
