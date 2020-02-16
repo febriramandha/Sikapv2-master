@@ -83,7 +83,7 @@ $jum_user = count($user);
 						</tr>
 						<tr>
 							<td><i class="icon-file-presentation2 mr-1"></i>Total TK</td>
-							<td><?php echo $jum_tk_rekap_round ?></td>
+							<td><?php echo $jum_tk_rekap_sum  ?></td>
 						</tr>
 						<tr>
 							<td><i class="icon-file-presentation2 mr-1"></i>Total Tidak Upacara</td>
