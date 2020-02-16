@@ -72,7 +72,7 @@
 			},
 			createdRow: function(row, data, index) {
           // $('td', row).eq(5).addClass('text-center');
-          $('td', row).eq(1).addClass('text-nowrap');
+          $('td', row).eq(1).addClass('text-nowrap p-1');
           $('td', row).eq(2).addClass('p-1');
           $('td', row).eq(3).addClass('text-nowrap text-center');
           $('td', row).eq(4).addClass('text-nowrap text-center');

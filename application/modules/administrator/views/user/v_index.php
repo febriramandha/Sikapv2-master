@@ -99,7 +99,7 @@
 				$('td:eq(0)', row).html(index);
 			},
 			createdRow: function(row, data, index) {
-	          $('td', row).eq(2).addClass('text-nowrap');
+	          $('td', row).eq(2).addClass('text-nowrap p-1');
 	          $('td', row).eq(8).addClass('text-nowrap');
       },
 
