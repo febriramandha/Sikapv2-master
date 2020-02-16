@@ -33,8 +33,8 @@
 				<thead>
 					<tr class="table-active">
 						<th width="1%">No</th>
-						<th class="text-nowrap">Nama(NIP) <i class="icon-arrow-right16 mr-3 ml-3"></i></th>
-						<th class="text-nowrap">Nama(NIP) Verifikator </th>
+						<th class="text-nowrap">Nama<hr class="m-0">NIP <i class="icon-arrow-right16 mr-3 ml-3"></i></th>
+						<th class="text-nowrap">Verifikator </th>
 					</tr>
 				</thead>
 				<tbody>
