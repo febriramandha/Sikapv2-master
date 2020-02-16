@@ -40,7 +40,7 @@ class Mon_pegawai extends  App_Controller {
         	->from('v_users_all a')
         	->where("a.id not in (995)")
         	->order_by('no_urut')
-        	->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip,"kepegawaian/data-pegawai/view",id)')
+        	->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip,"",id)')
         	->add_column('instansi','$1','dept_alias')
         	->add_column('jabatan','$1','jabatan');
 		     $this->datatables->where("path_id['".$level."']='".$dept_id."'");
