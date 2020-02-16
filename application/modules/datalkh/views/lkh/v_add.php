@@ -95,7 +95,7 @@ $date_now = date('Y-m-d');
                     <label class="pure-material-checkbox"> 
                         <input type="checkbox" id="checked_dl" name="dl"/> <span>Melaksanakan Dinas Luar </span>
                     </label>
-                    <div class="p-1 m-0 alert alert-info border-0 alert-dismissible col-md-5">
+                    <div class="p-1 m-0 alert alert-info border-0 alert-dismissible col-lg-4 col-12">
                     Silahkan ceklis jika dinas luar
                 </div>
               </div>
