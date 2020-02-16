@@ -265,18 +265,12 @@ class Instansi extends App_Controller {
 		$this->load->js('public/themes/material/global_assets/js/plugins/extensions/jquery_ui/core.min.js');
 		$this->load->js('public/themes/material/global_assets/js/plugins/extensions/jquery_ui/effects.min.js');
 		$this->load->js('public/themes/material/global_assets/js/plugins/extensions/jquery_ui/interactions.min.js');
-
 		$this->load->js('public/themes/material/global_assets/js/plugins/trees/fancytree_all.min.js');
 		$this->load->js('public/themes/material/global_assets/js/plugins/trees/fancytree_childcounter.js');
+		
 		$this->data['sub_title'] = "Instansi";
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
-
-		$this->db->select('a.id, dept_name, dept_alias, a.parent_id, level, path_info, position_order, status_instansi, b.nama as kecamatan, jum_sub')
-					->from('v_instansi_all_master a')
-					->join('_kecamatan b','a.kecamatan_id=b.id','left')
-					->join('(select count(*) as jum_sub, parent_id from mf_departments GROUP BY parent_id) as c','a.id=c.parent_id','left');
-		$this->data['instansi']	 = $this->db->get()->result();
-
+		$this->data['instansi']	 = $this->db->get('v_instansi_all_master')->result();
 		$this->load->view('instansi/v_tree_view', $this->data);
 	}
 
