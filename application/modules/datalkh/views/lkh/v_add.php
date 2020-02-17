@@ -152,7 +152,7 @@ CKEDITOR.replaceClass = 'ckeditor';
 $('.ckeditor').each(function(e){
       CKEDITOR.replace( this.id, {  height:'80px',
               tabSpaces: 4,
-              customConfig: uri_dasar+'public/themes/plugin/ckeditor/custom/ckeditor_config.js' });
+              customConfig: uri_dasar+'public/themes/plugin/ckeditor/custom/ckeditor_config_text.js' });
 });
 
 function CKupdate(){
