@@ -98,7 +98,7 @@ class Verifikasi extends App_Controller {
 			$data_tgl_lkh = decrypt_url($this->input->post('tgl_id'),"tanggal_lkh_verifikasi_$date_now");
 		}
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, tgl_lkh, jam_mulai, jam_selesai, kegiatan, hasil, jenis, a.status, verifikasi_by, b.nama as ver_nama, b.gelar_dpn as ver_gelar_dpn, b.gelar_blk as ver_gelar_blk, comment, a.jenis')
+        $this->datatables->select('a.id, tgl_lkh, jam_mulai, jam_selesai, kegiatan, hasil, jenis, a.status, verifikasi_by, b.nama as ver_nama, b.gelar_dpn as ver_gelar_dpn, b.gelar_blk as ver_gelar_blk, comment, a.jenis, a.persentase')
         	->from('data_lkh a')
         	->join('v_users_all b','a.verifikasi_by=b.id','left')
         	->join('lkh_rejected c','a.id=c.lkh_id','left')
@@ -106,7 +106,7 @@ class Verifikasi extends App_Controller {
         	->order_by('tgl_lkh desc,  jam_mulai asc')
         	->where('user_id', $user->user_id)
         	->add_column('tgl_lkh_tabel','$1','tglInd_hrtabel(tgl_lkh)')
-        	->add_column('jam_mulai','$1 <i class="icon-arrow-right16"></i> $2 $3','jm(jam_mulai), jm(jam_selesai), cek_dltabel(jenis)')
+        	->add_column('jam_mulai','$1 <i class="icon-arrow-right16"></i> $2 $3 $4','jm(jam_mulai), jm(jam_selesai), cek_dltabel(jenis), persentase_lkh(persentase)')
         	->add_column('status_lkh','$1','status_lkh_tabel(status, comment)')
         	->add_column('action','<div style="white-space: nowrap;">$1</div>', 'aksi_verifikasi_lkh(id, status)')
         	->add_column('cek','$1','cekbox_verifikasi(id, status)'); 	

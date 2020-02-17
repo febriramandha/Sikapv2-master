@@ -59,13 +59,13 @@ class Rtlkh extends App_Controller {
 		$rank2 = format_tgl_eng($this->input->post('rank2'));
 		$user_id = decrypt_url($this->input->post('pegawai'),'user_id_lkh');
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, tgl_lkh, jam_mulai, jam_selesai, kegiatan, hasil, jenis, a.status, verifikasi_by, b.nama as ver_nama, b.gelar_dpn as ver_gelar_dpn, b.gelar_blk as ver_gelar_blk, comment, a.jenis')
+        $this->datatables->select('a.id, tgl_lkh, jam_mulai, jam_selesai, kegiatan, hasil, jenis, a.status, verifikasi_by, b.nama as ver_nama, b.gelar_dpn as ver_gelar_dpn, b.gelar_blk as ver_gelar_blk, comment, a.jenis, a.persentase')
         	->from('data_lkh a')
         	->join('v_users_all b','a.verifikasi_by=b.id','left')
         	->join('lkh_rejected c','a.id=c.lkh_id','left')
         	->order_by('tgl_lkh,jam_mulai, id','desc')
         	->add_column('tgl_lkh_tabel','$1','tglInd_hrtabel(tgl_lkh)')
-        	->add_column('jam_mulai','$1 <i class="icon-arrow-right16"></i> $2 $3','jm(jam_mulai), jm(jam_selesai), cek_dltabel(jenis)')
+        	->add_column('jam_mulai','$1 <i class="icon-arrow-right16"></i> $2 $3 $4','jm(jam_mulai), jm(jam_selesai), cek_dltabel(jenis), persentase_lkh(persentase)')
         	->add_column('status_lkh','$1','status_lkh_tabel(status, comment)')
         	->add_column('ver','$1','pejabat_ptabel(verifikasi_by, ver_nama, ver_gelar_dpn, ver_gelar_blk, status)');
         	if ($rank1 && $rank2) {
