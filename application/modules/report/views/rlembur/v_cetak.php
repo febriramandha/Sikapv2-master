@@ -89,7 +89,7 @@
                 <tr nobr="true">
                     <td width="60%" align="left">
                     </td> 
-                    <td width="40%"><b>'.$datainstansi->kecamatan.', '.tgl_ind_bulan(date('Y-m-d')).'</b><br>
+                    <td width="40%"><b>'.$datainstansi->kecamatan.', '.tgl_ind_bulan(date('Y-m-d')).'</b><br><br>
                         '.$datainstansi->jabatan.'
                         <br><br><br><br>
                         <br><b><u>'.nama_gelar($datainstansi->nama, $datainstansi->gelar_dpn, $datainstansi->gelar_blk).'</u></b>
