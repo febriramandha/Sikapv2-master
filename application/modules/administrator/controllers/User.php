@@ -274,7 +274,7 @@ class User extends App_Controller {
 						$return = $this->db->update('sp_pegawai',$data_biodata, ['id' => $biodata_cek->id]);
 					}else {
 						$data_biodata['user_id']  = decrypt_url($this->input->post('user_id'),'user_id');
-						$return = $this->insert('sp_pegawai',$data_biodata);
+						$return = $this->db->insert('sp_pegawai',$data_biodata);
 					}
 
 					if ($return) {
