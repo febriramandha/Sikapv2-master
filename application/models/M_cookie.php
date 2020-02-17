@@ -26,6 +26,21 @@ class M_cookie extends CI_Model {
         return $this->datatables->generate();
 	}
 
+        public function cekOnline()
+        {
+            $startTime = date("Y-m-d H:i:s");
+            $cenvertedTime = date('Y-m-d H:i:s',strtotime('-30 minutes',strtotime($startTime)));
+            $online = $this->db->select('count(*) as jumlah')
+                      ->where("last_login > '$cenvertedTime'", '', false)
+                      ->get('cookies')->row()->jumlah;
+            $total_online = $this->db->select('count(*) as total')
+                    ->where("date(last_login)",date('Y-m-d'))
+                    ->get('cookies')->row()->total;
+            $cek_online = array('online'        => $online,
+                                'total_online'  =>$total_online );
+            return  $cek_online;
+        }
+
 }
 
 /* End of file M_cookie.php */

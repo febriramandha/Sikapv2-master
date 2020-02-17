@@ -9,7 +9,7 @@ class Dashboard extends App_Controller {
 		$this->_init();
 		$this->breadcrumbs->push('Dashboard', 'dashboard');
 		$this->data['title'] = "Dashboard";
-		$this->load->model(['m_article','m_instansi','m_sch_run','m_absen']);
+		$this->load->model(['m_article','m_instansi','m_sch_run','m_absen','m_cookie']);
 	}
 
 	private function _init()
@@ -36,6 +36,11 @@ class Dashboard extends App_Controller {
 		$this->data['user_opd_all']		= $this->db->select('count(*)')->where('parent_id',1)->get('v_users_all')->row();
 		$this->data['instansi']	  = $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
 		$this->data['laporan_tahun'] = $this->m_sch_run->GetTahun()->result();
+
+		$startTime = date("Y-m-d H:i:s");
+		$cenvertedTime = date('Y-m-d H:i:s',strtotime('-30 minutes',strtotime($startTime)));
+
+		$this->data['online']	 = $this->m_cookie->cekOnline();
 		$this->load->view('app/dashboard/v_dashboard', $this->data);
 	}
 
