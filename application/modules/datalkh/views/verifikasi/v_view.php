@@ -14,7 +14,7 @@ $date_now = date('Y-m-d');
 	<div class="card-body">
 		<div class="alert alert-warning alert-dismissible">
 			<?php if ($tanggal_lkh) { ?>
-		    <span class="font-weight-semibold"> H - <?php echo $jumlkh->count_verday-1 ?> verifikasi</span> 
+		    <span class="font-weight-semibold"> H + <?php echo $jumlkh->count_verday-1 ?> verifikasi</span> 
 			<?php }else { echo "tidak ada laporan yang harus diverifikasi";} ?>
 		</div>	
 		
