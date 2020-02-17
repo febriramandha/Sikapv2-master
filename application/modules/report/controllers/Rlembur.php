@@ -127,7 +127,7 @@ class Rlembur extends App_Controller {
 				$this->data['rank1'] 	= $rank1;
 				$this->data['pegawai_absen'] = $this->m_absen->PegawaiAbsenQueryLembur($user_id_in, $rank1, $rank2,$hari_id_in)->result();
 				$this->data['priode']		= tgl_ind_bulan($rank1).' s/d '.tgl_ind_bulan($rank2);
-				$this->data['datainstansi'] = $this->m_pejabat_instansi->GetPajabatByInstansi($dept_id, 3)->row();
+				$this->data['datainstansi'] = $this->m_pejabat_instansi->GetPajabatByInstansi($dept_id, 7)->row();
 				$this->load->library('Tpdf');
 				$this->load->view('rlembur/v_cetak', $this->data);
 			}
