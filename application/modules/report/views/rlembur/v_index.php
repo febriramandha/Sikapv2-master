@@ -54,7 +54,7 @@
 					<div class="form-control-feedback">
 						<i class="icon-pencil3"></i>
 					</div>
-					<input type="text" name="rank1" class="form-control datepicker" placeholder="Tanggal awal" >
+					<input type="text" name="rank1" class="form-control datepicker readonlyjm" placeholder="Tanggal awal" >
 				</div>
 			</div>
 			<div class="col-lg-1">
@@ -67,7 +67,7 @@
 					<div class="form-control-feedback">
 						<i class="icon-pencil3"></i>
 					</div>
-					<input type="text" name="rank2" class="form-control datepicker" placeholder="Tanggal akhir" >
+					<input type="text" name="rank2" class="form-control datepicker readonlyjm" placeholder="Tanggal akhir" >
 				</div>
 			</div>
 		</div>
@@ -119,6 +119,10 @@
 <script type="text/javascript">
  $('.multiselect-select-all').multiselect({
     includeSelectAllOption: true
+});
+
+ $('.readonlyjm').on('focus',function(){
+    $(this).trigger('blur');
 });
  $(".datepicker").datepicker({
     format: 'dd-mm-yyyy',

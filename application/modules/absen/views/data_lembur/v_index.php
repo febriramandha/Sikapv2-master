@@ -18,7 +18,7 @@
 					<div class="form-control-feedback">
 						<i class="icon-pencil3"></i>
 					</div>
-					<input type="text" name="rank1" class="form-control datepicker" placeholder="tanggal mulai" autocomplete="off" >
+					<input type="text" name="rank1" class="form-control datepicker readonlyjm" placeholder="tanggal mulai" autocomplete="off" >
 				</div>
 			</div>
 			<div class="col-lg-1">
@@ -31,7 +31,7 @@
 					<div class="form-control-feedback">
 						<i class="icon-pencil3"></i>
 					</div>
-					<input type="text" name="rank2" class="form-control datepicker" placeholder="tanggal berakhir" autocomplete="off">
+					<input type="text" name="rank2" class="form-control datepicker readonlyjm" placeholder="tanggal berakhir" autocomplete="off">
 				</div>
 			</div>
 		</div>
@@ -95,6 +95,10 @@
     autoclose: true,
     todayHighlight: true,
   });
+
+$('.readonlyjm').on('focus',function(){
+    $(this).trigger('blur');
+});
 
  $('#kalkulasi').click(function() {
 	var rank1  = $('[name="rank1"]').val();

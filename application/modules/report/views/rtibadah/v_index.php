@@ -40,7 +40,7 @@
 					<div class="form-control-feedback">
 						<i class="icon-pencil3"></i>
 					</div>
-					<input type="text" name="rank1" class="form-control datepicker" placeholder="dari tanggal" >
+					<input type="text" name="rank1" class="form-control datepicker readonlyjm" placeholder="dari tanggal" >
 				</div>
 			</div>
 			<div class="col-lg-1">
@@ -53,7 +53,7 @@
 					<div class="form-control-feedback">
 						<i class="icon-pencil3"></i>
 					</div>
-					<input type="text" name="rank2" class="form-control datepicker" placeholder="sampai tanggal" >
+					<input type="text" name="rank2" class="form-control datepicker readonlyjm" placeholder="sampai tanggal" >
 				</div>
 			</div>
 		</div>
@@ -87,6 +87,9 @@
 </div>
 
 <script type="text/javascript">
+ $('.readonlyjm').on('focus',function(){
+    $(this).trigger('blur');
+});
 
 $('[name="instansi"]').change(function() {
 	DataPegawai();

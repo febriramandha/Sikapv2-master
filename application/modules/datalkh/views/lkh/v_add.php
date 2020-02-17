@@ -73,7 +73,7 @@ $date_now = date('Y-m-d');
                 <div class="form-control-feedback">
                   <i class="icon-pencil3"></i>
                 </div>
-                <input type="text" name="jam2" class="form-control clockpicker" placeholder="jam selesai" autocomplete="off">
+                <input type="text" name="jam2" class="form-control clockpicker readonlyjm" placeholder="jam selesai" autocomplete="off">
               </div>
             </div>
              <div class="col-lg-5 pt-2">
@@ -143,6 +143,10 @@ $date_now = date('Y-m-d');
     align: 'left',
     autoclose: true,
  });
+
+$('.readonlyjm').on('focus',function(){
+    $(this).trigger('blur');
+});
 
 $(document).ready(function(){
     load_jam($('[name="tgl"]').val());
