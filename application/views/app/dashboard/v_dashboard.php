@@ -105,7 +105,7 @@
 	<div class="col-lg-6 d-flex">
 		<div class="card col-lg-12 " style="height: 203px;">
 			<div class="card-header bg-white header-elements-sm-inline pb-0">
-				<h6 class="font-weight-semibold"> <i class="icon-alarm mr-3"></i>Jadwal jam kerja (H - 6) <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	</h6>
+				<h6 class="font-weight-semibold"> <i class="icon-alarm mr-3"></i>Jadwal jam kerja <span class="badge badge-info">7 hari kedepan</span></h6> 
 			</div>
 			<div class="table-responsive m-0">
 				<table class="table text-nowrap table-bordered" id="datatable_jadwal">
@@ -127,7 +127,6 @@
 </div>
 
 <script type="text/javascript">
-var spinner = $('#spinner_jadwal');	
 	$(document).ready(function(){
 		table = $('#datatable_jadwal').DataTable({ 
 			processing: true, 
@@ -147,14 +146,6 @@ var spinner = $('#spinner_jadwal');
 				"data": function ( data ) {	
 					data.csrf_sikap_token_name= csrf_value;
 				},
-				beforeSend:function(){
-		      		spinner.show();
-				},
-				"dataSrc": function ( json ) {
-	                //Make your callback here.
-		          	spinner.hide();
-	                return json.data;
-	            } 
 			},
 			"columns": [
 			{"data": "id", searchable:false},
