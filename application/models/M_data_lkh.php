@@ -20,6 +20,7 @@ class M_data_lkh extends CI_Model {
 
 	public function update_status($id ='',$data_tgl_lkh)
     {   
+        $this->db->where('user_id', $id);
 		$this->db->where_in('status','0,4',false);
         $this->db->where_not_in('tgl_lkh',$data_tgl_lkh);
         $this->db->update('data_lkh',['status' => 1]);
