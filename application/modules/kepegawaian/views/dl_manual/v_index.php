@@ -39,8 +39,8 @@
           <tr class="table-active">
             <th width="1%">No</th>
             <th class="text-nowrap">Tanggal</th>
-            <th class="text-nowrap">Kegiatan</th>
-            <th class="text-nowrap">Hasil</th>
+            <th class="text-nowrap text-center pl-md-3 pl-5 pr-md-3 pr-5">Kegiatan</th>
+            <th class="text-nowrap text-center pl-md-3 pl-5 pr-md-3 pr-5">Hasil</th>
             <th width="1%">Pegawai</th>
             <th width="1%">Aksi</th>
           </tr>
@@ -99,8 +99,8 @@ $(document).ready(function(){
       },
        createdRow: function(row, data, index) {
           $('td', row).eq(1).addClass('text-nowrap p-1');
-          $('td', row).eq(2).addClass('p-0');
-          $('td', row).eq(3).addClass('p-0');
+          $('td', row).eq(2).addClass('normal_text p-0');
+          $('td', row).eq(3).addClass('normal_text p-0');
           $('td', row).eq(4).addClass('text-nowrap p-1');
           $('td', row).eq(5).addClass('text-nowrap text-center');
         },
