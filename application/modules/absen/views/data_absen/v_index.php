@@ -8,8 +8,18 @@
 			</div>
 		</div>
 	</div>
-
 	<div class="card-body">
+		<div class="form-group row">
+	        <div class="col-lg-4">
+	          <div class="form-group">
+	           <select class="form-control select-nosearch result" name="update_tgl" >  
+	            <option value="1">Hari ini</option> 
+	            <option value="7">7 Hari terakhir</option>
+	            <option value="28">28 hari terakhir</option>
+	          </select> 
+	        </div>
+	      </div>
+	    </div>
 		<?php echo form_open('absen/data-absen/cetak','class="form-horizontal" target="popup" id="formAjax"'); ?>
 		<div class="form-group row">
 			<label class="col-form-label col-lg-2"> Rentang Waktu <span class="text-danger">*</span></label>
@@ -37,11 +47,12 @@
 		</div>
 		<div class="text-left offset-lg-2" >                
 			<span class="btn btn-sm btn-info result" id="kalkulasi">Kalkulasi <i class="icon-search4 ml-2"></i></span>
-			<button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1" id="cetak">
+			<button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1 result" id="cetak">
 				<span><i class="icon-printer mr-2"></i> Cetak</span>
 			</button> 
 			<i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
 		</div>
+		
 		<?php echo form_close() ?>	
 		<div class="table-responsive">
 			<table id="datatable" class="table table-sm table-hover table-bordered">
@@ -73,7 +84,29 @@
 </div>
 
 <script type="text/javascript">
- $(".datepicker").datepicker({
+var result  = $('.result');
+var spinner = $('#spinner');
+
+var today  = "<?= $today = date('Y-m-d') ?>";
+var hari7  = "<?= tgl_minus($today, 6) ?>";
+var hari28 = "<?= tgl_minus($today, 27) ?>";
+
+$('[name="update_tgl"]').change(function() {
+	  var tgl_id = $(this).val();
+	  if (tgl_id == 1) {
+	  		$('[name="rank1"]').val(today);
+			$('[name="rank2"]').val(today);
+	  }else if (tgl_id == 7) {
+	  		$('[name="rank1"]').val(hari7);
+			$('[name="rank2"]').val(today);
+	  }else if (tgl_id == 28) {
+	  		$('[name="rank1"]').val(hari28);
+			$('[name="rank2"]').val(today);
+	  }
+	  table.ajax.reload();
+})
+
+$(".datepicker").datepicker({
     format: 'dd-mm-yyyy',
     autoclose: true,
     todayHighlight: true,
@@ -86,6 +119,8 @@ $('.readonlyjm').on('focus',function(){
 })
 
  $(document).ready(function(){
+ 		$('[name="rank1"]').val(today);
+		$('[name="rank2"]').val(today);
 		table = $('#datatable').DataTable({ 
 			processing: true, 
 			serverSide: true, 
@@ -105,6 +140,18 @@ $('.readonlyjm').on('focus',function(){
 					data.rank1  = $('[name="rank1"]').val();
 					data.rank2  = $('[name="rank2"]').val();
 				},
+				beforeSend:function(){
+					result.attr("disabled", true);
+					$('#kalkulasi').hide();
+		      		spinner.show();
+				},
+				"dataSrc": function ( json ) {
+	                //Make your callback here.
+	                result.attr("disabled", false);
+		          	spinner.hide();
+		          	$('#kalkulasi').show();
+	                return json.data;
+	            }, 
 			},
 			"columns": [
 			{"data": "id", searchable:false},
