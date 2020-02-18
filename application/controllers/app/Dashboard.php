@@ -1,6 +1,11 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/**
+* Created By: Rian Reski A
+* 2019
+*/
+
 class Dashboard extends App_Controller {
 
 	public function __construct()
@@ -28,21 +33,9 @@ class Dashboard extends App_Controller {
 		$this->data['user_aktif_all']	= $this->db->select('count(*)')->where('status',1)->get('users_login')->row();
 		$this->data['user_admin_all']	= $this->db->select('count(*)')->where('level',2)->or_where('level', 1)->get('users_login')->row();
 		$this->data['user_aktif_all']	= $this->db->select('count(*)')->where('status',1)->get('users_login')->row();
-		
-		// $this->data['opd_all']			= $this->db->select('count(*)')->where('parent_id',1)->get('mf_departments')->row();
-		// $this->data['puskesmas_all']	= $this->db->select('count(*)')->where('parent_id',12)->where('position_order not in(1)')->get('mf_departments')->row();
-		// $this->data['sekolah_all']		= $this->db->select('count(*)')->where('parent_id',43)->where('position_order not in(1)')->get('mf_departments')->row();
-
-		//user
-		// $this->data['user_opd_all']		= $this->db->select('count(*)')->where('parent_id',1)->get('v_users_all')->row();
-
-		$this->data['instansi']	  = $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
-		$this->data['laporan_tahun'] = $this->m_sch_run->GetTahun()->result();
-
-		$startTime = date("Y-m-d H:i:s");
-		$cenvertedTime = date('Y-m-d H:i:s',strtotime('-30 minutes',strtotime($startTime)));
-
-		$this->data['online']	 = $this->m_cookie->cekOnline();
+		$this->data['instansi']	  		= $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
+		$this->data['laporan_tahun'] 	= $this->m_sch_run->GetTahun()->result();
+		$this->data['online']	 		= $this->m_cookie->cekOnline();
 		$this->load->view('app/dashboard/v_dashboard', $this->data);
 	}
 
