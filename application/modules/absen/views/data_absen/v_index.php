@@ -83,13 +83,15 @@
 	</div>
 </div>
 
+<?php $today = date('Y-m-d') ?>
+
 <script type="text/javascript">
 var result  = $('.result');
 var spinner = $('#spinner');
 
-var today  = "<?= $today = date('Y-m-d') ?>";
-var hari7  = "<?= tgl_minus($today, 6) ?>";
-var hari28 = "<?= tgl_minus($today, 27) ?>";
+var today  = "<?= format_tgl_ind($today) ?>";
+var hari7  = "<?= format_tgl_ind(tgl_minus($today, 6)) ?>";
+var hari28 = "<?= format_tgl_ind(tgl_minus($today, 27)) ?>";
 
 $('[name="update_tgl"]').change(function() {
 	  var tgl_id = $(this).val();
