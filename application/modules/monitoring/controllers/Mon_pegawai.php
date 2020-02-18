@@ -48,6 +48,7 @@ class Mon_pegawai extends  App_Controller {
         	 	$this->db->group_start();
 		        	$this->datatables->like('lower(nama)', strtolower($this->input->post('search[value]')));
 		        	$this->datatables->or_like('lower(nip)', strtolower($this->input->post('search[value]')));
+		        	$this->datatables->or_like('lower(a.dept_alias)', strtolower($this->input->post('search[value]')));
 	        	$this->db->group_end();
 	        }
 	       
