@@ -105,16 +105,16 @@
 	<div class="col-lg-6 d-flex">
 		<div class="card col-lg-12 " style="height: 203px;">
 			<div class="card-header bg-white header-elements-sm-inline pb-0">
-				<h6 class="font-weight-semibold"> <i class="icon-alarm mr-3"></i>Jadwal Kerja <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	</h6>
+				<h6 class="font-weight-semibold"> <i class="icon-alarm mr-3"></i>Jadwal jam kerja (H - 6) <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	</h6>
 			</div>
 			<div class="table-responsive m-0">
-				<table class="table text-nowrap" id="datatable_jadwal">
+				<table class="table text-nowrap table-bordered" id="datatable_jadwal">
 					<thead>
 						<tr class="table-active text-center">
 							<th width="1%">No</th>
 							<th class="py-0">H/Tanggal</th>
-							<th class="py-0">Jam Masuk<hr class="m-0">(Mulai C/in - Akhir C/in)</th>
-							<th class="py-0">Jam Pulang<hr class="m-0">(Mulai C/Out - Akhir C/Out)</th>
+							<th class="py-0">Jam Masuk<hr class="m-0">(Mulai Ceklok - Akhir Ceklok)</th>
+							<th class="py-0">Jam Pulang<hr class="m-0">(Mulai Ceklok - Akhir Ceklok)</th>
 						</tr>
 					</thead>
 					<tbody>
