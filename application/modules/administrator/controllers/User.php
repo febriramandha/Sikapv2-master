@@ -36,9 +36,7 @@ class User extends App_Controller {
 	{
 		$this->output->unset_template();
 		$instansi = decrypt_url($this->input->post('instansi'),'instansi');
-		if ($instansi) {
-			$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $instansi])->row()->level;
-		}
+		$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $instansi])->row()->level;
 		$this->load->library('datatables');
         $this->datatables->select('a.id, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, att_status, count_finger,gelar_dpn,gelar_blk, level')
         	->from('v_users_all a')
@@ -56,9 +54,7 @@ class User extends App_Controller {
 					              <span class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus akun" style="cursor:pointer;" id="$1">
 					              <i class="icon-bin"></i>
 					              </span>', 'encrypt_url(id,"user_id")');
-        	 if ($instansi) {
 		        $this->datatables->where("path_id['".$level."']='".$instansi."'");
-		     }
         	 if ($this->input->post('search[value]')) {
         	 	$this->db->group_start();
 		        	$this->datatables->like('lower(nama)', strtolower($this->input->post('search[value]')));
