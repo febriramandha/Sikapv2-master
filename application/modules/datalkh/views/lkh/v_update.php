@@ -70,7 +70,7 @@
             <div class="form-group row">
               <label class="col-lg-2 col-form-label">Hasil <span class="text-danger">*</span></label>
               <div class="col-lg-10">
-                 <textarea class="ckeditor" id="edit2" name="hasil"><?php echo $datalkh->kegiatan ?></textarea>
+                 <textarea class="ckeditor" id="edit2" name="hasil"><?php echo $datalkh->hasil ?></textarea>
               </div>
            </div>
            <div class="form-group row">
