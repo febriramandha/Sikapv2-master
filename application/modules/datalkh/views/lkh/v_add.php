@@ -1,3 +1,17 @@
+<style type="text/css">
+  .richText-editor {
+    max-height: 110px;
+  }
+
+  .richText {
+    border :1px solid #d1d1d1
+  }
+
+  .richText .richText-toolbar {
+    border-bottom:1px solid #d1d1d1;
+  }
+</style>
+
 <!-- Basic table -->
 <div class="card">
 	<div class="card-header bg-white header-elements-inline py-2">
@@ -103,13 +117,13 @@ $date_now = date('Y-m-d');
           <div class="form-group row">
               <label class="col-lg-2 col-form-label">Uraian Kegiatan <span class="text-danger">*</span></label>
               <div class="col-lg-10">
-                 <textarea class="ckeditor" id="edit1" name="kegiatan"></textarea>
+                 <textarea class="ckeditor" id="kegiatan" name="kegiatan"></textarea>
               </div>
            </div>
             <div class="form-group row">
               <label class="col-lg-2 col-form-label">Hasil <span class="text-danger">*</span></label>
               <div class="col-lg-10">
-                 <textarea class="ckeditor" id="edit2" name="hasil"></textarea>
+                 <textarea class="ckeditor" id="hasil" name="hasil"></textarea>
               </div>
            </div>
            <div class="form-group row">
@@ -138,6 +152,12 @@ $date_now = date('Y-m-d');
 </div>
 
 <script type="text/javascript">
+$('.richText-editor').attr('draggable', false);
+
+elemen_rich_text_editor('#kegiatan');
+elemen_rich_text_editor('#hasil');
+
+
  $('.clockpicker').clockpicker({
     placement: 'bottom',
     align: 'left',
@@ -151,18 +171,6 @@ $('.readonlyjm').on('focus',function(){
 $(document).ready(function(){
     load_jam($('[name="tgl"]').val());
 });
-
-CKEDITOR.replaceClass = 'ckeditor';
-$('.ckeditor').each(function(e){
-      CKEDITOR.replace( this.id, {  height:'80px',
-              tabSpaces: 4,
-              customConfig: uri_dasar+'public/themes/plugin/ckeditor/custom/ckeditor_config_text_add.js' });
-});
-
-function CKupdate(){
-for ( instance in CKEDITOR.instances )
-    CKEDITOR.instances[instance].updateElement();
-}
 
 $('[name="tgl"]').change(function() {
     load_jam($(this).val());
@@ -205,7 +213,6 @@ function load_jam(tgl_id) {
 }
 
   $('#formAjax').submit(function() {
-      CKupdate();
       var result  = $('.result');
       var spinner = $('#spinner');
       $.ajax({

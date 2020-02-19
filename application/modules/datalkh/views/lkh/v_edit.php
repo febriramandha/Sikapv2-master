@@ -1,3 +1,17 @@
+<style type="text/css">
+  .richText-editor {
+    max-height: 110px;
+  }
+
+  .richText {
+    border :1px solid #d1d1d1
+  }
+
+  .richText .richText-toolbar {
+    border-bottom:1px solid #d1d1d1;
+  }
+</style>
+
 <!-- Basic table -->
 <div class="card">
 	<div class="card-header bg-white header-elements-inline py-2">
@@ -61,13 +75,13 @@
           <div class="form-group row">
               <label class="col-lg-2 col-form-label">Uraian Kegiatan <span class="text-danger">*</span></label>
               <div class="col-lg-10">
-                 <textarea class="ckeditor" id="edit1" name="kegiatan"><?php echo $datalkh->kegiatan ?></textarea>
+                 <textarea class="ckeditor" id="kegiatan" name="kegiatan"><?php echo $datalkh->kegiatan ?></textarea>
               </div>
            </div>
             <div class="form-group row">
               <label class="col-lg-2 col-form-label">Hasil <span class="text-danger">*</span></label>
               <div class="col-lg-10">
-                 <textarea class="ckeditor" id="edit2" name="hasil"><?php echo $datalkh->hasil ?></textarea>
+                 <textarea class="ckeditor" id="hasil" name="hasil"><?php echo $datalkh->hasil ?></textarea>
               </div>
            </div>
            <div class="form-group row">
@@ -95,21 +109,10 @@
 
 <script type="text/javascript">
 
-CKEDITOR.replaceClass = 'ckeditor';
-$('.ckeditor').each(function(e){
-      CKEDITOR.replace( this.id, {  height:'80px',
-              tabSpaces: 4,
-              customConfig: uri_dasar+'public/themes/plugin/ckeditor/custom/ckeditor_config_text_add.js' });
-});
-
-function CKupdate(){
-for ( instance in CKEDITOR.instances )
-    CKEDITOR.instances[instance].updateElement();
-}
-
+elemen_rich_text_editor('#kegiatan');
+elemen_rich_text_editor('#hasil');
 
   $('#formAjax').submit(function() {
-      CKupdate();
       var result  = $('.result');
       var spinner = $('#spinner');
       $.ajax({

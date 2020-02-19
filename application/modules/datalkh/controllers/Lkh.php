@@ -22,12 +22,17 @@ class Lkh extends App_Controller {
 		$this->output->set_template('app');
 		$this->load->css('public/themes/plugin/datepicker/css/bootstrap-datepicker.css');
 		$this->load->js('public/themes/plugin/datepicker/js/bootstrap-datepicker.js');
-		$this->load->js('public/themes/plugin/ckeditor/ckeditor.js');
 		$this->load->css('public/themes/plugin/clock/dist/bootstrap-clockpicker.min.css');
 		$this->load->js('public/themes/plugin/clock/dist/bootstrap-clockpicker.min.js');
 		$this->load->css('public/themes/plugin/chekbox/rrcheckbox.css');
 		$this->load->js('public/themes/plugin/datatables/dataTables.rowsGroup.js');
 		$this->load->css('public/themes/plugin/toplipcss/rrtooltip/rrtooltip.css');
+
+		$this->load->css('public/themes/plugin/Font_Awesome_4.7.0/css/font-awesome.min.css');
+		$this->load->css('public/themes/plugin/Rich_TextEditor/src/richtext.min.css');
+		$this->load->js('public/themes/plugin/Rich_TextEditor/src/jquery.richtext.js');
+		$this->load->js('public/themes/custom/js/rich_texteditor_config.js');
+
 	}
 
 	public function index()
