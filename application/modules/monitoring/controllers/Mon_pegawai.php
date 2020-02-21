@@ -23,6 +23,7 @@ class Mon_pegawai extends  App_Controller {
 		$this->load->css('public/themes/plugin/datepicker/css/bootstrap-datepicker.css');
 		$this->load->js('public/themes/plugin/datepicker/js/bootstrap-datepicker.js');
 		$this->load->css('public/themes/plugin/toplipcss/rrtooltip/rrtooltip.css');
+		$this->load->js('public/themes/plugin/datatables/dataTables.rowsGroup.js');
 	}
 
 	public function index()
