@@ -35,7 +35,9 @@ class Dashboard extends App_Controller {
 		$this->data['user_aktif_all']	= $this->db->select('count(*)')->where('status',1)->get('users_login')->row();
 		$this->data['instansi']	  		= $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
 		$this->data['laporan_tahun'] 	= $this->m_sch_run->GetTahun()->result();
-		$this->data['online']	 		= $this->m_cookie->cekOnline();
+		if ($this->session->userdata('tpp_level') == 1) {
+			$this->data['online']	 		= $this->m_cookie->cekOnline();
+		}
 		$this->load->view('app/dashboard/v_dashboard', $this->data);
 	}
 

@@ -1,8 +1,11 @@
 <!-- Simple statistics -->
 <div class="mb-3">
 	<h6 class="mb-0 font-weight-semibold">
-		Beranda <span class="badge badge-success"><?php echo $online['online']?> Online</span>
+		Beranda 
+		<?php if ($this->session->userdata('tpp_level') == 1): ?>
+		<span class="badge badge-success"><?php echo $online['online']?> Online</span>
 		<span class="badge badge-primary"><?php echo $online['total_online'] ?> Total Online Hari ini</span>
+		<?php endif ?>
 	</h6>
 </div>
 <div class="row">
