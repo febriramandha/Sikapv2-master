@@ -378,10 +378,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                        );
     }
 
-    function nama_icon_nip($name='', $gl_d='', $gl_b='', $nip='',$link='',$id='',$str3='') { 
+    function nama_icon_nip($name='', $gl_d='', $gl_b='', $nip='',$link='',$id='',$str3='',$encry_user_id ='') { 
 
         if ($link) {
-              $link = base_url($link."/").encrypt_url($id,"user_id");
+              $encrypt = "user_id";
+              if ($encry_user_id) {
+                    $encrypt = $encry_user_id;
+              }
+              $link = base_url($link."/").encrypt_url($id,$encrypt);
         }else {
               $link = "#";
         }

@@ -2,18 +2,6 @@
 <div class="card">
 	<div class="card-body">
 		<h5 class="mb-3">Monitoring Pegawai</h5>
-			<!-- <div class="input-group mb-3">
-				<div class="form-group-feedback form-group-feedback-left">
-					<input type="text" name="pegawai" class="form-control form-control-lg" value="" placeholder="Cari nama,nip">
-					<div class="form-control-feedback form-control-feedback-lg">
-						<i class="icon-search4 text-muted"></i>
-					</div>
-				</div>
-
-				<div class="input-group-append">
-					<button type="submit" class="btn btn-primary btn-sm	" id="cari"><i class="icon-search4 mr-2"></i> Cari</button>
-				</div>
-			</div> -->
 		<div class="table-responsive">
 			<table id="datatable" class="table table-sm table-hover table-bordered">
 				<thead>
