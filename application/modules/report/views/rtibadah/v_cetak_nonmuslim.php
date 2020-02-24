@@ -99,7 +99,7 @@
 </head>
 <body style="margin:0!important">
     <div class="d-lg-none">
-         <a class="btn btn-sm btn-info m-2" href="data:application/pdf;base64,<?php echo $pdfBase64 ?>" download="FileLaporanKehadiranPeriode_<?php echo $priode ?>">Download</a>
+         <a class="btn btn-sm btn-info m-2" href="data:application/pdf;base64,<?php echo $pdfBase64 ?>" download="FileLaporanIbadahPeriode_<?php echo $priode ?>.pdf">Download</a>
     </div>
     <embed width="100%" height="100%" src="data:application/pdf;base64,<?php echo $pdfBase64 ?>" type="application/pdf" />
 </body>
