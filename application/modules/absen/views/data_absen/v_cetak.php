@@ -93,7 +93,7 @@
                     <td width="70%" align="left"><b>Ket :</b>  <br>- H : Hadir Normal - TM : Telat Masuk - PC : Pulang Cepat - TC : Telat Masuk Pulang Cepat - C* : Cuti
                     <br>- DL : Dinas Luar
                     <br>- *M : * Manual - F : Jadwal Tidak Tetap
-                    <br>- TK : Tanpa Ketetangan
+                    <br>- TK : Tanpa Keterangan
                     <br>- L : Hari Libur Kerja              
                     </td> 
                     <td width="30%">
