@@ -130,7 +130,7 @@
                   end = start;
                 }         
 
-                $.get(uri_dasar+'calendar/kupacara/dragUpdateEvent',{                            
+                $.get(uri_dasar+'calendar/offday/dragUpdateEvent',{                            
                   id:event.id,
                   start : start,
                   end :end

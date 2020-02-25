@@ -56,7 +56,7 @@ class Offday extends  App_Controller {
 			$this->mod = $this->input->post('mod');
 			if ($this->mod == "add") {
 				$data = array('start_date' 	 	=> $this->input->post('start'),
-							  'end_date' 		=> $this->input->post('end'),
+							  'end_date' 		=> tgl_minus($this->input->post('end'),1),
 							  'nama' 			=> $this->input->post('ket'),
 				 );
 				$this->return = $this->db->insert('days_off',$data);
@@ -118,7 +118,7 @@ class Offday extends  App_Controller {
 		foreach ($data as $row) {
 			$sub_data['id'] 		= $row->id;
 			$sub_data['start'] 		= $row->start_date;
-			$sub_data['end'] 		= $row->end_date;
+			$sub_data['end'] 		= tgl_plus($row->end_date,1);
 			$sub_data['title'] 		= $row->nama;
 			$sub_data['ket'] 		= $row->nama;
 			$kalendar[] = $sub_data;
@@ -130,7 +130,7 @@ class Offday extends  App_Controller {
 	{
 		$this->output->unset_template();
 		$this->data = array('start_date' =>  $this->input->get('start'),
-							'end_date' =>  $this->input->get('start') );
+							'end_date' =>  tgl_minus($this->input->get('end'),1) );
 
 		$res = $this->db->update('days_off',$this->data, ['id' => $this->input->get('id')]);
 		if ($res) {
