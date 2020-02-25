@@ -1,3 +1,26 @@
+<style type="text/css">
+.gradient_1 {
+  background-image: linear-gradient(to right, #f6d365 0%, #fda085 51%, #f6d365 100%);
+}
+
+.gradient_2 {
+  background-image: linear-gradient(to right, #fbc2eb 0%, #a6c1ee 51%, #fbc2eb 100%);
+}
+
+.gradient_3 {
+  background-image: linear-gradient(to right, #84fab0 0%, #8fd3f4 51%, #84fab0 100%);
+}
+
+.gradient_4 {
+  background-image: linear-gradient(to right, #a1c4fd 0%, #c2e9fb 51%, #a1c4fd 100%);
+}
+
+.gradient_5 {
+  background-image: linear-gradient(to right, #ffecd2 0%, #fcb69f 51%, #ffecd2 100%);
+}
+
+</style>
+
 <!-- Basic table -->
 <div class="card">
 	<div class="card-header bg-white header-elements-inline py-2">
@@ -97,15 +120,15 @@
 		<?php echo form_close() ?>
 		<div class="table-responsive">
 			<table id="datatable" class="table table-sm table-hover table-bordered">
-				<thead>
-					<tr class="table-active text-center">
+				<thead class="gradient_3">
+					<tr class="text-center">
 						  <th width="1%" rowspan="3">No</th>
 						  <th width="1%" rowspan="3">Nama/NIP</th>
-                          <th  rowspan="1" colspan="11" rowspan="1">Pengurangan Aspek Perilaku</th>
+                          <th rowspan="1" colspan="11" rowspan="1">Pengurangan Aspek Perilaku</th>
                           <th rowspan="2" colspan="2">Pengurangan Aspek Capaian Kerja</th>
 						
 					</tr>
-					<tr class="table-active text-center">
+					<tr class=" text-center">
 						<th width="1%" class="p-1" colspan="2" >Terlambat Masuk Kerja</th>
 						<th width="1%" class="p-1" colspan="2">Pulang Kerja Lebih Awal</th>
 						<th width="1%" class="p-1" colspan="2">Tidak Hadir Tanpa Keterangan</th>
@@ -113,7 +136,7 @@
 						<th width="1%" class="p-1" colspan="2">Tidak Shalat Zuhur/Ashar Berjamaah</th>
 						<th width="1%" class="p-1" colspan="1">Total Pengurangan Aspek Perilaku</th>
 					</tr>
-					<tr class="table-active text-center">
+					<tr class=" text-center">
 						<th class="p-1">jml</th>
 						<th class="p-1">Nilai(%)</th>
 						<th class="p-1">jml</th>
