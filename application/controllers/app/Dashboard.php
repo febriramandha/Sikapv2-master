@@ -28,11 +28,14 @@ class Dashboard extends App_Controller {
 	{
 		$this->data['breadcrumb'] 		= $this->breadcrumbs->show();
 		$this->data['pos']		  		= $this->m_article->GetAticleAll();
-		$this->data['user_all']	  	  	= $this->db->select('count(*)')->get('mf_users')->row();
-		$this->data['instansi_all']	  	= $this->db->select('count(*)')->get('mf_departments')->row();
-		$this->data['user_aktif_all']	= $this->db->select('count(*)')->where('status',1)->get('users_login')->row();
-		$this->data['user_admin_all']	= $this->db->select('count(*)')->where('level',2)->or_where('level', 1)->get('users_login')->row();
-		$this->data['user_aktif_all']	= $this->db->select('count(*)')->where('status',1)->get('users_login')->row();
+
+		if ($this->session->userdata('tpp_level') == 1 || $this->session->userdata('tpp_level') == 4 ) {
+			$this->data['user_all']	  	  	= $this->db->select('count(*)')->get('mf_users')->row();
+			$this->data['instansi_all']	  	= $this->db->select('count(*)')->get('mf_departments')->row();
+			$this->data['user_aktif_all']	= $this->db->select('count(*)')->where('status',1)->get('users_login')->row();
+			$this->data['user_admin_all']	= $this->db->select('count(*)')->where('level',2)->or_where('level', 1)->get('users_login')->row();
+			$this->data['user_aktif_all']	= $this->db->select('count(*)')->where('status',1)->get('users_login')->row();
+		}
 		$this->data['instansi']	  		= $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
 		$this->data['laporan_tahun'] 	= $this->m_sch_run->GetTahun()->result();
 		if ($this->session->userdata('tpp_level') == 1) {

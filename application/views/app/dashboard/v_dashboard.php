@@ -9,7 +9,7 @@
 	</h6>
 </div>
 <div class="row">
-	<?php if ($this->session->userdata('tpp_level') == 1 || $this->session->userdata('tpp_level') == 2 || $this->session->userdata('tpp_level') == 4 || $this->session->userdata('tpp_level') == 5) {
+	<?php if ($this->session->userdata('tpp_level') == 1 || $this->session->userdata('tpp_level') == 4 ) {
  	?>
 	<div class="col-lg-12">
 		<div class="row">
