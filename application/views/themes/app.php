@@ -69,8 +69,7 @@
 					<div class="header-elements d-none">
 						<div class="d-flex justify-content-center">
 							<a href="#" class="btn btn-link btn-float font-size-sm font-weight-semibold text-default">
-								<!-- <img src="<?php echo base_url('public/themes/global_assets/images/logo-120.png') ?>" height="38px"> -->
-								<img src="<?php echo base_url('public/images/logo_yy.png') ?>" height="50px">
+								<img src="<?php echo $regency_logo ?>" height="50px">
 								<!-- <span><?php echo $regency ?></span> -->
 							</a>
 						</div>

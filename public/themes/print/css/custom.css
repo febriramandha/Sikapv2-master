@@ -1,0 +1,313 @@
+::selection {
+    background-color: #E13300;
+    color: white;
+}
+::moz-selection {
+    background-color: #E13300;
+    color: white;
+}
+::webkit-selection {
+    background-color: #E13300;
+    color: white;
+}
+
+a, a:hover {
+    text-decoration: none;
+}
+body {
+    background-color: #FFFFFF;
+    margin: 40px;
+}
+.depan {
+    margin-top: 20px;
+    text-align: center;
+}
+h3.main-title {
+    font-size: 21px;
+    text-align: center;
+}
+.content {
+    min-height: 75%;
+    margin: 30px auto;
+}
+span.fa, i.fa {
+    padding-right: 5px;
+}
+
+.title{
+    display: block;
+    overflow: hidden;
+    
+    margin-bottom: 10px;
+}
+
+.title .page-title {
+     float: left;
+  border-bottom: 1px solid #ddd;
+  color: #494848;
+}
+
+.title .title-left{
+    display: block;
+    float: right;
+    padding: 20px 5px;
+        
+}
+
+
+.table-small {
+    font-size: 90%;
+}
+
+p.fl{
+    padding-right: 20px;
+}
+
+p label {
+    font-size: 12px;
+}
+
+
+.fl {
+    float: left;
+}
+.fr {
+    float: right;
+}
+.footer {
+    text-align: center;
+    font-size: 12px;
+}
+
+.center{
+    text-align: center;
+}
+
+.error{
+    background: #ccc;
+    font-size: 11px;
+    color: #A00;
+}
+
+h4.judul{
+    font-size: 15px;
+    float: left;
+    line-height: 0.5em;
+    font-weight: bold;
+}
+
+h4{font-size: 19px;}
+
+
+ul.samping {
+    font-size: 12px;
+    padding: 0px !important;
+    margin-left: -20px;
+    color: #080808;
+}
+
+ul.samping li{
+
+}
+
+ul.samping li a{
+    display: block;
+    width: 190px;
+    margin: 0 0 -1px;
+    padding: 8px 14px;
+    border: 1px solid #e5e5e5;
+}
+
+ul.samping li a:hover{
+    color: #080808;
+    background-color: #f5f5f5;
+}
+
+img.profil {
+    max-width: 100%;
+}
+
+input[type="text"]{
+    padding: 8px 6px;
+}
+
+.tt-query,
+.tt-hint {
+    width: 396px;
+    height: 30px;
+    padding: 8px 12px;
+    font-size: 24px;
+    line-height: 30px;
+    border: 2px solid #ccc;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    outline: none;
+}
+
+.tt-query {
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+.tt-hint {
+    color: #999
+}
+
+.tt-dropdown-menu {
+    width: 422px;
+    margin-top: 12px;
+    padding: 8px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+
+.tt-suggestion {
+    padding: 3px 20px;
+    font-size: 18px;
+    line-height: 24px;
+}
+
+.tt-suggestion.tt-is-under-cursor {
+    color: #fff;
+    background-color: #0097cf;
+
+}
+
+#result {
+    height:20px;
+    font-size:16px;
+    font-family:Arial, Helvetica, sans-serif;
+    color:#333;
+    padding:5px;
+    margin-bottom:10px;
+    background-color:#FFFF99;
+}
+#country{
+    
+    border:1px #CCC solid;
+    font-size:17px;
+}
+.suggestionsBox {
+margin: 26px auto;
+    width: 400px;
+        left: 24%;
+    position: absolute;
+    padding:0px;
+    background-color: #000;
+    border-top: 3px solid #000;
+    color: #fff;
+}
+.suggestionList {
+    margin: 0px;
+    padding: 0px;
+}
+.suggestionList ul li {
+    list-style:none;
+    margin: 0px;
+    padding: 8px;
+    border-bottom:1px dotted #666;
+    cursor: pointer;
+}
+.suggestionList ul li:hover {
+    background-color: #3E3C3C;
+    color:#000;
+}
+.suggestionList ul li a {
+    color: #fff;
+    font-size: 12px;
+    font-weight: bold;
+}
+#suggest ul {
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:11px;
+    color:#FFF;
+    padding:0;
+    margin:0;
+}
+
+.load{
+background-image:url(../images/loader.gif);
+background-position:right;
+background-repeat:no-repeat;
+}
+
+#suggest {
+    position:relative;
+}
+
+.laporan-home{
+    margin-top: 20px;
+    text-align: center;
+    color: #111;
+}
+
+.detail-penduduk{
+    
+}
+.detail-penduduk label{
+    width: 150px;
+    display: block;
+    float: left;
+}
+.detail-penduduk .value{
+    font-weight: bold;
+}
+
+.print{
+      margin: 10px auto;
+  text-align: center;
+  display: block;
+  clear: both;
+  overflow: hidden; 
+}
+
+.print a{
+    margin-top: 20px;   
+}
+
+.cetak h5{
+    color: #111;
+    text-align: center; 
+}
+
+.judul-surat{
+    border-bottom: 2px solid #111;
+}
+
+.judul-surat img{
+      height: 100px;
+  float: left;
+}
+.judul-surat h3,.judul-surat h5{
+    color: #111;
+}
+.judul-surat .text{
+    text-align: center;
+    color: #111;
+}
+.header {
+    text-align: center;
+    margin: 0px auto;
+}
+.ttd{
+    text-align: center;
+    float: right;
+    margin-right: 100px;
+}
+
+.print-title{
+    text-align: center;;
+    color: #111;
+    text-transform: uppercase;
+    font-size: 18px;
+    margin: 20px 0px;
+}

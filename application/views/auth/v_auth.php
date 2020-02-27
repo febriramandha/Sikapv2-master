@@ -2,14 +2,14 @@
 	<div class="container-login100">
 		<div class="wrap-login100" style="padding-top: 50px;">
 			<span class="login100-form-title" style="font-size: 16px">
-				Sistem Informasi Kinerja<br> Aparatur Pemerintah
+				SISTEM INFORMASI KINERJA<br> APARATUR PEMERINTAH
 			</span>
 			<div class="login100-pic js-tilt" data-tilt>
-				<img src="<?php echo base_url('public/') ?>images/welcome-sikap-1.png" alt="IMG">
+				<img src="<?php echo base_url('public/') ?>images/img-02-1_1.png" alt="IMG">
 			</div>
 
 			<?php echo form_open('auth/GetData','class="login100-form" id="formAjax"'); ?>
-			<span class="login100-form-title" >
+			<span class="login100-form-title" style="padding-bottom: 20px;">
 				Masuk Ke SIKAP
 			</span>
 
@@ -39,6 +39,11 @@
 				<button class="login100-form-btn col-md-4 col-4" id="result">
 					Masuk
 				</button>
+			</div>
+			<div class="text-center p-t-10">
+				<a href="https://agamkab.go.id/" target="_blank">
+					<img src="<?php echo base_url('public/') ?>images/situs-agam.png" width="200px">
+				</a>
 			</div>
 			
 		</form>
