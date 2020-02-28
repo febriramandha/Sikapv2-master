@@ -243,10 +243,10 @@ class Worship extends App_Controller {
  			$pesan = "peringatan! pastikan isi data dengan benar";
  			
  		}elseif($zuhur && $asar){
-			$this->form_validation->set_rules('t_zuhur', 'Tempat Sholat Zhuhur', 'required');
+			$this->form_validation->set_rules('t_zuhur', 'Tempat Sholat Zuhur', 'required');
 			$this->form_validation->set_rules('t_ashar', 'Tempat Sholat Ashar', 'required');
 		}elseif($zuhur && !$asar){
-			$this->form_validation->set_rules('t_zuhur', 'Tempat Sholat Zhuhur', 'required');
+			$this->form_validation->set_rules('t_zuhur', 'Tempat Sholat Zuhur', 'required');
 		}elseif ($asar && !$zuhur) {
 			$this->form_validation->set_rules('t_ashar', 'Tempat Sholat Ashar', 'required');
 		}elseif ($haid) {

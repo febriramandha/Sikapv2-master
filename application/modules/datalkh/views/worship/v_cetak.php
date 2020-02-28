@@ -41,7 +41,7 @@
                   <th width="80%" rowspan="1" colspan="2"><b>Sholat Berjamaah</b></th>
             </tr>
             <tr align="center">
-                  <th width="40%"><b>Zhuhur</b></th>
+                  <th width="40%"><b>Zuhur</b></th>
                   <th width="40%"><b>Ashar</b></th>
             </tr>';
 

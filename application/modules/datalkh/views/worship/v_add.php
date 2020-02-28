@@ -51,7 +51,7 @@
                     <div class="form-group">
                         <div class="form-group">
                             <label class="pure-material-checkbox"> 
-                                <input name="zuhur" type="checkbox" /> <span id="text_zuhur">Zhuhur berjamaah</span>
+                                <input name="zuhur" type="checkbox" /> <span id="text_zuhur">Zuhur berjamaah</span>
                             </label>
                         <div class="input-group">
                             <span class="input-group-prepend">
@@ -176,7 +176,7 @@ function load_data(id) {
 function jumat(hari, gender) {
     if (hari == "Fri" && gender == 1) {
         $('#text_zuhur').text("Sholat Jumat");
-    }else $('#text_zuhur').text("Zhuhur berjamaah");    
+    }else $('#text_zuhur').text("Zuhur berjamaah");    
 }
 
 function cek_waktu(jam_ini, waktu, da, hari, gender) {
