@@ -54,7 +54,7 @@
 						<th rowspan="2" width="1%">Aksi</th>
 					</tr>
 					<tr class="table-active">
-						<th class="px-1 text-center" >Zhuhur</th>
+						<th class="px-1 text-center" >Zuhur</th>
 						<th class="px-1 text-center">Ashar</th>
 					</tr>
 				</thead>
