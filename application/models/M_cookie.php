@@ -29,7 +29,7 @@ class M_cookie extends CI_Model {
         public function cekOnline()
         {
             $startTime = date("Y-m-d H:i:s");
-            $cenvertedTime = date('Y-m-d H:i:s',strtotime('-10 minutes',strtotime($startTime)));
+            $cenvertedTime = date('Y-m-d H:i:s',strtotime('-5 minutes',strtotime($startTime)));
             $online = $this->db->select('count(*) as jumlah')
                       ->where("last_login > '$cenvertedTime'", '', false)
                       ->get('cookies')->row()->jumlah;
