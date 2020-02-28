@@ -30,12 +30,12 @@ $date_now = date('Y-m-d');
 ?>
   <div class="card-body">
     <?php if ($jumlkh) { ?>
-    <div class="alert alert-primary alert-dismissible">
+    <div class="alert alert-warning alert-dismissible">
       <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-      <span class="font-weight-semibold">Info!</span> <?php echo $jumlkh->ket  ?>.
+      <?php echo $jumlkh->ket  ?>.
     </div>
     <?php }else { ?>
-    <div class="alert alert-primary alert-dismissible">
+    <div class="alert alert-warning alert-dismissible">
       <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
       <span class="font-weight-semibold">Anda tidak berhak mengisi form LKH.
     </div>
@@ -51,7 +51,9 @@ $date_now = date('Y-m-d');
                         <option value="<?php echo encrypt_url($row->rentan_tanggal,"tanggal_lkh_add_$date_now") ?>"><?php echo tgl_ind_hari($row->rentan_tanggal) ?></option>
                         <?php } ?>  
                 </select>
-                <span class="badge d-block badge-primary form-text text-left">pilih tanggal yang tersedia</span>
+                <div class="p-1 mt-1 mb-0 alert alert-info border-0 alert-dismissible col-lg-8 col-12">
+                    pilih tanggal yang tersedia
+                </div>
                  <?php if (!$tanggal_lkh) { ?>
                   <div class="alert alert-warning border-0 alert-dismissible mb-0">
                     <span class="font-weight-semibold">Peringatan!</span> Jadwal anda belum tersedia mohon hubungi administrator tentang jadwal anda.
@@ -111,7 +113,7 @@ $date_now = date('Y-m-d');
                     </label>
                     <div class="p-1 m-0 alert alert-info border-0 alert-dismissible col-lg-4 col-12">
                     Silahkan ceklis jika dinas luar
-                </div>
+                    </div>
               </div>
           </div>
           <div class="form-group row">
