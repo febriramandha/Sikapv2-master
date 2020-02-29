@@ -35,7 +35,7 @@
                     <td width="80%">'.$user->nip.'</td>
                 </tr>
                 <tr>
-                    <td width="10%"><b>INSTANSI</b></td>
+                    <td width="10%"><b>UNIT KERJA</b></td>
                     <td width="2%">:</td>
                     <td width="80%">'.$user->dept_name.'</td>
                 </tr>
