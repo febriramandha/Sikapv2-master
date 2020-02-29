@@ -273,6 +273,7 @@ class Lkh extends App_Controller {
 							  'hasil' 			=> $this->input->post('hasil'),
 							  'jenis' 			=> $jenis,
 							  'status'			=> 4,
+							  'persentase'		=> $lkh_data_update->persentase,
 							  'verifikator' 	=> $lkh_data_update->verifikator,
 							  'created_at' 		=> date('Y-m-d H:i:s'),
 				 );
