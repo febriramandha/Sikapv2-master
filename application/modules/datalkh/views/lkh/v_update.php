@@ -100,7 +100,7 @@
         <input type="hidden" name="mod" value="update">
         <input type="hidden" name="id" value="<?php echo $this->uri->segment(4) ?>">
         <div class="text-left offset-lg-2" >
-           <a href="javascript:history.back()" class="btn btn-sm bg-success-300 result">Kembali <i class="icon-arrow-left5 ml-2"></i></a>                  
+           <a href="<?php echo base_url('datalkh/lkh') ?>" class="btn btn-sm bg-warning legitRipple"><i class="icon-undo2"></i> Kembali</a>                  
           <button type="submit" class="btn btn-sm btn-info result">Simpan <i class="icon-checkmark4 ml-2"></i></button>
           <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
         </div>
