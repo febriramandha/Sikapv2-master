@@ -10,7 +10,7 @@
 	</div>
 	<div class="card-body">
 		<?php if ($tanggal_lkh) { ?>
-		<div class="alert alert-warning alert-dismissible">
+		<div class="alert alert-warning alert-dismissible p-2">
 		    <span class="font-weight-semibold">Perhatian!</span> untuk penambahan dan perubahan data hanya dapat dilakukan pada tanggal: 
 		    <?php foreach ($tanggal_lkh as $row ){
 		    	  echo '<span class="badge badge-success">('.format_tgl_ind($row->rentan_tanggal).')</span> ';

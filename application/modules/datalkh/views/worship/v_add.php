@@ -13,12 +13,11 @@
    ?>
   <div class="card-body">
     <?php if ($jumlkh) { ?>
-    <div class="alert alert-warning alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
-      <span class="font-weight-semibold">Info!</span> <?php echo $jumlkh->ket  ?>.
+    <div class="alert alert-warning alert-dismissible p-2">
+       <?php echo $jumlkh->ket  ?>.
     </div>
     <?php }else { ?>
-    <div class="alert alert-warning alert-dismissible">
+    <div class="alert alert-warning alert-dismissible p-2">
       <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
       <span class="font-weight-semibold">Anda tidak berhak mengisi form LKH.
     </div>

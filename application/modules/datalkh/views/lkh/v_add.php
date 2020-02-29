@@ -30,13 +30,11 @@ $date_now = date('Y-m-d');
 ?>
   <div class="card-body">
     <?php if ($jumlkh) { ?>
-    <div class="alert alert-warning alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+    <div class="alert alert-warning alert-dismissible p-2">
       <?php echo $jumlkh->ket  ?>.
     </div>
     <?php }else { ?>
-    <div class="alert alert-warning alert-dismissible">
-      <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+    <div class="alert alert-warning alert-dismissible p-2">
       <span class="font-weight-semibold">Anda tidak berhak mengisi form LKH.
     </div>
     <?php }?>
