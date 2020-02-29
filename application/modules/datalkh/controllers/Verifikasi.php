@@ -33,6 +33,7 @@ class Verifikasi extends App_Controller {
 	{
 		$this->data['sub_title']  = "Verifikasi LKH";
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
+		$this->data['jumlah_nonver'] = $this->m_data_lkh->jumlah_nonver($this->session->userdata('tpp_user_id'));
 		$this->load->view('verifikasi/v_index', $this->data);
 	}
 

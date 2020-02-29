@@ -85,6 +85,14 @@ class M_data_lkh extends CI_Model {
         return $this->db->get();
     }
 
+    public function jumlah_nonver($user_id)
+    {
+        $this->db->select('count(*)')
+                ->where('verifikator', $user_id)
+                ->where_in('status','0,4', false);
+        return $this->db->get('data_lkh')->row()->count;
+    }
+
 }
 
 /* End of file M_data_lkh.php */

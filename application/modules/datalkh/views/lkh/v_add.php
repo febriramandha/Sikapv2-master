@@ -46,9 +46,9 @@ $date_now = date('Y-m-d');
             <label class="col-form-label col-lg-2">Tanggal kegiatan <span class="text-danger">*</span></label>
             <div class="col-lg-5">
               <div class="form-group">
-                <select class="form-control select-nosearch" name="tgl" data-fouc>
+                <select class="form-control select-icons" name="tgl" data-fouc>
                         <?php $no=1; foreach ($tanggal_lkh as $row) { ?>
-                        <option value="<?php echo encrypt_url($row->rentan_tanggal,"tanggal_lkh_add_$date_now") ?>"><?php echo tgl_ind_hari($row->rentan_tanggal) ?></option>
+                        <option value="<?php echo encrypt_url($row->rentan_tanggal,"tanggal_lkh_add_$date_now") ?>" data-icon="calendar3"><?php echo tgl_ind_hari($row->rentan_tanggal) ?></option>
                         <?php } ?>  
                 </select>
                 <div class="p-1 mt-1 mb-0 alert alert-info border-0 alert-dismissible col-lg-8 col-12">
@@ -144,7 +144,7 @@ $date_now = date('Y-m-d');
         <input type="hidden" name="jam_pulang_encry">
         <input type="hidden" name="mod" value="add">
         <div class="text-left offset-lg-2" >
-           <a href="javascript:history.back()" class="btn btn-sm bg-success-300 result">Kembali <i class="icon-arrow-left5 ml-2"></i></a>                  
+           <a href="<?php echo base_url('datalkh/lkh') ?>" class="btn btn-sm bg-warning legitRipple"><i class="icon-undo2"></i> Kembali</a>                  
           <button type="submit" class="btn btn-sm btn-info result">Simpan <i class="icon-checkmark4 ml-2"></i></button>
           <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
         </div>
@@ -159,6 +159,24 @@ $('.richText-editor').attr('draggable', false);
 elemen_rich_text_editor('#kegiatan');
 elemen_rich_text_editor('#hasil');
 
+// Format icon
+function iconFormat(icon) {
+    var originalOption = icon.element;
+    if (!icon.id) { return icon.text; }
+    var $icon = '<i class="icon-' + $(icon.element).data('icon') + '"></i>' + icon.text;
+
+    return $icon;
+}
+
+// Initialize with options
+$('.select-icons').select2({
+    templateResult: iconFormat,
+    minimumResultsForSearch: Infinity,
+    templateSelection: iconFormat,
+    placeholder: 'Pilih Data',
+    allowClear: true,
+    escapeMarkup: function(m) { return m; }
+});
 
  $('.clockpicker').clockpicker({
     placement: 'bottom',

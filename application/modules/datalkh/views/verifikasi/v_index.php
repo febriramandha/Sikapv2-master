@@ -10,10 +10,16 @@
 	</div>
 
 	<div class="card-body">
-    <div style="white-space: nowrap;overflow-x: auto;">
-        <span class="badge bg-danger mr-1">|</span> Belum diverifikasi 
-        <i class="icon-checkmark2 text-teal mr-1 ml-2"></i> Telah diverifikasi
+    <?php if ($jumlah_nonver) { ?>
+    <div class="alert alert-warning alert-dismissible mb-0 p-2">
+      <span class="font-weight-semibold">Perhatian!</span><span class="badge bg-danger ml-1"><?php echo $jumlah_nonver ?></span> laporan yang harus diverifikasi 
+      (segera verifikasi laporan bawahan)
     </div>
+    <?php }else {  ?>
+    <div class="alert alert-success alert-dismissible mb-0 p-2">
+      tidak ada laporan yang harus diverifikasi
+    </div>
+    <?php } ?>
 		<div class="table-responsive">
 			<table id="datatable" class="table table-sm table-hover">
 				<tbody>

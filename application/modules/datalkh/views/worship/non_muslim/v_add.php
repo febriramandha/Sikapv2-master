@@ -25,7 +25,9 @@
                               <option value="<?php echo encrypt_url($tgl_minus,"tanggal_lkh_add_$date_now") ?>"><?php echo tgl_ind_hari($tgl_minus) ?></option>
                         <?php } ?>
                 </select>
-                <span class="text-danger"><i>* pilih tanggal yang tersedia</i></span>
+                <div class="p-1 mt-1 mb-0 alert alert-info border-0 alert-dismissible col-lg-8 col-12">
+                    pilih tanggal yang tersedia
+                </div>
                  <?php if (!$tanggal_lkh) { ?>
                   <div class="alert alert-warning border-0 alert-dismissible mb-0">
                     <span class="font-weight-semibold">Peringatan!</span> Jadwal anda belum ada mohon hubungi admin tentang jadwal anda.
@@ -62,7 +64,7 @@
 
         <input type="hidden" name="mod" value="add">
         <div class="text-left offset-lg-2" >
-           <a href="javascript:history.back()" class="btn btn-sm bg-success-300 result">Kembali <i class="icon-arrow-left5 ml-2"></i></a>                  
+           <a href="<?php echo base_url('datalkh/worship') ?>" class="btn btn-sm bg-warning legitRipple"><i class="icon-undo2"></i> Kembali</a>                
           <button type="submit" class="btn btn-sm btn-info result">Simpan <i class="icon-checkmark4 ml-2"></i></button>
           <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
         </div>

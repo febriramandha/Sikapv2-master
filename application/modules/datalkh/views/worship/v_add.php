@@ -13,12 +13,12 @@
    ?>
   <div class="card-body">
     <?php if ($jumlkh) { ?>
-    <div class="alert alert-primary alert-dismissible">
+    <div class="alert alert-warning alert-dismissible">
       <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
       <span class="font-weight-semibold">Info!</span> <?php echo $jumlkh->ket  ?>.
     </div>
     <?php }else { ?>
-    <div class="alert alert-primary alert-dismissible">
+    <div class="alert alert-warning alert-dismissible">
       <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
       <span class="font-weight-semibold">Anda tidak berhak mengisi form LKH.
     </div>
@@ -29,12 +29,14 @@
             <label class="col-form-label col-lg-2">Tanggal kegiatan <span class="text-danger">*</span></label>
             <div class="col-lg-6">
               <div class="form-group">
-                <select class="form-control select-nosearch" name="tgl" data-fouc>
+                <select class="form-control select-icons" name="tgl" data-fouc>
                         <?php $no=1; foreach ($tanggal_lkh as $row) { ?>
-                        <option value="<?php echo encrypt_url($row->rentan_tanggal,"tanggal_lkh_add_$date_now") ?>"><?php echo tgl_ind_hari($row->rentan_tanggal) ?></option>
+                        <option value="<?php echo encrypt_url($row->rentan_tanggal,"tanggal_lkh_add_$date_now") ?>" data-icon="calendar3"><?php echo tgl_ind_hari($row->rentan_tanggal) ?></option>
                         <?php } ?>  
                 </select>
-                <span class="text-danger"><i>* pilih tanggal yang tersedia</i></span>
+                <div class="p-1 mt-1 mb-0 alert alert-info border-0 alert-dismissible col-lg-8 col-12">
+                    pilih tanggal yang tersedia
+                </div>
                  <?php if (!$tanggal_lkh) { ?>
                   <div class="alert alert-warning border-0 alert-dismissible mb-0">
                     <span class="font-weight-semibold">Peringatan!</span> Jadwal anda belum ada mohon hubungi admin tentang jadwal anda.
@@ -45,7 +47,9 @@
           </div>
          
          <div class="form-group row">
-                <label class="col-form-label col-lg-2">Kegiatan</label>
+                <label class="col-form-label col-lg-2">Kegiatan
+                    <i class="icon-spinner2 spinner_waktu" style="display: none"></i>
+                </label>
                 <div class="col-md-5">
 
                     <div class="form-group">
@@ -70,7 +74,9 @@
             </div>
 
             <div class="form-group row">
-                <label class="col-form-label col-lg-2">Kegiatan</label>
+                <label class="col-form-label col-lg-2">Kegiatan
+                    <i class="icon-spinner2 spinner_waktu" style="display: none"></i>
+                </label>
                 <div class="col-md-5">
                     <div class="form-group">
                             <label class="pure-material-checkbox"> 
@@ -112,7 +118,7 @@
 
         <input type="hidden" name="mod" value="add">
         <div class="text-left offset-lg-2" >
-           <a href="javascript:history.back()" class="btn btn-sm bg-success-300 result">Kembali <i class="icon-arrow-left5 ml-2"></i></a>                  
+          <a href="<?php echo base_url('datalkh/worship') ?>" class="btn btn-sm bg-warning legitRipple"><i class="icon-undo2"></i> Kembali</a>                
           <button type="submit" class="btn btn-sm btn-info result">Simpan <i class="icon-checkmark4 ml-2"></i></button>
           <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
         </div>
@@ -122,6 +128,26 @@
 </div>
 
 <script type="text/javascript">
+
+// Format icon
+function iconFormat(icon) {
+    var originalOption = icon.element;
+    if (!icon.id) { return icon.text; }
+    var $icon = '<i class="icon-' + $(icon.element).data('icon') + '"></i>' + icon.text;
+
+    return $icon;
+}
+
+// Initialize with options
+$('.select-icons').select2({
+    templateResult: iconFormat,
+    minimumResultsForSearch: Infinity,
+    templateSelection: iconFormat,
+    placeholder: 'Pilih Data',
+    allowClear: true,
+    escapeMarkup: function(m) { return m; }
+});
+
 var w_zuhur = "12:30:00";
 var w_asar  = "15:50:00";
 var jam_ini = "<?= date('H:i:s') ?>";
@@ -144,6 +170,8 @@ $('[name="tgl"]').change(function() {
 })
 
 function load_data(id) {
+    var spinner = $('.spinner_waktu');
+    var result  = $('.result');
     $.ajax({
         type: 'get',
         url: uri_dasar+"datalkh/worship/AjaxGet",
@@ -151,6 +179,12 @@ function load_data(id) {
         dataType : "JSON",
         error:function(){
            bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+           result.attr("disabled", false);
+           spinner.hide();
+        },
+         beforeSend:function(){
+            result.attr("disabled", true);
+            spinner.show();
         },
         success: function(res) {
             if (res.status == true) {
@@ -169,6 +203,8 @@ function load_data(id) {
                }
                
             }
+            result.attr("disabled", false);
+            spinner.hide();
         }
     });
 }
