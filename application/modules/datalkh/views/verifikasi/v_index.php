@@ -12,8 +12,7 @@
 	<div class="card-body">
     <?php if ($jumlah_nonver) { ?>
     <div class="alert alert-warning alert-dismissible mb-0 p-2">
-      <span class="font-weight-semibold">Perhatian!</span><span class="badge bg-danger ml-1"><?php echo $jumlah_nonver ?></span> laporan yang harus diverifikasi 
-      (segera verifikasi laporan bawahan)
+      <span class="font-weight-semibold">Perhatian!</span><span class="badge bg-danger ml-1"><?php echo $jumlah_nonver ?></span> laporan yang harus diverifikasi
     </div>
     <?php }else {  ?>
     <!-- <div class="alert alert-success alert-dismissible mb-0 p-2">
