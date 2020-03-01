@@ -100,6 +100,7 @@ class Lkh extends App_Controller {
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
 		$this->data['jumlkh']		= $jumlkh;
 		$this->data['verifikator']	= $this->m_verifikator->GetVerifikator($this->session->userdata('tpp_user_id'))->row();
+		$this->data['jumlah_nonver'] = $this->m_data_lkh->jumlah_nonver($this->session->userdata('tpp_user_id'));
 		$this->load->view('lkh/v_add', $this->data);
 	}
 

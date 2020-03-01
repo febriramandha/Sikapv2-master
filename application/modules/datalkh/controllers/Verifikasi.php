@@ -31,6 +31,9 @@ class Verifikasi extends App_Controller {
 
 	public function index()
 	{
+		if ($this->input->get('modul') == 'cek') {
+			$this->output->unset_template();
+		}
 		$this->data['sub_title']  = "Verifikasi LKH";
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
 		$this->data['jumlah_nonver'] = $this->m_data_lkh->jumlah_nonver($this->session->userdata('tpp_user_id'));

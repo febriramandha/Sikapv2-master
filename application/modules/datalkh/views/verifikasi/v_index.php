@@ -16,9 +16,9 @@
       (segera verifikasi laporan bawahan)
     </div>
     <?php }else {  ?>
-    <div class="alert alert-success alert-dismissible mb-0 p-2">
+    <!-- <div class="alert alert-success alert-dismissible mb-0 p-2">
       tidak ada laporan yang harus diverifikasi
-    </div>
+    </div> -->
     <?php } ?>
 		<div class="table-responsive">
 			<table id="datatable" class="table table-sm table-hover">

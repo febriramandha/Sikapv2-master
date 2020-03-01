@@ -151,6 +151,32 @@ $date_now = date('Y-m-d');
   </div>
 </div>
 
+<?php
+  $verifikasi = '';
+  if ($jumlah_nonver) {
+  $verifikasi = 1;
+ ?>
+<!-- Large modal -->
+<div id="modal_large" class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <input id="tabel2"  type="hidden" value="1" readonly>
+      <div class="modal-body p-0" id="load-body-modal">
+    
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /large modal -->
+<?php } ?>
+<input type="hidden" name="cekverifikasi" value="<?php echo $verifikasi ?>">
 <script type="text/javascript">
 $('.richText-editor').attr('draggable', false);
 
@@ -188,6 +214,10 @@ $('.readonlyjm').on('focus',function(){
 
 $(document).ready(function(){
     load_jam($('[name="tgl"]').val());
+    var verifikasi = $('[name="cekverifikasi"]').val();
+    if (verifikasi == 1) {
+        load_verifikasi()
+    }  
 });
 
 $('[name="tgl"]').change(function() {
@@ -260,4 +290,16 @@ function load_jam(tgl_id) {
       return false;
   });
 
+function load_verifikasi() {
+   $.ajax({
+          url: uri_dasar+'datalkh/verifikasi/index',
+          dataType :"html",
+          data:{ modul:'cek'},
+          cache : true,
+              success: function(x){
+                    $('#modal_large').modal('show');
+                      $('#load-body-modal').html(x);
+              }
+        });
+}
 </script>
