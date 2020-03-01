@@ -60,7 +60,7 @@
         
             $tbl .='<tr nobr="true">
                         <td width="2.5%" align="center">'.$no++.'</td> 
-                        <td width="15%"><b>'.nama_gelar($row->nama, $row->gelar_dpn, $row->gelar_blk).' ('.$row->nip.')</b></td>';
+                        <td width="15%"><b>'.nama_gelar($row->nama, $row->gelar_dpn, $row->gelar_blk).' '.cekNipValid($row->nip).'</b></td>';
                 $count = count($json_absen);
                 for ($i=0; $i < 31; $i++) { 
                     

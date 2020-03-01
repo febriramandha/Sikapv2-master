@@ -598,6 +598,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           return $level;
     }
 
+    function cekNipValid($nip='')
+    {
+        $return_nip = '';
+        if ($nip) {
+              $jum_nip = strlen($nip);
+              if ($jum_nip == 18) {
+                    $return_nip = "($nip)";
+              }
+        }
+
+        return $return_nip;
+    }
+
 
 
 

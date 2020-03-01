@@ -59,7 +59,7 @@
             if(!isset($arrayForTable[$v->nama])){
                 $arrayForTable[$v->nama] = [];
             }
-                $arrayForTable[nama_gelar($v->nama, $v->gelar_dpn, $v->gelar_blk).' ('.$v->nip.')'][] = $temp;
+                $arrayForTable[nama_gelar($v->nama, $v->gelar_dpn, $v->gelar_blk).' '.cekNipValid($v->nip)][] = $temp;
 
         }
 
