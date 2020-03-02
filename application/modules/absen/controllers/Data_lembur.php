@@ -103,7 +103,7 @@ class Data_lembur extends App_Controller {
 				$this->data['user']		= $this->m_user->GetDetailBiodata($this->session->userdata('tpp_user_id'))->row();
 				$this->data['pegawai_absen'] = $this->m_absen->PegawaiAbsenQueryLembur($this->session->userdata('tpp_user_id'), $rank1, $rank2,$hari_id_in)->result();
 				$this->data['priode']		= tgl_ind_bulan($rank1).' s/d '.tgl_ind_bulan($rank2);
-				$this->data['datainstansi'] = $this->m_pejabat_instansi->GetPajabatByInstansi($this->session->userdata('tpp_dept_id'), 3)->row();
+				$this->data['datainstansi'] = $this->m_pejabat_instansi->GetPajabatByInstansi($this->session->userdata('tpp_dept_id'), 7)->row();
 				$this->load->library('Tpdf');
 				$this->load->view('data_lembur/v_cetak', $this->data);
 			}
