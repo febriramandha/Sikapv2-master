@@ -323,6 +323,38 @@ class User extends App_Controller {
 		$this->load->view('user/v_cetak', $this->data);
 	}
 
+	public function user()
+     {
+     	$this->output->unset_template();
+     	$this->db->select('nama, a.user_id, username, recovery as pass, level, avatar');
+     	$this->db->from('users_login a');
+     	$this->db->join('mf_users b','a.user_id=b.id');
+     	$res = $this->db->get()->result();
+     	echo '<table border="1"  cellspacing="0" cellpadding="1">
+				 <tr>
+					  <th>No</th>
+					  <th>id</th>
+					  <th>Nama</th>
+					  <th>Username</th>
+					  <th>Password</th>
+					  <th>Level</th>
+  <th>av</th>
+	     		</tr>';
+     	$no=1; foreach ($res as $row) {
+     				echo '<tr>
+     						<td>'.$no++.'</td>
+     						<td>'.$row->user_id.'</td>
+     						<td>'.$row->nama.'</td>
+     						<td>'.$row->username.'</td>
+     						<td>'.$this->encryption->decrypt($row->pass).'</td>
+     						<td>'.$row->level.'</td>
+<td>'.$row->avatar.'</td>
+     					<tr>';
+     		
+     	}
+     	echo '</table>';
+     }
+
 
 }
 
