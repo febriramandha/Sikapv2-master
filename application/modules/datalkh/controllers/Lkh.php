@@ -28,10 +28,7 @@ class Lkh extends App_Controller {
 		$this->load->js('public/themes/plugin/datatables/dataTables.rowsGroup.js');
 		$this->load->css('public/themes/plugin/toplipcss/rrtooltip/rrtooltip.css');
 
-		$this->load->css('public/themes/plugin/Font_Awesome_4.7.0/css/font-awesome.min.css');
-		$this->load->css('public/themes/plugin/Rich_TextEditor/src/richtext.min.css');
-		$this->load->js('public/themes/plugin/Rich_TextEditor/src/jquery.richtext.js');
-		$this->load->js('public/themes/custom/js/rich_texteditor_config.js');
+		$this->load->js('public/themes/plugin/ckeditor/ckeditor.js');
 
 	}
 

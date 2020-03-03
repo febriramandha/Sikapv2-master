@@ -1,17 +1,3 @@
-<style type="text/css">
-  .richText-editor {
-    max-height: 110px;
-  }
-
-  .richText {
-    border :1px solid #d1d1d1
-  }
-
-  .richText .richText-toolbar {
-    border-bottom:1px solid #d1d1d1;
-  }
-</style>
-
 <!-- Basic table -->
 <div class="card">
 	<div class="card-header bg-white header-elements-inline py-2">
@@ -178,10 +164,17 @@ $date_now = date('Y-m-d');
 <?php } ?>
 <input type="hidden" name="cekverifikasi" value="<?php echo $verifikasi ?>">
 <script type="text/javascript">
-$('.richText-editor').attr('draggable', false);
 
-elemen_rich_text_editor('#kegiatan');
-elemen_rich_text_editor('#hasil');
+$('.ckeditor').each(function(e){
+      CKEDITOR.replace( this.id, {  height:'100px',
+              tabSpaces: 4,
+              customConfig: uri_dasar+'public/themes/plugin/ckeditor/custom/ckeditor_config_text_add_fix.js' });
+});
+
+function CKupdate(){
+  for ( instance in CKEDITOR.instances )
+      CKEDITOR.instances[instance].updateElement();
+}
 
 // Format icon
 function iconFormat(icon) {
@@ -261,6 +254,7 @@ function load_jam(tgl_id) {
 }
 
   $('#formAjax').submit(function() {
+     CKupdate();
       var result  = $('.result');
       var spinner = $('#spinner');
       $.ajax({
