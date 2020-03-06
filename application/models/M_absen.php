@@ -291,7 +291,7 @@ class M_absen extends CI_Model {
 						c.end_time as end_time_shift,
 						d.start_time as start_time_notfixed, 
 						d.end_time as end_time_notfixed,
-						e.tanggal as daysoff_id,
+						e.id as daysoff_id,
 						f.jum as jumlah_lkh
 						from 
 						(select a.id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$rank1','$rank2')) as tanggal) as a
