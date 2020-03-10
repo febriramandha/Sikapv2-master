@@ -154,12 +154,13 @@ class Rabsensi extends App_Controller {
 			$dept_id = decrypt_url($this->input->get('id'),'instansi');
 			$pns 	 = $this->input->get('pns');
 			$tpp 	 = $this->input->get('tpp');
-			$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $dept_id])->row()->level;
+			//$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $dept_id])->row()->level;
 				$this->db->select('*')
 						->from('v_users_all')
 						->where('key > 0')
         				->where('att_status',1)
-        				->where("path_id['".$level."']='".$dept_id."'");
+        				->where('dept_id', $dept_id);
+        				// ->where("path_id['".$level."']='".$dept_id."'");
         		if ($pns) {
         			$this->db->where('pns',$pns);
         		}
