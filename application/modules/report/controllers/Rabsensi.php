@@ -47,6 +47,17 @@ class Rabsensi extends App_Controller {
 				$user_id_in[] = $r_v;
 			}
 		}
+
+		$count_jum = count($user_id_in);
+
+		if ($count_jum > 1000) {
+			$count_jum = 1000;
+		}
+
+		$user_id_in_1 =array();
+		for ($i=0; $i < $count_jum; $i++) { 
+				$user_id_in_1[] = $user_id_in[$i];
+		}
 		
 		$rank1  	= format_tgl_eng($this->input->post('rank1'));
 		$rank2  	= format_tgl_eng($this->input->post('rank2'));
@@ -128,7 +139,7 @@ class Rabsensi extends App_Controller {
         	$this->datatables->add_column('ket','$1','absen_ket_tabel(daysoff_id, jam_masuk, jam_pulang, jam_masuk_shift, jam_pulang_shift, lkhdl_id, dinasmanual_id, kode_cuti, rentan_tanggal, start_time, start_time_shift, status_in, status_out,end_time, end_time_shift, start_time_notfixed, jam_masuk_notfixed, end_time_notfixed, jam_pulang_notfixed)');
 
         	 if ($user_id_in) {
-		        $this->datatables->where_in('a.id', $user_id_in);
+		        $this->datatables->where_in('a.id', $user_id_in_1);
 		     }else {
 		     	 $this->datatables->where_in('a.id','0');
 		     }
@@ -143,11 +154,12 @@ class Rabsensi extends App_Controller {
 			$dept_id = decrypt_url($this->input->get('id'),'instansi');
 			$pns 	 = $this->input->get('pns');
 			$tpp 	 = $this->input->get('tpp');
+			$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $dept_id])->row()->level;
 				$this->db->select('*')
 						->from('v_users_all')
 						->where('key > 0')
         				->where('att_status',1)
-        				->where('dept_id', $dept_id);
+        				->where("path_id['".$level."']='".$dept_id."'");
         		if ($pns) {
         			$this->db->where('pns',$pns);
         		}
@@ -195,16 +207,20 @@ class Rabsensi extends App_Controller {
 			$rank1 = format_tgl_eng(str_replace('_', '-', $this->input->post('rank1')));
 			$rank2 = format_tgl_eng(str_replace('_', '-', $this->input->post('rank2')));
 			$jum_hari = jumlah_hari_rank($rank1, $rank2);
-			if ($jum_hari > 31) {
-				echo 'maksimat tanggal yang diizinkan 31 hari';
-			}else{
-				$user_id  	= $this->input->post('pegawai');
-				$user_id_in =array();
-				if ($user_id) {
-					foreach ($user_id as $r_v ) {
-						$user_id_in[] = $r_v;
-					}
+
+			$user_id  	= $this->input->post('pegawai');
+			$user_id_in =array();
+			if ($user_id) {
+				foreach ($user_id as $r_v ) {
+					$user_id_in[] = $r_v;
 				}
+			}
+			if ($jum_hari > 31) {
+				echo 'maksimal tanggal yang diizinkan 31 hari';
+			}elseif (count($user_id_in) >= 1000 ) {
+				echo 'maksimal pengguna yang diizinkan 1000 pengguna';
+			}else{
+				
 				$this->data['jum_hari']	= $jum_hari;
 				$this->data['rank1'] 	= $rank1;
 				$this->data['pegawai_absen'] = $this->m_absen->PegawaiAbsenQuery($user_id_in, $rank1, $rank2)->result();
