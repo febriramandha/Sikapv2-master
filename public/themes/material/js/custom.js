@@ -12,6 +12,7 @@
     bootbox.dialog({
 	  	title:'<i class="icon-info22 mr-2"></i>Konfirmasi',
 	  	message: msg,
+	  	centerVertical: true,
 		buttons: {
 		    "cancel" : {
 		      	"label" : "<i class='icon-cross3'></i> Tidak",
@@ -105,6 +106,7 @@ function bx_alert(msg) {
    		title: '<i class="icon-warning mr-2"></i>Peringatan',
 	    message: msg,
 	    closeButton: false,
+	    centerVertical: true,
 	    buttons: {
 	      ok: {
 	        label: 'Baiklah',
@@ -125,7 +127,8 @@ function bx_alert_ok(msg, clasic) {
 	bootbox.dialog({
 	    message: icon+msg,
 	    timeOut : 5000,
-	    closeButton: true
+	    closeButton: true,
+	    centerVertical: true
 	});
 }
 
@@ -133,6 +136,7 @@ function bx_alert_success(msg, redirec) {
 	bootbox.dialog({
 	    message: '<i class="icon-checkmark4 ml-2 text-success"></i> '+msg,
 	    closeButton: false,
+	    centerVertical: true,
 	    buttons: {
 	      add: {
 	        label: '<i class="icon-pen-plus mr-1"></i> Tambah data',
@@ -164,6 +168,7 @@ function bx_alert_successUpadate(msg, redirec) {
 	bootbox.dialog({
 	    message: '<i class="icon-checkmark4 ml-2 text-success"></i> '+msg,
 	    closeButton: false,
+	    centerVertical: true,
 	    buttons: {
 	      main: {
 	        label: '<i class="icon-arrow-left5 mr-1"></i> Kembali',
@@ -182,6 +187,7 @@ function bx_alert_successReload(msg) {
 	bootbox.dialog({
 	    message: '<i class="icon-checkmark4 ml-2 text-success"></i> '+msg,
 	    closeButton: false,
+	    centerVertical: true,
 	    buttons: {
 	      main: {
 	        label: '<i class="icon-arrow-left5 mr-1"></i> Kembali',
