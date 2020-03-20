@@ -288,10 +288,33 @@ function LoadGrafik() {
 	</div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModalinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-white py-2">
+        <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-info22 mr-2"></i> Informasi</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      	 <p>Untuk informasi seputar aplikasi SIKAP. Silahkan bergabung ke group telegram berikut:<br>
+      	 	<a href="https://t.me/joinchat/JfIKS1PkpAzNigljE8OEzQ" target="_blank">https://t.me/joinchat/JfIKS1PkpAzNigljE8OEzQ</a></p>	
+         <!-- <button type="button" class="btn btn-primary">Klik Gabung</button> -->
+      </div>
+      <div class="modal-footer bg-white py-2">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script type="text/javascript">
 
 $(document).ready(function(){
 	LoadGrafikLkh();
+	$('#exampleModalinfo').modal('show');
 });
 
 
