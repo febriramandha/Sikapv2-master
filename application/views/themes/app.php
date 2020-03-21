@@ -107,6 +107,7 @@
 	</script>
 	<script src="<?php echo base_url() ?>public/themes/material/js/custom.js"></script>
 	<script src="<?php echo base_url() ?>public/themes/custom/js/datatables_script.js"> </script>
+	<?php echo $this->load->get_section('analyticstracking');?>
 </body>
 </html>
 

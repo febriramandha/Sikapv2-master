@@ -54,7 +54,7 @@
 			});
 		}
 	</script>
-
+	<?php echo $this->load->get_section('analyticstracking');?>
 </body>
 </html>
 
