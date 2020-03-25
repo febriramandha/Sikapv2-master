@@ -51,7 +51,7 @@ class M_data_lkh extends CI_Model {
                 ->join('days_off e',"(rentan_tanggal >= e.start_date and rentan_tanggal <= e.end_date)",'left',false)
                 ->join('data_cuti f',"(a.id = f.user_id and f.deleted =1 and (rentan_tanggal >= f.start_date and rentan_tanggal <= f.end_date))",'left',false)
                 ->where('a.id', $user_id)
-                ->where("(b.start_time != '00:00:00' or c.start_time != '00:00:00' or d.start_time != '00:00:00') and e.tanggal is null and f.user_id is null",null,false)
+                ->where("(b.start_time != '00:00:00' or c.start_time != '00:00:00' or d.start_time != '00:00:00') and e.id is null and f.user_id is null",null,false)
                 ->group_by('1,2')
                 ->order_by('rentan_tanggal','desc')
                 ->limit($limit);
