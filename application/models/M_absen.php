@@ -346,7 +346,7 @@ class M_absen extends CI_Model {
 						c.end_time as end_time_shift,
 						d.start_time as start_time_notfixed, 
 						d.end_time as end_time_notfixed,
-						e.tanggal as daysoff_id,
+						e.id as daysoff_id,
 						f.jum as jumlah_lkh_terverifasi,
 						g.jum as jumlah_lkh_menunggu,
 						h.jum as jumlah_lkh_ditolak,
