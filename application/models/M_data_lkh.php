@@ -69,7 +69,7 @@ class M_data_lkh extends CI_Model {
                             c.end_time as end_time_shift,
                             d.start_time as start_time_notfixed, 
                             d.end_time as end_time_notfixed,
-                            e.tanggal as daysoff_id,
+                            e.id as daysoff_id,
                             f.user_id as cuti')
                 ->from("(select * from mf_users a, (select * from rentan_tanggal('$tanggal','$tanggal')) as tanggal) as a")
                 ->join('v_jadwal_kerja_users b',"((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day)and b.user_id=a.id)",'left',false)
