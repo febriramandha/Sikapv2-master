@@ -230,7 +230,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     $j_masuk = strtotime($jam_masuk_notfixed);
                     $r_masuk = strtotime($start_time_notfixed);
                     $terlambat = sisa_waktu($j_masuk-$r_masuk);
-                }
+                }else $terlambat = '';
 		 }elseif ($jam_masuk_notfixed =='' && $jam_pulang_notfixed) {
                 	$terlambat = 'TM';
          }
