@@ -270,7 +270,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	                  $j_pulang = strtotime($jam_pulang_notfixed);
 		              $r_pulang = strtotime($end_time_notfixed);
 		              $cepat 	= sisa_waktu($r_pulang-$j_pulang);
-                }
+                }else $cepat = '';
 		 }elseif ($jam_pulang_notfixed =='' && $jam_masuk_notfixed) {
                 	$cepat = 'PC';
          }
