@@ -52,7 +52,7 @@
                   <td><b>Pulang Kerja Lebih Awal</b></td>
                   <td><b>Tidak Hadir Tanpa Keterangan</b></td>
                   <td><b>Tidak Mengikuti Upacara</b></td>
-                  <td><b>Tidak Shalat Zuhur/Ashar Berjamaah</b></td>
+                  <td><b>Tidak Shalat Zuhur/Ashar</b></td>
                   <td><b><br>DL</b></td>
                   <td><b><br>Cuti</b></td>
             </tr>

@@ -50,7 +50,7 @@
 					<tr class="table-active">
 						<th width="1%" rowspan="2">No</th>
 						<th class="text-nowrap" rowspan="2" width="1%">Tanggal</th>
-						<th class="text-nowrap text-center" colspan="2">Tempat Sholat Berjamaah</th>
+						<th class="text-nowrap text-center" colspan="2">Tempat Sholat</th>
 						<th rowspan="2" width="1%">Aksi</th>
 					</tr>
 					<tr class="table-active">

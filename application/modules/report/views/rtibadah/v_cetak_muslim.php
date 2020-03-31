@@ -38,7 +38,7 @@
             <tr align="center"> 
                   <td width="5%" rowspan="2"><br><br><b>No</b></td>
                   <th width="15%" rowspan="2" ><br><br><b>Tanggal</b></th>
-                  <th width="80%" rowspan="1" colspan="2"><b>Sholat Berjamaah</b></th>
+                  <th width="80%" rowspan="1" colspan="2"><b>Sholat</b></th>
             </tr>
             <tr align="center">
                   <th width="40%"><b>Zhuhur</b></th>

@@ -106,7 +106,7 @@
 						<th width="1%" class="p-1">Pulang Kerja Lebih Awal</th>
 						<th width="1%" class="p-1">Tidak Hadir Tanpa Keterangan</th>
 						<th width="1%" class="p-1">Tidak Mengikuti Upacara</th>
-						<th width="1%" class="p-1">Tidak Shalat Zuhur/Ashar Berjamaah</th>
+						<th width="1%" class="p-1">Tidak Shalat Zuhur/Ashar</th>
 						<th width="1%" class="p-1">DL</th>
 						<th width="1%" class="p-1">Cuti</th>
 					</tr>
