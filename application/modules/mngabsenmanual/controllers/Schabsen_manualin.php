@@ -174,6 +174,8 @@ class Schabsen_manualin extends App_Controller {
 							  'user_id' 		=> $user,
 							  'hari_id' 		=> $hari_id,
 							  'name' 		 	=> $this->input->post('nama'),
+							  'start_date' 		=> $rank1,
+							  'end_date' 		=> $rank2,
 							  'absen_in' 		=> $absen_in,
 							  'absen_out' 		=> $absen_out,
 							  'updated_at' 		=> date('Y-m-d H:i:s'),

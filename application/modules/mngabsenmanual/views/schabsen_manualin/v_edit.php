@@ -30,7 +30,7 @@
             <div class="form-control-feedback">
               <i class="icon-pencil3"></i>
             </div>
-            <input type="text" name="rank1" class="form-control datepicker" placeholder="tanggal mulai" value="<?php echo format_tgl_ind($schabsenmanual->start_date) ?>" readonly>
+            <input type="text" name="rank1" class="form-control datepicker" placeholder="tanggal mulai" value="<?php echo format_tgl_ind($schabsenmanual->start_date) ?>">
           </div>
         </div>
         <div class="col-lg-1">
@@ -43,7 +43,7 @@
             <div class="form-control-feedback">
               <i class="icon-pencil3"></i>
             </div>
-            <input type="text" name="rank2" class="form-control datepicker" placeholder="tanggal berakhir" value="<?php echo format_tgl_ind($schabsenmanual->end_date) ?>" readonly>
+            <input type="text" name="rank2" class="form-control datepicker" placeholder="tanggal berakhir" value="<?php echo format_tgl_ind($schabsenmanual->end_date) ?>" >
           </div>
         </div>
       </div>
@@ -128,6 +128,12 @@
 <script type="text/javascript">
   $('#checkAll').click(function () {    
     $('.checkbox').prop('checked', this.checked);  
+  });
+
+  $(".datepicker").datepicker({
+    format: 'dd-mm-yyyy',
+    autoclose: true,
+    todayHighlight: true,
   });
 
   $(document).ready(function(){
