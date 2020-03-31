@@ -48,6 +48,7 @@
 			serverSide: true, 
 			"ordering": false,
 			"searching": false,
+			stateSave: true,
 			language: {
 				search: '<span></span> _INPUT_',
 				searchPlaceholder: 'Cari...',
