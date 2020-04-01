@@ -60,7 +60,7 @@
                             <span class="input-group-prepend">
                                 <span class="input-group-text"><img src="<?php echo base_url('public/images/mesjid2.png'); ?>" width="25px" height="25px"></span>
                             </span>
-                            <input name="t_zuhur" class="form-control"  type="text" placeholder="Masukkan nama masjid" value="" >
+                            <input name="t_zuhur" class="form-control"  type="text" placeholder="Masukkan nama tempat" value="" >
                             
                         </div>
                         <span class="form-text text-danger" id="et_zuhur"></span>
@@ -85,7 +85,7 @@
                             <span class="input-group-prepend">
                                 <span class="input-group-text"><img src="<?php echo base_url('public/images/mesjid2.png'); ?>" width="25px" height="25px"></span>
                             </span>
-                            <input name="t_ashar" class="form-control"  type="text" placeholder="Masukkan nama masjid" value="" >
+                            <input name="t_ashar" class="form-control"  type="text" placeholder="Masukkan nama tempat" value="" >
                            
                         </div>
                          <span class="form-text text-danger" id="et_ashar"></span>
