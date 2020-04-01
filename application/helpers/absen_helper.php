@@ -798,15 +798,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				 $start_time_shift  = $json_absen[$i]['f10'];
 				 $start_time_notfixed= $json_absen[$i]['f20'];
 
-				 $cek = cek_jum_shalat_id($ibadah_id, $daysoff_id, $kode_cuti, $start_time, $start_time_shift,$start_time_notfixed);
-
-				 if ($agama_id == 1 || $agama_id == '' || $agama_id == 0) {
-				 	 $hari_kerja[] = $cek;
-				 }
-
 				 if ($rentan_tanggal >= '2020-03-19') {
 				 	 $hari_kerja[] = 0;
+				 }else {
+				 	 $cek = cek_jum_shalat_id($ibadah_id, $daysoff_id, $kode_cuti, $start_time, $start_time_shift,$start_time_notfixed);
+
+					 if ($agama_id == 1 || $agama_id == '' || $agama_id == 0) {
+					 	 $hari_kerja[] = $cek;
+					 }
 				 }
+				
+
+		
          		
          }
 
