@@ -789,7 +789,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     	 $hari_kerja = array(0);
          for ($i=0; $i < $count; $i++) { 
-	
+				 $rentan_tanggal   = $json_absen[$i]['f1'];
 				 $ibadah_id        = $json_absen[$i]['f26'];
 				 $daysoff_id       = $json_absen[$i]['f19'];
 				 $kode_cuti        = $json_absen[$i]['f14'];
@@ -802,6 +802,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				 if ($agama_id == 1 || $agama_id == '' || $agama_id == 0) {
 				 	 $hari_kerja[] = $cek;
+				 }
+
+				 if ($rentan_tanggal >= '2020-03-19') {
+				 	 $hari_kerja[] = 0;
 				 }
          		
          }
