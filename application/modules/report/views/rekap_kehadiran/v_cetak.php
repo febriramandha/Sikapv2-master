@@ -67,7 +67,7 @@ $no=1;foreach ($pegawai_absen as $row) {
                         <td width="8.14285714%" align="center">'.jum_pulang_cepat_rekap($row->json_absen).'</td>
                         <td width="8.14285714%" align="center">'.jum_tk_rekap($row->json_absen).'</td>
                         <td width="8.14285714%" align="center">'.jum_tidak_upacara_rekap($row->json_absen).'</td>
-                        <td width="8.14285714%" align="center">'.jum_tidak_sholatza_rekap($row->json_absen, $row->agama_id).'</td>
+                        <td width="8.14285714%" align="center">'.jum_tidak_sholatza_rekap($row->json_absen, $row->agama_id, $row->id).'</td>
                         <td width="8.14285714%" align="center">'.jum_dinas_luar_rekap($row->json_absen).'</td>
                         <td width="8.14285714%" align="center">'.jum_cuti_rekap($row->json_absen).'</td>';     
             $tbl .='</tr>';

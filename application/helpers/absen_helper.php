@@ -780,7 +780,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          return  $jumlah_hari_kerja;
     }
 
-    function jum_tidak_sholatza_rekap($json_data, $agama_id='')
+    function jum_tidak_sholatza_rekap($json_data, $agama_id='',$user_id_pengecualian='')
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -798,15 +798,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				 $start_time_shift  = $json_absen[$i]['f10'];
 				 $start_time_notfixed= $json_absen[$i]['f20'];
 
-				 // if ($rentan_tanggal >= '2020-03-19') {
-				 // 	 $hari_kerja[] = 0;
-				 // }else {
+				 if ($rentan_tanggal >= '2020-03-26' && $user_id_pengecualian != 6) {
+				 	 $hari_kerja[] = 0;
+				 }else {
 				 	 $cek = cek_jum_shalat_id($ibadah_id, $daysoff_id, $kode_cuti, $start_time, $start_time_shift,$start_time_notfixed);
 
 					 if ($agama_id == 1 || $agama_id == '' || $agama_id == 0) {
 					 	 $hari_kerja[] = $cek;
 					 }
-					 //}
+				 }
 				
 
 		
