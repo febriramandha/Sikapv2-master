@@ -80,7 +80,7 @@
 	</div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="exampleModalinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<!-- <div class="modal fade" id="exampleModalinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header bg-white py-2">
@@ -92,14 +92,14 @@
       <div class="modal-body">
       	 <p>Untuk informasi seputar aplikasi SIKAP. Silahkan bergabung ke group telegram berikut:<br>
       	 	<a href="https://t.me/joinchat/JfIKS1PkpAzNigljE8OEzQ" target="_blank">https://t.me/joinchat/JfIKS1PkpAzNigljE8OEzQ</a></p>	
-         <!-- <button type="button" class="btn btn-primary">Klik Gabung</button> -->
+         <button type="button" class="btn btn-primary">Klik Gabung</button>
       </div>
       <div class="modal-footer bg-white py-2">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
       </div>
     </div>
   </div>
-</div>
+</div> -->
 <script type="text/javascript">
  $(".datepicker").datepicker({
     format: 'dd-mm-yyyy',
@@ -114,7 +114,7 @@ $('.readonlyjm').on('focus',function(){
  var result  = $('.result');
  var spinner = $('#spinner');
  $(document).ready(function(){
- 	 $('#exampleModalinfo').modal('show');
+ 	 // $('#exampleModalinfo').modal('show');
      table = $('#datatable').DataTable({ 
       processing: true, 
       serverSide: true, 
