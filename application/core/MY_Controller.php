@@ -14,12 +14,12 @@ class MY_Controller extends CI_Controller {
 			$this->data['errors'] 		= array();
 			$this->data['messages'] 	= array();
 			$this->data['site_name'] 	= "SIKAP";
-			$this->data['keywords'] 	= "sikap agam, aplikasi absensi agam, laporan kerja harian, LKH, SIKAP, aplikasi TPP, rianreski, Rian Reski, Sistem Informasi Kinerja Aparatur, Sistem Informasi Kinerja Aparatur Pemerintah";
+			$this->data['keywords'] 	= "sikap agam, aplikasi absensi agam, laporan kerja harian, LKH, SIKAP, aplikasi TPP, Sistem Informasi Kinerja Aparatur, Sistem Informasi Kinerja Aparatur Pemerintah";
 			$this->data['description'] 	= "Aplikasi TPP Kabupaten Agam";
 			$this->data['regency'] 		= "Kabupaten Agam";
 			$this->data['regency_logo'] = base_url('public/images/agam.png');
 			$this->data['favicon'] 		= base_url('public/images/favicon.ico');
-			$this->data['author'] 		= 'Rian Reski A';
+			$this->data['author'] 		= 'Rian Reski';
 			$this->load->section('analyticstracking', 'analyticstracking');
 		}
 }
