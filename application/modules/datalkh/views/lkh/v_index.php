@@ -53,7 +53,7 @@
 			</div>
 		</div>
 		<div class="text-left offset-lg-2">                
-			<button class="btn btn-sm btn-info result" id="kalkulasi">Kalkulasi <i class="icon-search4 ml-2"></i></button>
+			<button class="btn btn-sm btn-info result" id="kalkulasi">Tampilkan <i class="icon-search4 ml-2"></i></button>
 			<button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1" id="cetak">
 				<span><i class="icon-printer mr-2"></i> Cetak</span>
 			</button> 

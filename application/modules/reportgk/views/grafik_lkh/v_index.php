@@ -54,7 +54,7 @@
 				</div>
 			</div>
 			<div class="text-left offset-lg-2">                
-				<button class="btn btn-sm btn-info result" id="kalkulasi">Kalkulasi <i class="icon-search4 ml-2"></i></button>
+				<button class="btn btn-sm btn-info result" id="kalkulasi">Tampilkan <i class="icon-search4 ml-2"></i></button>
 				<i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
 			</div>
 		</div>

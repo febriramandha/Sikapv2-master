@@ -80,7 +80,7 @@
 			</div>
 		</div>
 		<div class="text-left offset-lg-2">                
-			<span class="btn btn-sm btn-info result" id="kalkulasi">Kalkulasi <i class="icon-search4 ml-2"></i></span>
+			<span class="btn btn-sm btn-info result" id="kalkulasi">Tampilkan <i class="icon-search4 ml-2"></i></span>
 			<button type="submit" class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1 result" id="cetak">
 				<span><i class="icon-printer mr-2"></i> Cetak</span>
 			</button> 
