@@ -85,7 +85,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         }else if($id == 3) {
             $level = "Pegawai";
         }else if($id == 5) {
-            $level = "Piminan Instansi";
+            $level = "Pimpinan Instansi";
         }else if($id == 4) {
             $level = "User Eksekutif";
         }else{
