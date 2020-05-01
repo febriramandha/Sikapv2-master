@@ -158,6 +158,17 @@ class Schlkh extends App_Controller {
 		$this->data['sch_lkh']		= $this->db->get_where('sch_lkh',['id' => $id])->row();
 		$this->load->view('schlkh/v_edit', $this->data);
 	}
+
+	public function AjaxDel()
+	{
+		$this->output->unset_template();
+		$this->del = $this->db->delete('sch_lkh',['id' => $this->input->get('id')]);
+		if ($this->del) {
+			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil dihapus.']));
+		} else{
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal dihapus atau data sedang digunakan.']));	
+		}
+	}	
 }
 
 /* End of file Schlkh.php */
