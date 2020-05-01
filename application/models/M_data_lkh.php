@@ -40,7 +40,7 @@ class M_data_lkh extends CI_Model {
     public function jadwal_lkh_limit($user_id='', $limit='')
     {
         $tgl_now = date('Y-m-d');
-        $tgl_end = tgl_minus($tgl_now, 32);
+        $tgl_end = tgl_minus($tgl_now, 30);
 
         $this->db->select('a.id, 
                             rentan_tanggal')
