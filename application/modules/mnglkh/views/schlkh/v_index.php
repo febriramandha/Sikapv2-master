@@ -88,7 +88,7 @@
 
 	function confirmAksi(id) {
 		$.ajax({
-			url: uri_dasar+'mngsch/setsch-start/AjaxDel',
+			url: uri_dasar+'mnglkh/schlkh/AjaxDel',
 			data: {id: id},
 			dataType :"json",
 			error:function(){
