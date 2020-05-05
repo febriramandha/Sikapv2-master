@@ -422,7 +422,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
      
     }
 
-    function start_time_tabel_rekap($start_time='',$start_time_shift='', $start_time_notfixed='',$daysoff_id='')
+    function start_time_tabel_rekap($start_time='',$start_time_shift='', $start_time_notfixed='',$daysoff_id='', $kode_cuti='')
 	{
 		 $resul = 2;
 		 if ($start_time && !$start_time_shift && $start_time != "00:00:00") {
@@ -447,6 +447,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		 }
 
 		 if ($daysoff_id) {
+		 		$resul = 2;
+		 }
+
+		 if ($kode_cuti) {
 		 		$resul = 2;
 		 }
 
@@ -552,10 +556,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$ket = 1; 
 		}
 
-		if ($kode_cuti) {
-			 // $ket = $kode_cuti; 
-			 $ket = 1; 
-		}
+		
 
 		if ($start_time == "00:00:00"  || $start_time_shift == "00:00:00") {
 			// $ket = 'L';
@@ -602,6 +603,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		if ($daysoff_id) {
 			 // $ket = 'L'; 
 			$ket = 2;
+		}
+
+		if ($kode_cuti) {
+			 // $ket = $kode_cuti; 
+			 $ket = 2; 
 		}
 
 		return $ket;
@@ -967,7 +973,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                  $daysoff_id       = $json_absen[$i]['f8'];
                  $daysoff_id       = $json_absen[$i]['f8'];
                  $jumlah_lkh       = $json_absen[$i]['f9'];
-                 $cek = start_time_tabel_rekap($start_time, $start_time_shift,$start_time_notfixed,$daysoff_id);
+                 $kode_cuti       = $json_absen[$i]['f10'];
+                 $cek = start_time_tabel_rekap($start_time, $start_time_shift,$start_time_notfixed,$daysoff_id, $kode_cuti);
                  if ($cek != 2) {
                  	 if ($jumlah_lkh) {
                  	 		 $hari_kerja[] = 1;

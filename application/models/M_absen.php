@@ -277,7 +277,8 @@ class M_absen extends CI_Model {
 										start_time_notfixed, 
 										end_time_notfixed,
 										daysoff_id,
-										jumlah_lkh
+										jumlah_lkh,
+										kode_cuti
 									) ORDER BY rentan_tanggal)
 							) as json_jadwal_lkh
 						from mf_users a
@@ -292,7 +293,8 @@ class M_absen extends CI_Model {
 						d.start_time as start_time_notfixed, 
 						d.end_time as end_time_notfixed,
 						e.id as daysoff_id,
-						f.jum as jumlah_lkh
+						f.jum as jumlah_lkh,
+						i.kode as kode_cuti
 						from 
 						(select a.id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$rank1','$rank2')) as tanggal) as a
 						left join v_jadwal_kerja_users b on ((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day)and b.user_id=a.id)
@@ -300,7 +302,9 @@ class M_absen extends CI_Model {
 						left join v_jadwal_kerja_users_notfixed d on ((rentan_tanggal >= d.start_date and rentan_tanggal <= d.end_date and extract('isodow' from a.rentan_tanggal) = d.day_id)and d.user_id=a.id)
 						left join days_off e on (rentan_tanggal >= e.start_date and rentan_tanggal <= e.end_date)
 						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where status=1 GROUP BY 1,2) as f on (a.id = f.user_id and rentan_tanggal = f.tgl_lkh)
-						group by 1,2,3,4,5,6,7,8,9,10) as b on a.id=b.id
+						left join data_cuti h on (a.id = h.user_id and h.deleted =1 and (rentan_tanggal >= h.start_date and rentan_tanggal <= h.end_date)) 
+						left join _cuti i on h.cuti_id=i.id
+						group by 1,2,3,4,5,6,7,8,9,10,11) as b on a.id=b.id
 						group by 1) as b",'a.id=b.id','left',false);
         $this->db->join("(select start_date, b.user_id,jumlah_laporan, total_laporan  from schlkh_manual a 				join rekaplkh_manual b on a.id=b.schlkhmanual_id
 							where start_date = '$rank1') as c",'a.id=c.user_id','left',false);
