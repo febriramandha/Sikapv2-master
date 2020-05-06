@@ -348,7 +348,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					}
 			}
 
-			if ($status_in == 2 && $status_out) {
+			if ($status_in == 2 && $status_out == 2) {
 				  $ket = 'TCM';
 			}
 			 
