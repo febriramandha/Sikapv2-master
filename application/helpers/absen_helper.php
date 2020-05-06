@@ -165,6 +165,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		if ($status_in) {
 				if ($status_in == 1) {
 						$resul = 'HM';
+				}elseif ($status_in == 2) {
+						$resul = 'TMM';
 				}elseif ($status_in == 3) {
 						$resul = 'TKM';
 				}else {
@@ -192,6 +194,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		if ($status_out) {
 				if ($status_out == 1) {
 						$resul = 'HM';
+				}elseif ($status_out == 2) {
+						$resul = 'PCM';
 				}elseif ($status_out == 3) {
 						$resul = 'TKM';
 				}else {
