@@ -362,7 +362,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				  $ket = 'PCM';
 			}elseif ($status_in == 3 && $status_out == 3) {
 				  $ket = 'TKM';
+			}elseif ($status_in == 3 && $status_out == 1) {
+				  $ket = 'TCM';
+			}elseif ($status_in == 3 && $status_out == 2) {
+				  $ket = 'TCM';
+			}elseif ($status_in == 1 && $status_out == 3) {
+				  $ket = 'TMM';
+			}elseif ($status_in == 2 && $status_out == 3) {
+				  $ket = 'TMM';
 			}
+
 			 
 		}
 		if ($lkhdl_id) {
