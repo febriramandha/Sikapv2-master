@@ -109,6 +109,20 @@ class M_instansi extends CI_Model {
 		return $this->db->get('v_instansi_all a');
 	}
 
+	public function GetInstansi_segment($instansi_id, $level)
+	{
+		if ($this->session->userdata('tpp_level') == 1 && $instansi_id == 2) {
+			# code...
+		}else {
+			$this->db->where("path_id['".$level."']='".$instansi_id."'");
+		}
+		$this->db->where('id != 1');
+		$this->db->where_not_in('id',"(select instansi_id from _jabatan where instansi_id != $instansi_id)", false);
+		$this->db->order_by('path_order');
+		// $this->db->limit(2);
+		return $this->db->get('v_instansi_tree');
+	}
+
 }
 
 /* End of file M_instansi.php */

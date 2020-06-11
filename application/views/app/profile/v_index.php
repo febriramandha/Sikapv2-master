@@ -3,7 +3,7 @@
 	<li class="nav-item col-md-2 p-0">
 		<a href="#tab1" class="tab_profil nav-link legitRipple active show" id="biodata" data-toggle="tab">
 			<i class="icon-user mr-2 text-blue-400"></i>
-			Bioadata
+			Biodata
 		</a>
 	</li>
 	<li class="nav-item col-md-2 p-0">

@@ -101,6 +101,11 @@
 		<!-- /main content -->
 	</div>
 	<!-- /page content -->
+	<div style="position:fixed;right:20px;bottom:20px;">
+		<a href="https://wa.me/6282286114794?text=Assalamu%27alaikum%2C%20Saya%20ada%20pertanyaan">
+		<button style="background:#32C03C;vertical-align:center;height:36px;border-radius:5px" class="btn">
+		<img src="https://web.whatsapp.com/img/favicon/1x/favicon.png"> <span class="text-white">Whatsapp Kami</span></button></a>
+	</div>
 	<script type="text/javascript">
 		var url1 = window.location;
 		var pgclass = "<?= str_replace('_', '-', $this->router->fetch_class()); ?>";
