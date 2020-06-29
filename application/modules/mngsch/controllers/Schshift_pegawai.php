@@ -145,6 +145,16 @@ class Schshift_pegawai extends App_Controller {
 					 $this->return = $this->db->update('sch_run_users',$data, ['id' => $cek->id]);
 
 					 $data_id = array('id' => encrypt_url($cek->id,'sch_run_user_shift'), );
+
+					 // cek user_id if update on deleted
+					 $where_del = array(
+							  'schrun_id' 		=> decrypt_url($this->input->post('id'),'schrun_id_shift'),
+							   'dept_id' 		=> decrypt_url($this->input->post('instansi'),'instansi'),
+					 );
+					 $this->db->where($where_del);
+					 $this->db->where_not_in('user_id', $user_cek_);
+					 $this->db->delete('shift_run_users');
+
 				}else {
 					 $data['created_at'] = date('Y-m-d H:i:s');
 					 $data['created_by'] = $this->session->userdata('tpp_user_id');
