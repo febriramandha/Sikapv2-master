@@ -13,7 +13,8 @@ class M_data_lkh extends CI_Model {
 		$this->db->select('jam_selesai')
 				 ->where('user_id', $user_id)
 				 ->where('tgl_lkh', $tgl)
-				 ->order_by('tgl_lkh, jam_selesai','desc')
+				 // ->order_by('tgl_lkh, jam_selesai','desc')
+                 ->order_by('id','desc')
 				 ->limit(1);
 		return $this->db->get('data_lkh');
 	}
