@@ -21,6 +21,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		    $total += $keluar - $masuk;
 		}
 
-		return gmdate('H.i', $total); 
+		return gmdate('H:i', $total); 
 		  
+	}
+
+	function hitung_menit($jam='')
+	{
+		$total  = '';
+		if ($jam) {
+				$jam_ = date('H', strtotime($jam));
+				$menit_ = date('i', strtotime($jam));
+
+				$total = ($jam_*60)+$menit_;
+		}
+
+		return $total;
 	}

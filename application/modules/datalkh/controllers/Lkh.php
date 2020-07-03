@@ -167,9 +167,16 @@ class Lkh extends App_Controller {
 							$total_jam_reg = "00.00";	
 					}
 
-					$kurang = ($total_jam-$total_jam_reg);
-					$bagi = ($kurang/$total_jam);
+					// $kurang = ($total_jam-$total_jam_reg);
+					// $bagi = ($kurang/$total_jam);
+					// $persen = round($total_jam*100,2);
+
+					// hitung menit 
+					$kurang = hitung_menit($total_jam)-hitung_menit($total_jam_reg);
+					$bagi = ($kurang/hitung_menit($total_jam));
+					// persen
 					$persen = round($bagi*100,2);
+
 				}
 
 				$data = array('jam_mulai' => $jam_mulai,
@@ -230,8 +237,14 @@ class Lkh extends App_Controller {
 						$total_jam_reg = "00.00";	
 				}
 
-				$kurang = ($total_jam-$total_jam_reg);
-				$bagi = ($kurang/$total_jam);
+				// $kurang = ($total_jam-$total_jam_reg);
+				// $bagi = ($kurang/$total_jam);
+				// $persen = round($bagi*100,2);
+				
+				// hitung menit 
+				$kurang = hitung_menit($total_jam)-hitung_menit($total_jam_reg);
+				$bagi = ($kurang/hitung_menit($total_jam));
+				// persen
 				$persen = round($bagi*100,2);
 
 				$data = array(
