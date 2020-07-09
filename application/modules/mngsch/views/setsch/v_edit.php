@@ -108,6 +108,19 @@
           </div>
 
           <div class="form-group row">
+              <label class="col-form-label col-lg-3">Set Jumlah Hari <span class="text-danger">*</span></label>
+              <div class="col-lg-4">
+                  <div class="form-group-feedback form-group-feedback-left">
+                      <div class="form-control-feedback">
+                        <i class="icon-pencil3"></i>
+                      </div>
+                      <input type="number" name="set_hari" class="form-control" placeholder="Jam " value="<?php echo $jadwal->set_day ?>" >
+                        <span><i>* sesuaikan jumlah hari jika jadwal shift (ex: jika jumlah 3, dalam 1 hari dihitung 3 hari)</i></span>
+                  </div>
+              </div>
+          </div>
+
+          <div class="form-group row">
               <label class="col-form-label col-lg-3">Jenis Jam Kerja <span class="text-danger">*</span></label>
               <div class="col-lg-2">
                   <div class="form-group">

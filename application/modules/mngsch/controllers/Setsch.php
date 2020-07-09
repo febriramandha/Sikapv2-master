@@ -85,6 +85,7 @@ class Setsch extends App_Controller {
 								->set_rules('mulai_cout', 'jam mulai scan pulang', 'required')
 								->set_rules('akhir_cout', 'jam akhir scan pulang', 'required')
 								->set_rules('hari', 'hari', 'required|numeric')
+								->set_rules('set_hari', 'hitung hari', 'required|numeric')
 								->set_rules('jenis', 'jenis jam kerja', 'required');
 		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 		if ($this->form_validation->run() == TRUE) {
@@ -108,6 +109,7 @@ class Setsch extends App_Controller {
 							  'check_out_time1' => $this->input->post('mulai_cout'),
 							  'check_out_time2' => $this->input->post('akhir_cout'),
 							  'work_day' 	 	=> $this->input->post('hari'),
+							  'set_day' 	 	=> $this->input->post('set_hari'),
 							  'sch_type' 	 	=> $this->input->post('jenis'),
 							  'required_in' 	=> $cekin,
 							  'required_out' 	=> $cekout,
@@ -133,6 +135,7 @@ class Setsch extends App_Controller {
 							  'check_out_time1' => $this->input->post('mulai_cout'),
 							  'check_out_time2' => $this->input->post('akhir_cout'),
 							  'work_day' 	 	=> $this->input->post('hari'),
+							  'set_day' 	 	=> $this->input->post('set_hari'),
 							  'sch_type' 	 	=> $this->input->post('jenis'),
 							  'required_in' 	=> $cekin,
 							  'required_out' 	=> $cekout,
