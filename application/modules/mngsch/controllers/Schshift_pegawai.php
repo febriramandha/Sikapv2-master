@@ -99,9 +99,7 @@ class Schshift_pegawai extends App_Controller {
 										<input type="checkbox"  name="user[]" $1>
 										<span></span>
 							        </label>','checked_sch_shift(id, checked, disabled)');
-        	 if ($instansi) {
 		        $this->datatables->where('a.dept_id', $instansi);
-		     }
         	 if ($this->input->post('search[value]')) {
         	 	$this->db->group_start();
 		        	$this->datatables->like('lower(nama)', strtolower($this->input->post('search[value]')));

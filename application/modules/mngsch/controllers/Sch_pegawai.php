@@ -100,9 +100,7 @@ class Sch_pegawai extends App_Controller {
 										<span></span>
 							        </label>','checked_sch(id, checked, disabled)')
         	->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip)');
-        	 if ($instansi) {
-		        $this->datatables->where('a.dept_id', $instansi);
-		     }
+        	 $this->datatables->where('a.dept_id', $instansi);
         	 if ($this->input->post('search[value]')) {
         	 	$this->db->group_start();
 		        	$this->datatables->like('lower(nama)', strtolower($this->input->post('search[value]')));
