@@ -57,7 +57,7 @@ class M_user_login extends CI_Model {
 	{
 		$data = array('login_id' 		=> $uid,
 					  'cookie' 			=> $key, 
-					  'user_agent' 		=> $this->agent->agent_string(),
+					  // 'user_agent' 		=> $this->agent->agent_string(),
 					  'browser_agent' 	=> $this->agent->browser(),
 					  'version_agent' 	=> $this->agent->version(),
 					  'platform_agent' 	=> $this->agent->platform(),
