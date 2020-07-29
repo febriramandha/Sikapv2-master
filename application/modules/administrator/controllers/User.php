@@ -119,7 +119,9 @@ class User extends App_Controller {
 							  ->set_rules('gender', 'jenis kelamin', 'required')
 							  ->set_rules('status_pegawai', 'status pegawai', 'required');
 		if ($this->input->post('ketegori') == 1) {
-			$this->form_validation->set_rules('nip', 'NIP', 'required|min_length[18]|max_length[18]|numeric|'.$nip_cek.'');
+			$this->form_validation->set_rules('nip', 'NIP', 'required|min_length[18]|max_length[18]|numeric|'.$nip_cek.'')
+								  ->set_rules('golongan', 'Golongan', 'required')
+								  ->set_rules('eselon', 'Eselon', 'required');
 		}
 		$this->form_validation->set_rules('instansi', 'Unit Kerja', 'required')
 							  ->set_rules('level', 'jenis pengguna', 'required');		
