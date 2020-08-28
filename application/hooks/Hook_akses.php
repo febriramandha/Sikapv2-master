@@ -15,7 +15,7 @@ class Hook_akses {
 		$class =$this->ci->router->fetch_class();
 		$white_list = array('push');
 
-		if (array_search($class, $white_list) == FALSE) {
+		if (is_integer(array_search($class, $white_list)) == FALSE) {
 			$this->ci->load->model('M_acl');
 			if($this->ci->M_acl->privilage()==FALSE)
 			{
