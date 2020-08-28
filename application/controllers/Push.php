@@ -22,7 +22,7 @@ class Push extends CI_Controller {
 
         foreach ($data_json as $key => $v) {
             if (!empty($v) || $v == '0') {
-                $data_array[$key] = $v_new;
+                $data_array[$key] = $v;
             }
         }
 
