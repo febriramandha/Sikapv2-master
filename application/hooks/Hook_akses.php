@@ -12,7 +12,7 @@ class Hook_akses {
    {
 		$this->ci =& get_instance();
 
-		$class = $this->router->fetch_class();
+		$class =$this->ci->router->fetch_class();
 		$white_list = array('push');
 
 		if (array_search($class, $white_list) == FALSE) {
