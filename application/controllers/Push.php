@@ -22,7 +22,7 @@ class Push extends CI_Controller {
 
         if ($this->input->post('method') == "insert") {
         	 if (!empty($data_json)) {
-        	 	$data_json['created_at'] =  date('Y-m-d H:i:s');
+        	 	// $data_json['created_at'] =  date('Y-m-d H:i:s');
     		 	$this->return = $this->db_master->insert($tabel, $data_json);
         	 }
     		 
@@ -30,7 +30,7 @@ class Push extends CI_Controller {
         	if (!empty($data_json)  && !empty($data_json['id'])) {
         		 $id = $data_json['id'];
 	        	 unset($data_json['id']);
-	        	 $data_json['updated_at'] =  date('Y-m-d H:i:s');
+	        	 // $data_json['updated_at'] =  date('Y-m-d H:i:s');
 	    		$this->return = $this->db_master->update($tabel, $data_json, ['id' => $id]);
         	}
         }elseif ($this->input->post('method') == "delete") {
