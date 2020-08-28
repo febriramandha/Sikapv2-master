@@ -11,9 +11,9 @@ class Push extends CI_Controller {
 	public function Data($master)
 	{
 		$this->return = '';
-		if ($this->input->post('token') != "token_transfer_simpeg_agam") {
-			show_404();
-		}
+		if (empty($this->input->post('token'))) {show_404();}
+		if ($this->input->post('token') != "token_transfer_simpeg_agam") {show_404();}
+		
 		$this->db_master = $this->load->database($master,TRUE);
 		$method 	= $this->input->post('method');
 		$tabel 	    = $this->input->post('tabel');
