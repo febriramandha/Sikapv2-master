@@ -32,7 +32,7 @@ class Push extends CI_Controller {
         	 }
     		 
         }elseif ($this->input->post('method') == "update") {
-        	if (!empty($data_array)  && !empty($data_json['id'])) {
+        	if (!empty($data_array)  && !empty($data_json->id)) {
         		 $id = $data_array['id'];
 	        	 unset($data_array['id']);
 	    		$this->return = $this->db_master->update($tabel, $data_array, ['id' => $id]);
