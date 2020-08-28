@@ -18,24 +18,29 @@ class Push extends CI_Controller {
 		$tabel 	    = $this->input->post('tabel');
 		//data
 		$data 		= $this->input->post('data');
-        $data_json  = (array) json_decode($data);
+        $data_json  = json_decode($data);
+
+        foreach ($data_json as $key => $v) {
+        	if (empty($v) && $v != '0') {
+        			$v_new = NULL;
+        	}else $v_new = $v;
+        	$data_array[$key] = $v_new;
+        }
 
         if ($this->input->post('method') == "insert") {
-        	 if (!empty($data_json)) {
-        	 	// $data_json['created_at'] =  date('Y-m-d H:i:s');
-    		 	$this->return = $this->db_master->insert($tabel, $data_json);
+        	 if (!empty($data_array)) {
+    		 	$this->return = $this->db_master->insert($tabel, $data_array);
         	 }
     		 
         }elseif ($this->input->post('method') == "update") {
-        	if (!empty($data_json)  && !empty($data_json['id'])) {
-        		 $id = $data_json['id'];
-	        	 unset($data_json['id']);
-	        	 // $data_json['updated_at'] =  date('Y-m-d H:i:s');
-	    		$this->return = $this->db_master->update($tabel, $data_json, ['id' => $id]);
+        	if (!empty($data_array)  && !empty($data_json['id'])) {
+        		 $id = $data_array['id'];
+	        	 unset($data_array['id']);
+	    		$this->return = $this->db_master->update($tabel, $data_array, ['id' => $id]);
         	}
         }elseif ($this->input->post('method') == "delete") {
-        	if (!empty($data_json['id'])) {
-        		$this->return = $this->db_master->delete($tabel, ['id' => $data_json['id']]);
+        	if (!empty($data_array['id'])) {
+        		$this->return = $this->db_master->delete($tabel, ['id' => $data_array['id']]);
         	}
         	
         }
