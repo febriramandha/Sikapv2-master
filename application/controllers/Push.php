@@ -21,10 +21,9 @@ class Push extends CI_Controller {
         $data_json  = json_decode($data);
 
         foreach ($data_json as $key => $v) {
-        	if (empty($v) && $v != '0') {
-        			$v_new = NULL;
-        	}else $v_new = $v;
-        	$data_array[$key] = $v_new;
+            if (!empty($v) || $v == '0') {
+                $data_array[$key] = $v_new;
+            }
         }
 
         if ($this->input->post('method') == "insert") {
