@@ -10,7 +10,6 @@ class Push extends CI_Controller {
 
 	public function Data($master)
 	{
-		$this->return = '';
 		if ($this->input->post('token') != "token_transfer_simpeg_agam") {show_404();}
 
 		$this->db_master = $this->load->database($master,TRUE);
@@ -40,7 +39,7 @@ class Push extends CI_Controller {
         	
         }
 
-        if ($this->result) {
+        if ($this->return) {
 			$this->output->set_output(json_encode(['status' => TRUE, 'message' => 'Data berhasil disimpan']));	
 		}else {
 			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Data gagal menyimpan.']));
