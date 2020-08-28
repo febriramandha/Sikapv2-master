@@ -11,11 +11,18 @@ class Hook_akses {
 	public function run() 
    {
 		$this->ci =& get_instance();
-		$this->ci->load->model('M_acl');
-		if($this->ci->M_acl->privilage()==FALSE)
-		{
-	   		show_404(); 
+
+		$class = $this->router->fetch_class();
+		$white_list = array('push');
+
+		if (array_search($class, $white_list) == FALSE) {
+			$this->ci->load->model('M_acl');
+			if($this->ci->M_acl->privilage()==FALSE)
+			{
+		   		show_404(); 
+			}
 		}
+		
    }
 
 }
