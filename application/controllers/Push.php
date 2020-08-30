@@ -13,6 +13,9 @@ class Push extends CI_Controller {
 		$this->return = '';
 		if ($this->input->post('token') != "token_transfer_simpeg_agam") {show_404();}
 
+        $array_master = array('simpegMaster');
+        if (is_integer(array_search($master, $array_master)) == FALSE) {show_404();}
+
 		$this->db_master = $this->load->database($master,TRUE);
 		$method 	= $this->input->post('method');
 		$tabel 	    = $this->input->post('tabel');
@@ -49,7 +52,7 @@ class Push extends CI_Controller {
                                'tabel_id'          => $data_json->id,
                                'tabel_method'      => $method);
             $this->db_master->insert('_log_update', $array_log);
-            
+
 			$this->output->set_output(json_encode(['status' => TRUE, 'message' => 'Data berhasil disimpan']));	
 		}else {
 			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Data gagal menyimpan.']));
