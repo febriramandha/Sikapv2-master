@@ -48,7 +48,7 @@ class Push extends CI_Controller {
             $array_log = array('tabel_name'        => $tabel,
                                'tabel_id'          => $data_json->id,
                                'tabel_method'      => $method);
-            $this->db->insert('_log_update', $array_log);
+            $this->db_master->insert('_log_update', $array_log);
             
 			$this->output->set_output(json_encode(['status' => TRUE, 'message' => 'Data berhasil disimpan']));	
 		}else {
