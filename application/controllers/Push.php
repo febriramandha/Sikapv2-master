@@ -62,7 +62,7 @@ class Push extends CI_Controller {
     public function Ceklok()
     {
         // update data ceklok
-        if (isset($_SERVER['HTTP_HOST']) != "localhost") {show_404();}
+        if ($_SERVER['HTTP_HOST'] != "localhost") {show_404();}
         $this->db3 = $this->load->database('sqlsrv',TRUE);
         
         $this->db3->select('a.userid, a.checktime, a.sensorid, a.load_time, b.defaultdeptid');
