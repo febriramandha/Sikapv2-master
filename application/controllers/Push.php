@@ -59,6 +59,49 @@ class Push extends CI_Controller {
 		}
 	}
 
+    public function Ceklok($token)
+    {
+        if ($token != "GGG3KALI") {show_404();}
+        $this->db3 = $this->load->database('sqlsrv',TRUE);
+        
+        $this->db3->select('a.userid, a.checktime, a.sensorid, a.load_time, b.defaultdeptid');
+        $this->db3->join('userinfo b','a.userid=b.userid');
+        $this->db3->where('a.status_job=1');
+        $this->db3->order_by('a.userid', 'asc');
+        $data = $this->db3->get('checkinout a');
+        
+        if ($data->num_rows() > 0) {
+                $this->db->trans_begin();
+                foreach($data->result() as $row) {
+                    $filter_data = array(
+                        "user_id"        => $row->userid,
+                        "checktime"      => $row->checktime,
+                        "machine_id"     => $row->sensorid,
+                        "load_time"      => $row->load_time,
+                        "dept_id"        => $row->defaultdeptid,
+                        "group"          => 1,
+                        "created_by"     => 995,
+                    );
+                    
+                   $this->db->insert('mf_checkinout', $filter_data);
+                   $this->db3->where('userid', $row->userid)
+                             ->where('checktime', $row->checktime)
+                             ->update('checkinout', ['status_job' => 2]);
+
+                }
+            
+                if ($this->db->trans_status() === FALSE) {
+                    $this->db->trans_rollback();
+                    $respon = "Failed to Save Data ceklok";
+                } else {
+                    $this->db->trans_commit();
+                    $respon = "sukses perbarui data ceklok";
+                }
+                $this->db->insert('_log_cron', ['status' => $respon, 'waktu' => date('Y-m-d H:i:s'), 'log' => 1]);
+          }
+     
+    }
+
 }
 
 /* End of file Push.php */
