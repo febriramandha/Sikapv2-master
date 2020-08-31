@@ -59,9 +59,10 @@ class Push extends CI_Controller {
 		}
 	}
 
-    public function Ceklok($token)
+    public function Ceklok()
     {
-        if ($token != "GGG3KALI") {show_404();}
+        // update data ceklok
+        if (isset($_SERVER['HTTP_HOST']) != "localhost") {show_404();}
         $this->db3 = $this->load->database('sqlsrv',TRUE);
         
         $this->db3->select('a.userid, a.checktime, a.sensorid, a.load_time, b.defaultdeptid');
@@ -82,7 +83,7 @@ class Push extends CI_Controller {
                         "group"          => 1,
                         "created_by"     => 995,
                     );
-                    
+
                    $this->db->insert('mf_checkinout', $filter_data);
                    $this->db3->where('userid', $row->userid)
                              ->where('checktime', $row->checktime)
