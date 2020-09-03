@@ -79,7 +79,7 @@ class Data_absen extends App_Controller {
         	// cari ceklok sesuai jadwal shift = jam masuk shift
         	$this->db->join('mf_checkinout f',"((a.id = f.user_id) AND (e.start_shift = date(f.checktime)) AND ((f.checktime)::time  >= e.check_in_time1) AND ((f.checktime)::time  <= e.check_in_time2))",'left',false);
         	// cari ceklok sesuai jadwal shift = jam keluar shift
-        	$this->db->join('mf_checkinout g',"((a.id = g.user_id) AND (e.end_shift = date(f.checktime)) AND ((f.checktime)::time  >= e.check_in_time1) AND ((f.checktime)::time  <= e.check_in_time2))",'left',false);
+        	$this->db->join('mf_checkinout g',"((a.id = g.user_id) AND (e.end_shift = date(g.checktime)) AND ((g.checktime)::time  >= e.check_out_time1) AND ((g.checktime)::time  <= e.check_out_time2))",'left',false);
         	// data cuti
         	$this->db->join('data_cuti h',"(a.id = h.user_id and h.deleted =1 and (rentan_tanggal >= h.start_date and rentan_tanggal <= h.end_date))",'left',false);
         	$this->db->join('_cuti i','h.cuti_id=i.id','left');
