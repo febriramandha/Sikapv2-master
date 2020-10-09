@@ -23,7 +23,7 @@
 			</div>
 		</div>
 		<div class="form-group row">
-	        <label class="col-form-label col-lg-2">Ketegori Pengguna <span class="text-danger">*</span></label>
+	        <label class="col-form-label col-lg-2">Kategori Pengguna <span class="text-danger">*</span></label>
 	        <div class="col-lg-10">
 	          <div class="form-group">
 	           <select class="form-control select-nosearch result" name="kategori" >  
