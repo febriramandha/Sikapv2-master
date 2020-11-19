@@ -24,7 +24,7 @@ class M_data_lkh extends CI_Model {
         $this->db->where('user_id', $id);
 		$this->db->where_in('status','0,4',false);
         $this->db->where_not_in('tgl_lkh',$data_tgl_lkh);
-        $this->db->update('data_lkh',['status' => 1]);
+        $this->db->update('data_lkh',['status' => 1,'verifikasi_time'=> date('Y-m-d H:i')]);
     }
 
     public function GetDatalkhRank($user_id, $rank1, $rank2, $status)
