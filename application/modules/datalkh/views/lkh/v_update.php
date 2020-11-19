@@ -64,13 +64,13 @@
           <div class="form-group row">
               <label class="col-lg-2 col-form-label">Uraian Kegiatan <span class="text-danger">*</span></label>
               <div class="col-lg-10">
-                 <textarea class="ckeditor" id="kegiatan" name="kegiatan"><?php echo $datalkh->kegiatan ?></textarea>
+                 <textarea class="ckeditor_text" id="kegiatan" name="kegiatan"><?php echo $datalkh->kegiatan ?></textarea>
               </div>
            </div>
             <div class="form-group row">
               <label class="col-lg-2 col-form-label">Hasil <span class="text-danger">*</span></label>
               <div class="col-lg-10">
-                 <textarea class="ckeditor" id="hasil" name="hasil"><?php echo $datalkh->hasil ?></textarea>
+                 <textarea class="ckeditor_text" id="hasil" name="hasil"><?php echo $datalkh->hasil ?></textarea>
               </div>
            </div>
            <div class="form-group row">
@@ -98,7 +98,7 @@
 
 <script type="text/javascript">
 
-$('.ckeditor').each(function(e){
+$('.ckeditor_text').each(function(e){
       CKEDITOR.replace( this.id, {  height:'100px',
               tabSpaces: 4,
               customConfig: uri_dasar+'public/themes/plugin/ckeditor/custom/ckeditor_config_text_add_fix.js' });

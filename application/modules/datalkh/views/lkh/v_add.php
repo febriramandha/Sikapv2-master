@@ -103,13 +103,13 @@ $date_now = date('Y-m-d');
           <div class="form-group row">
               <label class="col-lg-2 col-form-label">Uraian Kegiatan <span class="text-danger">*</span></label>
               <div class="col-lg-10">
-                 <textarea class="ckeditor" id="kegiatan" name="kegiatan"></textarea>
+                 <textarea class="ckeditor_text" id="kegiatan" name="kegiatan"></textarea>
               </div>
            </div>
             <div class="form-group row">
               <label class="col-lg-2 col-form-label">Hasil <span class="text-danger">*</span></label>
               <div class="col-lg-10">
-                 <textarea class="ckeditor" id="hasil" name="hasil"></textarea>
+                 <textarea class="ckeditor_text" id="hasil" name="hasil"></textarea>
               </div>
            </div>
            <div class="form-group row">
@@ -165,8 +165,9 @@ $date_now = date('Y-m-d');
 <input type="hidden" name="cekverifikasi" value="<?php echo $verifikasi ?>">
 <script type="text/javascript">
 
-$('.ckeditor').each(function(e){
-      CKEDITOR.replace( this.id, {  height:'100px',
+$('.ckeditor_text').each(function(e){
+      CKEDITOR.replace( this.id, {  
+              height:'100px',
               tabSpaces: 4,
               customConfig: uri_dasar+'public/themes/plugin/ckeditor/custom/ckeditor_config_text_add_fix.js' });
 });
