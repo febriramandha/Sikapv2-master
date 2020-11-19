@@ -107,14 +107,20 @@ class M_data_lkh extends CI_Model {
         $tanggal_lkh_ver   = array();
         $tanggal_lkh_inday = array();
         if ($jumlkh->count_verday > $jumlkh->count_inday && empty($this->session->tempdata('c_tanggal_lkh'))) {
-             foreach ($tanggal_lkh as $row) {
-                    $tanggal_lkh_ver[] = $row->rentan_tanggal;
-             }
 
-             for ($i=0; $i < $jumlkh->count_inday; $i++) { 
-                    $tanggal_lkh_inday[] = $tanggal_lkh_ver[$i];
+             if (!empty($tanggal_lkh)) {
+                  foreach ($tanggal_lkh as $row) {
+                        $tanggal_lkh_ver[] = $row->rentan_tanggal;
+                  }  
              }
+             
 
+             if (!empty($tanggal_lkh_ver)) {
+                  for ($i=0; $i < $jumlkh->count_inday; $i++) { 
+                           $tanggal_lkh_inday[] = $tanggal_lkh_ver[$i];
+                  }   
+             }
+            
             if ($this->session->tempdata('tgl_verifikasi_cek') != date('y-m-d') && $this->session->userdata('tpp_user_id') != $this->session->tempdata('user_id')) {
                   $this->update_status($this->session->userdata('tpp_user_id'), $tanggal_lkh_ver);
             }
