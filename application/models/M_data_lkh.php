@@ -106,7 +106,7 @@ class M_data_lkh extends CI_Model {
 
         $tanggal_lkh_ver   = array();
         $tanggal_lkh_inday = array();
-        if ($jumlkh->count_verday > $jumlkh->count_inday && empty($this->session->tempdata('c_tanggal_lkh'))) {
+        if ($jumlkh->count_verday > $jumlkh->count_inday && empty($this->session->tempdata('c_tanggal_lkh')) && $this->session->userdata('tpp_user_id') != $this->session->tempdata('lkh_user_id')) {
 
              if (!empty($tanggal_lkh)) {
                   foreach ($tanggal_lkh as $row) {
@@ -125,12 +125,13 @@ class M_data_lkh extends CI_Model {
                   $this->update_status($this->session->userdata('tpp_user_id'), $tanggal_lkh_ver);
             }
 
-            $tempdata = array('tanggal_lkh_ver' => $tanggal_lkh_ver,
-                              'tanggal_lkh_inday' => $tanggal_lkh_inday,
-                              'c_tanggal_lkh' => true);
+            $tempdata = array('tanggal_lkh_ver'     => $tanggal_lkh_ver,
+                              'tanggal_lkh_inday'   => $tanggal_lkh_inday,
+                              'lkh_user_id'         => $this->session->userdata('tpp_user_id'),
+                              'c_tanggal_lkh'       => true);
             $this->session->set_tempdata($tempdata, NULL, 300);
             
-        }elseif ($this->session->tempdata('c_tanggal_lkh') == true) {
+        }elseif ($this->session->tempdata('c_tanggal_lkh') == true && $this->session->userdata('tpp_user_id') == $this->session->tempdata('lkh_user_id')) {
             $tanggal_lkh_ver   = $this->session->tempdata('tanggal_lkh_ver');
             $tanggal_lkh_inday = $this->session->tempdata('tanggal_lkh_inday');
         }
