@@ -50,7 +50,7 @@
 			</div>
 		</div>
 		<div class="form-group row">
-	        <label class="col-form-label col-lg-2">Ketegori Pengguna <span class="text-danger">*</span></label>
+	        <label class="col-form-label col-lg-2">Kategori Pengguna <span class="text-danger">*</span></label>
 	        <div class="col-lg-10">
 	          <div class="form-group">
 	           <select class="form-control select-nosearch result" name="kategori" >  
@@ -62,7 +62,7 @@
 	      </div>
 	    </div>
 	    <div class="form-group row" id="tpp">
-	      <label class="col-form-label col-lg-2">Ketagori Lainnya </label>
+	      <label class="col-form-label col-lg-2">Katagori Lainnya </label>
 	      <div class="col-lg-10">
 	          <label class="pure-material-checkbox mt-2"> 
 		          <input type="checkbox" class="result"  name="tpp" /> <span>Pernerima TPP</span>

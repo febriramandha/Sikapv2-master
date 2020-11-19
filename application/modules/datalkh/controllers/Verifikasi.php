@@ -13,7 +13,7 @@ class Verifikasi extends App_Controller {
 		parent::__construct();
 		$this->_init();
 		$this->breadcrumbs->push('Verifikasi LKH', 'datalkh/verifikasi');
-		$this->data['title'] = "Verifiikasi";
+		$this->data['title'] = "Verifikasi";
 		$this->load->model(['m_schrun_user','m_sch_lkh','m_data_lkh','m_verifikator','m_instansi']);
 	}
 
@@ -34,7 +34,7 @@ class Verifikasi extends App_Controller {
 		if ($this->input->get('modul') == 'cek') {
 			$this->output->unset_template();
 		}
-		$this->data['sub_title']  = "Verifikasi LKH";
+		$this->data['sub_title']  = "Verifikasi";
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
 		$this->data['jumlah_nonver'] = $this->m_data_lkh->jumlah_nonver($this->session->userdata('tpp_user_id'));
 		$this->load->view('verifikasi/v_index', $this->data);
@@ -73,8 +73,8 @@ class Verifikasi extends App_Controller {
 				$this->m_data_lkh->update_status($user->user_id, $rank_tanggal);
 		}
 
-		$this->data['sub_title'] 	= "Verifiikasi LKH";
-		$this->breadcrumbs->push('Verifiikasi LKH', '/');
+		$this->data['sub_title'] 	= "Laporan";
+		$this->breadcrumbs->push('Laporan', '/');
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
 		$this->data['user']			= $user;
 		$this->data['tanggal_lkh']  = $tanggal_lkh_ver;
