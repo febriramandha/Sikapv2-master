@@ -8,6 +8,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Lkh extends App_Controller {
 
+	protected $_lkh_jum 	= '';
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -15,6 +17,9 @@ class Lkh extends App_Controller {
 		$this->breadcrumbs->push('Data LKH', 'datalkh/lkh');
 		$this->data['title'] = "Data LKH";
 		$this->load->model(['m_schrun_user','m_sch_lkh','m_data_lkh','m_verifikator','m_instansi']);
+		$this->_lkh_jum      = $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
+		
+		
 	}
 
 	private function _init()
@@ -34,38 +39,21 @@ class Lkh extends App_Controller {
 
 	public function index()
 	{
-		$jumlkh = $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
-		$tanggal_lkh_ver = $this->m_data_lkh->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_verday)->result();
-		$rank_tanggal = array();
-		if ($tanggal_lkh_ver) {
-				foreach ($tanggal_lkh_ver as $row) {
-					$rank_tanggal[] = $row->rentan_tanggal;
-				}
-				$this->m_data_lkh->update_status($this->session->userdata('tpp_user_id'), $rank_tanggal);
-		}
-		$tanggal_lkh_inday = $this->m_data_lkh->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_inday)->result();
 		$this->data['sub_title']  = "Semua LKH";
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
 		$this->data['verifikator']	= $this->m_verifikator->GetVerifikator($this->session->userdata('tpp_user_id'))->row();
-		$this->data['tanggal_lkh'] 		= $tanggal_lkh_inday;
-		$this->data['jumlkh']			= $jumlkh;
+		$this->data['tanggal_lkh'] 		= $this->m_data_lkh->sistem_lkh_set($this->_lkh_jum)['tanggal_lkh_inday'];
+		$this->data['jumlkh']			= $this->_lkh_jum;
 		$this->load->view('lkh/v_index', $this->data);
 	}
 
 	public function indexJson()
 	{
 		$this->output->unset_template();
-		$jumlkh  = $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
-		$tanggal_lkh_inday = $this->m_data_lkh->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_inday)->result();
-		$rank_tanggal = array();
-		if ($tanggal_lkh_inday) {
-				foreach ($tanggal_lkh_inday as $row) {
-					$rank_tanggal[] = $row->rentan_tanggal;
-				}
-		}
+		$set_jadwal	      = $this->m_data_lkh->sistem_lkh_set($this->_lkh_jum);
 		$data_tgl ='';
-		if ($tanggal_lkh_inday) {
-			$data_tgl = str_replace(['[', ']', '"',','],['', '','','+'],json_encode($rank_tanggal));
+		if (!empty($set_jadwal['tanggal_lkh_inday'])) {
+			$data_tgl = str_replace(['[', ']', '"',','],['', '','','+'],json_encode($set_jadwal['tanggal_lkh_inday']));
 		}
 		$rank1 = format_tgl_eng($this->input->post('rank1'));
 		$rank2 = format_tgl_eng($this->input->post('rank2'));
@@ -91,11 +79,9 @@ class Lkh extends App_Controller {
 	{
 		$this->data['sub_title'] 	= "Tambah LKH";
 		$this->breadcrumbs->push('Tambah LKH', '/');
-		$jumlkh = $this->m_sch_lkh->Getsch_lkh($this->session->userdata('tpp_dept_id'),date('Y-m-d'))->row();
-		$tanggal_lkh = $this->m_data_lkh->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_inday);
-		$this->data['tanggal_lkh']  = $tanggal_lkh->result();
+		$this->data['tanggal_lkh']  = $this->m_data_lkh->sistem_lkh_set($this->_lkh_jum)['tanggal_lkh_inday'];
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
-		$this->data['jumlkh']		= $jumlkh;
+		$this->data['jumlkh']		= $this->_lkh_jum;
 		$this->data['verifikator']	= $this->m_verifikator->GetVerifikator($this->session->userdata('tpp_user_id'))->row();
 		$this->data['jumlah_nonver'] = $this->m_data_lkh->jumlah_nonver($this->session->userdata('tpp_user_id'));
 		$this->load->view('lkh/v_add', $this->data);

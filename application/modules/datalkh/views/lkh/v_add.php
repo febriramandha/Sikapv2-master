@@ -31,14 +31,14 @@ $date_now = date('Y-m-d');
             <div class="col-lg-5">
               <div class="form-group">
                 <select class="form-control select-icons" name="tgl" data-fouc>
-                        <?php $no=1; foreach ($tanggal_lkh as $row) { ?>
-                        <option value="<?php echo encrypt_url($row->rentan_tanggal,"tanggal_lkh_add_$date_now") ?>" data-icon="calendar3"><?php echo tgl_ind_hari($row->rentan_tanggal) ?></option>
+                        <?php $no=1; foreach ($tanggal_lkh as $v) { ?>
+                        <option value="<?php echo encrypt_url($v,"tanggal_lkh_add_$date_now") ?>" data-icon="calendar3"><?php echo tgl_ind_hari($v) ?></option>
                         <?php } ?>  
                 </select>
                 <div class="p-1 mt-1 mb-0 alert alert-info border-0 alert-dismissible col-lg-8 col-12">
                     pilih tanggal yang tersedia
                 </div>
-                 <?php if (!$tanggal_lkh) { ?>
+                 <?php if (empty($tanggal_lkh)) { ?>
                   <div class="alert alert-warning border-0 alert-dismissible mb-0">
                     <span class="font-weight-semibold">Peringatan!</span> Jadwal anda belum tersedia mohon hubungi administrator tentang jadwal anda.
                   </div>

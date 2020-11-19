@@ -25,6 +25,9 @@ class M_data_lkh extends CI_Model {
 		$this->db->where_in('status','0,4',false);
         $this->db->where_not_in('tgl_lkh',$data_tgl_lkh);
         $this->db->update('data_lkh',['status' => 1,'verifikasi_time'=> date('Y-m-d H:i')]);
+
+        $tempdata = array('tgl_verifikasi_cek' => date('Y-m-d'),'user_id' => $id);
+        $this->session->set_tempdata($tempdata, NULL, 7200);
     }
 
     public function GetDatalkhRank($user_id, $rank1, $rank2, $status)
@@ -95,6 +98,41 @@ class M_data_lkh extends CI_Model {
                 ->where('verifikator', $user_id)
                 ->where_in('status','0,4', false);
         return $this->db->get('data_lkh')->row()->count;
+    }
+
+    public function sistem_lkh_set($jumlkh)
+    {
+        $tanggal_lkh   = $this->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_verday)->result();
+
+        $tanggal_lkh_ver   = array();
+        $tanggal_lkh_inday = array();
+        if ($jumlkh->count_verday > $jumlkh->count_inday && empty($this->session->tempdata('c_tanggal_lkh'))) {
+             foreach ($tanggal_lkh as $row) {
+                    $tanggal_lkh_ver[] = $row->rentan_tanggal;
+             }
+
+             for ($i=0; $i < $jumlkh->count_inday; $i++) { 
+                    $tanggal_lkh_inday[] = $tanggal_lkh_ver[$i];
+             }
+
+            if ($this->session->tempdata('tgl_verifikasi_cek') != date('y-m-d') && $this->session->userdata('tpp_user_id') != $this->session->tempdata('user_id')) {
+                  $this->update_status($this->session->userdata('tpp_user_id'), $tanggal_lkh_ver);
+            }
+
+            $tempdata = array('tanggal_lkh_ver' => $tanggal_lkh_ver,
+                              'tanggal_lkh_inday' => $tanggal_lkh_inday,
+                              'c_tanggal_lkh' => true);
+            $this->session->set_tempdata($tempdata, NULL, 300);
+            
+        }elseif ($this->session->tempdata('c_tanggal_lkh') == true) {
+            $tanggal_lkh_ver   = $this->session->tempdata('tanggal_lkh_ver');
+            $tanggal_lkh_inday = $this->session->tempdata('tanggal_lkh_inday');
+        }
+
+        $tanggal['tanggal_lkh_ver']   = $tanggal_lkh_ver;
+        $tanggal['tanggal_lkh_inday'] = $tanggal_lkh_inday;
+        return  $tanggal;
+
     }
 
 }
