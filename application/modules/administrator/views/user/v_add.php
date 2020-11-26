@@ -257,6 +257,20 @@
       <span><i>* aktifkan untuk masuk sebagai pengguna</i></span>
     </div>
   </div>
+
+ <!--  <div class="form-group row">
+    <label class="col-form-label col-lg-2">Status Akun</label>
+    <div class="col-lg-10">
+      <div class="input-group">
+        <span class="input-group-prepend">
+          <span class="input-group-text">
+            <input type="checkbox" name="status_akun" class="form-control-switchery" checked data-fouc> 
+          </span>
+        </span>
+      </div>
+      <span><i>* aktifkan untuk masuk sebagai pengguna</i></span>
+    </div>
+  </div> -->
   <input type="hidden" name="mod" value="add">
 </fieldset>
 <?php echo form_close() ?> 
