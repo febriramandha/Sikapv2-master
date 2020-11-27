@@ -102,24 +102,45 @@ class M_data_lkh extends CI_Model {
 
     public function sistem_lkh_set($jumlkh)
     {
-        $tanggal_lkh   = $this->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_verday)->result();
+        if ($jumlkh->count_verday > $jumlkh->count_inday) {
+            $tanggal_lkh   = $this->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_verday)->result();
+        }elseif ($jumlkh->count_verday < $jumlkh->count_inday) {
+            $tanggal_lkh   = $this->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_inday)->result();
+        }
 
         $tanggal_lkh_ver   = array();
         $tanggal_lkh_inday = array();
-        if ($jumlkh->count_verday > $jumlkh->count_inday && empty($this->session->tempdata('c_tanggal_lkh')) && $this->session->userdata('tpp_user_id') != $this->session->tempdata('lkh_user_id')) {
+        if (empty($this->session->tempdata('c_tanggal_lkh')) && $this->session->userdata('tpp_user_id') != $this->session->tempdata('lkh_user_id')) {
 
-             if (!empty($tanggal_lkh)) {
-                  foreach ($tanggal_lkh as $row) {
-                        $tanggal_lkh_ver[] = $row->rentan_tanggal;
-                  }  
-             }
-             
+            if ($jumlkh->count_verday > $jumlkh->count_inday) {
+                 if (!empty($tanggal_lkh)) {
+                      foreach ($tanggal_lkh as $row) {
+                            $tanggal_lkh_ver[] = $row->rentan_tanggal;
+                      }  
+                 }
+                 
 
-             if (!empty($tanggal_lkh_ver)) {
-                  for ($i=0; $i < $jumlkh->count_inday; $i++) { 
-                           $tanggal_lkh_inday[] = $tanggal_lkh_ver[$i];
-                  }   
-             }
+                 if (!empty($tanggal_lkh_ver)) {
+                      for ($i=0; $i < $jumlkh->count_inday; $i++) { 
+                               $tanggal_lkh_inday[] = $tanggal_lkh_ver[$i];
+                      }   
+                 }
+            }else {
+                 if (!empty($tanggal_lkh)) {
+                      foreach ($tanggal_lkh as $row) {
+                            $tanggal_lkh_inday[] = $row->rentan_tanggal;
+                      }  
+                 }
+                 
+
+                 if (!empty($tanggal_lkh_inday)) {
+                      for ($i=0; $i < $jumlkh->count_verday; $i++) { 
+                               $tanggal_lkh_ver[] = $tanggal_lkh_inday[$i];
+                      }   
+                 }
+
+
+            }
             
             if ($this->session->tempdata('tgl_verifikasi_cek') != date('y-m-d') && $this->session->userdata('tpp_user_id') != $this->session->tempdata('user_id')) {
                   $this->update_status($this->session->userdata('tpp_user_id'), $tanggal_lkh_ver);
