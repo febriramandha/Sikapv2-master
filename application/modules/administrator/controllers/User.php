@@ -161,6 +161,10 @@ class User extends App_Controller {
 									  'tpp'			=> $tpp,
 									  'created_at' 	=> date('Y-m-d H:i:s'),
 									  'created_by'  => $this->session->userdata('tpp_user_id'), );
+
+						if ($this->input->post('absen_online_app')) {
+							$data['absen_online_app'] = 1;
+						}
 						$this->db->insert('mf_users', $data);
 						$user_id = $this->db->insert_id();
 
@@ -230,6 +234,13 @@ class User extends App_Controller {
 								  'tpp'			=> $tpp,
 								  'updated_at' 	=> date('Y-m-d H:i:s'),
 								  'updated_by'  => $this->session->userdata('tpp_user_id'), );
+
+					if ($this->input->post('absen_online_app')) {
+						$data['absen_online_app'] = 1;
+					}else {
+						$data['absen_online_app'] = 0;
+					}
+
 					$this->db->update('mf_users', $data, ['id' => decrypt_url($this->input->post('user_id'),'user_id')]);
 
 					// insert to server 2

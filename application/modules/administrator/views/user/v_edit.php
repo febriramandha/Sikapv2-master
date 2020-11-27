@@ -256,6 +256,21 @@
       <span><i>* aktifkan untuk masuk sebagai pengguna</i></span>
     </div>
   </div>
+
+  <div class="form-group row">
+    <label class="col-form-label col-lg-2">Absen Online</label>
+    <div class="col-lg-10">
+      <div class="input-group">
+        <span class="input-group-prepend">
+          <span class="input-group-text">
+            <input type="checkbox" name="absen_online_app" class="form-control-switchery" <?php if ($user->absen_online_app == 1) { echo "checked";} ?> data-fouc> 
+          </span>
+        </span>
+      </div>
+      <span><i>* aktifkan untuk absen online</i></span>
+    </div>
+  </div>
+
   <input type="hidden" name="mod" value="edit">
   <input type="hidden" name="user_id" value="<?php echo encrypt_url($user->user_id,'user_id') ?>">
   <input type="hidden" name="login_id" value="<?php echo encrypt_url($user->login_id,'login_id') ?>">
