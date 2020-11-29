@@ -68,6 +68,7 @@ class Data_pegawai extends App_Controller {
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
 		$this->data['user']			= $this->m_user->GetUser(decrypt_url($id, 'user_id'))->row();
 		$this->data['instansi']		= $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
+		$this->data['instansi_cek']	= $this->m_instansi->GetInstansi($this->data['user']->dept_id)->row();
 		$this->data['agama']		= $this->db->order_by('id')->get('_agama')->result();
 		$this->data['eselon']		= $this->db->order_by('id')->get('_eselon')->result();
 		$this->data['golongan']		= $this->db->order_by('id')->get('_golongan')->result();
@@ -103,10 +104,17 @@ class Data_pegawai extends App_Controller {
 						$tpp = 1;
 					}
 
+					$absen_online_app = 0;
+					if ($this->input->post('absen_online_app')) {
+						$absen_online_app = 1;
+					}
+
 					$data = array('nama' 		=> $this->input->post('nama'),
 								  'tpp'			=> $tpp,
+								  'absen_online_app' => $absen_online_app,
 								  'updated_at' 	=> date('Y-m-d H:i:s'),
 								  'updated_by'  => $this->session->userdata('tpp_user_id'), );
+
 					$this->db->update('mf_users', $data, ['id' => decrypt_url($this->input->post('user_id'),'user_id')]);
 
 					$status = 0;
@@ -138,6 +146,10 @@ class Data_pegawai extends App_Controller {
 					}else {
 						$data_biodata['user_id']  = decrypt_url($this->input->post('user_id'),'user_id');
 						$return = $this->insert('sp_pegawai',$data_biodata);
+					}
+
+					if ($this->input->post('reset_device')) {
+						$this->db->update('device_users',['is_active' => '0'],['user_id' => decrypt_url($this->input->post('user_id'),'user_id')]);
 					}
 
 
