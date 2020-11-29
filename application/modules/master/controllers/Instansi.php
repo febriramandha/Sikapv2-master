@@ -110,6 +110,11 @@ class Instansi extends App_Controller {
 		}
 		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 		if ($this->form_validation->run() == TRUE) {
+			if ($this->input->post('absen_online')) {
+				$absen_online = 1;
+			}else {
+				$absen_online = 0;
+			}
 			
 			if ($this->mod == "add") {
 				if ($this->input->post('status')) {
@@ -128,6 +133,10 @@ class Instansi extends App_Controller {
 							'status'			=> $status,
 							'dept_type'			=> $this->input->post('kategori'),
 							'created_by' 	 	=> $this->session->userdata('tpp_user_id'),
+							'absen_online'		=> $absen_online,
+							'alamat'			=> $this->input->post('alamat'),
+							'latlong'			=> $this->input->post('latlong'),
+							'radius'			=> $this->input->post('radius'),
 				);
 				$res_ = $this->db->insert('mf_departments',$data);
 				$id_new = $this->db->insert_id();
@@ -158,7 +167,7 @@ class Instansi extends App_Controller {
 					$status = 0;
 					$supdeptid = -1;
 				}
-				$data = array('dept_name' 	 	=> $this->input->post('nama'),
+				$data = array('dept_name' => $this->input->post('nama'),
 					'dept_alias' 		=> $this->input->post('alias'),
 					'kecamatan_id' 		=> decrypt_url($this->input->post('kecamatan'),'kecamatan_id'),
 					'position_order' 	=> $this->input->post('order'),
@@ -166,6 +175,10 @@ class Instansi extends App_Controller {
 					'status'			=> $status,
 					'dept_type'			=> $this->input->post('kategori'),
 					'updated_by' 	 	=> $this->session->userdata('tpp_user_id'),
+					'absen_online'		=> $absen_online,
+					'alamat'			=> $this->input->post('alamat'),
+					'latlong'			=> $this->input->post('latlong'),
+					'radius'			=> $this->input->post('radius'),
 				);
 				$this->return = $this->db->update('mf_departments', $data, ['id' => decrypt_url($this->input->post('id'),'instansi')]);
 

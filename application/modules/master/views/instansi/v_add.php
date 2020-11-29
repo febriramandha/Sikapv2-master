@@ -98,6 +98,51 @@
         </div>
       </div>
     </div>
+    <div class="form-group row">
+      <label class="col-form-label col-lg-2">Absen Online</label>
+      <div class="col-lg-10">
+        <div class="input-group">
+          <span class="input-group-prepend">
+            <span class="input-group-text">
+              <input type="checkbox" name="absen_online" class="form-control-switchery" checked data-fouc> 
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-form-label col-lg-2">Alamat</label>
+        <div class="col-lg-10">
+          <div class="form-group-feedback form-group-feedback-left">
+            <div class="form-control-feedback">
+              <i class="icon-pencil3"></i>
+            </div>
+            <input type="text" class="form-control" name="alamat" placeholder="Isi alamat">
+          </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-form-label col-lg-2">Titik Koordinat Kantor</label>
+        <div class="col-lg-10">
+          <div class="form-group-feedback form-group-feedback-left">
+            <div class="form-control-feedback">
+              <i class="icon-pencil3"></i>
+            </div>
+            <input type="text" class="form-control" name="latlong" placeholder="Isi Titik Koordinat Kantor">
+          </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-form-label col-lg-2">Radius <span class="text-danger">*</span></label>
+        <div class="col-lg-10">
+          <div class="form-group-feedback form-group-feedback-left">
+            <div class="form-control-feedback">
+              <i class="icon-pencil3"></i>
+            </div>
+            <input type="number" class="form-control" name="radius" placeholder="Isi Radius">
+          </div>
+        </div>
+      </div>
     <input type="hidden" name="parent" value="<?php echo encrypt_url($instansi_induk->id,'instansi') ?>">
     <input type="hidden" name="mod" value="add">
     <div class="text-left offset-lg-2" >
