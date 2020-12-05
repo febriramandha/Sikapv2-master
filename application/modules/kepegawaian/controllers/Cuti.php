@@ -195,7 +195,7 @@ class Cuti extends App_Controller {
 				}
 			}elseif ($this->mod == "edit") {
 				$data = array(
-							  'start_date' 	 	=> $rank2,
+							  'start_date' 	 	=> $rank1,
 							  'end_date' 		=> $rank2,
 							  'cuti_id' 		=> $this->input->post('jenis'),
 							  'updated_at' 		=> date('Y-m-d H:i:s'),
