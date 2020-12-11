@@ -149,6 +149,10 @@ class Instansi extends App_Controller {
 						'supdeptid' => $supdeptid,
 					);
 					$this->return = $this->m_server_att->Newdepartments($data_att_dept);
+
+					if ($absen_online == 1) {
+						$this->db->update('mf_users',['absen_online_app' => 1],['dept_id'=> $id_new,'att_status' => 1]);
+					}
 				}
 
 				if ($this->return) {
@@ -189,7 +193,9 @@ class Instansi extends App_Controller {
 				$data_att_dept = array('deptname' => $new_path.'_'.$this->input->post('alias'),
 					'supdeptid' => $supdeptid, );
 				$this->return = $this->m_server_att->Updatedepartments($data_att_dept, ['deptid' => decrypt_url($this->input->post('id'),'instansi')]);
-
+				
+				$this->db->update('mf_users',['absen_online_app' => $absen_online],['dept_id'=> decrypt_url($this->input->post('id'),'instansi'),'att_status' => 1]);
+				
 				if ($this->return) {
 					$this->result = array('status' => true,
 						'message' => 'Data berhasil disimpan');
