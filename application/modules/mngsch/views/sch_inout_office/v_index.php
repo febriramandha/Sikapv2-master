@@ -68,6 +68,19 @@
                   </div>
               </div>
           </div>
+          <div class="form-group row">
+              <div class="col-lg-3">
+                    <label class="pure-material-checkbox"> 
+                        <input type="checkbox"  name="cekin"  checked /> <span>Absen Masuk</span>
+                    </label>
+              </div>
+              <div class="col-lg-3">
+                    <label class="pure-material-checkbox"> 
+                        <input type="checkbox" name="cekout" checked/> <span>Absen Pulang</span>
+                    </label>
+              </div>
+          </div>     
+
         <input type="hidden" name="mod" value="add">
       </div>
       <div class="modal-footer bg-white">
@@ -92,15 +105,22 @@
         <h5 class="modal-title">Title</h5>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
-      <?php echo form_open('mngsch/sch-inout-office/AjaxSave','id="formAjax"'); ?>
-      <input type="hidden" name="id">
-      <input type="hidden" id="start" name="start">
-      <input type="hidden" id="end" name="end">
       <div class="modal-body">
         <div class="form-group row">
               <div id="div_pegawai"></div>
           </div>
-        <input type="hidden" name="mod" value="add">
+        <div class="form-group row">
+            <div class="col-lg-3">
+                  <label class="pure-material-checkbox"> 
+                      <input type="checkbox" id="cekin_e" name="cekin" disabled /> <span>Absen Masuk</span>
+                  </label>
+            </div>
+            <div class="col-lg-3">
+                  <label class="pure-material-checkbox"> 
+                      <input type="checkbox" id="cekout_e" name="cekout" disabled /> <span>Absen Pulang</span>
+                  </label>
+            </div>
+        </div>   
       </div>
       <div class="modal-footer bg-white">
         <span id="btn-del"></span>
@@ -204,7 +224,9 @@
        
         // Create Butttons
         if (data) {
-           $('#div_pegawai').html(data ? data.ket : '');
+          $('#div_pegawai').html(data ? data.ket : '');
+          $('#cekin_e').prop('checked',data.in=="1" ? true : false);
+          $('#cekout_e').prop('checked',data.out=="1" ? true : false);
           $('#modalkalender2').modal('show');
           $('.modal-title').html('Lihat Jadwal');
           $('#modalkalender2 input[name="mod"]').val('edit');

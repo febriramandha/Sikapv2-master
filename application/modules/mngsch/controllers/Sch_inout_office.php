@@ -24,6 +24,7 @@ class Sch_inout_office extends  App_Controller {
 		$this->load->js('public/themes/material/global_assets/js/plugins/ui/moment/moment.min.js');
 		$this->load->js('public/themes/material/global_assets/js/plugins/ui/fullcalendar/fullcalendar.min.js');
 		$this->load->js('public/themes/material/global_assets/js/plugins/forms/selects/bootstrap_multiselect.js');
+		$this->load->css('public/themes/plugin/chekbox/rrcheckbox.css');
 	}
 
 	public function index()
@@ -54,6 +55,15 @@ class Sch_inout_office extends  App_Controller {
 						$user_[] = decrypt_url($v,'user_id_office');
 				}
 
+				$cekin = '0';
+				if ($this->input->post('cekin')) {
+							$cekin = 1;
+					}
+				$cekout = '0';
+				if ($this->input->post('cekout')) {
+							$cekout = 1;
+				}
+
 				$data = array('start_date' 	 	=> $this->input->post('start'),
 							  'end_date' 		=> tgl_minus($this->input->post('end'),1),
 							  'dept_id' 		=> '{'.$this->session->userdata('tpp_dept_id').'}',
@@ -61,6 +71,8 @@ class Sch_inout_office extends  App_Controller {
 							  'berita_acara'	=> 'luar kantor',
 							  'created_at'		=> date('Y-m-d H:i:s'),
 							  'created_by'		=> $this->session->userdata('tpp_user_id'),
+							  'in'			    => $cekin,
+							  'out'			    => $cekout,
 				 );
 				$this->return = $this->db->insert('sch_inout_office',$data);
 				
@@ -137,6 +149,8 @@ class Sch_inout_office extends  App_Controller {
 			$sub_data['end'] 		= tgl_plus($row->end_date,1);
 			$sub_data['title'] 		= "Lihat Jadwal";
 			$sub_data['ket'] 		= pegawai_expl($row->json_nama_nip);
+			$sub_data['in'] 		= $row->in;
+			$sub_data['out'] 		= $row->out;
 			$kalendar[] = $sub_data;
 		}
 		echo json_encode($kalendar);
