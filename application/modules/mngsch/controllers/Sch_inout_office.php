@@ -117,7 +117,7 @@ class Sch_inout_office extends  App_Controller {
 		$end = $this->input->get('end');
 		$dept_id = $this->session->userdata('tpp_dept_id');
 		$this->db->select('*')
-				 ->where('berita_acara','kantor')
+				 ->where('berita_acara','luar kantor')
 				 ->where("$dept_id",'any(dept_id)', false)
 				 ->where("start_date BETWEEN '$start' and '$end'", NULL, FALSE )
 				 ->join("(select id as office_id, 
