@@ -58,7 +58,7 @@ class Sch_inout_office extends  App_Controller {
 							  'end_date' 		=> tgl_minus($this->input->post('end'),1),
 							  'dept_id' 		=> '{'.$this->session->userdata('tpp_dept_id').'}',
 							  'user_id' 		=> to_pg_array($user_),
-							  'berita_acara'	=> 'kantor',
+							  'berita_acara'	=> 'luar_kantor',
 							  'created_at'		=> date('Y-m-d H:i:s'),
 							  'created_by'		=> $this->session->userdata('tpp_user_id'),
 				 );
