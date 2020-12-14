@@ -57,7 +57,7 @@
       <input type="hidden" id="end" name="end">
       <div class="modal-body">
         <div class="form-group row">
-              <label class="col-form-label col-lg-2">Pegawai Dinas Luar <span class="text-danger">*</span></label>
+              <label class="col-form-label col-lg-2">Pegawai <span class="text-danger">*</span></label>
               <div class="col-lg-10">
                   <div class="form-group">
                        <select class="form-control multiselect-clickable-groups" name="user[]" multiple="multiple" id="filter_list_dropdwn" data-fouc>
