@@ -125,9 +125,6 @@
       <div class="modal-footer bg-white">
         <span id="btn-del"></span>
         <button type="button" class="btn btn-sm bg-orange-300 result" data-dismiss="modal">Batal <i class="icon-cross3 ml-2"></i></button>                 
-        <button type="submit" class="btn btn-sm btn-info result">Simpan <i class="icon-checkmark4 ml-2"></i></button>
-        <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>  
-
       </div>
 
     </div>
