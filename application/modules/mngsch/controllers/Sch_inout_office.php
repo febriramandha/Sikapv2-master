@@ -39,10 +39,9 @@ class Sch_inout_office extends  App_Controller {
 	public function AjaxSave()
 	{
 		$this->output->unset_template();
-		if ($this->input->post('mod') == "add") {
-			$this->form_validation->set_rules('start', 'tanggal', 'required');
-			$this->form_validation->set_rules('end', 'tanggal', 'required');
-		}
+		$this->form_validation->set_rules('ket', 'keterangan', 'required|max_length[20]');
+		$this->form_validation->set_rules('start', 'tanggal', 'required');
+		$this->form_validation->set_rules('end', 'tanggal', 'required');
 		$this->form_validation->set_rules('user[]', 'pegawai', 'required');
 		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 
@@ -73,6 +72,7 @@ class Sch_inout_office extends  App_Controller {
 							  'created_by'		=> $this->session->userdata('tpp_user_id'),
 							  'in'			    => $cekin,
 							  'out'			    => $cekout,
+							  'ket' 	 		=> $this->input->post('ket'),
 				 );
 				$this->return = $this->db->insert('sch_inout_office',$data);
 				
@@ -147,7 +147,7 @@ class Sch_inout_office extends  App_Controller {
 			$sub_data['id'] 		= $row->id;
 			$sub_data['start'] 		= $row->start_date;
 			$sub_data['end'] 		= tgl_plus($row->end_date,1);
-			$sub_data['title'] 		= "Lihat Jadwal";
+			$sub_data['title'] 		= $row->ket;
 			$sub_data['ket'] 		= pegawai_expl($row->json_nama_nip);
 			$sub_data['in'] 		= $row->in;
 			$sub_data['out'] 		= $row->out;
