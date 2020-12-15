@@ -56,6 +56,17 @@
       <input type="hidden" id="start" name="start">
       <input type="hidden" id="end" name="end">
       <div class="modal-body">
+         <div class="form-group row">
+            <label class="col-form-label col-lg-3">Ket <span class="text-danger">*</span></label>
+            <div class="col-lg-9">
+              <div class="form-group-feedback form-group-feedback-left">
+                <div class="form-control-feedback">
+                  <i class="icon-pencil3"></i>
+                </div>
+                 <input type="text" name="ket" class="form-control" placeholder="Isi keterangan"/>
+              </div>
+            </div>
+        </div>
         <div class="form-group row">
               <label class="col-form-label col-lg-2">Pegawai <span class="text-danger">*</span></label>
               <div class="col-lg-10">
