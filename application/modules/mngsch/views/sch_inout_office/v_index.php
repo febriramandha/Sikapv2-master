@@ -57,8 +57,8 @@
       <input type="hidden" id="end" name="end">
       <div class="modal-body">
          <div class="form-group row">
-            <label class="col-form-label col-lg-3">Ket <span class="text-danger">*</span></label>
-            <div class="col-lg-9">
+            <label class="col-form-label col-lg-2">Ket <span class="text-danger">*</span></label>
+            <div class="col-lg-10">
               <div class="form-group-feedback form-group-feedback-left">
                 <div class="form-control-feedback">
                   <i class="icon-pencil3"></i>
