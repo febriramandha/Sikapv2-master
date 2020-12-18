@@ -85,18 +85,37 @@ class Sch_inout_office extends  App_Controller {
 				    			    'message' => 'Data gagal disimpan');
 				}
 			}elseif ($this->mod == "edit") {
-				// $data = array(
-				// 			  'nama' 			=> $this->input->post('ket'),
-				//  );
-				// $this->return = $this->db->update('days_off', $data, ['id' => $this->input->post('id')]);
+				$user_ = array();
+				foreach ($this->input->post('user') as $v) {
+						$user_[] = decrypt_url($v,'user_id_office');
+				}
 
-				// if ($this->return) {
-				// 	 $this->result = array('status' => true,
-				//     			   'message' => 'Data berhasil disimpan');
-				// }else{
-				// 	 $this->result = array('status' => false,
-				//     			   'message' => 'Data gagal disimpan');
-				// }
+				$cekin = '0';
+				if ($this->input->post('cekin')) {
+							$cekin = 1;
+					}
+				$cekout = '0';
+				if ($this->input->post('cekout')) {
+							$cekout = 1;
+				}
+
+				$data = array(
+							  'user_id' 		=> to_pg_array($user_),
+							  'updated_at'		=> date('Y-m-d H:i:s'),
+							  'updated_by'		=> $this->session->userdata('tpp_user_id'),
+							  'in'			    => $cekin,
+							  'out'			    => $cekout,
+							  'ket' 	 		=> $this->input->post('ket'),
+				 );
+				$this->return = $this->db->update('sch_inout_office',$data,['id'=> decrypt_url($this->input->post('id'),'sch_inout_id')]);
+
+				if ($this->return) {
+					 $this->result = array('status' => true,
+				    			    'message' => 'Data berhasil disimpan');
+				}else{
+					 $this->result = array('status' => false,
+				    			    'message' => 'Data gagal disimpan');
+				}
 			}
 
 		}else {
@@ -113,7 +132,7 @@ class Sch_inout_office extends  App_Controller {
 	public function ajaxDel()
 	{
 		$this->output->unset_template();
-		$del = $this->db->delete('sch_inout_office',['id' => $this->input->get('id')]);
+		$del = $this->db->delete('sch_inout_office',['id' => decrypt_url($this->input->get('id'),'sch_inout_id')]);
 
 		if ($del) {
 			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil dihapus.']));
@@ -143,14 +162,20 @@ class Sch_inout_office extends  App_Controller {
 		$data = $this->db->get('sch_inout_office a')->result();
         $kalendar = array();
 		foreach ($data as $row) {
+			$pegawai = pg_array_parse($row->user_id);
+			$user_id_pegawai = array();
+			foreach ($pegawai as $v ) {
+				$user_id_pegawai[] = encrypt_url($v,'user_id_office');
+			}
 
-			$sub_data['id'] 		= $row->id;
+			$sub_data['id'] 		= encrypt_url($row->id,'sch_inout_id');
 			$sub_data['start'] 		= $row->start_date;
 			$sub_data['end'] 		= tgl_plus($row->end_date,1);
 			$sub_data['title'] 		= $row->ket;
 			$sub_data['ket'] 		= pegawai_expl($row->json_nama_nip);
 			$sub_data['in'] 		= $row->in;
 			$sub_data['out'] 		= $row->out;
+			$sub_data['pegawai'] 	= $user_id_pegawai;
 			$kalendar[] = $sub_data;
 		}
 		echo json_encode($kalendar);

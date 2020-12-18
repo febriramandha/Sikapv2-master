@@ -82,12 +82,12 @@
           <div class="form-group row">
               <div class="col-lg-3">
                     <label class="pure-material-checkbox"> 
-                        <input type="checkbox"  name="cekin"  checked /> <span>Absen Masuk</span>
+                        <input type="checkbox"  name="cekin"  /> <span>Absen Masuk</span>
                     </label>
               </div>
               <div class="col-lg-3">
                     <label class="pure-material-checkbox"> 
-                        <input type="checkbox" name="cekout" checked/> <span>Absen Pulang</span>
+                        <input type="checkbox" name="cekout"/> <span>Absen Pulang</span>
                     </label>
               </div>
           </div>     
@@ -97,7 +97,7 @@
       <div class="modal-footer bg-white">
         <span id="btn-del"></span>
         <button type="button" class="btn btn-sm bg-orange-300 result" data-dismiss="modal">Batal <i class="icon-cross3 ml-2"></i></button>                 
-        <button type="submit" class="btn btn-sm btn-info result">Simpan <i class="icon-checkmark4 ml-2"></i></button>
+        <button type="submit" class="btn btn-sm btn-info result" id="simpan">Simpan <i class="icon-checkmark4 ml-2"></i></button>
         <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>  
 
       </div>
@@ -108,41 +108,6 @@
 </div>
 <!-- /basic modal -->
 
-<!-- Basic modal -->
-<div id="modalkalender2" class="modal fade" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header bg-white">
-        <h5 class="modal-title">Title</h5>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group row">
-              <div id="div_pegawai"></div>
-          </div>
-        <div class="form-group row">
-            <div class="col-lg-3">
-                  <label class="pure-material-checkbox"> 
-                      <input type="checkbox" id="cekin_e" name="cekin" disabled /> <span>Absen Masuk</span>
-                  </label>
-            </div>
-            <div class="col-lg-3">
-                  <label class="pure-material-checkbox"> 
-                      <input type="checkbox" id="cekout_e" name="cekout" disabled /> <span>Absen Pulang</span>
-                  </label>
-            </div>
-        </div>   
-      </div>
-      <div class="modal-footer bg-white">
-        <span id="btn-del"></span>
-        <button type="button" class="btn btn-sm bg-orange-300 result" data-dismiss="modal">Batal <i class="icon-cross3 ml-2"></i></button>                 
-      </div>
-
-    </div>
-    <?php echo form_close(); ?>
-  </div>
-</div>
-<!-- /basic modal -->
 
 <script type="text/javascript">
   $(function(){
@@ -229,22 +194,42 @@
     function modal(data,aksi) {
         // Set input values
         $('input[name="id"]').val(data ? data.id : '');        
-       
+        $('#modalkalender').modal('show');
+
+        $('form#formAjax').trigger("reset"); //Line1
+        $('form#formAjax #filter_list_dropdwn').trigger("change"); //Line2
+        $("form#formAjax #filter_list_dropdwn").multiselect('clearSelection');
         // Create Butttons
         if (data) {
           $('#div_pegawai').html(data ? data.ket : '');
-          $('#cekin_e').prop('checked',data.in=="1" ? true : false);
-          $('#cekout_e').prop('checked',data.out=="1" ? true : false);
-          $('#modalkalender2').modal('show');
+          $('[name="ket"]').val(data.title)
+          $('[name="cekin"]').prop('checked',data.in=="1" ? true : false);
+          $('[name="cekout"]').prop('checked',data.out=="1" ? true : false);
+          //$('#modalkalender2').modal('show');
           $('.modal-title').html('Lihat Jadwal');
-          $('#modalkalender2 input[name="mod"]').val('edit');
-          $('#modalkalender2 #btn-del').html('<button type="button" class="confirm-aksi btn btn-sm btn-danger" msg="Benar ingin hapus data ini?" id="'+ currentEvent.id+'"><i class="ico fa fa-trash"></i> Hapus</button>');
+          $options = $('#filter_list_dropdwn option');
+
+          len = data.pegawai.length;
+          for(i=0; i < len; i++){
+               $options.filter('[value="'+data.pegawai[i]+'"]').prop('selected', true);
+          }
+                       
+          $('#filter_list_dropdwn').multiselect("refresh");
+
+
+          $('#modalkalender input[name="mod"]').val('edit');
+          $('#modalkalender #btn-del').html('<button type="button" class="confirm-aksi btn btn-sm btn-danger" msg="Benar ingin hapus data ini?" id="'+ currentEvent.id+'"><i class="ico fa fa-trash"></i> Hapus</button>');
+          $('#simpan').html('Update <i class="icon-checkmark4 ml-2"></i>');
         }else {
           //Show Modal
-          $('#modalkalender').modal('show');
+          
           $('.modal-title').html('Tambah Jadwal');
           $('input[name="mod"]').val('add');
           $('#btn-del').html('');
+          $('[name="cekin"]').prop('checked',true);
+          $('[name="cekout"]').prop('checked',true);
+
+          $('#simpan').html('Simpan <i class="icon-checkmark4 ml-2"></i>');
         }
         
       }
@@ -299,7 +284,7 @@
      success: function(res){
       if (res.status == true) {
         bx_alert_ok(res.message,'success');
-        $('#modalkalender2').modal('hide');
+        $('#modalkalender').modal('hide');
         $('#fullcalendar-external').fullCalendar("refetchEvents");
 
       }else {
