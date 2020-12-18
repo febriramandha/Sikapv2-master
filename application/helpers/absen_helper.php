@@ -302,11 +302,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	{
 		$ket ='';
 		$hari_ini = date('Y-m-d');
+		$jam_ini = date('H:i:s');
 
 		
 
 		if ($rentan_tanggal <= $hari_ini && !$daysoff_id && !$jam_masuk && !$jam_pulang && !$jam_masuk_shift && !$jam_pulang_shift && !$lkhdl_id && !$dinasmanual_id && !$kode_cuti ) {
-			$ket = 'TK'; 
+			 
+			// jadwal normal
+			if ($hari_ini == $rentan_tanggal &&  $jam_ini < $start_time) {
+				# code...
+			}else {
+				$ket = 'TK';
+			}
 		}
 
 		if ($jam_masuk || $jam_pulang || $jam_masuk_shift || $jam_pulang_shift || $jam_masuk_notfixed || $jam_pulang_notfixed || $status_in || $status_out) {
@@ -724,8 +731,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                   $cek = absen_ket_tabel($daysoff_id, $jam_masuk, $jam_pulang,$jam_masuk_shift, $jam_pulang_shift, $lkhdl_id, $dinasmanual_id, $kode_cuti, $rentan_tanggal, $start_time, $start_time_shift, $status_in, $status_out,$end_time,$end_time_shift, $start_time_notfixed, $jam_masuk_notfixed, $end_time_notfixed, $jam_pulang_notfixed);
 
                  if ($cek == "PC" || $cek == "PCM" || $cek == "TC" || $cek == "TCM") {
-                 		$hari_kerja[] = 1;
+                 		 //cek pulang cepat hari ini
+		                 $hari_ini = date('Y-m-d');
+						 $jam_ini = date('H:i:s');
+		                 if ($rentan_tanggal == $hari_ini && $jam_ini < $end_time) {
+		                 	# code...
+		                 }else {
+		                 	$hari_kerja[] = 1;
+		                 }
+                 		
                  }
+
+                
          		
          }
 

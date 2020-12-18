@@ -123,6 +123,9 @@ $jum_user = count($user);
         		plotShadow: false,
         		type: 'pie'
         	},
+        	credits: {
+			    enabled: false
+			},
         	title: {
         		text: 'Grafik Kehadiran Pegawai'
         	},
