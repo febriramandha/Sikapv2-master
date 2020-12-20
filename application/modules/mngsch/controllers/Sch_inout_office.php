@@ -39,14 +39,17 @@ class Sch_inout_office extends  App_Controller {
 	public function AjaxSave()
 	{
 		$this->output->unset_template();
+		$this->mod = $this->input->post('mod');
 		$this->form_validation->set_rules('ket', 'keterangan', 'required|max_length[20]');
-		$this->form_validation->set_rules('start', 'tanggal', 'required');
-		$this->form_validation->set_rules('end', 'tanggal', 'required');
+		if ($this->mod == "add") {
+			$this->form_validation->set_rules('start', 'tanggal', 'required');
+			$this->form_validation->set_rules('end', 'tanggal', 'required');
+		}
 		$this->form_validation->set_rules('user[]', 'pegawai', 'required');
 		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 
 		if ($this->form_validation->run() == TRUE) {
-			$this->mod = $this->input->post('mod');
+			
 			if ($this->mod == "add") {
 
 				$user_ = array();
