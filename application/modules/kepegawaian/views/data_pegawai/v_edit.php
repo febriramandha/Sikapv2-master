@@ -50,13 +50,13 @@
       <h6>Biodata Pegawai</h6>
       <fieldset>
        <div class="form-group row">
-              <label class="col-form-label col-lg-2">Ketegori Pengguna <span class="text-danger">*</span></label>
+              <label class="col-form-label col-lg-2">Memiliki NIP <span class="text-danger">*</span></label>
             <div class="col-lg-10">
                 <div class="form-group">
                      <select class="form-control select-nosearch" name="ketegori" disabled="true">  
                             <option disabled="">Pilih Ketegori</option> 
-                            <option value="1" <?php if ($user->pns == 1) { echo "selected";} ?>>PNS</option>
-                            <option value="2" <?php if ($user->pns == 2) { echo "selected";} ?>>NON PNS</option>
+                            <option value="1" <?php if ($user->pns == 1) { echo "selected";} ?>>NIP</option>
+                            <option value="2" <?php if ($user->pns == 2) { echo "selected";} ?>>NON NIP</option>
                     </select> 
                     <input type="hidden" name="ketegori" value="<?php echo $user->pns ?>"/>
                 </div>
