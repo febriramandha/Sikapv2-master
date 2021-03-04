@@ -26,7 +26,9 @@ class Dashboard extends App_Controller {
 
 	public function index()
 	{
+		$level 		= $this->session->userdata('tpp_level');
 		$this->data['breadcrumb'] 		= $this->breadcrumbs->show();
+		$this->data['wiki']				= $this->db->where("$level", "any(level)",false)->order_by('id')->get('wiki');
 		$this->data['pos']		  		= $this->m_article->GetAticleAll();
 
 		if ($this->session->userdata('tpp_level') == 1 || $this->session->userdata('tpp_level') == 4 ) {
