@@ -74,8 +74,19 @@
 		</div>
 	</div>
 	<?php } ?>
+	<style type="text/css">
+		.car_umanual {
+			height: 426px;
+		}
+		@media screen and (max-width: 575px) {          
+		    .car_umanual{
+		       height: 300px !important;
+
+		    }
+		}
+	</style>
 	<div class="col-lg-6 d-flex">
-		<div class="card col-lg-12 " style="height: 426px;">
+		<div class="card col-lg-12 car_umanual">
 			<div class="card-header bg-white header-elements-sm-inline pb-0">
 				<h6 class="font-weight-semibold"> <i class="icon-book mr-3"></i>User Manual</h6>
 			</div>
@@ -91,6 +102,9 @@
 					<?php } ?>
 				</table>
 			</div>
+			<div class="card-footer text-muted">
+			    Untuk informasi seputar aplikasi SIKAP. Silahkan bergabung ke grup telegram berikut: <a data-cke-saved-href="https://t.me/joinchat/JfIKS1PkpAzNigljE8OEzQ" href="https://t.me/joinchat/JfIKS1PkpAzNigljE8OEzQ" target="_blank">klik disini</a>
+			  </div>
 		</div>
 	</div>
 
