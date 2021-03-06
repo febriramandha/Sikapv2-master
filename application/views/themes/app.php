@@ -92,7 +92,7 @@
 				<div class="text-center w-100">
 					<button type="button" class="navbar-toggler" >
 						<i class="icon-circles mr-2"></i>
-						&copy; 2018 - <?php echo date('Y') ?> Powered by <a href="#" target="_blank">Dinas Komunikasi dan Informatika Kab. Agam </a> 
+						&copy; 2018 - <?php echo date('Y') ?> Powered by <a href="#">Web Programmer Dinas Komunikasi dan Informatika Kab. Agam </a> 
 					</button>
 				</div>
 			</div>
