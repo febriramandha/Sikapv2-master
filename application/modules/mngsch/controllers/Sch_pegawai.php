@@ -84,7 +84,7 @@ class Sch_pegawai extends App_Controller {
 		$schrun_id = decrypt_url($this->input->post('schrun_id'),'schrun_id');
 		$sch = $this->db->get_where('sch_run',['id' => $schrun_id])->row();
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, a.nip, a.nama, a.dept_name, status_pegawai,gelar_dpn,gelar_blk, b.user_id as checked, usercek.user_id as disabled')
+        $this->datatables->select('DISTINCT ON (no_urut) a.id, a.nip, a.nama, a.dept_name, status_pegawai,gelar_dpn,gelar_blk, b.user_id as checked, usercek.user_id as disabled')
         	->from('v_users_all a')
         	->join('(SELECT id, unnest(user_id) as user_id, schrun_id FROM sch_run_users where schrun_id='.$schrun_id.') as b','a.id=b.user_id','left')
         	->join("(SELECT a.id, unnest(user_id) as user_id, schrun_id, start_date, end_date FROM sch_run_users a

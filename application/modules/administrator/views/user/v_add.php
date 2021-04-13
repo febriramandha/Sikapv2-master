@@ -49,15 +49,14 @@
       <h6>Biodata Pegawai</h6>
       <fieldset>
         <div class="form-group row">
-          <label class="col-form-label col-lg-2">Ketegori Pengguna <span class="text-danger">*</span></label>
+          <label class="col-form-label col-lg-2">Memiliki NIP <span class="text-danger">*</span></label>
           <div class="col-lg-10">
             <div class="form-group">
              <select class="form-control select-nosearch" name="ketegori" >  
               <option disabled="">Pilih Ketegori</option> 
-              <option value="1">PNS</option>
-              <option value="2">NON PNS</option>
+              <option value="1">NIP</option>
+              <option value="2">NON NIP</option>
             </select> 
-            <span class="text-danger"><i>* pilih PNS jika memiliki NIP</i></span>
           </div>
         </div>
       </div>

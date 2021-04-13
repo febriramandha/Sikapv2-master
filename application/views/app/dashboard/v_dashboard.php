@@ -9,6 +9,8 @@
 	</h6>
 </div>
 <div class="row">
+	
+
 	<?php if ($this->session->userdata('tpp_level') == 1 || $this->session->userdata('tpp_level') == 4 ) {
  	?>
 	<div class="col-lg-12">
@@ -72,7 +74,43 @@
 		</div>
 	</div>
 	<?php } ?>
+	<style type="text/css">
+		.car_umanual {
+			height: 426px;
+		}
+		@media screen and (max-width: 575px) {          
+		    .car_umanual{
+		       height: 300px !important;
+
+		    }
+		}
+	</style>
 	<div class="col-lg-6 d-flex">
+		<div class="card col-lg-12 car_umanual">
+			<div class="card-header bg-white header-elements-sm-inline pb-0">
+				<h6 class="font-weight-semibold"> <i class="icon-book mr-3"></i>User Manual</h6>
+			</div>
+			<div class="table-responsive m-0">
+				<table class="table text-nowrap">
+					<?php
+					foreach ($wiki->result() as $row ) { ?>
+					<tr>
+						<td>
+							<a href="<?= base_url() ?><?php echo $row->isi ?>"> <i class="icon-arrow-right22 mr-3"></i><?php echo $row->judul ?></a>
+						</td>
+					</tr>
+					<?php } ?>
+				</table>
+			</div>
+			<div class="card-footer text-muted">
+			    Untuk informasi seputar aplikasi SIKAP. Silahkan bergabung ke grup telegram berikut: <a data-cke-saved-href="https://t.me/joinchat/JfIKS1PkpAzNigljE8OEzQ" href="https://t.me/joinchat/JfIKS1PkpAzNigljE8OEzQ" target="_blank">klik disini</a>
+			  </div>
+		</div>
+	</div>
+
+	<div class="col-lg-6">
+		<div class="row">
+			<div class="col-lg-12 d-flex">
 		<div class="card col-lg-12 " style="height: 203px;">
 			<div class="card-header bg-white header-elements-sm-inline pb-0">
 				<h6 class="font-weight-semibold"> <i class="icon-bell2 mr-3"></i>Informasi/Pengumuman</h6>
@@ -105,7 +143,7 @@
 		</div>
 	</div>
 
-	<div class="col-lg-6 d-flex">
+	<div class="col-lg-12 d-flex">
 		<div class="card col-lg-12 " style="height: 203px;">
 			<div class="card-header bg-white header-elements-sm-inline pb-0">
 				<h6 class="font-weight-semibold"> <i class="icon-alarm mr-3"></i>Jadwal jam kerja <span class="badge badge-info">7 hari kedepan</span></h6> 
@@ -127,6 +165,10 @@
 			</div>
 		</div>
 	</div>
+		</div>
+	</div>
+
+	
 </div>
 
 <script type="text/javascript">

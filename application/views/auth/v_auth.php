@@ -50,7 +50,8 @@
 		<div class="col-12">
 			<div class="text-center p-t-70">
 				<a class="txt2" href="#">
-					&copy; 2018-<?php echo date('Y') ?> Pemerintah Kabupaten Agam
+					SIKAP 2.1.1
+					&copy; 2018-<?php echo date('Y') ?> Powered by <a href="#">Web Programmer Dinas Komunikasi dan Informatika Kab. Agam </a>
 				</a>
 			</div>
 		</div>
