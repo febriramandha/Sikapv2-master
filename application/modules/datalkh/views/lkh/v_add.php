@@ -153,9 +153,7 @@ $date_now = date('Y-m-d');
       <div class="modal-body p-0" id="load-body-modal">
     
       </div>
-      <div class="alert alert-warning alert-dismissible mb-0 p-2">
-        <span class="font-weight-semibold">Perhatian!</span> Pengisian LKH paling lambat <span class="badge bg-danger ml-1">23.59 WIB</span> pada hari berikunya
-      </div>
+      <p>Pengisian LKH paling lambat pukul 23.59 WIB pada hari berikunya</p>
 
       <div class="modal-footer">
         <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Tutup</button>
