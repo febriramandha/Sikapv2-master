@@ -141,6 +141,10 @@ class Data_pegawai extends App_Controller {
 										  'gender'     => $this->input->post('gender'),
 										  'jabatan'    => $this->input->post('jabatan'),
 									);
+					if ($this->input->post('ketegori') == 1) {
+						$data_biodata['golongan_id']= $this->input->post('golongan');
+						$data_biodata['eselon_id']  = $this->input->post('eselon');
+					}
 					if ($biodata_cek) {
 						$return = $this->db->update('sp_pegawai',$data_biodata, ['id' => $biodata_cek->id]);
 					}else {

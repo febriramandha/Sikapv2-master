@@ -44,7 +44,7 @@ class M_data_lkh extends CI_Model {
     public function jadwal_lkh_limit($user_id='', $limit='')
     {
         $tgl_now = date('Y-m-d');
-        $tgl_end = tgl_minus($tgl_now, 40);
+        $tgl_end = tgl_minus($tgl_now, 35);
 
         $this->db->select('a.id, 
                             rentan_tanggal')
@@ -102,11 +102,16 @@ class M_data_lkh extends CI_Model {
 
     public function sistem_lkh_set($jumlkh)
     {
-        if ($jumlkh->count_verday > $jumlkh->count_inday) {
-            $tanggal_lkh   = $this->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_verday)->result();
-        }elseif ($jumlkh->count_verday < $jumlkh->count_inday) {
-            $tanggal_lkh   = $this->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_inday)->result();
+        $user_id =$this->session->userdata('tpp_user_id');
+        if (!$this->cache->get("m_data_lkh_jadwal_lkh_limit_$user_id")) {
+            if ($jumlkh->count_verday > $jumlkh->count_inday) {
+                $tanggal_lkh_qr   = $this->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_verday)->result();
+            }elseif ($jumlkh->count_verday < $jumlkh->count_inday) {
+                $tanggal_lkh_qr   = $this->jadwal_lkh_limit($this->session->userdata('tpp_user_id'), $jumlkh->count_inday)->result();
+            }
+            $this->cache->redis->save("m_data_lkh_jadwal_lkh_limit_$user_id", $tanggal_lkh_qr, 300);
         }
+        $tanggal_lkh = $this->cache->get("m_data_lkh_jadwal_lkh_limit_$user_id");
 
         $tanggal_lkh_ver   = array();
         $tanggal_lkh_inday = array();

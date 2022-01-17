@@ -8,6 +8,53 @@ class Push extends CI_Controller {
 		echo "Push";
 	}
 
+  public function jadwal_sekolah()
+  {
+        $this->db->select('62 as sch_run_id, a.id as dept_id, a.dept_name, b.user_id')
+                 ->from('v_instansi_all a')
+                 ->join("(SELECT dept_id, array_agg(id) as user_id
+                          FROM mf_users
+                          GROUP BY dept_id) as b",'a.id=b.dept_id')
+                 ->where_not_in('id','select dept_id from sch_run_users where schrun_id=62',FALSE)
+                 ->where('parent_id',43)
+                 ->where('id !=',1798);
+        $qr = $this->db->get()->result();
+
+        foreach ($qr as $row) {
+             $data_in = array('schrun_id' => $row->sch_run_id,
+                              'dept_id' => $row->dept_id,
+                              'user_id' => $row->user_id, 
+                            );
+             // $this->db->insert('sch_run_users', $data_in);
+        }
+  }
+
+    public function in()
+    {
+        $this->db->where("tgl_lkh >= '2021-04-01' and tgl_lkh <= '2021-04-16'",NULL,FALSE);
+        $re = $this->db->get_where('data_lkh',['user_id' => '295']);
+        foreach ($re->result() as $row) {
+             $data_in = array('user_id' => 4180,
+                              'dept_id' => 101,
+                              'tgl_lkh' => $row->tgl_lkh,
+                              'jam_mulai' => $row->jam_mulai,
+                              'jam_selesai' => $row->jam_selesai,
+                              'kegiatan' => $row->kegiatan,
+                              'hasil' => $row->hasil,
+                              'jenis' => $row->jenis,
+                              'status' => $row->status,
+                              'persentase' => $row->persentase,
+                              'poin' => $row->poin,
+                             );
+             $ad= $this->db->get_where('data_lkh',['user_id' => 4180 ,'tgl_lkh'=> $row->tgl_lkh])->row();
+             if (!$ad || empty($ad->verifikator)) {
+                // $this->db->insert('data_lkh', $data_in);
+             }
+            
+        }
+
+    }
+
 	public function Data($master)
 	{
 		$this->return = '';

@@ -455,9 +455,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		 $resul = 2;
 		 if ($start_time && !$start_time_shift && $start_time != "00:00:00") {
 		 			$resul = jm($start_time);
-		 }elseif (!$start_time && $start_time_shift) {
+		 }elseif (!$start_time && $start_time_shift && $start_time_shift != "00:00:00") {
 		 			$resul = jm($start_time_shift);
-		 }elseif ($start_time && $start_time_shift) {
+		 }elseif ($start_time && $start_time_shift && $start_time != "00:00:00" && $start_time_shift != "00:00:00") {
 		 			$resul = jm($start_time);
 		 }elseif ($start_time == "00:00:00" || $start_time_shift == "00:00:00") {
 		 			// $resul = 'Libur';
@@ -474,11 +474,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		 		$resul = 2;
 		 }
 
-		 if ($daysoff_id) {
+		 if ($daysoff_id && !$start_time_shift || $start_time_shift == "00:00:00" ) {
 		 		$resul = 2;
 		 }
 
-		 if ($kode_cuti) {
+		 if ($kode_cuti && $kode_cuti != "CT") {
 		 		$resul = 2;
 		 }
 
@@ -1011,17 +1011,49 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                  $daysoff_id       = $json_absen[$i]['f8'];
                  $daysoff_id       = $json_absen[$i]['f8'];
                  $jumlah_lkh       = $json_absen[$i]['f9'];
-                 $kode_cuti       = $json_absen[$i]['f10'];
+                 $kode_cuti       	= $json_absen[$i]['f10'];
+                 $poin       		= $json_absen[$i]['f11'];
+                 $count_persen       = $json_absen[$i]['f12'];
+				//  tambah set day by dika
+                 $set_day       = $json_absen[$i]['f13'];
                  $cek = start_time_tabel_rekap($start_time, $start_time_shift,$start_time_notfixed,$daysoff_id, $kode_cuti);
                  if ($cek != 2) {
-                 	 if ($jumlah_lkh) {
-                 	 		 $hari_kerja[] = 1;
+                 	 if (!empty($poin) && $jumlah_lkh) {
+                 	 		if ($count_persen >= 1) {
+                 	 				// $hari_kerja[] = 1; 
+									//   kdoingan shift bary set 3 day by dika
+									if($set_day > 1) {
+	                 	 				$hari_kerja[] = $set_day; 
+									}else {
+										$hari_kerja[] = 1;
+									}
+                 	 		}
+                 	 }else {
+                 	 	 if ($jumlah_lkh) {
+							   // $hari_kerja[] = 1; 
+									//   kdoingan shift bary set 3 day by dika
+	                 	 		 	if($set_day > 1) {
+	                 	 				$hari_kerja[] = $set_day; 
+									}else {
+										$hari_kerja[] = 1;
+									}
+	                 	 }else if ($kode_cuti == "CT") {
+							  // $hari_kerja[] = 1; 
+								//   kdoingan shift bary set 3 day by dika
+							     if($set_day > 1) {
+	                 	 				$hari_kerja[] = $set_day; 
+								 }else {
+										$hari_kerja[] = 1;
+								}
+						  }
                  	 }
+					 
                  }
          		
          }
 
-         $jumlah_hari_kerja = count($hari_kerja);
+		//  penambahan array_sum seblumnya count
+         $jumlah_hari_kerja = array_sum($hari_kerja);
 
          if ($jumlah_laporan) {
          		 $jumlah_hari_kerja = $jumlah_laporan;
@@ -1164,6 +1196,86 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		 return $resul;
 	}
+
+	 function ket_apel($hadir,$dept_apel,$dept_id,$users_id_piket_apel,$id){
+           $dept_id_apel = pg_to_array($dept_apel);
+		   $users_id_piket_apel = pg_to_array($users_id_piket_apel);
+
+            $text = '';
+            if($hadir == "1"){
+                $text = "A";
+            }else {
+				if(in_array($id, $users_id_piket_apel)){
+					$text = "P";
+				}else if(in_array($dept_id, $dept_id_apel)){
+                    $text = "TA";
+                }
+            }
+        return $text;
+        }
+
+		  function jum_tidak_apel_pagi($json_data,$id)
+    {
+    	$pgarray_data = json_decode($json_data, true);
+    	 $json_absen  = $pgarray_data['data_absen'];
+
+    	 $count = count($json_absen);
+
+		//  cek apel
+    	 $hari_kerja = array(0);
+		 $hari_apel = array(0);
+		 $hari_piket_apel = array(0);
+
+         for ($i=0; $i < $count; $i++) { 
+				 $jum_apel = $json_absen[$i]['f26'];
+				 $jum_hari_apel = $json_absen[$i]['f27'];
+
+                 if ($jum_apel) {
+                 	$hari_kerja[] = $jum_apel;
+                 }		
+				 if($jum_hari_apel) {
+					$hari_apel[] = 1;
+				 }
+
+				 if(!empty($json_absen[$i]['f28'])){ 
+					if( in_array( $id ,$json_absen[$i]['f28']) )
+					{
+						$hari_piket_apel[] = 1;
+					}
+				}
+         }
+		// cek_apel per opd
+		//  for($j=0; $j < $count; $j++){
+		// 		if($jum_hari_apel) {
+		// 			$hari_apel[] = 1;
+		// 		}
+		//  }
+
+		// //  cek piket apel
+		//  for($k=0; $k < $count; $k++){
+		// 		 if(!empty($json_absen[$k]['f28'])){ 
+		// 			if( in_array( $id ,$json_absen[$k]['f28']) )
+		// 			{
+		// 				$hari_piket_apel[] = 1;
+		// 			}
+		// 		}
+		//  }
+		
+		 
+         $jumlah_hari_kerja = array_sum($hari_kerja);
+         $jumlah_hari_apel = array_sum($hari_apel);
+         $jumlah_hari_piket_apel = array_sum($hari_piket_apel);
+		// var_dump($hari_piket_apel);
+		 $total1 = ($jumlah_hari_apel-$jumlah_hari_kerja);	
+		 $total = 0;
+		 if($total1 <= $jumlah_hari_piket_apel){
+			 $total = 0;
+		 }else {
+			 $total = $total1 - $jumlah_hari_piket_apel;
+		 }
+         return  $total;
+    }
+
 
 
 

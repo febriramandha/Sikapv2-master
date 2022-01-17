@@ -38,6 +38,10 @@ class M_absen extends CI_Model {
 											end_time_notfixed,
 											jam_masuk_notfixed,
 											jam_pulang_notfixed,
+											hadir_apel,
+											dept_apel,
+											dept_id_users,
+											users_id_piket_apel,
 											count_day_shift
 										) ORDER BY rentan_tanggal)
 								) as json_absen
@@ -67,9 +71,13 @@ class M_absen extends CI_Model {
 											n.end_time as end_time_notfixed,
 											min((o.checktime)::time) AS jam_masuk_notfixed,
 											max((p.checktime)::time) AS jam_pulang_notfixed,
+											r.hadir as hadir_apel,
+											q.dept_id as dept_apel,
+											a.dept_id as dept_id_users,
+											s.user_id as users_id_piket_apel,
 											e.count_day as count_day_shift
 											from 
-											(select a.id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$start_date','$end_date')) as tanggal) as a
+											(select a.id,a.dept_id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$start_date','$end_date')) as tanggal) as a
 											left join v_jadwal_kerja_users b on ((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day)and b.user_id=a.id)
 											left join mf_checkinout c on ((a.id = c.user_id) AND (a.rentan_tanggal = date(c.checktime)) AND ((c.checktime)::time without time zone >= b.check_in_time1) AND ((c.checktime)::time without time zone <= b.check_in_time2))
 											left join mf_checkinout d on ((a.id = d.user_id) AND (a.rentan_tanggal = date(d.checktime)) AND ((d.checktime)::time without time zone >= b.check_out_time1) AND ((d.checktime)::time without time zone <= b.check_out_time2))
@@ -85,7 +93,10 @@ class M_absen extends CI_Model {
 											left join v_jadwal_kerja_users_notfixed n on ((rentan_tanggal >= n.start_date and rentan_tanggal <= n.end_date and extract('isodow' from a.rentan_tanggal) = n.day_id)and n.user_id=a.id)
 											left join mf_checkinout o on ((a.id = o.user_id) AND (a.rentan_tanggal = date(o.checktime)) AND ((o.checktime)::time without time zone >= n.check_in_time1) AND ((o.checktime)::time without time zone <= n.check_in_time2))
 											left join mf_checkinout p on ((a.id = p.user_id) AND (a.rentan_tanggal = date(p.checktime)) AND ((p.checktime)::time without time zone >= n.check_out_time1) AND ((p.checktime)::time without time zone <= n.check_out_time2))
-											group by 1,2,3,4,5,6,7,10,11,12,15,16,17,18,19,20,21,22,25
+											left join sch_apel q on (a.rentan_tanggal = date(q.tgl_apel) and a.dept_id = any(q.dept_id) and q.deleted=1)
+											left join v_apel_pagi_users r on (a.id = r.user_id and a.rentan_tanggal = r.tgl_apel)
+											left join sch_apel_users s on (a.dept_id = s.dept_id and r.id = s.sch_apel_id)
+											group by 1,2,3,4,5,6,7,10,11,12,15,16,17,18,19,20,21,22,25,26,27,28,29
 							) as b on a.id=b.id
 							group by 1
 							) as b",'a.id=b.id','left',false)
@@ -196,6 +207,9 @@ class M_absen extends CI_Model {
 											jam_pulang_notfixed,
 											count_day_shift,
 											jumtidak_upacara,
+											jum_apel,
+											jumopd_apel,
+											jumuserspiket_apel,
 											ibadah_id
 										) ORDER BY rentan_tanggal)
 								) as json_absen
@@ -227,9 +241,12 @@ class M_absen extends CI_Model {
 											max((p.checktime)::time) AS jam_pulang_notfixed,
 											e.count_day as count_day_shift,
 											q.jum as jumtidak_upacara,
+											s.hadir as jum_apel,
+											t.jum as jumopd_apel,
+											t.user_id as jumuserspiket_apel,
 											r.ibadah_id
 											from 
-											(select a.id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$start_date','$end_date')) as tanggal) as a
+											(select a.id, a.dept_id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$start_date','$end_date')) as tanggal) as a
 											left join v_jadwal_kerja_users b on ((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day)and b.user_id=a.id)
 											left join mf_checkinout c on ((a.id = c.user_id) AND (a.rentan_tanggal = date(c.checktime)) AND ((c.checktime)::time without time zone >= b.check_in_time1) AND ((c.checktime)::time without time zone <= b.check_in_time2))
 											left join mf_checkinout d on ((a.id = d.user_id) AND (a.rentan_tanggal = date(d.checktime)) AND ((d.checktime)::time without time zone >= b.check_out_time1) AND ((d.checktime)::time without time zone <= b.check_out_time2))
@@ -246,8 +263,10 @@ class M_absen extends CI_Model {
 											left join mf_checkinout o on ((a.id = o.user_id) AND (a.rentan_tanggal = date(o.checktime)) AND ((o.checktime)::time without time zone >= n.check_in_time1) AND ((o.checktime)::time without time zone <= n.check_in_time2))
 											left join mf_checkinout p on ((a.id = p.user_id) AND (a.rentan_tanggal = date(p.checktime)) AND ((p.checktime)::time without time zone >= n.check_out_time1) AND ((p.checktime)::time without time zone <= n.check_out_time2))
 											left join v_tidak_hadir_upacara q on (a.id=q.user_id and a.rentan_tanggal=q.tanggal)
+											left join v_apel_pagi_opd t on (a.dept_id=t.dept_id and a.rentan_tanggal=t.tgl_apel)
+											left join v_apel_pagi_users s on (a.id	=s.user_id and a.rentan_tanggal=s.tgl_apel and t.id = s.id)
 											left join ibadah_muslim r on (a.id=r.user_id and a.rentan_tanggal=r.tgl_ibadah)
-											group by 1,2,3,4,5,6,7,10,11,12,15,16,17,18,19,20,21,22,25,26,27
+											group by 1,2,3,4,5,6,7,10,11,12,15,16,17,18,19,20,21,22,25,26,27,28,29,30
 							) as b on a.id=b.id
 							group by 1
 							) as b",'a.id=b.id','left',false);
@@ -278,7 +297,10 @@ class M_absen extends CI_Model {
 										end_time_notfixed,
 										daysoff_id,
 										jumlah_lkh,
-										kode_cuti
+										kode_cuti,
+										poin,
+										count_persen,
+										set_day
 									) ORDER BY rentan_tanggal)
 							) as json_jadwal_lkh
 						from mf_users a
@@ -294,17 +316,20 @@ class M_absen extends CI_Model {
 						d.end_time as end_time_notfixed,
 						e.id as daysoff_id,
 						f.jum as jumlah_lkh,
-						i.kode as kode_cuti
+						i.kode as kode_cuti,
+						f.poin,
+						f.count_persen,
+						c.set_day
 						from 
 						(select a.id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$rank1','$rank2')) as tanggal) as a
 						left join v_jadwal_kerja_users b on ((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day)and b.user_id=a.id)
-						left join v_jadwal_kerja_users_shift c on (a.id = c.user_id and c.start_shift=a.rentan_tanggal)
+						left join v_jadwal_kerja_users_shift_3 c on (a.id = c.user_id and c.start_shift=a.rentan_tanggal)
 						left join v_jadwal_kerja_users_notfixed d on ((rentan_tanggal >= d.start_date and rentan_tanggal <= d.end_date and extract('isodow' from a.rentan_tanggal) = d.day_id)and d.user_id=a.id)
 						left join days_off e on (rentan_tanggal >= e.start_date and rentan_tanggal <= e.end_date)
-						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum FROM data_lkh where status=1 GROUP BY 1,2) as f on (a.id = f.user_id and rentan_tanggal = f.tgl_lkh)
+						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum, poin, COUNT(*) FILTER(where persentase = 100) AS count_persen FROM data_lkh where status=1 GROUP BY 1,2,4) as f on (a.id = f.user_id and rentan_tanggal = f.tgl_lkh)
 						left join data_cuti h on (a.id = h.user_id and h.deleted =1 and (rentan_tanggal >= h.start_date and rentan_tanggal <= h.end_date)) 
 						left join _cuti i on h.cuti_id=i.id
-						group by 1,2,3,4,5,6,7,8,9,10,11) as b on a.id=b.id
+						group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14) as b on a.id=b.id
 						group by 1) as b",'a.id=b.id','left',false);
         $this->db->join("(select start_date, b.user_id,jumlah_laporan, total_laporan  from schlkh_manual a 				join rekaplkh_manual b on a.id=b.schlkhmanual_id
 							where start_date = '$rank1') as c",'a.id=c.user_id','left',false);
@@ -318,6 +343,12 @@ class M_absen extends CI_Model {
 
 	public function PegawaiAbsenQueryRekapitulasiLkhDetail($user_id=array(), $rank1, $rank2, $dept_id='')
 	{
+
+		if ($user_id) {
+		 		$user = "where id=$user_id";
+		 }else {
+		 		$user = "where dept_id=$dept_id";
+		 }
 		 $this->db->select('a.id, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, json_jadwal_lkh, json_jadwal_lkh, jumlah_laporan, total_laporan')
 		        	->from("v_users_all a")
 		        	->order_by('no_urut');
@@ -357,7 +388,7 @@ class M_absen extends CI_Model {
 						i.jum as jumlah_lkh_terverikasi_atasan,
 						j.jum as jumlah_lkh_terverikasi_otomatis
 						from 
-						(select a.id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$rank1','$rank2')) as tanggal) as a
+						(select a.id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$rank1','$rank2')) as tanggal $user) as a
 						left join v_jadwal_kerja_users b on ((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day)and b.user_id=a.id)
 						left join v_jadwal_kerja_users_shift c on (a.id = c.user_id and c.start_shift=a.rentan_tanggal)
 						left join v_jadwal_kerja_users_notfixed d on ((rentan_tanggal >= d.start_date and rentan_tanggal <= d.end_date and extract('isodow' from a.rentan_tanggal) = d.day_id)and d.user_id=a.id)

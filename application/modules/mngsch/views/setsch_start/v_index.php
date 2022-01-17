@@ -18,6 +18,21 @@
 				<span><i class="icon-printer mr-2"></i> Cetak</span>
 			</button> 
 		</div> -->
+		<div class="form-group row mt-2">
+			<label class="col-form-label col-lg-2"> Periode</label>
+			<div class="col-lg-10">
+				<div class="form-group-feedback form-group-feedback-left">
+					<div class="form-control-feedback">
+						<i class="icon-pencil3"></i>
+					</div>
+					<input type="text" name="rank1" class="form-control datepicker readonlyjm" placeholder="Tanggal" autocomplete="off">
+				</div>
+			</div>
+		</div>
+		<div class="text-left offset-lg-2">                
+			<button class="btn btn-sm btn-info result" id="kalkulasi">Filter <i class="icon-search4 ml-2"></i></button>
+			<i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
+		</div>
 		<div class="table-responsive">
 			<table id="datatable" class="table table-sm table-hover table-bordered">
 				<thead>
@@ -36,7 +51,75 @@
 	</div>
 </div>
 
+<div id="modal_default" class="modal fade" tabindex="-1">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Salin Data Jadwal <b id="judul_modal_salin">?</b></h5>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			</div>
+			<?php echo form_open('mngsch/setsch_start/AjaxSaveSalin','id="formAjax"'); ?>
+			<div class="modal-body">
+				<input type="hidden" name="id">
+				<div class="form-group row">
+					<div class="col-lg-12">
+						<div class="form-group-feedback form-group-feedback-left">
+							<div class="form-control-feedback">
+							<i class="icon-pencil3"></i>
+							</div>
+							<input type="text" name="nama" class="form-control" placeholder="Nama Jadwal" >
+						</div>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-lg-5">
+						<div class="form-group-feedback form-group-feedback-left">
+							<div class="form-control-feedback">
+								<i class="icon-pencil3"></i>
+							</div>
+							<input type="text" name="rank1" class="form-control datepicker readonlyjm" placeholder="Tanggal awal" autocomplete="off">
+						</div>
+					</div>
+					<div class="col-lg-1">
+						<div class="form-group">
+							<span>s/d</span>
+						</div>
+					</div>
+					<div class="col-lg-5">
+						<div class="form-group-feedback form-group-feedback-left">
+							<div class="form-control-feedback">
+								<i class="icon-pencil3"></i>
+							</div>
+							<input type="text" name="rank2" class="form-control datepicker readonlyjm" placeholder="Tanggal akhir" autocomplete="off">
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-sm btn-danger result" data-dismiss="modal">Batal</button>
+				<button type="submit" class="btn btn-sm btn-info result">Simpan <i class="icon-checkmark4 ml-2"></i></button>
+         		 <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
+			</div>
+
+		</div>
+		<?php echo form_close(); ?>
+	</div>
+</div>
+
 <script type="text/javascript">
+	$(".datepicker").datepicker({
+	    format: 'dd-mm-yyyy',
+	    autoclose: true,
+	    todayHighlight: true,
+	  });
+	
+	$(document).on('click', '.confirm-salin', function(){
+		$('input[name="id"]').val($(this).attr('data-id'));
+		$('#modal_default').modal('show');
+		$('#judul_modal_salin').html($(this).attr('data-name'));
+	});
+	var result  = $('.result');
+	var spinner = $('#spinner');
 	$(document).ready(function(){
 		table = $('#datatable').DataTable({ 
 			processing: true, 
@@ -53,7 +136,20 @@
 				type:"post",
 				"data": function ( data ) {	
 					data.csrf_sikap_token_name= csrf_value;
+					data.rank1  = $('[name="rank1"]').val();
+					data.rank2  = $('[name="rank1"]').val();
 				},
+				beforeSend:function(){
+					result.attr("disabled", true);
+		      		spinner.show();
+				},
+				"dataSrc": function ( json ) {
+	                //Make your callback here.
+	                result.attr("disabled", false);
+		          	spinner.hide();
+		          	$('#kalkulasi').show();
+	                return json.data;
+	            } 
 			},
 			"columns": [
 			{"data": "id", searchable:false},
@@ -101,8 +197,47 @@
 				}else {
 					bx_alert(res.message);
 				}
-
+				
 			}
 		});
 	}
+	
+	$('#kalkulasi').click(function() {
+		result.attr("disabled", true);
+		spinner.show();
+		table.ajax.reload();
+	})
+
+	$('#formAjax').submit(function() {
+		var result  = $('.result');
+		var spinner = $('#spinner');
+			$.ajax({
+				type: 'POST',
+				url: $(this).attr('action'),
+				data: $(this).serialize(),
+				dataType : "JSON",
+				error:function(){
+				result.attr("disabled", false);
+				spinner.hide();
+				bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+				},
+				beforeSend:function(){
+					result.attr("disabled", true);
+					spinner.show();
+				},
+				success: function(res) {
+					if (res.status == true) {
+						bx_alert_ok(res.message);
+						table.ajax.reload();
+					}else {
+						bx_alert(res.message);
+					}
+					$('#modal_default').modal('hide');
+					result.attr("disabled", false);
+					spinner.hide();
+					
+				}
+			});
+			return false;
+		});
 </script>

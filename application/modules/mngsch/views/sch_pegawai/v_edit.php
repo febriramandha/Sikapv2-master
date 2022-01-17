@@ -104,6 +104,7 @@
           <input type="hidden" name="mod" value="edit">
           <div class="text-left offset-lg-2" >
               <button type="reset" class="btn btn-sm bg-orange-300 result">Batal <i class="icon-cross3 ml-2"></i></button>                 
+              <span id="hapus" class="btn btn-sm bg-danger-300 result">Hapus</span>                 
               <button type="submit" class="btn btn-sm btn-info result">Simpan <i class="icon-checkmark4 ml-2"></i></button>
               <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>	
           </div>
@@ -236,6 +237,34 @@ $('#formAjax').submit(function() {
     });
     return false;
 });
+
+$('#hapus').click(function() {
+   data = {
+          id: $('[name="id"]').val(),
+          instansi: $('[name="instansi"]').val()
+        }
+    confirmAksi(data);
+})
+
+function confirmAksi(option) {
+  $.ajax({
+    url: uri_dasar+'mngsch/sch-pegawai/AjaxDel',
+    data: option,
+    dataType :"json",
+    error:function(){
+      bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+    },
+    success: function(res){
+      if (res.status == true) {
+        table.ajax.reload();
+        bx_alert_ok(res.message,'success');
+      }else {
+        bx_alert(res.message);
+      }
+      
+    }
+  });
+}
 
 
 // function ceklocked(instansi) {

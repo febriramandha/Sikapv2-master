@@ -196,7 +196,7 @@ class Lkh extends App_Controller {
 		$this->form_validation->set_rules('jam2', 'jam selesai kegiatan', 'required');
 		$this->form_validation->set_rules('kegiatan', 'uraian kegiatan', 'required');
 		$this->form_validation->set_rules('hasil', 'hasil', 'required');
-		$this->form_validation->set_rules('verifikator', 'verifikator', 'required');
+		// $this->form_validation->set_rules('verifikator', 'verifikator', 'required');
 		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 
 		if ($this->form_validation->run() == TRUE) {
@@ -243,10 +243,13 @@ class Lkh extends App_Controller {
 							  'hasil' 			=> $this->input->post('hasil'),
 							  'jenis' 			=> $jenis,
 							  'status'			=> 0,
-							  'verifikator' 	=> $verifikator,
 							  'created_at' 		=> date('Y-m-d H:i:s'),
-							  'persentase'		=> $persen
+							  'persentase'		=> $persen,
+							  'poin'		    => 1
 				 );
+				if ($verifikator) {
+					$data['verifikator']	= $verifikator;
+				}
 				$this->return = $this->db->insert('data_lkh',$data);
 	
 			}elseif ($this->mod == "edit") {
@@ -351,8 +354,6 @@ class Lkh extends App_Controller {
 			$this->load->view('lkh/v_cetak', $this->data);
 		}
 	}
-
-
 
 }
 

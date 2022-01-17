@@ -234,12 +234,13 @@ class Sch_notfixed extends App_Controller {
 	{
 		$this->output->unset_template();
 		$id = decrypt_url($this->input->get('id'),'schrun_tidak_tetap');
-		$cek = $this->db->get_where('sch_run_users',['schrun_id' => $id])->row();
-		if (!$cek) {
+		//$cek = $this->db->get_where('sch_run_users',['schrun_id' => $id])->row();
+		//if (!$cek) {
 			$this->del = $this->db->delete('sch_run_deil',['run_id' => $id]);
 			$this->del = $this->db->delete('sch_run',['id' => $id]);
 			$this->del = $this->db->delete('schnotfixed_run_day', ['run_id' => $id]);
-		}
+			$this->del = $this->db->delete('sch_run_users', ['run_id' => $id]);
+		//}
 		
 		if ($this->del) {
 			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil dihapus.']));

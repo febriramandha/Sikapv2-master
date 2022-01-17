@@ -670,6 +670,16 @@ if ( ! function_exists('pg_array_parse'))
         return $return;
     }
 }
+if (!function_exists('array_to_pg')) {
+    function array_to_pg($data_array)
+    {
+        if (!empty($data_array)) {
+            return str_replace(['[', ']'], ['{', '}'], json_encode($data_array));
+        } else {
+            return null;
+        }
+    }
+}
 
 
 

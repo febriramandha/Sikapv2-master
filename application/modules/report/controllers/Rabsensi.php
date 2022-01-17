@@ -87,8 +87,12 @@ class Rabsensi extends App_Controller {
 									l.status_in,
 									l.status_out,
 									m.id as daysoff_id,
+									r.hadir as hadir_apel,
+									q.dept_id as dept_apel,
+									a.dept_id as dept_id,
 									n.start_time as start_time_notfixed, 
 									n.end_time as end_time_notfixed,
+									s.user_id as users_id_piket_apel,
 									min((o.checktime)::time ) AS jam_masuk_notfixed,
 									max((p.checktime)::time ) AS jam_pulang_notfixed")
         	//user dan tanggal
@@ -122,9 +126,15 @@ class Rabsensi extends App_Controller {
         	$this->db->join('mf_checkinout o',"((a.id = o.user_id) AND (a.rentan_tanggal = date(o.checktime)) AND ((o.checktime)::time >= n.check_in_time1) AND ((o.checktime)::time <= n.check_in_time2))",'left',false);
         	// cari ceklok sesuai jadwal = jam keluar
         	$this->db->join('mf_checkinout p',"((a.id = p.user_id) AND (a.rentan_tanggal = date(p.checktime)) AND ((p.checktime)::time >= n.check_out_time1) AND ((p.checktime)::time <= n.check_out_time2))",'left',false);
+			//  absen sch apel 
+			$this->db->join('sch_apel q',"(a.rentan_tanggal = date(q.tgl_apel) and a.dept_id = any(q.dept_id) and q.deleted=1)",'left',false);
+			//  absen apel 
+			$this->db->join('v_apel_pagi_users r',"(a.id = r.user_id and a.rentan_tanggal = r.tgl_apel)",'left',false);
+			// absen user apel piket
+			$this->db->join('sch_apel_users s',"(a.dept_id = s.dept_id and r.id = s.sch_apel_id)",'left',false);
+		
 
-
-        	$this->db->group_by('1,2,3,4,5,6,7,8,9,12,13,14,17,18,19,no_urut,20,21,22,23,24,25,26');
+        	$this->db->group_by('1,2,3,4,5,6,7,8,9,12,13,14,17,18,19,no_urut,20,21,22,23,24,25,26,27,28,29,30');
         	$this->db->order_by('a.no_urut, rentan_tanggal');
         	$this->datatables->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip)');
         	$this->datatables->add_column('tanggal','$1','tglInd_hrtabel(rentan_tanggal)');
@@ -136,6 +146,7 @@ class Rabsensi extends App_Controller {
         	$this->datatables->add_column('pulang_cepat_tabel','$1','pulang_cepat_tabel(end_time, end_time_shift, jam_pulang, jam_pulang_shift, status_out, end_time_notfixed, jam_pulang_notfixed)');
         	$this->datatables->add_column('dinas_luar_tabel','$1','dinas_luar_tabel(lkhdl_id, dinasmanual_id)');
         	$this->datatables->add_column('cuti','$1','kode_cuti');
+        	$this->datatables->add_column('ket_apel','$1','ket_apel(hadir_apel,dept_apel,dept_id,users_id_piket_apel,id)');
         	$this->datatables->add_column('ket','$1','absen_ket_tabel(daysoff_id, jam_masuk, jam_pulang, jam_masuk_shift, jam_pulang_shift, lkhdl_id, dinasmanual_id, kode_cuti, rentan_tanggal, start_time, start_time_shift, status_in, status_out,end_time, end_time_shift, start_time_notfixed, jam_masuk_notfixed, end_time_notfixed, jam_pulang_notfixed)');
 
         	 if ($user_id_in) {

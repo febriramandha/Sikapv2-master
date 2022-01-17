@@ -58,7 +58,7 @@ class M_sch_run extends CI_Model {
 	public function GetSchRunShift($dept_id='', $level='')
 	{
 		$this->db->select('a.id, kd_shift, a.ket,c.start_time, c.end_time, c.check_in_time1, c.check_in_time2, c.check_out_time1, c.check_out_time2, c.work_day')
-					->from('(SELECT id, kd_shift, class_id, ket, unnest(dept_id) as dept_id FROM shift_run group by 1,2,3,4) as a')
+					->from('(SELECT id, kd_shift, class_id, ket, unnest(dept_id) as dept_id FROM shift_run where deleted=1 group by 1,2,3,4) as a')
 					->join('sch_class c','c.id=a.class_id','left')
 					->join('v_instansi_all_master d','a.dept_id=d.id','left')
 					->where("path_id['".$level."']='".$dept_id."'")

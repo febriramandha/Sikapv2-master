@@ -65,17 +65,27 @@ class Setsch_start extends App_Controller {
         	->add_column('sch_name','$1','sch_name(name, start_date)')
         	->add_column('dept_name','<div class="m-0 p-1 panel-geser">$1</div>','instansi_expl(json_data_instansi)')
         	->add_column('status','$1','status_lock(schedule_status)')
-        	->add_column('action', '<a href="'.base_url('mngsch/setsch-start/edit/').'$1">
+        	->add_column('action', '
+								<span class="confirm-salin list-icons-item text-success-600" title="salin data" style="cursor:pointer;" data-id="$1" data-name="$2">
+								Salin Data
+								</span>
+								 <a href="'.base_url('mngsch/setsch-start/edit/').'$1">
         							<i class="icon-pencil5 text-info-400"></i>
 					                </a>
 					              <span class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?" title="hapus akun" style="cursor:pointer;" id="$1">
 					              <i class="icon-bin"></i>
-					              </span>', 'encrypt_url(id,"schrun_umum")');
+					              </span>', 'encrypt_url(id,"schrun_umum"),name');
         	if ($this->input->post('search[value]')) {
         	 	$this->db->group_start();
 		        	$this->datatables->like('lower(name)', strtolower($this->input->post('search[value]')));
 	        	$this->db->group_end();
 	        }
+
+			$rank1 = format_tgl_eng($this->input->post('rank1'));
+			if ($rank1 && $rank2) {
+					$this->datatables->where("('$rank1'  >=  start_date and '$rank1'  <= end_date)",NULL,FALSE);
+			}
+			
         return $this->output->set_output($this->datatables->generate());
 	}
 
@@ -206,15 +216,102 @@ class Setsch_start extends App_Controller {
 		$this->output->unset_template();
 		$id = decrypt_url($this->input->get('id'),'schrun_umum');
 		$cek = $this->db->get_where('sch_run_users',['schrun_id' => $id])->row();
-		if (!$cek) {
+		//if (!$cek) {
 			$this->del = $this->db->delete('sch_run_deil',['run_id' => $id]);
 			$this->del = $this->db->delete('sch_run',['id' => $id]);
-		}
+			$this->del = $this->db->delete('sch_run_users',['schrun_id' => $id]);
+		//}
 		
 		if ($this->del) {
 			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil dihapus.']));
 		} else{
 			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal dihapus atau data telah dikunci.']));	
+		}
+	}	
+
+	public function AjaxSaveSalin()
+	{
+		$this->output->unset_template();
+		$id = decrypt_url($this->input->post('id'),'schrun_umum');
+
+		$this->output->unset_template();
+		$this->form_validation->set_rules('nama', 'nama skedul', 'required');
+		$this->form_validation->set_rules('rank1', 'tanggal mulai', 'required');
+		$this->form_validation->set_rules('rank2', 'tanggal berakhir', 'required');
+		
+		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
+		$rank1 = format_tgl_eng($this->input->post('rank1'));
+		$rank2 = format_tgl_eng($this->input->post('rank2'));
+
+		if ($rank1 >  $rank2) {
+			$this->form_validation->set_rules('rank1____', 'tanggal mulai dan tanggal berakhir', 'tidak sesuai');
+		}
+		if ($this->form_validation->run() == TRUE) {
+			$this->db->trans_start();
+
+			//data jadwal
+			$data_sch_run = $this->db->get_where('sch_run',['id' => $id])->row();
+			$data_run = array(
+						'name' 		    => $this->input->post('nama'),
+						'start_date' 	=> $rank1,
+						'end_date' 		=> $rank2,
+						'dept_id' 		=> $data_sch_run->dept_id,
+						'created_at'	=> date('Y-m-d H:i:s'),
+						'created_by'	=> $this->session->userdata('tpp_user_id'),
+						'type' 			=> 1,
+						'schedule_status'	=> 1
+			);
+			$this->return = $this->db->insert('sch_run',$data_run);
+			$run_id = $this->db->insert_id();
+
+			
+			//data set hari
+			$data_run_detail = $this->db->get_where('sch_run_deil',['run_id' => $id])->result();
+			$data_hari = array();
+					foreach ($data_run_detail as $row ) {
+						$data_hari[] = array('run_id' 	 	=> $run_id,
+									'class_id' 				=> $row->class_id,
+									's_day' 	 			=> $row->s_day,
+									'e_day' 	 			=> $row->e_day, );
+					}
+
+			$this->return = $this->db->insert_batch('sch_run_deil', $data_hari);
+
+			//data user
+			$data_users = $this->db->get_where('sch_run_users',['schrun_id' => $id]);
+
+			if($data_users->num_rows())
+			{
+				$data_users_insert = array();
+					foreach ($data_users->result() as $row ) {
+						$data_users_insert[] = array(
+										'schrun_id' 	=> $run_id,
+										'user_id' 		=> $row->user_id,
+										'dept_id' 		=> $row->dept_id,
+								);
+					}
+
+				$this->return = $this->db->insert_batch('sch_run_users', $data_users_insert);
+			}
+			$this->db->trans_complete();
+
+			if ($this->return) {
+					$this->result = array('status' => true,
+								'message' => 'Data berhasil disimpan');
+			}else{
+					$this->result = array('status' => false,
+								'message' => 'Data gagal disimpan');
+			}
+	
+		}else {
+			$this->result = array('status' => false,
+							'message' => validation_errors(),);
+		}
+
+		if ($this->result) {
+			$this->output->set_output(json_encode($this->result));	
+		}else {
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal mengambil data.']));
 		}
 	}	
 

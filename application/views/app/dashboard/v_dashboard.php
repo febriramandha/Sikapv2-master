@@ -102,7 +102,7 @@
 					<?php } ?>
 				</table>
 			</div>
-			<div class="card-footer text-muted">
+			<div class="card-footer text-muted bg-white">
 			    Untuk informasi seputar aplikasi SIKAP. Silahkan bergabung ke grup telegram berikut: <a data-cke-saved-href="https://t.me/joinchat/JfIKS1PkpAzNigljE8OEzQ" href="https://t.me/joinchat/JfIKS1PkpAzNigljE8OEzQ" target="_blank">klik disini</a>
 			  </div>
 		</div>
@@ -260,16 +260,18 @@ function LoadGrafik() {
 	var instansi = $('[name="instansi"]').val();
 	var result  = $('.result');
 	var spinner = $('#spinner');
-	$.ajax({
+	var xhr = $.ajax({
 		type: 'get',
 		url: uri_dasar+'reportgk/grafik-pegawai/AjaxGet',
 		data: {mod:'Grafik',instansi:instansi},
 		dataType : "html",
+		async:true,
 		error:function(){
 			result.attr("disabled", false);
        		spinner.hide();
 			// bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
 			$('#grafik').unblock();
+			xhr.abort();
 		},
 		beforeSend:function(){
 			result.attr("disabled", true);
@@ -293,7 +295,7 @@ function LoadGrafik() {
 	<div class="row">
 		<div class="col-lg-12">
 			<div class="form-group row">
-				<label class="col-form-label col-lg-2"> Rentang Waktu <span class="text-danger">*</span></label>
+				<label class="col-form-label col-lg-2"> Rentang Waktu</label>
 				<div class="col-lg-4">
 					<div class="form-group-feedback form-group-feedback-left">
 						<div class="form-group">

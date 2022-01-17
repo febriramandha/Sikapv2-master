@@ -53,8 +53,9 @@ class Dashboard extends App_Controller {
 
 		$rank1 = date('Y-m-d');
 		$rank2 = tgl_plus($rank1, 6);
-
-		$this->datatables->select('a.id, 
+		$user_id =$this->session->userdata('tpp_user_id');
+		if (!$this->cache->get("dashboard_jadwalJson_$user_id")) {
+			$this->datatables->select('a.id, 
 							rentan_tanggal, 
 							b.start_time, 
 							b.end_time, 
@@ -74,7 +75,7 @@ class Dashboard extends App_Controller {
 							d.check_in_time2 as check_in_time2_notfixed, 
 							d.check_out_time1 as check_out_time1_notfixed, 
 							d.check_out_time2 as check_out_time2_notfixed')
-			->from("(select * from mf_users a, (select * from rentan_tanggal('$rank1','$rank2')) as tanggal) as a");
+			->from("(select * from mf_users a, (select * from rentan_tanggal('$rank1','$rank2')) as tanggal where id=$user_id) as a");
 			$this->db->join("v_jadwal_kerja_users b","((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day) and b.user_id=a.id)",'left',false);
 			$this->db->join('v_jadwal_kerja_users_shift c'," (a.id = c.user_id and c.start_shift=a.rentan_tanggal)",'left',false);
 			$this->db->join('v_jadwal_kerja_users_notfixed d',"((rentan_tanggal >= d.start_date and rentan_tanggal <= d.end_date and extract('isodow' from a.rentan_tanggal) = d.day_id)and d.user_id=a.id)",'left',false);
@@ -83,11 +84,16 @@ class Dashboard extends App_Controller {
 			$this->datatables->add_column('tanggal','$1','tglInd_hrtabel(rentan_tanggal)');
 			$this->datatables->add_column('start_time_tabel','$1','start_time_tabel_pegawai(start_time, start_time_shift,start_time_notfixed, check_in_time1, check_in_time2, check_in_time1_shift, check_in_time2_shift, check_in_time1_notfixed, check_in_time2_notfixed)');
 			$this->datatables->add_column('end_time_tabel','$1','start_time_tabel_pegawai(end_time,end_time_shift, end_time_notfixed, check_out_time1, check_out_time2, check_out_time1_shift, check_out_time2_shift, check_out_time1_notfixed, check_out_time2_notfixed)');
-        return $this->output->set_output($this->datatables->generate());
+
+			$get_query = $this->datatables->generate();
+			$this->cache->redis->save("dashboard_jadwalJson_$user_id", $get_query, 300);
+		}
+        return $this->output->set_output($this->cache->get("dashboard_jadwalJson_$user_id"));
 	}
 
 	public function AjaxGet()
 	{
+		$user_id = $this->session->userdata('tpp_user_id');
 		$this->output->unset_template();
 		$this->mod = $this->input->get('mod');
 		if ($this->mod == "Grafik") {
@@ -98,7 +104,14 @@ class Dashboard extends App_Controller {
 	 			$rank1 			= date('Y-m-01', strtotime($hari_ini));
 	 			$rank2 			= date('Y-m-t', strtotime($hari_ini));
 
-				$this->data['pegawai_lkh'] = $this->m_absen->PegawaiAbsenQueryRekapitulasiLkhDetail($this->session->userdata('tpp_user_id'), $rank1, $rank2)->result();
+	 			
+
+	 			if (!$this->cache->get("dashboard_pegawai_lkh_$user_id$tahun$bulan")) {
+	 				$get_query = $this->m_absen->PegawaiAbsenQueryRekapitulasiLkhDetail($this->session->userdata('tpp_user_id'), $rank1, $rank2)->result();
+	 				$this->cache->redis->save("dashboard_pegawai_lkh_$user_id$tahun$bulan", $get_query, 300);
+	 			}
+	 			
+				$this->data['pegawai_lkh'] = $this->cache->get("dashboard_pegawai_lkh_$user_id$tahun$bulan");
 				$this->load->view('app/dashboard/v_grafik_lkh', $this->data);
 		}
 		

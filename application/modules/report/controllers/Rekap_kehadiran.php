@@ -105,7 +105,7 @@ class Rekap_kehadiran extends App_Controller {
 			$rank2  	   = date('Y-m-d');
 		}
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, b.json_absen, a.agama_id')
+        $this->datatables->select('a.id, a.dept_id,	a.nama, a.nip, a.gelar_dpn, a.gelar_blk, b.json_absen, a.agama_id')
         	->from("v_users_all a")
         	->order_by('no_urut');
         	 $this->db->join("(select a.id,
@@ -136,6 +136,9 @@ class Rekap_kehadiran extends App_Controller {
 											jam_pulang_notfixed,
 											count_day_shift,
 											jumtidak_upacara,
+											jum_apel,
+											jumopd_apel,
+											jumuserspiket_apel,
 											ibadah_id
 										) ORDER BY rentan_tanggal)
 								) as json_absen
@@ -167,9 +170,12 @@ class Rekap_kehadiran extends App_Controller {
 											max((p.checktime)::time) AS jam_pulang_notfixed,
 											e.count_day as count_day_shift,
 											q.jum as jumtidak_upacara,
+											s.hadir as jum_apel,
+											t.jum as jumopd_apel,
+											t.user_id as jumuserspiket_apel,
 											r.ibadah_id
 											from 
-											(select a.id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$rank1','$rank2')) as tanggal) as a
+											(select a.id, a.dept_id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$rank1','$rank2')) as tanggal) as a
 											left join v_jadwal_kerja_users b on ((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day)and b.user_id=a.id)
 											left join mf_checkinout c on ((a.id = c.user_id) AND (a.rentan_tanggal = date(c.checktime)) AND ((c.checktime)::time without time zone >= b.check_in_time1) AND ((c.checktime)::time without time zone <= b.check_in_time2))
 											left join mf_checkinout d on ((a.id = d.user_id) AND (a.rentan_tanggal = date(d.checktime)) AND ((d.checktime)::time without time zone >= b.check_out_time1) AND ((d.checktime)::time without time zone <= b.check_out_time2))
@@ -186,8 +192,10 @@ class Rekap_kehadiran extends App_Controller {
 											left join mf_checkinout o on ((a.id = o.user_id) AND (a.rentan_tanggal = date(o.checktime)) AND ((o.checktime)::time without time zone >= n.check_in_time1) AND ((o.checktime)::time without time zone <= n.check_in_time2))
 											left join mf_checkinout p on ((a.id = p.user_id) AND (a.rentan_tanggal = date(p.checktime)) AND ((p.checktime)::time without time zone >= n.check_out_time1) AND ((p.checktime)::time without time zone <= n.check_out_time2))
 											left join v_tidak_hadir_upacara q on (a.id=q.user_id and a.rentan_tanggal=q.tanggal)
+											left join v_apel_pagi_opd t on (a.dept_id=t.dept_id and a.rentan_tanggal=t.tgl_apel)
+											left join v_apel_pagi_users s on (a.id	=s.user_id and a.rentan_tanggal=s.tgl_apel and t.id = s.id)
 											left join ibadah_muslim r on (a.id=r.user_id and a.rentan_tanggal=r.tgl_ibadah)
-											group by 1,2,3,4,5,6,7,10,11,12,15,16,17,18,19,20,21,22,25,26,27
+											group by 1,2,3,4,5,6,7,10,11,12,15,16,17,18,19,20,21,22,25,26,27,28,29,30
 							) as b on a.id=b.id
 							group by 1
 							) as b",'a.id=b.id','left',false);
@@ -199,7 +207,7 @@ class Rekap_kehadiran extends App_Controller {
         	$this->datatables->add_column('jum_pulang_cepat_rekap','$1','jum_pulang_cepat_rekap(json_absen)');
         	$this->datatables->add_column('jum_tk_rekap','$1','jum_tk_rekap(json_absen)');
         	$this->datatables->add_column('jum_tidak_upacara_rekap','$1','jum_tidak_upacara_rekap(json_absen)');
-        	$this->datatables->add_column('jum_tidak_sholatza_rekap','$1','jum_tidak_sholatza_rekap(json_absen, agama_id, id)');
+        	$this->datatables->add_column('jum_tidak_apel_pagi','$1','jum_tidak_apel_pagi(json_absen, id)');
         	$this->datatables->add_column('jum_dinas_luar_rekap','$1','jum_dinas_luar_rekap(json_absen)');
         	$this->datatables->add_column('jum_cuti_rekap','$1','jum_cuti_rekap(json_absen)');
 

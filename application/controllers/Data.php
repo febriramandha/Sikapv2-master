@@ -15,8 +15,19 @@ class Data extends CI_Controller {
 		// }
 
 
-
 		
+	}
+
+	public function tambah_user()
+	{
+		$this->load->model('m_server_att');
+		// insert to server 2
+		// $data_att = array('userid' 	 		=> '10698',
+		// 				  'badgenumber' 	=> '1168',			
+		// 				  'ssn' 	 		=> '198603092010011005',
+		// 		  		  'name' 	 		=> 'HAMDANIF AIQ',
+		// 		  		  'defaultdeptid' 	=> '1804');
+		// $this->m_server_att->NewUserinfo($data_att);
 	}
 
 	public function insert_data($nama='',$instansi=108, $agama=1,$jabatan,$gender1='', $gender2='')

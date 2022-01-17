@@ -174,6 +174,21 @@ class Sch_pegawai extends App_Controller {
 		}
 	}
 
+	public function AjaxDel()
+	{
+		$this->output->unset_template();
+		$cek = $this->db->select('id')->get_where('sch_run_users',['schrun_id' => decrypt_url($this->input->get('id'),'schrun_id'), 'dept_id' => decrypt_url($this->input->get('instansi'),'instansi')])->row();
+
+		if ($cek) {
+			$del = $this->db->delete('sch_run_users',['id' => $cek->id]);
+		}
+		if ($del) {
+			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil dihapus.']));
+		} else{
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal dihapus.']));	
+		}
+	}	
+
 	// public function AjaxGet()
 	// {
 	// 	$this->output->unset_template();

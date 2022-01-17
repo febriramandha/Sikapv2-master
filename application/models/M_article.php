@@ -10,7 +10,7 @@ class M_article extends CI_Model {
 
 	public function GetAticleAll()
 	{
-		$this->db->select('a.id,b.created_at, a.title, a.description, b.name as kategori, a.content')
+		$this->db->select('a.id,a.created_at, a.title, a.description, b.name as kategori, a.content')
 				 ->join('_kategori b','a.kategori_id=b.id','left')
 				 ->where('a.status','publish')
 				 ->order_by('id','desc');

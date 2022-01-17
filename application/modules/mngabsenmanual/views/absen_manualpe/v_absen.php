@@ -65,6 +65,7 @@
                               <th class="text-nowrap text-center" colspan="3">Masuk</th>
                               <th class="text-nowrap text-center" colspan="3">Pulang</th>
                               <th width="1%" rowspan="2">Ket</th>
+                              <th width="1%" rowspan="2">Aksi</th>
                             </tr>
                             <tr class="table-active text-center">
                                 <td>H</td>
@@ -113,7 +114,7 @@
 
 
                                   ?>
-                                    <tr>
+                                    <tr id="tgl_<?php echo $value ?>">
                                           <td><?php echo $no++ ?></td>
                                           <td width="1%" class="text-nowrap"><?php echo $tgl_ku ?></td> 
                                           <td class="text-center">
@@ -136,8 +137,13 @@
                                             <input type='radio' name="out[<?php echo $tgl_f ?>]" <?php if ($status_out_c == 3) { echo "checked"; } ?> value="3" <?php echo $absen_out_disabled ?>>
                                           </td>
                                           <td class="py-0"><?php echo $ket ?></td>
+                                          <td><span class="confirm-hapus list-icons-item text-warning-600" title="hapus data" style="cursor:pointer;" data-id="<?php echo $value ?>">
+                                            <i class="icon-bin"></i>
+                                            </span>
+                                          </td>
+                                          <input type="hidden" name="tanggal[]" value="<?php echo $value ?>">
                                     </tr>
-                                    <input type="hidden" name="tanggal[]" value="<?php echo $value ?>">
+                                    
                                   
                              <?php  }
                              ?>
@@ -193,4 +199,9 @@ $('#formAjax').submit(function() {
       });
       return false;
   });
+
+$('.confirm-hapus').click(function() {
+    data_id = $(this).attr('data-id');
+    $('#tgl_'+data_id).remove();
+  })
 </script>

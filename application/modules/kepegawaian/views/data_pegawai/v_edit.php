@@ -107,7 +107,7 @@
             <label class="col-form-label col-lg-2">Eselon <span class="text-danger">*</span></label>
             <div class="col-lg-10">
               <div class="form-group">
-               <select class="form-control select-nosearch" name="eselon" disabled="true">  
+               <select class="form-control select-nosearch" name="eselon" >  
                 <option value="">Pilih Eselon</option> 
                 <?php foreach ($eselon as $row) {?>    
                     <option value="<?php echo $row->id ?>" <?php if ($user->eselon_id == $row->id) { echo "selected";} ?>><?php echo $row->eselon ?></option>
@@ -121,7 +121,7 @@
             <label class="col-form-label col-lg-2">Pangkat/Golongan <span class="text-danger">*</span></label>
             <div class="col-lg-10">
               <div class="form-group">
-               <select class="form-control select-nosearch" name="golongan" disabled="true">  
+               <select class="form-control select-nosearch" name="golongan">  
                  <option value="">Pilih Pangkat/Golongan</option> 
                 <?php foreach ($golongan as $row) {?>    
                     <option value="<?php echo $row->id ?>" <?php if ($user->golongan_id == $row->id) { echo "selected";} ?>><?php echo $row->pangkat ?>(<?php echo $row->golongan ?>)</option>

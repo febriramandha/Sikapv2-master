@@ -11,6 +11,8 @@ class MY_Controller extends CI_Controller {
 	public $data = array();
 		function __construct() {
 			parent::__construct();
+			$this->load->driver('cache', array('adapter' => 'redis', 'backup' => 'file'));
+			// $this->cache->redis->save('key', 'sikap', 10);
 			$this->data['errors'] 		= array();
 			$this->data['messages'] 	= array();
 			$this->data['site_name'] 	= "SIKAP";
