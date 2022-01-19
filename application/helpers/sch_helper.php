@@ -140,5 +140,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     	return $a;
     }
 
+		function checked_sch_apel($id='', $checked='', $disabled='')
+	{
+		$id = encrypt_url($id,"user_id_schapel_user");
+		if ($checked) {
+			  $checked = 'class="checkbox" checked value="'.$id.'"';
+		}elseif ($disabled) {
+			  $checked = 'disabled';
+		}else {
+			 $checked = 'class="checkbox" value="'.$id.'"';
+		}
+
+		return $checked;
+	}
+
+	function acktion_schapel_status($id='',$status='')
+	{
+		if ($status == 1) {
+				$a = '<a href="'.base_url('mngsch/apel-pegawai/edit/'.encrypt_url($id,"sch_id_apel")).'" class="btn btn-sm badge-info p-1"> <i class="icon-alarm-check"></i> Atur Jadwal</a>
+					              </span>';
+		}else {
+				$a = '<a href="#" class="btn btn-sm badge-success p-1"> <i class="icon-lock2"></i></a>';
+		}
+
+		return $a;
+	}
+
 
 	
