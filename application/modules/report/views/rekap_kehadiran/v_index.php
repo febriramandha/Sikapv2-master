@@ -10,11 +10,6 @@
     </div>
     <?php echo form_open('report/rekap-kehadiran/cetak','class="form-horizontal" target="popup" id="formAjax"'); ?>
     <div class="card-body">
-        <div class="alert alert-warning alert-dismissible p-2">
-            <span class="font-weight-semibold">Perhatian!</span> untuk kolom tidak apel pagi masih dalam tahap
-            pengembangan, abaikan saja!
-            <span class="badge badge-success"></span>
-        </div>
         <div class="form-group row">
             <label class="col-form-label col-lg-2">Unit Kerja <span class="text-danger">*</span></label>
             <div class="col-lg-10">
@@ -117,7 +112,7 @@
                         <th width="1%" class="p-1">Pulang Kerja Lebih Awal</th>
                         <th width="1%" class="p-1">Tidak Hadir Tanpa Keterangan</th>
                         <th width="1%" class="p-1">Tidak Mengikuti Upacara</th>
-                        <th width="1%" class="p-1">Tidak Apel Pagi</th>
+                        <th width="1%" class="p-1">Tidak Shalat Zuhur/Ashar</th>
                         <th width="1%" class="p-1">DL</th>
                         <th width="1%" class="p-1">Cuti</th>
                     </tr>
@@ -234,7 +229,7 @@ $(document).ready(function() {
                 searchable: false
             },
             {
-                "data": "jum_tidak_apel_pagi",
+                "data": "jum_tidak_sholatza_rekap",
                 searchable: false
             },
             {

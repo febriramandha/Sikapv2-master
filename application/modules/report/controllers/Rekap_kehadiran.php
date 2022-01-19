@@ -207,6 +207,7 @@ class Rekap_kehadiran extends App_Controller {
         	$this->datatables->add_column('jum_pulang_cepat_rekap','$1','jum_pulang_cepat_rekap(json_absen)');
         	$this->datatables->add_column('jum_tk_rekap','$1','jum_tk_rekap(json_absen)');
         	$this->datatables->add_column('jum_tidak_upacara_rekap','$1','jum_tidak_upacara_rekap(json_absen)');
+        	$this->datatables->add_column('jum_tidak_sholatza_rekap','$1','jum_tidak_sholatza_rekap(json_absen, agama_id, id)');
         	$this->datatables->add_column('jum_tidak_apel_pagi','$1','jum_tidak_apel_pagi(json_absen, id)');
         	$this->datatables->add_column('jum_dinas_luar_rekap','$1','jum_dinas_luar_rekap(json_absen)');
         	$this->datatables->add_column('jum_cuti_rekap','$1','jum_cuti_rekap(json_absen)');

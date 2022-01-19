@@ -52,7 +52,7 @@
                   <td><b>Pulang Kerja Lebih Awal</b></td>
                   <td><b>Tidak Hadir Tanpa Keterangan</b></td>
                   <td><b>Tidak Mengikuti Upacara</b></td>
-                  <td><b>Tidak Apel Pagi</b></td>
+                  <td><b>Tidak Shalat Zuhur/Ashar</b></td>
                   <td><b><br>DL</b></td>
                   <td><b><br>Cuti</b></td>
             </tr>
@@ -67,7 +67,7 @@ $no=1;foreach ($pegawai_absen as $row) {
                         <td width="8.14285714%" align="center">'.jum_pulang_cepat_rekap($row->json_absen).'</td>
                         <td width="8.14285714%" align="center">'.jum_tk_rekap($row->json_absen).'</td>
                         <td width="8.14285714%" align="center">'.jum_tidak_upacara_rekap($row->json_absen).'</td>
-                        <td width="8.14285714%" align="center">'.jum_tidak_apel_pagi($row->json_absen,$row->id).'</td>
+                        <td width="8.14285714%" align="center">'.jum_tidak_sholatza_rekap($row->json_absen, $row->agama_id, $row->id).'</td>
                         <td width="8.14285714%" align="center">'.jum_dinas_luar_rekap($row->json_absen).'</td>
                         <td width="8.14285714%" align="center">'.jum_cuti_rekap($row->json_absen).'</td>';     
             $tbl .='</tr>';
@@ -111,14 +111,19 @@ $no=1;foreach ($pegawai_absen as $row) {
      $pdfBase64 = base64_encode($pdfString);
 ?>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="<?php echo base_url() ?>public/themes/material/css/bootstrap.css" rel="stylesheet" type="text/css">
 </head>
+
 <body style="margin:0!important">
     <div class="d-lg-none">
-         <a class="btn btn-sm btn-info m-2" href="data:application/pdf;base64,<?php echo $pdfBase64 ?>" download="FileLaporanRekapitulasiKehadiranPeriode_<?php echo $priode ?>.pdf">Download</a>
+        <a class="btn btn-sm btn-info m-2" href="data:application/pdf;base64,<?php echo $pdfBase64 ?>"
+            download="FileLaporanRekapitulasiKehadiranPeriode_<?php echo $priode ?>.pdf">Download</a>
     </div>
-    <embed width="100%" height="100%" src="data:application/pdf;base64,<?php echo $pdfBase64 ?>" type="application/pdf" />
+    <embed width="100%" height="100%" src="data:application/pdf;base64,<?php echo $pdfBase64 ?>"
+        type="application/pdf" />
 </body>
+
 </html>
