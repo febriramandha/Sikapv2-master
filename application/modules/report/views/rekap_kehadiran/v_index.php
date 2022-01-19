@@ -10,6 +10,11 @@
     </div>
     <?php echo form_open('report/rekap-kehadiran/cetak','class="form-horizontal" target="popup" id="formAjax"'); ?>
     <div class="card-body">
+        <div class="alert alert-warning alert-dismissible p-2">
+            <span class="font-weight-semibold">Perhatian!</span> untuk kolom tidak apel pagi masih dalam tahap
+            pengembangan, abaikan saja!
+            <span class="badge badge-success"></span>
+        </div>
         <div class="form-group row">
             <label class="col-form-label col-lg-2">Unit Kerja <span class="text-danger">*</span></label>
             <div class="col-lg-10">
