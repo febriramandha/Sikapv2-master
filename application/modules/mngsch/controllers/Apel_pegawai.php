@@ -76,7 +76,8 @@ class Apel_pegawai extends App_Controller {
         $this->datatables->select('a.id, a.nip, a.nama, a.dept_name, a.status_pegawai,a.gelar_dpn,a.gelar_blk, a.dept_id, b.user_id as checked')
         	->from('v_users_all a')
         	->join('(SELECT id,dept_id, unnest(user_id) as user_id, sch_apel_id FROM sch_apel_users where sch_apel_id ='.$schapel_id.') as b','(a.id=b.user_id and a.dept_id = b.dept_id) ','left')
-        	->add_column('cekbox','<label class="pure-material-checkbox">
+        	->where('a.key > 0')
+			->add_column('cekbox','<label class="pure-material-checkbox">
 										<input type="checkbox" name="user[]" $1>
 										<span></span>
 							        </label>','checked_sch_apel(id,checked)')
