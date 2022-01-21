@@ -41,7 +41,8 @@ class Sch_apel extends App_Controller {
 										->set_rules('kategori', 'Ketegori Pengguna', 'required')
 										->set_rules('instansi[]', 'Instansi', 'required')
 										->set_rules('keterangan', 'Keterangan', 'required')
-										->set_rules('kondisi_cuaca', 'Kondisi Cuaca', 'required');
+										->set_rules('kondisi_cuaca', 'Kondisi Cuaca', 'required')
+										->set_rules('status', 'Status', 'required');
 	}
 
 	public function index()
@@ -108,19 +109,19 @@ class Sch_apel extends App_Controller {
 							  'start_time' 		 => $this->input->post('start_time'),
 							  'end_time' 		 => $this->input->post('end_time'),
 							  'dept_id' 		 => $instansi,
-							  'tgl_apel' 	 => $this->input->post('start'),
+							  'tgl_apel' 		 => $this->input->post('start'),
 							  'type_pegawai' 	=> $this->input->post('kategori'),
-							  'ket' => $this->input->post('keterangan'),
+							  'ket' 			=> $this->input->post('keterangan'),
 							  'created_at'		=> date('Y-m-d H:i:s'),
 							  'created_by'		=> $this->session->userdata('tpp_user_id'),
 							  'kondisi_cuaca'	=> $this->input->post('kondisi_cuaca'),
+							  'status'  		=> $this->input->post('status'),
 							  'deleted'	 => 1,
 				 );
 				
 				 $cek_apel = $this->db->select('sch_apel.id')
 				  ->join('_jenis_apel','sch_apel.jenis_apel_id = _jenis_apel.id','left')
 				 ->where('tgl_apel', $this->input->post('start'))
-				 ->where('jenis_apel_id', decrypt_url($this->input->post('jenis_apel_id'),'jenis_apel'))
 				 ->where('sch_apel.dept_id &&',"'$instansi'",false)
 				 ->where('deleted', 1)
 				 ->get('sch_apel')->result();
@@ -155,7 +156,8 @@ class Sch_apel extends App_Controller {
 							  'end_time' 		 => $this->input->post('end_time'),
 							  'created_at'		=> date('Y-m-d H:i:s'),
 							  'created_by'		=> $this->session->userdata('tpp_user_id'),
-							  'kondisi_cuaca'	=> $this->input->post('kondisi_cuaca')
+							  'kondisi_cuaca'	=> $this->input->post('kondisi_cuaca'),
+							  'status'  		=> $this->input->post('status'),
 				 );
 				 
 				$this->return = $this->db->update('sch_apel', $data, ['id' => decrypt_url($this->input->post('id'),'sch_apel')]);
@@ -203,6 +205,7 @@ class Sch_apel extends App_Controller {
 			$sub_data['komandan_apel'] 		= $row->komandan_apel;
 			$sub_data['dept_id'] 		= pg_to_array($row->dept_id);
 			$sub_data['ket'] 		= $row->ket_apel;
+			$sub_data['status'] 		= $row->status;
 			$sub_data['start_time'] 		= jm($row->start_time);
 			$sub_data['end_time'] 		= jm($row->end_time);
 			$kalendar[] = $sub_data;
