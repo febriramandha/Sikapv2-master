@@ -128,11 +128,11 @@ class Pimpinan extends App_Controller {
 				}elseif ($this->mod =="edit") {
 					$data = array('user_id' 	=> decrypt_url($this->input->post('user'),'user_id'), 
 								  'dept_id' 	=> decrypt_url($this->input->post('instansi'),'instansi'),
+								  'telegram_chat_id' => null,
 								  'updated_at' 	=> date('Y-m-d H:i:s'),
 								  'updated_by'	=> $this->session->userdata('tpp_user_id'));
 					$this->return = $this->db->update('pejabat_instansi', $data, ['id' => decrypt_url($this->input->post('id'),'pejabatinstansi_id')]);
 					$this->msg = 'Data berhasil diperbarui';
-
 				}
 				if ($this->return) {
 					 $this->result = array('status' => true,

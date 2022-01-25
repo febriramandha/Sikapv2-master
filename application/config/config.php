@@ -488,7 +488,7 @@ $config['csrf_token_name'] = 'csrf_sikap_token_name';
 $config['csrf_cookie_name'] = 'csrf_cookie_sikap';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = FALSE;
-$config['csrf_exclude_uris'] = array('push/Data/.*+');
+$config['csrf_exclude_uris'] = array('push/Data/.*+', 'telegramsocket');
 
 /*
 |--------------------------------------------------------------------------

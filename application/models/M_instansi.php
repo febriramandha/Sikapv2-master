@@ -123,6 +123,24 @@ class M_instansi extends CI_Model {
 		return $this->db->get('v_instansi_tree');
 	}
 
+	public function GetPejabatInstansiChatId($user_id,$dept_id)
+	{
+		$this->db->select('*');
+		$this->db->where('dept_id',$dept_id);
+		$this->db->where('user_id',$user_id);
+		$this->db->where('pejabat_id',3);
+		$query = $this->db->get('pejabat_instansi')->row();
+		if(!empty($query)){
+			if($query->pejabat_id == 3){
+				if(!empty($query->telegram_chat_id)){
+					return FALSE;
+				}else {
+					return TRUE;
+				}
+			}
+		}
+	}
+
 }
 
 /* End of file M_instansi.php */

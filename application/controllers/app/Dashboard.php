@@ -30,7 +30,8 @@ class Dashboard extends App_Controller {
 		$this->data['breadcrumb'] 		= $this->breadcrumbs->show();
 		$this->data['wiki']				= $this->db->where("$level", "any(level)",false)->order_by('id')->get('wiki');
 		$this->data['pos']		  		= $this->m_article->GetAticleAll();
-
+		$this->data['pejabat_instansi'] = $this->m_instansi->GetPejabatInstansiChatId($this->session->userdata('tpp_user_id'),$this->session->userdata('tpp_dept_id'));
+		
 		if ($this->session->userdata('tpp_level') == 1 || $this->session->userdata('tpp_level') == 4 ) {
 			$this->data['user_all']	  	  	= $this->db->select('count(*)')->get('mf_users')->row();
 			$this->data['instansi_all']	  	= $this->db->select('count(*)')->get('mf_departments')->row();

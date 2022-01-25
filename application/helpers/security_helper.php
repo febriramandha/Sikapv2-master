@@ -1,12 +1,18 @@
 <?php if (!defined("BASEPATH")) exit("No direct script access allowed");
-function encrypt_url($string,$key) {
+function encrypt_url($string,$key, $is_login = true) {
     $CI=& get_instance();
     $output = false;
     /*
     * read security.ini file & get encryption_key | iv | encryption_mechanism value for generating encryption code
     */    
-    $user_id = $CI->session->userdata('tpp_login_id');
-    $level = $CI->session->userdata('tpp_level');
+
+    $user_id = "";
+    $level = "";
+    
+    if($is_login == true) { 
+        $user_id = $CI->session->userdata('tpp_login_id');
+        $level = $CI->session->userdata('tpp_level');
+    }
     $string = $string;    
     $security       = parse_ini_file("security.ini");
     $secret_key     = $security["encryption_key"].$key.$user_id.$level;
@@ -21,15 +27,21 @@ function encrypt_url($string,$key) {
     $output = base64_encode($result);
     return $output;
 }
-function decrypt_url($string,$key) {
+function decrypt_url($string,$key, $is_login = true) {
     $CI=& get_instance();
     $output = false;
     /*
     * read security.ini file & get encryption_key | iv | encryption_mechanism value for generating encryption code
     */
-    $user_id = $CI->session->userdata('tpp_login_id');
-    $level = $CI->session->userdata('tpp_level');
 
+    $user_id = "";
+    $level = "";
+    
+    if($is_login == true) { 
+        $user_id = $CI->session->userdata('tpp_login_id');
+        $level = $CI->session->userdata('tpp_level');
+    }
+    
     $security       = parse_ini_file("security.ini");
     $secret_key     = $security["encryption_key"].$key.$user_id.$level; 
     $secret_iv      = $security["iv"];
