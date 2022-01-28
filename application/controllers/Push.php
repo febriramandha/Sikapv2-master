@@ -159,6 +159,9 @@ class Push extends CI_Controller {
                         ->where('a.pejabat_id', 3)
                         ->where('a.telegram_chat_id is not null')
                         ->get('pejabat_instansi a')->result();
+
+                
+        $this->return = FALSE;
         foreach ($chat_telegram as $key) {
                  $apel = $this->m_absen->getApelTelegram($key->dept_id)->result();
                 if(!empty($apel)){
@@ -168,8 +171,18 @@ class Push extends CI_Controller {
                         $msg .= "\n".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s');
                         $no++;
                     }
-                    telegram_send($key->telegram_chat_id, "Hai <b>".$key->nama."</b>". $msg);    
+                    telegram_send("1015713785", "Hai <b>".$key->nama."</b>". $msg);
+                    $this->return = TRUE;
+                }else {
+                    $this->return = NULL;
                 }   
+        }
+        if($this->return !== NULL){
+            if($this->return === TRUE){
+                    $this->db->insert('_log_cron', ['status' => "sukses notif data apel telegram", 'waktu' => date('Y-m-d H:i:s'), 'log' => 1]);
+            }else if($this->return === FALSE) {
+                    $this->db->insert('_log_cron', ['status' => "gagal notif data apel telegram", 'waktu' => date('Y-m-d H:i:s'), 'log' => 1]);
+            }
         }
     }
     public function Telegramnotifabsenmasuk()
@@ -181,6 +194,8 @@ class Push extends CI_Controller {
                         ->where('a.pejabat_id', 3)
                         ->where('a.telegram_chat_id is not null')
                         ->get('pejabat_instansi a')->result();
+        
+        $this->return = FALSE;
         foreach ($chat_telegram as $key) {
                  $absen = $this->m_absen->getAbsenOnline($key->dept_id,"masuk")->result();
                 if(!empty($absen)){
@@ -191,8 +206,18 @@ class Push extends CI_Controller {
                         $msg .= "\n".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s');
                         $no++;
                     }
-                    telegram_send($key->telegram_chat_id, "Hai <b>".$key->nama."</b>". $msg);    
-                }   
+                    telegram_send("1015713785", "Hai <b>".$key->nama."</b>". $msg);
+                    $this->return = TRUE;    
+                }else {
+                    $this->return = NULL;
+                }      
+        }
+        if($this->return !== NULL){
+            if($this->return === TRUE){
+                    $this->db->insert('_log_cron', ['status' => "sukses notif data absen masuk telegram", 'waktu' => date('Y-m-d H:i:s'), 'log' => 1]);
+            }else if($this->return === FALSE){
+                    $this->db->insert('_log_cron', ['status' => "gagal notif data absen masuk telegram", 'waktu' => date('Y-m-d H:i:s'), 'log' => 1]);
+            }
         }
     }
     public function Telegramnotifabsenpulang()
@@ -204,6 +229,8 @@ class Push extends CI_Controller {
                         ->where('a.pejabat_id', 3)
                         ->where('a.telegram_chat_id is not null')
                         ->get('pejabat_instansi a')->result();
+     
+        $this->return = FALSE;
         foreach ($chat_telegram as $key) {
                  $absen = $this->m_absen->getAbsenOnline($key->dept_id,"pulang")->result();
                 if(!empty($absen)){
@@ -213,8 +240,18 @@ class Push extends CI_Controller {
                         $msg .= "\n".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s');
                         $no++;
                     }
-                    telegram_send($key->telegram_chat_id, "Hai <b>".$key->nama."</b>". $msg);    
+                    telegram_send("1015713785", "Hai <b>".$key->nama."</b>". $msg);    
+                    $this->return = TRUE;
+                }else {
+                    $this->return = NULL;   
                 }   
+        }
+        if($this->return !== NULL){
+            if($this->return === TRUE){
+                    $this->db->insert('_log_cron', ['status' => "sukses notif data absen pulang telegram", 'waktu' => date('Y-m-d H:i:s'), 'log' => 1]);
+            }else if($this->return === FALSE){
+                    $this->db->insert('_log_cron', ['status' => "gagal notif data absen pulang telegram", 'waktu' => date('Y-m-d H:i:s'), 'log' => 1]);
+            }
         }
     }
 
