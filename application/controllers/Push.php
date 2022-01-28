@@ -150,6 +150,74 @@ class Push extends CI_Controller {
      
     }
 
+    public function Telegramnotifapel()
+    {
+        $this->load->model('m_absen');
+        $chat_telegram = $this->db->select('a.telegram_chat_id,b.nama,a.dept_id,c.dept_name')
+                        ->join('v_users_all b','a.user_id = b.id')
+                        ->join('v_instansi_all c','a.dept_id = c.id')
+                        ->where('a.pejabat_id', 3)
+                        ->where('a.telegram_chat_id is not null')
+                        ->get('pejabat_instansi a')->result();
+        foreach ($chat_telegram as $key) {
+                 $apel = $this->m_absen->getApelTelegram($key->dept_id)->result();
+                if(!empty($apel)){
+                    $msg = "\n<b>Laporan Absen ".$apel[0]->nama_apel." Pada Hari ".tgl_ind_hari(date('Y-m-d'))." di ".$key->dept_name."</b>";
+                    $no = 1;
+                    foreach ($apel as $row) {
+                        $msg .= "\n".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s');
+                        $no++;
+                    }
+                    telegram_send($key->telegram_chat_id, "Hai <b>".$key->nama."</b>". $msg);    
+                }   
+        }
+    }
+    public function Telegramnotifabsenmasuk()
+    {
+        $this->load->model('m_absen');
+        $chat_telegram = $this->db->select('a.telegram_chat_id,b.nama,a.dept_id,c.dept_name')
+                        ->join('v_users_all b','a.user_id = b.id')
+                        ->join('v_instansi_all c','a.dept_id = c.id')
+                        ->where('a.pejabat_id', 3)
+                        ->where('a.telegram_chat_id is not null')
+                        ->get('pejabat_instansi a')->result();
+        foreach ($chat_telegram as $key) {
+                 $absen = $this->m_absen->getAbsenOnline($key->dept_id,"masuk")->result();
+                if(!empty($absen)){
+                    $msg = "\n<b>Laporan Absen Masuk Pada Hari ".tgl_ind_hari(date('Y-m-d'))." di ".$key->dept_name."</b>";
+                    
+                    $no = 1;
+                    foreach ($absen as $row) {
+                        $msg .= "\n".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s');
+                        $no++;
+                    }
+                    telegram_send($key->telegram_chat_id, "Hai <b>".$key->nama."</b>". $msg);    
+                }   
+        }
+    }
+    public function Telegramnotifabsenpulang()
+    {
+        $this->load->model('m_absen');
+        $chat_telegram = $this->db->select('a.telegram_chat_id,b.nama,a.dept_id,c.dept_name')
+                        ->join('v_users_all b','a.user_id = b.id')
+                        ->join('v_instansi_all c','a.dept_id = c.id')
+                        ->where('a.pejabat_id', 3)
+                        ->where('a.telegram_chat_id is not null')
+                        ->get('pejabat_instansi a')->result();
+        foreach ($chat_telegram as $key) {
+                 $absen = $this->m_absen->getAbsenOnline($key->dept_id,"pulang")->result();
+                if(!empty($absen)){
+                    $msg = "\n<b>Laporan Absen Pulang Pada Hari ".tgl_ind_hari(date('Y-m-d'))." di ".$key->dept_name."</b>";
+                    $no = 1;
+                    foreach ($absen as $row) {
+                        $msg .= "\n".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s');
+                        $no++;
+                    }
+                    telegram_send($key->telegram_chat_id, "Hai <b>".$key->nama."</b>". $msg);    
+                }   
+        }
+    }
+
 }
 
 /* End of file Push.php */

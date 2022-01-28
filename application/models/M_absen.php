@@ -409,6 +409,28 @@ class M_absen extends CI_Model {
 		 }
        return $this->db->get();
 	}
+		public function getApelTelegram($dept_id)
+	{
+		$this->db->select('a.nama,b.checktime,d.name as nama_apel');
+		$this->db->join('apel_pegawai b', 'a.id = b.user_id');
+		$this->db->join('sch_apel c','b.sch_apel_id = c.id');
+		$this->db->join('_jenis_apel d','c.jenis_apel_id = d.id');
+		$this->db->where('c.tgl_apel', date('Y-m-d'));
+		$this->db->where('a.dept_id', $dept_id);
+		$this->db->order_by('b.checktime', 'asc');
+		return $this->db->get('v_users_all a');
+	}
+	public function getAbsenOnline($dept_id,$params = NULL)
+	{
+		$this->db->select('a.nama,b.checktime');
+		$this->db->join('mf_checkinout b', 'a.id = b.user_id');
+		$this->db->join('checkinout_gps c','b.id = c.checkinout_id');
+		$this->db->where('date(b.checktime)', date('Y-m-d'));
+		$this->db->where('a.dept_id', $dept_id);
+		$this->db->where('c.status_in_out', $params);
+		$this->db->order_by('b.checktime', 'asc');
+		return $this->db->get('v_users_all a');
+	}
 
 }
 
