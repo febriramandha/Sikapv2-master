@@ -171,7 +171,7 @@ class Push extends CI_Controller {
                         $msg .= "\n".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s');
                         $no++;
                     }
-                    telegram_send("1015713785", "Hai <b>".$key->nama."</b>". $msg);
+                    telegram_send($key->telegram_chat_id, "Hai <b>".$key->nama."</b>". $msg);
                     $this->return = TRUE;
                 }else {
                     $this->return = NULL;
@@ -206,7 +206,7 @@ class Push extends CI_Controller {
                         $msg .= "\n".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s');
                         $no++;
                     }
-                    telegram_send("1015713785", "Hai <b>".$key->nama."</b>". $msg);
+                    telegram_send($key->telegram_chat_id, "Hai <b>".$key->nama."</b>". $msg);
                     $this->return = TRUE;    
                 }else {
                     $this->return = NULL;
@@ -240,7 +240,7 @@ class Push extends CI_Controller {
                         $msg .= "\n".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s');
                         $no++;
                     }
-                    telegram_send("1015713785", "Hai <b>".$key->nama."</b>". $msg);    
+                    telegram_send($key->telegram_chat_id, "Hai <b>".$key->nama."</b>". $msg);    
                     $this->return = TRUE;
                 }else {
                     $this->return = NULL;   
