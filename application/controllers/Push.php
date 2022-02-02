@@ -197,13 +197,18 @@ class Push extends CI_Controller {
         
         $this->return = FALSE;
         foreach ($chat_telegram as $key) {
-                 $absen = $this->m_absen->getAbsenOnline($key->dept_id,"masuk")->result();
+                $absen = $this->m_absen->getAbsenOnline($key->dept_id,"masuk")->result();
                 if(!empty($absen)){
                     $msg = "\n<b>Laporan Absen Masuk Pada Hari ".tgl_ind_hari(date('Y-m-d'))." di ".$key->dept_name."</b>";
-                    
                     $no = 1;
                     foreach ($absen as $row) {
+                        $date = strtotime("+59 seconds", strtotime($row->start_time));
+                        if(tanggal_format($row->checktime, 'H:i:s') > date("h:i:s",$date) )
+                        {
+                        $msg .= "\n<i>".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s')."</i>";
+                        }else {
                         $msg .= "\n".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s');
+                        }
                         $no++;
                     }
                     telegram_send($key->telegram_chat_id, "Hai <b>".$key->nama."</b>". $msg);
@@ -237,8 +242,17 @@ class Push extends CI_Controller {
                     $msg = "\n<b>Laporan Absen Pulang Pada Hari ".tgl_ind_hari(date('Y-m-d'))." di ".$key->dept_name."</b>";
                     $no = 1;
                     foreach ($absen as $row) {
-                        $msg .= "\n".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s');
-                        $no++;
+                        if(!empty($row->start_time)){
+                            if(tanggal_format($row->checktime, 'H:i:s') > "21:00:00" )
+                            {
+                            $msg .= "\n<i>".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s')."</i>";
+                            }else {
+                            $msg .= "\n".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s');
+                            }
+                        }else {
+                            $msg .= "\n".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s');
+                        }
+                    $no++;
                     }
                     telegram_send($key->telegram_chat_id, "Hai <b>".$key->nama."</b>". $msg);    
                     $this->return = TRUE;

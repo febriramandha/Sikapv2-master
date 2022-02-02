@@ -422,12 +422,17 @@ class M_absen extends CI_Model {
 	}
 	public function getAbsenOnline($dept_id,$params = NULL)
 	{
-		$this->db->select('a.nama,b.checktime');
+		$date = date('Y-m-d');
+		$hari = hari_tgl($date);
+		$this->db->select('a.nama,b.checktime,d.start_time,d.end_time');
 		$this->db->join('mf_checkinout b', 'a.id = b.user_id');
 		$this->db->join('checkinout_gps c','b.id = c.checkinout_id');
+		$this->db->join("(SELECT * FROM v_jadwal_kerja_users WHERE '".$date."' >= start_date and '".$date."' <= end_date) as d", 'a.id = d.user_id'); 
+		$this->db->join('days e','d.s_day = e.id');
 		$this->db->where('date(b.checktime)', date('Y-m-d'));
 		$this->db->where('a.dept_id', $dept_id);
 		$this->db->where('c.status_in_out', $params);
+		$this->db->where('e.day_ind',$hari);
 		$this->db->order_by('b.checktime', 'asc');
 		return $this->db->get('v_users_all a');
 	}
