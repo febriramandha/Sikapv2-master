@@ -205,9 +205,9 @@ class Push extends CI_Controller {
                         $date = strtotime("+59 seconds", strtotime($row->start_time));
                         if(tanggal_format($row->checktime, 'H:i:s') > date("h:i:s",$date) )
                         {
-                        $msg .= "\n<i>".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s')."</i>";
+                        $msg .= "\n<i>".$no.". <u>"._name($row->nama)." ".tanggal_format($row->checktime, 'H:i:s')."</u></i>";
                         }else {
-                        $msg .= "\n".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s');
+                        $msg .= "\n".$no.". "._name($row->nama)." ".tanggal_format($row->checktime, 'H:i:s');
                         }
                         $no++;
                     }
@@ -245,7 +245,7 @@ class Push extends CI_Controller {
                         if(!empty($row->start_time)){
                             if(tanggal_format($row->checktime, 'H:i:s') > "21:00:00" )
                             {
-                            $msg .= "\n<i>".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s')."</i>";
+                            $msg .= "\n<i>".$no.". <u>".$row->nama." ".tanggal_format($row->checktime, 'H:i:s')."</u></i>";
                             }else {
                             $msg .= "\n".$no.". ".$row->nama." ".tanggal_format($row->checktime, 'H:i:s');
                             }
