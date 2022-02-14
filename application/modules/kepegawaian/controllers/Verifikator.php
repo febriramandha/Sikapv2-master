@@ -45,7 +45,6 @@ class Verifikator extends App_Controller {
         	->join('v_users_all d','c.user_id_ver=d.id','left')
         	->where('a.key > 0')
         	->where('a.att_status',1)
-        	->where('a.pns',1)
         	->order_by('a.no_urut')
         	->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip,"kepegawaian/verifikator/edit",id)')
         	->add_column('verifikator','$1','nama_icon_nip(nama_verifikator,ver_gelar_dpn,ver_gelar_blk,nip_verifikator)');
