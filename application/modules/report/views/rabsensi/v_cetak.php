@@ -123,7 +123,7 @@
     $ttd ='<div align="center">
             <table width="100%">
                 <tr nobr="true">
-                    <td width="70%" align="left"><b>Ket :</b>  <br><br>- H : Hadir Normal - TM : Telat Masuk - PC : Pulang Cepat - TC : Telat Masuk Pulang Cepat - C* : Cuti - DL : Dinas Luar A : Apel TOL : Apel Tidak Absen Online
+                    <td width="70%" align="left"><b>Ket :</b>  <br><br>- H : Hadir Normal - TM : Telat Masuk - PC : Pulang Cepat - TC : Telat Masuk Pulang Cepat - C* : Cuti - DL : Dinas Luar - A* : Apel - TOL* : Apel Tidak Absen Online
                     <br>- *M : * Manual
                     <br>- TK : Tanpa Keterangan
                     <br>- L : Hari Libur Kerja       
