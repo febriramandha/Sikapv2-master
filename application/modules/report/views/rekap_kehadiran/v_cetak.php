@@ -52,7 +52,7 @@
                   <td><b>Pulang Kerja Lebih Awal</b></td>
                   <td><b>Tidak Hadir Tanpa Keterangan</b></td>
                   <td><b>Tidak Mengikuti Upacara</b></td>
-                  <td><b>Tidak Shalat Zuhur/Ashar</b></td>
+                  <td><b>Tidak Apel Pagi</b></td>
                   <td><b><br>DL</b></td>
                   <td><b><br>Cuti</b></td>
             </tr>
@@ -67,7 +67,7 @@ $no=1;foreach ($pegawai_absen as $row) {
                         <td width="8.14285714%" align="center">'.jum_pulang_cepat_rekap($row->json_absen).'</td>
                         <td width="8.14285714%" align="center">'.jum_tk_rekap($row->json_absen).'</td>
                         <td width="8.14285714%" align="center">'.jum_tidak_upacara_rekap($row->json_absen).'</td>
-                        <td width="8.14285714%" align="center">'.jum_tidak_sholatza_rekap($row->json_absen, $row->agama_id, $row->id).'</td>
+                        <td width="8.14285714%" align="center">'.jum_tidak_apel_pagi($row->json_absen, $row->id).'</td>
                         <td width="8.14285714%" align="center">'.jum_dinas_luar_rekap($row->json_absen).'</td>
                         <td width="8.14285714%" align="center">'.jum_cuti_rekap($row->json_absen).'</td>';     
             $tbl .='</tr>';
