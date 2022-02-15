@@ -105,6 +105,7 @@
                         <th class="text-nowrap" colspan="3">Pulang</th>
                         <th rowspan="2">DL</th>
                         <th rowspan="2">Cuti</th>
+                        <th rowspan="2">Apel Pagi</th>
                         <th rowspan="2" width="1%">Ket</th>
                     </tr>
                     <tr class="table-active">
@@ -249,6 +250,10 @@ $(document).ready(function() {
                 searchable: false
             },
             {
+                "data": "ket_apel",
+                searchable: false
+            },
+            {
                 "data": "ket",
                 searchable: false
             },
@@ -273,6 +278,7 @@ $(document).ready(function() {
             $('td', row).eq(9).addClass('text-nowrap p-2 text-center');
             $('td', row).eq(10).addClass('text-nowrap p-2 text-center');
             $('td', row).eq(11).addClass('text-nowrap p-2 text-center');
+            $('td', row).eq(12).addClass('text-nowrap p-2 text-center');
         },
     });
     // Initialize

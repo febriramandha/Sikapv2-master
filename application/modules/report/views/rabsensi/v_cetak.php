@@ -111,7 +111,7 @@
                     }
                     
 
-                 $tbl .='<td width="2.657%">'.$absen_ket_tabel.'<br>'.$jam_masuk_tabel.'<br>'.$jam_pulang_tabel.'</td>'; 
+                 $tbl .='<td width="2.657%">'.$absen_ket_tabel.'<br>'.$absen_ket_apel.'<br>'.$jam_masuk_tabel.'<br>'.$jam_pulang_tabel.'</td>'; 
                     }      
              $tbl .='</tr>';
         }
@@ -123,7 +123,7 @@
     $ttd ='<div align="center">
             <table width="100%">
                 <tr nobr="true">
-                    <td width="70%" align="left"><b>Ket :</b>  <br><br>- H : Hadir Normal - TM : Telat Masuk - PC : Pulang Cepat - TC : Telat Masuk Pulang Cepat - C* : Cuti - DL : Dinas Luar A : Apel TA : Tidak Apel
+                    <td width="70%" align="left"><b>Ket :</b>  <br><br>- H : Hadir Normal - TM : Telat Masuk - PC : Pulang Cepat - TC : Telat Masuk Pulang Cepat - C* : Cuti - DL : Dinas Luar A : Apel TOL : Apel Tidak Menggunakan Absen Online
                     <br>- *M : * Manual
                     <br>- TK : Tanpa Keterangan
                     <br>- L : Hari Libur Kerja       

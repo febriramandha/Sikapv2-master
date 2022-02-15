@@ -1208,7 +1208,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				if(in_array($id, $users_id_piket_apel)){
 					$text = "P";
 				}else if(in_array($dept_id, $dept_id_apel)){
-                    $text = "TA";
+                    $text = "TOL";
                 }
             }
         return $text;
@@ -1275,10 +1275,3 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		 }
          return  $total;
     }
-
-
-
-
-
-
-
