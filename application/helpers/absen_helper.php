@@ -313,13 +313,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}else {
 				$ket = 'TK';
 			}
-		}else if ($rentan_tanggal <= $hari_ini && !$jam_masuk && !$jam_pulang && !$jam_masuk_shift && !$jam_pulang_shift && !$lkhdl_id && !$dinasmanual_id && !$kode_cuti ) {
-			// jadwal shift
-			if ($hari_ini == $rentan_tanggal &&  $jam_ini < $start_time) {
-				# code...
-			}else {
-				$ket = 'TK';
-			}
 		}
 		
 
