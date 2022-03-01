@@ -54,6 +54,7 @@
         $tbl .='</tr>
             </thead>';
         $no = 1;
+        // var_dump($pegawai_absen);
         foreach ($pegawai_absen as $row) {
             $pgarray_data = json_decode($row->json_absen, true);
             $json_absen  = $pgarray_data['data_absen'];
@@ -66,6 +67,7 @@
                     $jam_masuk_tabel    = '-';
                     $jam_pulang_tabel   = '-';
                     $absen_ket_tabel    = '-';
+                    $absen_ket_apel     = "-";
                     if ($i < $jum_hari+1) {
                         //jam masuk
                         $jam_masuk          = $json_absen[$i]['f7'];
@@ -101,17 +103,16 @@
                         $dept_apel = array_to_pg($json_absen[$i]['f25']);
                         $dept_id_users = $json_absen[$i]['f26'];
                         $users_id_piket_apel = array_to_pg($json_absen[$i]['f27']);
+                        $jam_absen_apel = $json_absen[$i]['f29'];
 
-
+                        
                         $absen_ket_tabel = absen_ket_tabel($daysoff_id, $jam_masuk, $jam_pulang, $jam_masuk_shift, $jam_pulang_shift, $lkhdl_id, $dinasmanual_id, $kode_cuti, $rentan_tanggal, $start_time, $start_time_shift, $status_in, $status_out, $end_time, $end_time_shift,$start_time_notfixed, $jam_masuk_notfixed, $end_time_notfixed, $jam_pulang_notfixed);
                         
-                        $absen_ket_apel = ket_apel($hadir_apel,$dept_apel,$dept_id_users,$users_id_piket_apel,$row->id);
-
-
+                        $absen_ket_apel = ket_apel($hadir_apel,$dept_apel,$dept_id_users,$users_id_piket_apel,$row->id,$jam_absen_apel);
                     }
                     
 
-                 $tbl .='<td width="2.657%">'.$absen_ket_tabel.'<br>'.$absen_ket_apel.'<br>'.$jam_masuk_tabel.'<br>'.$jam_pulang_tabel.'</td>'; 
+                 $tbl .='<td width="2.657%">'.$absen_ket_tabel.'<br>'.$jam_masuk_tabel.'<br>'.$jam_pulang_tabel.'</td>'; 
                     }      
              $tbl .='</tr>';
         }
@@ -123,7 +124,7 @@
     $ttd ='<div align="center">
             <table width="100%">
                 <tr nobr="true">
-                    <td width="70%" align="left"><b>Ket :</b>  <br><br>- H : Hadir Normal - TM : Telat Masuk - PC : Pulang Cepat - TC : Telat Masuk Pulang Cepat - C* : Cuti - DL : Dinas Luar - A* : Apel - TOL* : Apel Tidak Absen Online
+                    <td width="70%" align="left"><b>Ket :</b>  <br><br>- H : Hadir Normal - TM : Telat Masuk - PC : Pulang Cepat - TC : Telat Masuk Pulang Cepat - C* : Cuti - DL : Dinas Luar - A* : Apel - TA* : Tidak Apel
                     <br>- *M : * Manual
                     <br>- TK : Tanpa Keterangan
                     <br>- L : Hari Libur Kerja       

@@ -307,14 +307,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		
 
 		if ($rentan_tanggal <= $hari_ini && !$daysoff_id && !$jam_masuk && !$jam_pulang && !$jam_masuk_shift && !$jam_pulang_shift && !$lkhdl_id && !$dinasmanual_id && !$kode_cuti ) {
-			 
 			// jadwal normal
 			if ($hari_ini == $rentan_tanggal &&  $jam_ini < $start_time) {
 				# code...
 			}else {
 				$ket = 'TK';
 			}
+		}else if ($rentan_tanggal <= $hari_ini && !$jam_masuk && !$jam_pulang && !$jam_masuk_shift && !$jam_pulang_shift && !$lkhdl_id && !$dinasmanual_id && !$kode_cuti ) {
+			// jadwal shift
+			if ($hari_ini == $rentan_tanggal &&  $jam_ini < $start_time) {
+				# code...
+			}else {
+				$ket = 'TK';
+			}
 		}
+		
 
 		if ($jam_masuk || $jam_pulang || $jam_masuk_shift || $jam_pulang_shift || $jam_masuk_notfixed || $jam_pulang_notfixed || $status_in || $status_out) {
 
@@ -402,10 +409,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 
 		
-
 		if ($daysoff_id) {
-			 $ket = 'L'; 
+			if($start_time_shift == "00:00:00"){
+				 $ket = 'L'; 
+			}
 		}
+
+
 
 		return $ket;
 	}
@@ -1197,18 +1207,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		 return $resul;
 	}
 
-	 function ket_apel($hadir,$dept_apel,$dept_id,$users_id_piket_apel,$id){
+	 function ket_apel($hadir,$dept_apel,$dept_id,$users_id_piket_apel,$id,$jam_absen_apel){
            $dept_id_apel = pg_to_array($dept_apel);
 		   $users_id_piket_apel = pg_to_array($users_id_piket_apel);
 
-            $text = '';
+            $text = '-';
             if($hadir == "1"){
                 $text = "A";
-            }else {
+            }else if(!empty($jam_absen_apel)) {
+				$text = "A";
+			}else {
 				if(in_array($id, $users_id_piket_apel)){
 					$text = "P";
 				}else if(in_array($dept_id, $dept_id_apel)){
-                    $text = "TOL";
+                    $text = "TA";
                 }
             }
         return $text;
@@ -1229,10 +1241,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          for ($i=0; $i < $count; $i++) { 
 				 $jum_apel = $json_absen[$i]['f26'];
 				 $jum_hari_apel = $json_absen[$i]['f27'];
-
+				 $jam_absen_apel = $json_absen[$i]['f30'];
+				 
                  if ($jum_apel) {
                  	$hari_kerja[] = $jum_apel;
-                 }		
+                 }else if($jam_absen_apel) {
+					 $hari_kerja[] = 1;
+				 }		
 				 if($jum_hari_apel) {
 					$hari_apel[] = 1;
 				 }

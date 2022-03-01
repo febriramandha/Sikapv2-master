@@ -105,7 +105,6 @@
                         <th class="text-nowrap" colspan="3">Pulang</th>
                         <th rowspan="2">DL</th>
                         <th rowspan="2">Cuti</th>
-                        <th rowspan="2">Apel Pagi</th>
                         <th rowspan="2" width="1%">Ket</th>
                     </tr>
                     <tr class="table-active">
@@ -247,10 +246,6 @@ $(document).ready(function() {
             },
             {
                 "data": "cuti",
-                searchable: false
-            },
-            {
-                "data": "ket_apel",
                 searchable: false
             },
             {

@@ -42,7 +42,8 @@ class M_absen extends CI_Model {
 											dept_apel,
 											dept_id_users,
 											users_id_piket_apel,
-											count_day_shift
+											count_day_shift,
+											jam_absen_apel
 										) ORDER BY rentan_tanggal)
 								) as json_absen
 							from mf_users a
@@ -75,7 +76,8 @@ class M_absen extends CI_Model {
 											q.dept_id as dept_apel,
 											a.dept_id as dept_id_users,
 											s.user_id as users_id_piket_apel,
-											e.count_day as count_day_shift
+											e.count_day as count_day_shift,
+											min((t.checktime)::time) AS jam_absen_apel										
 											from 
 											(select a.id,a.dept_id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$start_date','$end_date')) as tanggal) as a
 											left join v_jadwal_kerja_users b on ((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day)and b.user_id=a.id)
@@ -96,6 +98,7 @@ class M_absen extends CI_Model {
 											left join sch_apel q on (a.rentan_tanggal = date(q.tgl_apel) and a.dept_id = any(q.dept_id) and q.deleted=1)
 											left join v_apel_pagi_users r on (a.id = r.user_id and a.rentan_tanggal = r.tgl_apel)
 											left join sch_apel_users s on (a.dept_id = s.dept_id and r.id = s.sch_apel_id)
+											left join mf_checkinout t on ((a.id = t.user_id) AND (q.tgl_apel = date(t.checktime)) AND ((t.checktime)::time without time zone >= q.start_time) AND ((t.checktime)::time without time zone <= q.end_time))
 											group by 1,2,3,4,5,6,7,10,11,12,15,16,17,18,19,20,21,22,25,26,27,28,29
 							) as b on a.id=b.id
 							group by 1
@@ -210,7 +213,8 @@ class M_absen extends CI_Model {
 											jum_apel,
 											jumopd_apel,
 											jumuserspiket_apel,
-											ibadah_id
+											ibadah_id,
+											jam_absen_apel
 										) ORDER BY rentan_tanggal)
 								) as json_absen
 							from mf_users a
@@ -244,6 +248,7 @@ class M_absen extends CI_Model {
 											s.hadir as jum_apel,
 											t.jum as jumopd_apel,
 											t.user_id as jumuserspiket_apel,
+											min((v.checktime)::time without time zone) AS jam_absen_apel,
 											r.ibadah_id
 											from 
 											(select a.id, a.dept_id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$start_date','$end_date')) as tanggal) as a
@@ -265,8 +270,10 @@ class M_absen extends CI_Model {
 											left join v_tidak_hadir_upacara q on (a.id=q.user_id and a.rentan_tanggal=q.tanggal)
 											left join v_apel_pagi_opd t on (a.dept_id=t.dept_id and a.rentan_tanggal=t.tgl_apel)
 											left join v_apel_pagi_users s on (a.id	=s.user_id and a.rentan_tanggal=s.tgl_apel and t.id = s.id)
+											left join sch_apel u on (a.rentan_tanggal = date(u.tgl_apel) and a.dept_id = any(u.dept_id) and u.deleted=1)
+											left join mf_checkinout v on ((a.id = v.user_id) AND (u.tgl_apel = date(v.checktime)) AND ((v.checktime)::time >= u.start_time) AND ((v.checktime)::time <= u.end_time)) 
 											left join ibadah_muslim r on (a.id=r.user_id and a.rentan_tanggal=r.tgl_ibadah)
-											group by 1,2,3,4,5,6,7,10,11,12,15,16,17,18,19,20,21,22,25,26,27,28,29,30
+											group by 1,2,3,4,5,6,7,10,11,12,15,16,17,18,19,20,21,22,25,26,27,28,29,31
 							) as b on a.id=b.id
 							group by 1
 							) as b",'a.id=b.id','left',false);
