@@ -401,8 +401,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$ket = '?';
 		}
 
-
-
+		if ($daysoff_id) {
+			 $ket = 'L'; 
+		}
 
 
 		return $ket;
