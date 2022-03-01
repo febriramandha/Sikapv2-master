@@ -314,7 +314,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				$ket = 'TK';
 			}
 		}
-		
+
+		// cek tk shift
+		if ($daysoff_id) {
+			if($start_time_shift){
+				$ket = 'TK';
+			}
+		}
+
 
 		if ($jam_masuk || $jam_pulang || $jam_masuk_shift || $jam_pulang_shift || $jam_masuk_notfixed || $jam_pulang_notfixed || $status_in || $status_out) {
 
@@ -402,7 +409,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 
 		if ($daysoff_id) {
-			 $ket = 'L'; 
+			// cek libur tidak shift
+			if($start_time_shift){
+			
+			}else {
+				$ket = 'L';
+			}
 		}
 
 
