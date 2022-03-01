@@ -401,12 +401,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$ket = '?';
 		}
 
-		
-		if ($daysoff_id) {
-			if($start_time_shift == "00:00:00"){
-				 $ket = 'L'; 
-			}
-		}
+
 
 
 
