@@ -641,7 +641,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		if ($daysoff_id) {
 			 // $ket = 'L'; 
-			$ket = 2;
+			 	// cek libur tidak shift
+			if($start_time_shift){
+			
+			}else {
+				$ket = 2;
+			}
 		}
 
 		if ($kode_cuti) {
