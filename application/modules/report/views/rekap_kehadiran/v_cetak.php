@@ -45,31 +45,30 @@
                   <td width="30%" rowspan="2" ><b><br>Nama(NIP)</b></td>
                   <td rowspan="2" width="5%"><b>Jumlah Hari Kerja 1 Bulan </b></td>
                   <td rowspan="2"  width="5%"><b>Jumlah Hari Hadir</b></td>
-                  <td colspan="7" width="57%"><b>Perilaku</b></td>
+                  <td colspan="6" width="57%"><b>Perilaku</b></td>
             </tr>
             <tr align="center">
                   <td><b>Terlambat Masuk Kerja</b></td>
                   <td><b>Pulang Kerja Lebih Awal</b></td>
                   <td><b>Tidak Hadir Tanpa Keterangan</b></td>
                   <td><b>Tidak Mengikuti Upacara</b></td>
-                  <td><b>Tidak Shalat Zuhur/Ashar</b></td>
                   <td><b><br>DL</b></td>
                   <td><b><br>Cuti</b></td>
             </tr>
             </thead>';
+            // 8.14285714
 $no=1;foreach ($pegawai_absen as $row) {
             $tbl .='<tr nobr="true">
                         <td width="3%">'.$no++.'</td>
                         <td width="30%">'.nama_gelar($row->nama, $row->gelar_dpn, $row->gelar_blk).' '.cekNipValid($row->nip).'</td>
                         <td width="5%" align="center">'.jum_hari_kerja_rekap($row->json_absen).'</td>
                         <td width="5%" align="center">'.jum_hadir_kerja_rekap($row->json_absen).'</td>
-                        <td width="8.14285714%" align="center">'.jum_terlambar_rekap($row->json_absen).'</td>
-                        <td width="8.14285714%" align="center">'.jum_pulang_cepat_rekap($row->json_absen).'</td>
-                        <td width="8.14285714%" align="center">'.jum_tk_rekap($row->json_absen).'</td>
-                        <td width="8.14285714%" align="center">'.jum_tidak_upacara_rekap($row->json_absen).'</td>
-                        <td width="8.14285714%" align="center">'.jum_tidak_sholatza_rekap($row->json_absen).'</td>
-                        <td width="8.14285714%" align="center">'.jum_dinas_luar_rekap($row->json_absen).'</td>
-                        <td width="8.14285714%" align="center">'.jum_cuti_rekap($row->json_absen).'</td>';     
+                        <td width="9.5%" align="center">'.jum_terlambar_rekap($row->json_absen).'</td>
+                        <td width="9.5%" align="center">'.jum_pulang_cepat_rekap($row->json_absen).'</td>
+                        <td width="9.5%" align="center">'.jum_tk_rekap($row->json_absen).'</td>
+                        <td width="9.5%" align="center">'.jum_tidak_upacara_rekap($row->json_absen).'</td>
+                        <td width="9.5%" align="center">'.jum_dinas_luar_rekap($row->json_absen).'</td>
+                        <td width="9.5%" align="center">'.jum_cuti_rekap($row->json_absen).'</td>';     
             $tbl .='</tr>';
         }
           

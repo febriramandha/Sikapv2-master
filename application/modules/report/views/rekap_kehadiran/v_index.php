@@ -111,7 +111,6 @@
                         <th width="1%" class="p-1">Pulang Kerja Lebih Awal</th>
                         <th width="1%" class="p-1">Tidak Hadir Tanpa Keterangan</th>
                         <th width="1%" class="p-1">Tidak Mengikuti Upacara</th>
-                        <th width="1%" class="p-1">Tidak Shalat Zuhur/Ashar</th>
                         <th width="1%" class="p-1">DL</th>
                         <th width="1%" class="p-1">Cuti</th>
                     </tr>
@@ -228,10 +227,6 @@ $(document).ready(function() {
                 searchable: false
             },
             {
-                "data": "jum_tidak_sholatza_rekap",
-                searchable: false
-            },
-            {
                 "data": "jum_dinas_luar_rekap",
                 searchable: false
             },
@@ -259,7 +254,6 @@ $(document).ready(function() {
             $('td', row).eq(7).addClass('text-nowrap p-1 text-center');
             $('td', row).eq(8).addClass('text-nowrap p-1 text-center');
             $('td', row).eq(9).addClass('text-nowrap p-1 text-center');
-            $('td', row).eq(10).addClass('text-nowrap p-1 text-center');
         },
     });
     // Initialize
