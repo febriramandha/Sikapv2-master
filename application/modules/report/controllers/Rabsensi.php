@@ -93,6 +93,7 @@ class Rabsensi extends App_Controller {
 									n.start_time as start_time_notfixed, 
 									n.end_time as end_time_notfixed,
 									s.user_id as users_id_piket_apel,
+									a.status_pegawai,
 									min((t.checktime)::time ) AS jam_absen_apel,
 									min((o.checktime)::time ) AS jam_masuk_notfixed,
 									max((p.checktime)::time ) AS jam_pulang_notfixed")
@@ -136,7 +137,7 @@ class Rabsensi extends App_Controller {
 			// absen apel finger
 			$this->db->join('mf_checkinout t',"((a.id = t.user_id) AND (q.tgl_apel = date(t.checktime)) AND ((t.checktime)::time >= q.start_time) AND ((t.checktime)::time <= q.end_time))",'left',false);
 
-        	$this->db->group_by('1,2,3,4,5,6,7,8,9,12,13,14,17,18,19,no_urut,20,21,22,23,24,25,26,27,28,29,30');
+        	$this->db->group_by('1,2,3,4,5,6,7,8,9,12,13,14,17,18,19,no_urut,20,21,22,23,24,25,26,27,28,29,30,31');
         	$this->db->order_by('a.no_urut, rentan_tanggal');
         	$this->datatables->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip)');
         	$this->datatables->add_column('tanggal','$1','tglInd_hrtabel(rentan_tanggal)');
@@ -149,7 +150,7 @@ class Rabsensi extends App_Controller {
         	$this->datatables->add_column('dinas_luar_tabel','$1','dinas_luar_tabel(lkhdl_id, dinasmanual_id)');
         	$this->datatables->add_column('cuti','$1','kode_cuti');
         	$this->datatables->add_column('ket_apel','$1','ket_apel(hadir_apel,dept_apel,dept_id,users_id_piket_apel,id,jam_absen_apel)');
-        	$this->datatables->add_column('ket','$1','absen_ket_tabel(daysoff_id, jam_masuk, jam_pulang, jam_masuk_shift, jam_pulang_shift, lkhdl_id, dinasmanual_id, kode_cuti, rentan_tanggal, start_time, start_time_shift, status_in, status_out,end_time, end_time_shift, start_time_notfixed, jam_masuk_notfixed, end_time_notfixed, jam_pulang_notfixed)');
+        	$this->datatables->add_column('ket','$1','absen_ket_tabel(daysoff_id, jam_masuk, jam_pulang, jam_masuk_shift, jam_pulang_shift, lkhdl_id, dinasmanual_id, kode_cuti, rentan_tanggal, start_time, start_time_shift, status_in, status_out,end_time, end_time_shift, start_time_notfixed, jam_masuk_notfixed, end_time_notfixed, jam_pulang_notfixed, status_pegawai)');
 
         	 if ($user_id_in) {
 		        $this->datatables->where_in('a.id', $user_id_in_1);

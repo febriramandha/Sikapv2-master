@@ -298,7 +298,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		return $dl;
 	}
 
-	function absen_ket_tabel($daysoff_id='', $jam_masuk='', $jam_pulang='',$jam_masuk_shift='', $jam_pulang_shift='', $lkhdl_id='', $dinasmanual_id='', $kode_cuti='', $rentan_tanggal='', $start_time='', $start_time_shift='', $status_in='', $status_out='',$end_time ='',$end_time_shift='', $start_time_notfixed='', $jam_masuk_notfixed='', $end_time_notfixed='', $jam_pulang_notfixed='')
+	function absen_ket_tabel($daysoff_id='', $jam_masuk='', $jam_pulang='',$jam_masuk_shift='', $jam_pulang_shift='', $lkhdl_id='', $dinasmanual_id='', $kode_cuti='', $rentan_tanggal='', $start_time='', $start_time_shift='', $status_in='', $status_out='',$end_time ='',$end_time_shift='', $start_time_notfixed='', $jam_masuk_notfixed='', $end_time_notfixed='', $jam_pulang_notfixed='', $status_pegawai='')
 	{
 		$ket ='';
 		$hari_ini = date('Y-m-d');
@@ -417,6 +417,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		}
 
+		if($status_pegawai == "MPP"){
+			$ket = 'MPP';
+		}
 
 		return $ket;
 	}
@@ -496,7 +499,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		 return $resul;
 	}
 
-    function jum_hari_kerja_rekap($json_data)
+    function jum_hari_kerja_rekap($json_data,$status_pegawai)
     {
     	 $pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -516,13 +519,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          		
          }
 
-         $jumlah_hari_kerja = count($hari_kerja);
+		 if($status_pegawai == "MPP"){
+			$jumlah_hari_kerja = "MPP";
+		}else{
+         	$jumlah_hari_kerja = count($hari_kerja);
+		 } 
 
          return  $jumlah_hari_kerja;
     }
 
 
-    function jum_hadir_kerja_rekap($json_data)
+    function jum_hadir_kerja_rekap($json_data,$status_pegawai)
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -566,7 +573,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          		
          }
 
-         $jumlah_hari_kerja = count($hari_kerja);
+		 if($status_pegawai == "MPP"){
+			 $jumlah_hari_kerja = "MPP";
+		 }else {
+	         $jumlah_hari_kerja = count($hari_kerja);
+		 }
+
 
          return  $jumlah_hari_kerja;
     }
@@ -657,7 +669,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		return $ket;
     }
 
-    function jum_terlambar_rekap($json_data)
+    function jum_terlambar_rekap($json_data,$status_pegawai)
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -701,13 +713,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                  }
          		
          }
-
-         $jumlah_hari_kerja = count($hari_kerja);
+		 if($status_pegawai == "MPP")
+		 {
+			 $jumlah_hari_kerja = "MPP";
+		 }else {
+	         $jumlah_hari_kerja = count($hari_kerja);
+		 }
 
          return  $jumlah_hari_kerja;
     }
 
-    function jum_pulang_cepat_rekap($json_data)
+    function jum_pulang_cepat_rekap($json_data,$status_pegawai)
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -762,12 +778,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          		
          }
 
-         $jumlah_hari_kerja = count($hari_kerja);
+		 if($status_pegawai == "MPP")
+		 {
+			 $jumlah_hari_kerja = "MPP";
+		 }else {
+	         $jumlah_hari_kerja = count($hari_kerja);
+		 }
 
          return  $jumlah_hari_kerja;
     }
 
-    function jum_tk_rekap($json_data)
+    function jum_tk_rekap($json_data,$status_pegawai)
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -812,12 +833,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          		
          }
 
-         $jumlah_hari_kerja = count($hari_kerja);
+		 if($status_pegawai == "MPP")
+		 {
+			 $jumlah_hari_kerja = "MPP";
+		 }else {
+	         $jumlah_hari_kerja = count($hari_kerja);
+		 }
 
          return  $jumlah_hari_kerja;
     }
 
-    function jum_tidak_upacara_rekap($json_data)
+    function jum_tidak_upacara_rekap($json_data,$status_pegawai)
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -835,12 +861,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          		
          }
 
-         $jumlah_hari_kerja = array_sum($hari_kerja);
+		 if($status_pegawai == "MPP")
+		 {
+			 $jumlah_hari_kerja = "MPP";
+		 }else {
+	         $jumlah_hari_kerja = array_sum($hari_kerja);
+		 }
 
          return  $jumlah_hari_kerja;
     }
 
-    function jum_tidak_sholatza_rekap($json_data, $agama_id='',$user_id_pengecualian='')
+    function jum_tidak_sholatza_rekap($json_data, $agama_id='',$user_id_pengecualian='',$status_pegawai)
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -872,8 +903,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		
          		
          }
-
-         $jumlah_hari_kerja = array_sum($hari_kerja);
+ 		if($status_pegawai == "MPP")
+		 {
+			 $jumlah_hari_kerja = "MPP";
+		 }else {
+	         $jumlah_hari_kerja = array_sum($hari_kerja);
+		 }
 
          return  $jumlah_hari_kerja;
     }
@@ -897,7 +932,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     }
 
-    function jum_dinas_luar_rekap($json_data)
+    function jum_dinas_luar_rekap($json_data,$status_pegawai)
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -924,7 +959,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          		
          }
 
-         $jumlah_hari_kerja = count($hari_kerja);
+		 if($status_pegawai == "MPP")
+		 {
+			 $jumlah_hari_kerja = "MPP";
+		 }else {
+	         $jumlah_hari_kerja = count($hari_kerja);
+		 }
 
          return  $jumlah_hari_kerja;
     }
@@ -943,7 +983,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     	return $result;
     }
 
-    function jum_cuti_rekap($json_data)
+    function jum_cuti_rekap($json_data,$status_pegawai)
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -968,7 +1008,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          		
          }
 
-         $jumlah_hari_kerja = count($hari_kerja);
+		 if($status_pegawai == "MPP")
+		 {
+			 $jumlah_hari_kerja = "MPP";
+		 }else {
+	         $jumlah_hari_kerja = count($hari_kerja);
+		 }
 
          return  $jumlah_hari_kerja;
     }
@@ -987,7 +1032,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     	return $result;
     }
 
-    function jum_hari_kerja_rekap_lkh($json_data)
+    function jum_hari_kerja_rekap_lkh($json_data,$status_pegawai)
     {
     	 $pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_jum_lkh'];
@@ -1007,12 +1052,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          		
          }
 
-         $jumlah_hari_kerja = count($hari_kerja);
+		 if($status_pegawai == "MPP"){
+			 $jumlah_hari_kerja = "MPP";
+		 }else {
+	         $jumlah_hari_kerja = count($hari_kerja);
+		 }
 
          return  $jumlah_hari_kerja;
     }
 
-    function jum_data_kerja_rekap_lkh($json_data, $jumlah_laporan='')
+    function jum_data_kerja_rekap_lkh($json_data, $jumlah_laporan='',$status_pegawai='')
     {
     	 $pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_jum_lkh'];
@@ -1075,10 +1124,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          		 $jumlah_hari_kerja = $jumlah_laporan;
          }
 
+		 if($status_pegawai == "MPP"){
+			 $jumlah_hari_kerja = "MPP";
+		 }
+
          return  $jumlah_hari_kerja;
     }
 
-    function total_jum_lkh_rekap($json_data, $total_laporan='')
+    function total_jum_lkh_rekap($json_data, $total_laporan='',$status_pegawai='')
     {
     	 $pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_jum_lkh'];
@@ -1107,6 +1160,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           if ($total_laporan) {
          		 $jumlah_hari_kerja = $total_laporan;
          }
+
+		 if($status_pegawai == "MPP"){
+			 $jumlah_hari_kerja = "MPP";
+		 }
 
          return  $jumlah_hari_kerja;
     }

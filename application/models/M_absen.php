@@ -10,7 +10,7 @@ class M_absen extends CI_Model {
 
 	public function PegawaiAbsenQuery($user_id=array(), $start_date, $end_date)
 	{	
-			$this->db->select('a.id, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, b.json_absen')
+			$this->db->select('a.id, a.nama, a.status_pegawai, a.nip, a.gelar_dpn, a.gelar_blk, b.json_absen')
 					 ->from('v_users_all a')
 					 ->join("(select a.id,
 								json_build_object(
@@ -180,7 +180,7 @@ class M_absen extends CI_Model {
 
 	public function PegawaiAbsenQueryRekapitulasi($user_id='', $start_date, $end_date, $dept_id='')
 	{	
-			$this->db->select('a.id, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, b.json_absen, a.agama_id')
+			$this->db->select('a.id, a.status_pegawai, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, b.json_absen, a.agama_id')
 					 ->from('v_users_all a')
 					 ->join("(select a.id,
 								json_build_object(
@@ -289,7 +289,7 @@ class M_absen extends CI_Model {
 
 	public function PegawaiAbsenQueryRekapitulasiLkh($user_id=array(), $rank1, $rank2, $dept_id='')
 	{
-		 $this->db->select('a.id, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, json_jadwal_lkh, jumlah_laporan, total_laporan')
+		 $this->db->select('a.id, a.status_pegawai, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, json_jadwal_lkh, jumlah_laporan, total_laporan')
 		        	->from("v_users_all a")
 		        	->order_by('no_urut');
         $this->db->join("(select a.id,

@@ -105,7 +105,7 @@ class Rekap_lkh extends App_Controller {
 			$rank2  	   = date('Y-m-d');
 		}
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, json_jadwal_lkh, jumlah_laporan, total_laporan')
+        $this->datatables->select('a.id, a.status_pegawai, a.nama, a.nip, a.gelar_dpn, a.gelar_blk, json_jadwal_lkh, jumlah_laporan, total_laporan')
         	->from("v_users_all a")
         	->order_by('no_urut');
         $this->db->join("(select a.id,
@@ -157,9 +157,9 @@ class Rekap_lkh extends App_Controller {
         	$this->db->join("(select start_date, b.user_id,jumlah_laporan, total_laporan  from schlkh_manual a 	join rekaplkh_manual b on a.id=b.schlkhmanual_id
 							where start_date = '$rank1') as c",'a.id=c.user_id','left',false);
         	$this->datatables->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip)');
-        	$this->datatables->add_column('jum_hari_kerja','$1','jum_hari_kerja_rekap_lkh(json_jadwal_lkh)');
-        	$this->datatables->add_column('jum_hadir_kerja_rekap','$1','jum_data_kerja_rekap_lkh(json_jadwal_lkh, jumlah_laporan)');
-        	$this->datatables->add_column('total_jum_lkh_rekap','$1','total_jum_lkh_rekap(json_jadwal_lkh, total_laporan)');
+        	$this->datatables->add_column('jum_hari_kerja','$1','jum_hari_kerja_rekap_lkh(json_jadwal_lkh,status_pegawai)');
+        	$this->datatables->add_column('jum_hadir_kerja_rekap','$1','jum_data_kerja_rekap_lkh(json_jadwal_lkh, jumlah_laporan,status_pegawai)');
+        	$this->datatables->add_column('total_jum_lkh_rekap','$1','total_jum_lkh_rekap(json_jadwal_lkh, total_laporan, status_pegawai)');
         	 if ($user_id_in) {
         	 	if (!$tahun || !$bulan) {
 			     		$this->datatables->where_in('a.id','0');

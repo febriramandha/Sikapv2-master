@@ -52,9 +52,9 @@ $no=1;foreach ($pegawai_lkh as $row) {
             $tbl .='<tr nobr="true">
                         <td width="5%">'.$no++.'</td>
                         <td width="50%">'.nama_gelar($row->nama, $row->gelar_dpn, $row->gelar_blk).' '.cekNipValid($row->nip).'</td>
-                        <td width="15%" align="center">'.jum_hari_kerja_rekap_lkh($row->json_jadwal_lkh).'</td>
-                        <td width="15%" align="center">'.jum_data_kerja_rekap_lkh($row->json_jadwal_lkh, $row->jumlah_laporan).'</td>
-                        <td width="15%" align="center">'.total_jum_lkh_rekap($row->json_jadwal_lkh, $row->total_laporan).'</td>';     
+                        <td width="15%" align="center">'.jum_hari_kerja_rekap_lkh($row->json_jadwal_lkh,$row->status_pegawai).'</td>
+                        <td width="15%" align="center">'.jum_data_kerja_rekap_lkh($row->json_jadwal_lkh, $row->jumlah_laporan,$row->status_pegawai).'</td>
+                        <td width="15%" align="center">'.total_jum_lkh_rekap($row->json_jadwal_lkh, $row->total_laporan,$row->status_pegawai).'</td>';     
             $tbl .='</tr>';
         }
           
@@ -96,14 +96,19 @@ $no=1;foreach ($pegawai_lkh as $row) {
      $pdfBase64 = base64_encode($pdfString);
 ?>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="<?php echo base_url() ?>public/themes/material/css/bootstrap.css" rel="stylesheet" type="text/css">
 </head>
+
 <body style="margin:0!important">
     <div class="d-lg-none">
-         <a class="btn btn-sm btn-info m-2" href="data:application/pdf;base64,<?php echo $pdfBase64 ?>" download="FileLaporanLKHPeriode_<?php echo $priode ?>.pdf">Download</a>
+        <a class="btn btn-sm btn-info m-2" href="data:application/pdf;base64,<?php echo $pdfBase64 ?>"
+            download="FileLaporanLKHPeriode_<?php echo $priode ?>.pdf">Download</a>
     </div>
-    <embed width="100%" height="100%" src="data:application/pdf;base64,<?php echo $pdfBase64 ?>" type="application/pdf" />
+    <embed width="100%" height="100%" src="data:application/pdf;base64,<?php echo $pdfBase64 ?>"
+        type="application/pdf" />
 </body>
+
 </html>

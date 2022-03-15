@@ -61,14 +61,14 @@ $no=1;foreach ($pegawai_absen as $row) {
             $tbl .='<tr nobr="true">
                         <td width="3%">'.$no++.'</td>
                         <td width="30%">'.nama_gelar($row->nama, $row->gelar_dpn, $row->gelar_blk).' '.cekNipValid($row->nip).'</td>
-                        <td width="5%" align="center">'.jum_hari_kerja_rekap($row->json_absen).'</td>
-                        <td width="5%" align="center">'.jum_hadir_kerja_rekap($row->json_absen).'</td>
-                        <td width="9.5%" align="center">'.jum_terlambar_rekap($row->json_absen).'</td>
-                        <td width="9.5%" align="center">'.jum_pulang_cepat_rekap($row->json_absen).'</td>
-                        <td width="9.5%" align="center">'.jum_tk_rekap($row->json_absen).'</td>
-                        <td width="9.5%" align="center">'.jum_tidak_upacara_rekap($row->json_absen).'</td>
-                        <td width="9.5%" align="center">'.jum_dinas_luar_rekap($row->json_absen).'</td>
-                        <td width="9.5%" align="center">'.jum_cuti_rekap($row->json_absen).'</td>';     
+                        <td width="5%" align="center">'.jum_hari_kerja_rekap($row->json_absen,$row->status_pegawai).'</td>
+                        <td width="5%" align="center">'.jum_hadir_kerja_rekap($row->json_absen,$row->status_pegawai).'</td>
+                        <td width="9.5%" align="center">'.jum_terlambar_rekap($row->json_absen,$row->status_pegawai).'</td>
+                        <td width="9.5%" align="center">'.jum_pulang_cepat_rekap($row->json_absen,$row->status_pegawai).'</td>
+                        <td width="9.5%" align="center">'.jum_tk_rekap($row->json_absen,$row->status_pegawai).'</td>
+                        <td width="9.5%" align="center">'.jum_tidak_upacara_rekap($row->json_absen,$row->status_pegawai).'</td>
+                        <td width="9.5%" align="center">'.jum_dinas_luar_rekap($row->json_absen,$row->status_pegawai).'</td>
+                        <td width="9.5%" align="center">'.jum_cuti_rekap($row->json_absen,$row->status_pegawai).'</td>';     
             $tbl .='</tr>';
         }
           

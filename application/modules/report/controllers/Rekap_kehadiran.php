@@ -105,7 +105,7 @@ class Rekap_kehadiran extends App_Controller {
 			$rank2  	   = date('Y-m-d');
 		}
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, a.dept_id,	a.nama, a.nip, a.gelar_dpn, a.gelar_blk, b.json_absen, a.agama_id')
+        $this->datatables->select('a.id, a.dept_id,	a.nama, a.status_pegawai, a.nip, a.gelar_dpn, a.gelar_blk, b.json_absen, a.agama_id')
         	->from("v_users_all a")
         	->order_by('no_urut');
         	 $this->db->join("(select a.id,
@@ -205,16 +205,16 @@ class Rekap_kehadiran extends App_Controller {
 							) as b",'a.id=b.id','left',false);
 
         	$this->datatables->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip)');
-        	$this->datatables->add_column('jum_hari_kerja','$1','jum_hari_kerja_rekap(json_absen)');
-        	$this->datatables->add_column('jum_hadir_kerja_rekap','$1','jum_hadir_kerja_rekap(json_absen)');
-        	$this->datatables->add_column('jum_terlambar_rekap','$1','jum_terlambar_rekap(json_absen)');
-        	$this->datatables->add_column('jum_pulang_cepat_rekap','$1','jum_pulang_cepat_rekap(json_absen)');
-        	$this->datatables->add_column('jum_tk_rekap','$1','jum_tk_rekap(json_absen)');
-        	$this->datatables->add_column('jum_tidak_upacara_rekap','$1','jum_tidak_upacara_rekap(json_absen)');
-        	$this->datatables->add_column('jum_tidak_sholatza_rekap','$1','jum_tidak_sholatza_rekap(json_absen, agama_id, id)');
-        	$this->datatables->add_column('jum_tidak_apel_pagi','$1','jum_tidak_apel_pagi(json_absen, id)');
-        	$this->datatables->add_column('jum_dinas_luar_rekap','$1','jum_dinas_luar_rekap(json_absen)');
-        	$this->datatables->add_column('jum_cuti_rekap','$1','jum_cuti_rekap(json_absen)');
+        	$this->datatables->add_column('jum_hari_kerja','$1','jum_hari_kerja_rekap(json_absen,status_pegawai)');
+        	$this->datatables->add_column('jum_hadir_kerja_rekap','$1','jum_hadir_kerja_rekap(json_absen,status_pegawai)');
+        	$this->datatables->add_column('jum_terlambar_rekap','$1','jum_terlambar_rekap(json_absen,status_pegawai)');
+        	$this->datatables->add_column('jum_pulang_cepat_rekap','$1','jum_pulang_cepat_rekap(json_absen,status_pegawai)');
+        	$this->datatables->add_column('jum_tk_rekap','$1','jum_tk_rekap(json_absen,status_pegawai)');
+        	$this->datatables->add_column('jum_tidak_upacara_rekap','$1','jum_tidak_upacara_rekap(json_absen,status_pegawai)');
+        	$this->datatables->add_column('jum_tidak_sholatza_rekap','$1','jum_tidak_sholatza_rekap(json_absen, agama_id, id,status_pegawai)');
+        	$this->datatables->add_column('jum_tidak_apel_pagi','$1','jum_tidak_apel_pagi(json_absen, id,status_pegawai)');
+        	$this->datatables->add_column('jum_dinas_luar_rekap','$1','jum_dinas_luar_rekap(json_absen,status_pegawai)');
+        	$this->datatables->add_column('jum_cuti_rekap','$1','jum_cuti_rekap(json_absen,status_pegawai)');
 
         	 if ($user_id_in) {
         	 	if (!$tahun || !$bulan) {

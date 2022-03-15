@@ -105,8 +105,11 @@
                         $users_id_piket_apel = array_to_pg($json_absen[$i]['f27']);
                         $jam_absen_apel = $json_absen[$i]['f29'];
 
-                        
-                        $absen_ket_tabel = absen_ket_tabel($daysoff_id, $jam_masuk, $jam_pulang, $jam_masuk_shift, $jam_pulang_shift, $lkhdl_id, $dinasmanual_id, $kode_cuti, $rentan_tanggal, $start_time, $start_time_shift, $status_in, $status_out, $end_time, $end_time_shift,$start_time_notfixed, $jam_masuk_notfixed, $end_time_notfixed, $jam_pulang_notfixed);
+                        if($row->status_pegawai == "MPP"){
+                            $absen_ket_tabel = "MPP";
+                        }else{
+                            $absen_ket_tabel = absen_ket_tabel($daysoff_id, $jam_masuk, $jam_pulang, $jam_masuk_shift, $jam_pulang_shift, $lkhdl_id, $dinasmanual_id, $kode_cuti, $rentan_tanggal, $start_time, $start_time_shift, $status_in, $status_out, $end_time, $end_time_shift,$start_time_notfixed, $jam_masuk_notfixed, $end_time_notfixed, $jam_pulang_notfixed);
+                        }
                         
                         $absen_ket_apel = ket_apel($hadir_apel,$dept_apel,$dept_id_users,$users_id_piket_apel,$row->id,$jam_absen_apel);
                     }
