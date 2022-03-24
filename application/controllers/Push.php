@@ -243,7 +243,7 @@ class Push extends CI_Controller {
                     $no = 1;
                     foreach ($absen as $row) {
                         if(!empty($row->start_time)){
-                            if(tanggal_format($row->checktime, 'H:i:s') > "21:00:00" )
+                            if(tanggal_format($row->checktime, 'H:i:s') > "06:00:00" )
                             {
                             $msg .= "\n<i>".$no.". <u>".$row->nama." ".tanggal_format($row->checktime, 'H:i:s')."</u></i>";
                             }else {
