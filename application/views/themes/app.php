@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?php echo $app_name; ?> - <?php echo $title ?> <?php echo $sub_title ?></title>
     <meta content="<?php echo $author ?>" name="author" />
+    <meta content="<?php echo $development ?>" name="development" />
     <?php foreach($meta as $name=>$content){ ?>
     <meta name="<?php echo $name; ?>" content="<?php echo $content; ?>" />
     <?php } ?>

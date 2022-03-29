@@ -22,9 +22,7 @@ class MY_Controller extends CI_Controller {
 			$this->data['regency_logo'] = base_url('public/images/agam.png');
 			$this->data['favicon'] 		= base_url('public/images/favicon.ico');
 			$this->data['author'] 		= 'Rian Reski';
+			$this->data['development']  = 'Handika Putra';
 			$this->load->section('analyticstracking', 'analyticstracking');
 		}
 }
-
-
-
