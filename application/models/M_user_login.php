@@ -10,6 +10,7 @@ class M_user_login extends CI_Model {
 
 	public function _auth_cek()
 	  {
+		// if
 	    $this->db->select('a.id, user_id, b.dept_id, username, password, level, b.nama, avatar');
 	    $this->db->from('users_login a');
 	    $this->db->join('mf_users b', 'a.user_id=b.id','left');
