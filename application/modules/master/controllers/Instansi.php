@@ -14,7 +14,7 @@ class Instansi extends App_Controller {
 		$this->_init();
 		$this->breadcrumbs->push('Instansi', 'master/instansi');
 		$this->data['title'] = "Master";
-		$this->load->model('m_instansi');
+		$this->load->model(['m_instansi','m_user']);
 	}
 
 	private function _init()
@@ -37,7 +37,7 @@ class Instansi extends App_Controller {
 		$this->load->css('public/themes/plugin/jquery_treetable/css/jquery.treetable.theme.default.css');
 		$this->load->js('public/themes/plugin/jquery_treetable/jquery.treetable.js');
 		$this->data['sub_title'] = "Instansi";
-		$this->db->select('a.id, dept_name, dept_alias, a.parent_id, level, path_info, position_order, status_instansi, b.nama as kecamatan, jum_user, jum_sub')
+		$this->db->select('a.id, a.simpeg_dept_id, dept_name, dept_alias, a.parent_id, level, path_info, position_order, b.nama as kecamatan, status_instansi, jum_user, jum_sub')
 		->from('v_instansi_all_master a')
 		->join('(SELECT count(*) as jum_user, dept_id FROM "mf_users" GROUP BY dept_id) as tot_user','a.id=tot_user.dept_id','left')
 		->join('_kecamatan b','a.kecamatan_id=b.id','left')
@@ -53,12 +53,13 @@ class Instansi extends App_Controller {
 		$this->output->unset_template();
 		//header('Content-Type: application/json');
 		$this->load->library('datatables');
-		$this->datatables->select('a.id, dept_name, dept_alias, parent_id, level, path_info, position_order, status_instansi, b.nama as kecamatan, jum_user')
+		$this->datatables->select('a.id, dept_name,simpeg_dept_id,dept_alias, parent_id, level, path_info, position_order, status_instansi, b.nama as kecamatan, jum_user')
 		->from('v_instansi_all_master a')
 		->join('(SELECT count(*) as jum_user, dept_id FROM "mf_users" GROUP BY dept_id) as tot_user','a.id=tot_user.dept_id','left')
 		->join('_kecamatan b','a.kecamatan_id=b.id','left')
 		->add_column('dept_alias', '$1', 'level_instansi_tabel(dept_alias,dept_name,level, path_info)')
 		->add_column('instansi_status', '$1', 'status_user(status_instansi)')
+		->add_column('status_simpeg', '$1','status_opd_simpeg(simpeg_dept_id)')
 		->add_column('action', '<a href="'.base_url('master/instansi/add/').'$1">
 			<i class="icon-file-plus2 text-orange-300 mr-1"></i>
 			</a>
@@ -92,6 +93,8 @@ class Instansi extends App_Controller {
 		$this->data['instansi_induk'] 	= $this->m_instansi->GetInstansi(decrypt_url($id,'instansi'))->row();
 		$this->data['kecamatan']		= $this->db->order_by('id')->get('_kecamatan')->result();
 		$this->data['position']			= $position_;
+		$this->data['instansi_all']		= $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
+		$this->data['instansi_simpeg']  = $this->m_instansi->getOPDSimpeg()->result();
 		$this->load->view('instansi/v_add', $this->data);
 	}
 
@@ -104,7 +107,8 @@ class Instansi extends App_Controller {
 		->set_rules('alias', 'nama singkatan', 'required')
 		->set_rules('kategori', 'kategori', 'required')
 		->set_rules('kecamatan', 'kecamatan', 'required')
-		->set_rules('order', 'urutan', 'required|numeric');
+		->set_rules('order', 'urutan', 'required|numeric')
+		->set_rules('simpeg_dept_id', 'Simpeg Dept ID', 'required');
 		if ($this->mod == "add") {
 			$this->form_validation->set_rules('parent', 'instansi induk', 'required');
 		}
@@ -137,6 +141,7 @@ class Instansi extends App_Controller {
 							'alamat'			=> $this->input->post('alamat'),
 							'latlong'			=> $this->input->post('latlong'),
 							'radius'			=> $this->input->post('radius'),
+							'simpeg_dept_id'	=> $this->input->post('simpeg_dept_id'),
 				);
 				$res_ = $this->db->insert('mf_departments',$data);
 				$id_new = $this->db->insert_id();
@@ -184,6 +189,10 @@ class Instansi extends App_Controller {
 					'latlong'			=> $this->input->post('latlong'),
 					'radius'			=> $this->input->post('radius'),
 				);
+				$parent = decrypt_url($this->input->post('parent'),'instansi');
+				if($parent != 0){
+					$data['parent_id'] = $this->input->post('parent_id');
+				}
 				$this->return = $this->db->update('mf_departments', $data, ['id' => decrypt_url($this->input->post('id'),'instansi')]);
 
 				$path = $this->db->select('path_info')->get_where('v_instansi_all_master', ['id' => decrypt_url($this->input->post('id'),'instansi')])->row();
@@ -222,7 +231,11 @@ class Instansi extends App_Controller {
 		$this->data['sub_title'] 	= "Edit Instansi";
 		$this->breadcrumbs->push('Edit Instansi', '/');
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
+		// $this->data['user']			= $this->m_user->GetUser(decrypt_url($id, 'user_id'))->row();
 		$this->data['instansi'] 	= $this->m_instansi->GetInstansi(decrypt_url($id,'instansi'))->row();
+		$this->data['instansi_all']		= $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
+		$this->data['instansi_simpeg']  = $this->m_instansi->getOPDSimpeg()->result();
+		
 		$this->data['kecamatan']	= $this->db->order_by('id')->get('_kecamatan')->result();
 		$this->load->view('instansi/v_edit', $this->data);
 	}
@@ -233,6 +246,7 @@ class Instansi extends App_Controller {
 		$this->breadcrumbs->push('Read', '/');
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
 		$this->data['instansi']		= $this->m_instansi->GetInstansi($id)->row();
+		
 		$this->load->view('instansi/v_read', $this->data);
 	}
 
@@ -291,6 +305,50 @@ class Instansi extends App_Controller {
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
 		$this->data['instansi']	 = $this->db->get('v_instansi_all_master')->result();
 		$this->load->view('instansi/v_tree_view', $this->data);
+	}
+
+	public function SyncOpd($id)
+	{
+		$id = decrypt_url($id,'parent_id');
+		$this->output->unset_template();
+		$data_opd_simpeg = $this->m_instansi->GetSyncOPD($id)->result();
+		// var_dump($id);
+		$data_update = array();
+		if(!empty($data_opd_simpeg) || $data_opd_simpeg){
+			$no = 1;
+			$order = 1;
+			foreach($data_opd_simpeg as $row){
+				$data_order = $this->m_instansi->getNumOrder($id)->result();
+				$kecamatan_id = $this->m_instansi->getKecamatan($row->id)->row();
+				if(!empty($data_order[0]->num)){
+					$order = $data_order[0]->num+$no++;
+				}else {
+					$order++;
+				}
+					$data_update[] = array(
+							'simpeg_dept_id' => $row->id,
+							'dept_name' => $row->nama_unor,
+							'dept_alias' => (empty($row->akronim)) ? $row->nama_unor :  $row->akronim,
+							'alamat' => $row->detail_lokasi,
+							'status' => $row->status,
+							'dept_type' => $row->type_unor,
+							'parent_id' => $id,
+							'position_order' => $order,
+							'kecamatan_id' => $kecamatan_id->id,
+							'created_at' => date('Y-m-d H:i:s'),
+							'created_by'=> $this->session->userdata('tpp_user_id')
+					);
+			}
+			$this->return = $this->db->insert_batch('mf_departments', $data_update);
+		}else {
+			$this->return = TRUE;
+		}
+		
+		if ($this->return) {
+				$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Berhasil sinkron data' ]));	
+		}else {
+				$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal sinkron data.']));
+		}
 	}
 
 

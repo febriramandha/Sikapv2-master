@@ -10,7 +10,6 @@ class M_sch_run extends CI_Model {
 
 	public function GetSchRunInstansi($id='',$dept_id='',$level='')
 	{
-
 		$this->db->select('b.id,a.dept_id,b.dept_name, b.dept_alias, b.path_info, path_id, b.level, b.position_order');
 		$this->db->from('(SELECT id, unnest(dept_id) as dept_id FROM sch_run) as a');
 		$this->db->join('v_instansi_all_master b','a.dept_id=b.id','left');
@@ -56,9 +55,9 @@ class M_sch_run extends CI_Model {
 	}
 
 	public function GetSchRunShift($dept_id='', $level='')
-	{
+	{	
 		$this->db->select('a.id, kd_shift, a.ket,c.start_time, c.end_time, c.check_in_time1, c.check_in_time2, c.check_out_time1, c.check_out_time2, c.work_day')
-					->from('(SELECT id, kd_shift, class_id, ket, unnest(dept_id) as dept_id FROM shift_run where deleted=1 group by 1,2,3,4) as a')
+					->from('(SELECT id, kd_shift, class_id, ket, unnest(dept_id) as dept_id FROM shift_run where deleted=1 group by 1,2,3,4,5) as a')
 					->join('sch_class c','c.id=a.class_id','left')
 					->join('v_instansi_all_master d','a.dept_id=d.id','left')
 					->where("path_id['".$level."']='".$dept_id."'")

@@ -513,12 +513,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         $pgarray_str = json_decode($json, true);
         $a ='';
         $instansi = $pgarray_str['data_instansi'];
-        for ($i=0; $i < count($instansi); $i++) { 
-            $dept_name  = $instansi[$i]['f1'];
-            $path_info  = $instansi[$i]['f2'];
-            $level      = $instansi[$i]['f3'];
-            $path_new   = level_instansiF($level, $path_info);
-            $a .= $path_new.$dept_name.'<hr class="m-1">';
+        if(!empty($instansi)){
+            for ($i=0; $i < count($instansi); $i++) { 
+                $dept_name  = $instansi[$i]['f1'];
+                $path_info  = $instansi[$i]['f2'];
+                $level      = $instansi[$i]['f3'];
+                $path_new   = level_instansiF($level, $path_info);
+                $a .= $path_new.$dept_name.'<hr class="m-1">';
+            }
         }
         return $a;
     }
@@ -678,6 +680,18 @@ if (!function_exists('array_to_pg')) {
         } else {
             return null;
         }
+    }
+}
+
+if (!function_exists('status_opd_simpeg')) {
+    function status_opd_simpeg($simpeg_dept_id)
+    {            
+        $a = '<a class="badge bg-danger badge-pill" >tidak aktif</a>';
+
+        if(!empty($simpeg_dept_id)) {
+            $a = '<a class="badge bg-success badge-pill" >aktif</a>';
+        }
+        return $a;
     }
 }
 

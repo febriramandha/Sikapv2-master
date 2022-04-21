@@ -35,15 +35,19 @@ class M_user extends CI_Model {
 		return $this->db->get();
 	}
 
-	public function GetUserAll($dept_id='')
+	public function GetUserAll($dept_id='',$all= '')
 	{
 		$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $dept_id])->row()->level;
-		$this->db->select('a.id, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, att_status, count_finger, a.gelar_dpn, a.gelar_blk, b.avatar')
+		$this->db->select('a.id,a.dept_id_simpeg, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, att_status, count_finger, a.gelar_dpn, a.gelar_blk, b.avatar')
 				->from('v_users_all a')
 				->where('key > 0')
 				->join('users_login b','a.id=b.user_id','left')
 				->order_by('path_info, eselon_id,pns');
-		$this->db->where("path_id['".$level."']='".$dept_id."'");
+        if($all == "1"){
+      		$this->db->where("path_id['".$level."']='".$dept_id."'");
+        }else {
+      		$this->db->where("a.dept_id_simpeg='".$dept_id."'");
+        }
         return $this->db->get();
 	}
 
@@ -235,7 +239,38 @@ class M_user extends CI_Model {
 
 		return 	$data_res;	
 	}
+  public function get_dept_simpeg($instansi){
+    $this->db->select('simpeg_dept_id as id')
+        	->from('v_instansi_all')
+        	->where('id',$instansi);
+     return $this->db->get();
+  }
 
+  public function GetSyncPegawai($id){
+    $this->db->select('a.id, b.nip,b.nama_pegawai,d.nama_unor,d.id AS unor_id,e.dept_name AS nama_unor_sikap,e.id AS sikap_dept_id,ee.id AS sikap_dept_id_pindah,ee.dept_name AS sikap_dept_pindah,f.type_kamus AS status_pegawai,g.username AS username_simpeg,g.password AS password_simpeg,h.kamus_data AS agama,h.id AS agama_id,i.nama_jabatan,j.id AS pejabat_id,j.nama_pejabat AS status_jabatan_simpeg,b.gelar_depan AS glr_dpn_simpeg,b.gelar_blkng AS glr_blkng_simpeg,b.jenis_kelamin,b.tgl_lahir,l.id AS golongan_id,l.nama_golongan,l.ruang,l.pangkat,k.status,m.id AS eselon_id_simpeg,m.nama_eselon,g.status AS status_akun_simpeg, n.id AS agama_id_sikap, n.agama AS agama_sikap, o.id AS status_pegawai_sikap_id, o.nama AS status_pegawai_sikap,p.id as golongan_id_sikap, q.id as eselon_id_sikap, r.id as kelas_id_jabatan, r.id as kelas_jabatan_id');
+    $this->db->join('simpeg_dev.pegawai b','b.nip= a.nip');
+    $this->db->join('simpeg_dev.detail_jabatan c','c.id = b.detail_jabatan_id');
+    $this->db->join('simpeg_dev.unor d','d.id = c.unor_id');
+    $this->db->join('mf_departments e','e.id = a.dept_id');
+    $this->db->join('simpeg_dev.kamus_data f','f.id = b.status_pegawai');
+    $this->db->join('simpeg_dev.users g','g.pegawai_id = b.id');
+    $this->db->join('simpeg_dev.kamus_data h','h.id = b.agama','LEFT');
+    $this->db->join('simpeg_dev.jabatan i','i.id = c.jabatan_id');
+    $this->db->join('simpeg_dev._pejabat_level j','j.id = i.pejabat_level_id');
+    $this->db->join('simpeg_dev.riwayat_golongan k','k.pegawai_id = b.id');
+    $this->db->join('simpeg_dev.golongan l','l.id = k.golongan_id');
+    $this->db->join('simpeg_dev._eselon m','m.id = i.eselon_id');
+    $this->db->join('mf_departments ee','ee.simpeg_dept_id = d.id');
+    $this->db->join('_agama n','n.simpeg_agama_id = h.id','LEFT');
+    $this->db->join('_statpeg o','o.simpeg_statpeg_id = b.status_pegawai','LEFT');
+    $this->db->join('_golongan p','p.golongan_id_simpeg = l.id');
+    $this->db->join('_eselon q','q.simpeg_id_eselon = m.id');
+    $this->db->join('simpeg_dev.kelas_jabatan r','r.id = i.kelas_jabatan_id','LEFT');
+    $this->db->where('k.status','1');
+    $this->db->where('ee.id',$id);
+    $this->db->order_by('a.id');
+    return $this->db->get('mf_users a');
+  }
 }
 
 /* End of file M_user.php */

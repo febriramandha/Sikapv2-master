@@ -215,6 +215,27 @@ function tgl_minus_lkh($tgl='', $nilai='', $hari_id=array())
         return $result;
     }
 
+    function cekbox_add_instansi($id='')
+    {
+            $class = 'class="checkbox" name="id_unor[]" value="'.encrypt_url($id,'id_unor_simpeg').'"';
+     
+          $a = '<label class="pure-material-checkbox ml-1">
+            <input type="checkbox" '.$class.' >
+            <span></span>
+              </label>';
+
+            return $a;
+    }
+    
+    function aksi_add_simpeg($id='')
+    {
+          
+      $a = '<span style="margin-right:2px;" data_id="'.encrypt_url($id,'id_unor_simpeg').'" class="ver btn-sm bg-success-400 btn-icon legitRipple loading'.$id.'" tooltip="Simpan data" flow="left">
+                <i class="icon-checkbox-checked" ></i>
+              </span>';
+
+            return $a;
+    }
 
 
 

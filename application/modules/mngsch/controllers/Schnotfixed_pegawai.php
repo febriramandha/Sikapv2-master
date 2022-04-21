@@ -14,7 +14,7 @@ class Schnotfixed_pegawai extends App_Controller {
 		$this->_init();
 		$this->breadcrumbs->push('Jadwal Tidak Tetap Pegawai', 'mngsch/schnotfixed-pegawai');
 		$this->data['title'] = "Manajemen Jadwal";
-		$this->load->model(['m_instansi','m_sch_run']);
+		$this->load->model(['m_instansi','m_sch_run','m_user']);
 	}
 
 	private function _init()
@@ -34,6 +34,7 @@ class Schnotfixed_pegawai extends App_Controller {
 	{
 		$dept_id = $this->m_instansi->GetAdminDept($this->session->userdata('tpp_dept_id'));
 		$level = $this->db->select('level')->get_where('v_instansi_all', ['id' => $dept_id])->row()->level;
+
 		$this->output->unset_template();
 		$dept_id = $this->m_instansi->GetAdminDept($this->session->userdata('tpp_dept_id'));
 		$this->load->library('datatables');
@@ -41,10 +42,10 @@ class Schnotfixed_pegawai extends App_Controller {
         	->from('sch_run a')
         	->join('(select sum(jum_user_id) as tot_user_id, schrun_id from (select schrun_id, count(user_id) jum_user_id, 
         		a.dept_id, path_id from (SELECT id, unnest(user_id) as user_id, dept_id,schrun_id FROM 
-        		sch_run_users GROUP BY 1,2,3) as a
+        		sch_run_users GROUP BY 1,2,3,4) as a
 				left join sch_run b on a.schrun_id=b.id
 				left join v_instansi_all_master c on a.dept_id=c.id
-				GROUP BY 1,3,4) as a where a.path_id['.$level.'] = '.$dept_id.' GROUP BY 2) as b','a.id=b.schrun_id','left')
+				GROUP BY 1,3,4) as a where a.path_id['.$level.'] = '.$instansi.' GROUP BY 2) as b','a.id=b.schrun_id','left')
         	->order_by('a.id','desc')
         	->where('type',3)
         	->add_column('status','$1','status_lock(schedule_status)')
@@ -70,6 +71,7 @@ class Schnotfixed_pegawai extends App_Controller {
 		$dept_id = $this->m_instansi->GetAdminDept($this->session->userdata('tpp_dept_id'));
 		$level = $this->db->select('level')->get_where('v_instansi_all', ['id' => $dept_id])->row()->level;
 		$schrun_id = decrypt_url($id, 'schrun_id_notfixed');
+
 		$this->data['instansi']		= $this->m_sch_run->GetSchRunInstansi($schrun_id, $dept_id, $level)->result();
 		$this->data['sch_run']	    = $this->m_sch_run->GetSchRunNotfixed($schrun_id);
 		$this->load->view('schnotfixed_pegawai/v_edit', $this->data);

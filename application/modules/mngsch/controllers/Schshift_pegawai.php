@@ -14,7 +14,7 @@ class Schshift_pegawai extends App_Controller {
 		$this->_init();
 		$this->breadcrumbs->push('Jadwal Shift Pegawai', 'mngsch/schshift-pegawai');
 		$this->data['title'] = "Manajemen Jadwal";
-		$this->load->model(['m_instansi','m_sch_run']);
+		$this->load->model(['m_instansi','m_sch_run','m_user']);
 	}
 
 	private function _init()
@@ -41,7 +41,7 @@ class Schshift_pegawai extends App_Controller {
         	->from('sch_run a')
         	->join('(select sum(jum_user_id) as tot_user_id, schrun_id from (select schrun_id, count(user_id) jum_user_id, 
         		a.dept_id, path_id from (SELECT id, unnest(user_id) as user_id, dept_id,schrun_id FROM 
-        		sch_run_users GROUP BY 1,2,3) as a
+        		sch_run_users GROUP BY 1,2,3,4) as a
 				left join sch_run b on a.schrun_id=b.id
 				left join v_instansi_all_master c on a.dept_id=c.id
 				GROUP BY 1,3,4) as a where a.path_id['.$level.'] = '.$dept_id.' GROUP BY 2) as b','a.id=b.schrun_id','left')

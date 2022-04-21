@@ -6,13 +6,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 * 2019
 */
 
-class User extends App_Controller {
+class Synchronize_data extends App_Controller {
 
 	public function __construct()
 	{
 		parent::__construct();
 		$this->_init();
-		$this->breadcrumbs->push('Pengguna', 'administrator/user');
+		$this->breadcrumbs->push('Synchronize Data', 'administrator/synchronize_data');
 		$this->data['title'] = "Administrator";
 		$this->load->model(['m_instansi','m_user_login','m_user']);
 	}
@@ -20,16 +20,19 @@ class User extends App_Controller {
 	private function _init()
 	{
 		$this->output->set_template('app');
+		$this->load->css('public/themes/plugin/chekbox/rrcheckbox.css');
+		$this->load->css('public/themes/plugin/toastr/toastr.css');
+		$this->load->js('public/themes/plugin/toastr/toastr.min.js');
 		$this->load->css('public/themes/plugin/toplipcss/rrtooltip/rrtooltip.css');
 		$this->load->js('public/themes/material/global_assets/js/plugins/forms/wizards/steps.min.js');
 	}
 
 	public function index()
 	{
-		$this->data['sub_title'] = "Pengguna";
+		$this->data['sub_title'] = "Synchronize Data";
 		$this->data['breadcrumb'] = $this->breadcrumbs->show();
 		$this->data['instansi']		= $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
-		$this->load->view('user/v_index', $this->data);
+		$this->load->view('synchronize_data/v_index', $this->data);
 	}
 
 	public function indexJson()
@@ -38,7 +41,7 @@ class User extends App_Controller {
 		$instansi = decrypt_url($this->input->post('instansi'),'instansi');
 		$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $instansi])->row()->level;
 		$this->load->library('datatables');
-        $this->datatables->select('a.id, a.nip, a.dept_id_simpeg, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, att_status, count_finger,gelar_dpn,gelar_blk, level')
+        $this->datatables->select('a.id, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, att_status, count_finger,gelar_dpn,gelar_blk, level')
         	->from('v_users_all a')
         	->where('key > 0')
         	->join('users_login b','a.id=b.user_id','left')
@@ -64,6 +67,25 @@ class User extends App_Controller {
 	       
         return $this->output->set_output($this->datatables->generate());
 	}
+	
+	public function JsonOpd()
+	{
+		$this->output->unset_template();
+		$this->load->library('datatables');
+        $this->datatables->select('id,a.*')
+        	->from('simpeg_dev.unor a')
+        	->where("id NOT IN (SELECT b.simpeg_dept_id FROM mf_departments b WHERE b.simpeg_dept_id IS NOT NULL) AND type_unor != 'NAGARI' AND type_unor != 'NAGARI_PERSIAPAN' AND type_unor != 'JORONG' AND status = '1'")
+        	->add_column('cek','$1','cekbox_add_instansi(id)')
+			->add_column('action','<div style="white-space: nowrap;">$1</div>', 'aksi_add_simpeg(id)');
+        	 if ($this->input->post('search[value]')) {
+        	 	$this->db->group_start();
+		        	$this->datatables->like('lower(nama)', strtolower($this->input->post('search[value]')));
+		        	$this->datatables->or_like('lower(nip)', strtolower($this->input->post('search[value]')));
+	        	$this->db->group_end();
+	        }
+	       
+        return $this->output->set_output($this->datatables->generate());
+	}
 
 	public function add()
 	{
@@ -78,24 +100,20 @@ class User extends App_Controller {
 		$this->load->view('user/v_add', $this->data);
 	}
 
-	public function edit($id)
+	public function synchronize_opd()
 	{
-		$this->data['sub_title'] 	= "Edit Data Pengguna";
-		$this->breadcrumbs->push('Edit Pengguna', '/');
+		$this->data['sub_title'] 	= "Sinkron Instansi";
+		$this->breadcrumbs->push('Sinkron Instansi', '/');
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
-		$this->data['user']			= $this->m_user->GetUser(decrypt_url($id, 'user_id'))->row();
 		$this->data['instansi']		= $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
-		$this->data['agama']		= $this->db->order_by('id')->get('_agama')->result();
-		$this->data['eselon']		= $this->db->order_by('id')->get('_eselon')->result();
-		$this->data['golongan']		= $this->db->order_by('id')->get('_golongan')->result();
-		$this->data['status_peg']	= $this->db->order_by('id')->get('_statpeg')->result();
-		$this->load->view('user/v_edit', $this->data);
+
+		$this->load->view('synchronize_data/v_index_sinkron', $this->data);
 	}
 
 
 	public function AjaxSave()
 	{
-		// $this->load->model('m_server_att');
+		$this->load->model('m_server_att');
 		$this->output->unset_template();
 		$mod = $this->input->post('mod');
 		// unik field 
@@ -174,7 +192,7 @@ class User extends App_Controller {
 										  'ssn' 	 		=> $nip,
 								  		  'name' 	 		=> $this->input->post('nama'),
 								  		  'defaultdeptid' 	=> $defaultdeptid);
-						// $this->m_server_att->NewUserinfo($data_att);
+						$this->m_server_att->NewUserinfo($data_att);
 						// end
 						$status = 0;
 						if ($this->input->post('status_akun')) {
@@ -246,7 +264,7 @@ class User extends App_Controller {
 					// insert to server 2
 					$data_att = array('name' 	 		=> $this->input->post('nama'),
 							  		  'defaultdeptid' 	=> $defaultdeptid);
-					// $this->m_server_att->UpdateUserinfo($data_att, ['userid' => decrypt_url($this->input->post('user_id'),'user_id')]);
+					$this->m_server_att->UpdateUserinfo($data_att, ['userid' => decrypt_url($this->input->post('user_id'),'user_id')]);
 					// end
 
 					$status = 0;
@@ -306,72 +324,135 @@ class User extends App_Controller {
 		}
 	}
 
-	public function AjaxDel()
-	{
+	public function AjaxSaveOpd($id=NULL)
+	{		
 		$this->load->model('m_server_att');
 		$this->output->unset_template();
-		$del ='';
-		$cek = $this->m_server_att->cekTemplate(['userid' =>  decrypt_url($this->input->get('id'),"user_id")]);
-		if (!$cek) {
-			$del = $this->db->delete('mf_users',['id' => decrypt_url($this->input->get('id'),"user_id")]);
-			if ($del) {
-				   $this->m_server_att->DelUserinfo(['userid' =>  decrypt_url($this->input->get('id'),"user_id")]);
-				   $this->db->delete('users_login',['user_id' => decrypt_url($this->input->get('id'),"user_id")]);
-				   $this->db->delete('sp_pegawai',['user_id' => decrypt_url($this->input->get('id'),"user_id")]);
+		$data_insert = array();
+		$id_simpeg = decrypt_url($id,'id_unor_simpeg');
+		
+		if($id == NULL){
+			$this->form_validation->set_rules('id_unor[]', 'data ceklis', 'required');
+			$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
+			if ($this->form_validation->run() == TRUE) {
+				$arr_id_simpeg = $this->input->post('id_unor[]');
+				foreach($arr_id_simpeg as $row)
+				{
+					$data_unor_simpeg = $this->db->where('a.id',decrypt_url($row,'id_unor_simpeg'))->get('simpeg_dev.unor a')->row();
+					$data_insert[] = array('dept_name' 	 	=> $data_unor_simpeg->nama_unor,
+								'dept_alias' 		=> $data_unor_simpeg->akronim,
+								'kecamatan_id' 		=> $data_unor_simpeg->kecamatan_id,
+								'position_order' 	=> $data_unor_simpeg->norut_unor,
+								'parent_id' 	 	=> $data_unor_simpeg->parent,
+								'created_at' 		=> date('Y-m-d H:i:s'),
+								'status'			=> $data_unor_simpeg->status,
+								'dept_type'			=> strtolower($data_unor_simpeg->type_unor),
+								'created_by' 	 	=> $this->session->userdata('tpp_user_id'),
+								'alamat'			=> $data_unor_simpeg->detail_lokasi
+					);
+				} 
+				$this->return = $this->db->insert_batch('mf_departments', $data_insert);
+
+			}else {
+				var_dump("tes");
+				$this->result = array('status' => false,
+								'message' => validation_errors(),);
 			}
+
+		}else {
+	
+			$data_unor_simpeg = $this->db->where('a.id',$id_simpeg)->get('simpeg_dev.unor a')->row();
+			$data = array('dept_name' 	 	=> $data_unor_simpeg->nama_unor,
+								'dept_alias' 		=> $data_unor_simpeg->akronim,
+								'kecamatan_id' 		=> $data_unor_simpeg->kecamatan_id,
+								'position_order_simpeg' 	=> $data_unor_simpeg->norut_unor,
+								'parent_id_simpeg' 	 	=> $data_unor_simpeg->parent,
+								'simpeg_dept_id' 	 	=> $data_unor_simpeg->id,
+								'created_at' 		=> date('Y-m-d H:i:s'),
+								'status'			=> $data_unor_simpeg->status,
+								'dept_type'			=> strtolower($data_unor_simpeg->type_unor),
+								'created_by' 	 	=> $this->session->userdata('tpp_user_id'),
+								'alamat'			=> $data_unor_simpeg->detail_lokasi
+					);
+
+			if($data_unor_simpeg->status == '1'){
+				$supdeptid = $data_unor_simpeg->parent;
+			}else {
+				$supdeptid = -1;
+			}
+
+			if(empty($data_unor_simpeg->nama_unor)){
+				$name_dept = $data_unor_simpeg->akronim;
+			}else{
+				$name_dept = $data_unor_simpeg->nama_unor;
+			}
+			$this->return = $this->db->insert('mf_departments',$data);
+			$id_new = $this->db->insert_id();
+
+			if ($this->return) {
+				$path = $this->db->select('path_info')->get_where('v_instansi_all_master', ['id' => $id_new])->row();
+				$new_path = attConverPathNumber($path->path_info);
+				$data_att_dept = array( 'deptid' 	=> $id_new,
+					'deptname'  => $new_path.'_'.$name_dept,
+					'supdeptid' => $supdeptid,
+				);
+				// $this->return = $this->m_server_att->Newdepartments($data_att_dept);
+
+			}
+
 		}
-		if ($del) {
-			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil dihapus.']));
-		} else{
-			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal dihapus atau data sedang digunakan.']));	
+
+		if ($this->return) {
+			$this->result = array('status' => true,
+				'message' => 'Data berhasil disimpan');
+		}else{
+
+			$this->result = array('status' => false,
+				'message' => 'Data gagal disimpan');
+			// $this->db->delete('mf_departments', ['id' => $id_new]);
+		}
+
+		if ($this->result) {
+			$this->output->set_output(json_encode($this->result));	
+		}else {
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal mengambil data.']));
 		}
 	}
 
-	public function cetak($dept_id,$all)
-	{
-		$this->output->unset_template();
-		$this->load->library('Tpdf');
-		$this->data['instansi'] = $this->m_instansi->GetInstansi(decrypt_url($dept_id, 'instansi'))->row();
-		$this->data['user']		= $this->m_user->GetUserAll(decrypt_url($dept_id, 'instansi'),$all)->result();
-		$this->load->view('user/v_cetak', $this->data);
-	}
 
-	public function user()
-     {
-     	$this->output->unset_template();
-     	$this->db->select('nama, a.user_id, username, recovery as pass, level, avatar');
-     	$this->db->from('users_login a');
-     	$this->db->join('mf_users b','a.user_id=b.id');
-     	$res = $this->db->get()->result();
-     	echo '<table border="1"  cellspacing="0" cellpadding="1">
-				 <tr>
-					  <th>No</th>
-					  <th>id</th>
-					  <th>Nama</th>
-					  <th>Username</th>
-					  <th>Password</th>
-					  <th>Level</th>
-  <th>av</th>
-	     		</tr>';
-     	$no=1; foreach ($res as $row) {
-     				echo '<tr>
-     						<td>'.$no++.'</td>
-     						<td>'.$row->user_id.'</td>
-     						<td>'.$row->nama.'</td>
-     						<td>'.$row->username.'</td>
-     						<td>'.$this->encryption->decrypt($row->pass).'</td>
-     						<td>'.$row->level.'</td>
-<td>'.$row->avatar.'</td>
-     					<tr>';
-     		
-     	}
-     	echo '</table>';
-     }
-	public function SyncPegawai($id)
+	public function SyncOpd()
 	{
 		$this->output->unset_template();
-		$id = decrypt_url($id, 'instansi');
-		$data_pegawai_simpeg = $this->m_user->GetSyncPegawai($id)->result();
+		$data_opd_simpeg = $this->m_instansi->GetSyncOPD()->result();
+		$data_update = array();
+
+		if(!empty($data_opd_simpeg) || $data_opd_simpeg){
+			foreach($data_opd_simpeg as $row){
+					$data_update[] = array(
+							'simpeg_dept_id' => $row->dept_id_simpeg,
+							'dept_name' => $row->nama_unor,
+							'dept_alias' => (empty($row->akronim)) ? $row->nama_unor :  $row->akronim,
+							'alamat' => $row->detail_lokasi,
+							'status' => $row->status_simpeg,
+							'kecamatan_id' => $row->kecamatan_id_simpeg_,
+							'dept_type' => $row->type_unor,
+							'parent_id_simpeg' => $row->parent_simpeg,
+							'position_order_simpeg' => $row->norut_unor
+					);
+			}
+			$this->return = $this->db->update_batch('mf_departments', $data_update, 'simpeg_dept_id');
+		}
+		if ($this->return) {
+				$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Berhasil sinkron data' ]));	
+		}else {
+				$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal sinkron data.']));
+		}
+	}
+	
+	public function SyncPegawai()
+	{
+		$this->output->unset_template();
+		$data_pegawai_simpeg = $this->m_user->GetSyncPegawai()->result();
 		$data_mf_users = array();
 		$data_users_login = array();
 		$data_sp_pegawai = array();
@@ -416,10 +497,7 @@ class User extends App_Controller {
 					'gelar_blk'  => $row->glr_blkng_simpeg,
 					'gender'     => $gender,
 					'jabatan'    => $row->nama_jabatan,
-					'statpeg_id' => $row->status_pegawai_sikap_id,
-					'golongan_id' => $row->golongan_id_sikap,
-					'eselon_id' => $row->eselon_id_sikap,
-					'kelas_jabatan' => (!empty($row->kelas_jabatan_id)) ? $row->kelas_jabatan_id : NULL
+					'statpeg_id' => $row->status_pegawai_sikap_id
 				);
 			}
 		}
@@ -440,8 +518,7 @@ class User extends App_Controller {
 			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal sinkron data user.']));
 		}
 	}
-
 }
 
-/* End of file User.php */
-/* Location: ./application/modules/Administrator/controllers/User.php */
+/* End of file Synchronize_data.php */
+/* Location: ./application/modules/Administrator/controllers/Synchronize_data.php */

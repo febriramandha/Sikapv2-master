@@ -14,7 +14,7 @@ class Absen_manualpe extends App_Controller {
 		$this->_init();
 		$this->breadcrumbs->push('Absen Manual Pegawai', 'mngsch/setsch-start');
 		$this->data['title'] = "Absen Manual";
-		$this->load->model(['m_instansi','m_schabsen_manual']);
+		$this->load->model(['m_instansi','m_schabsen_manual','m_user']);
 	}
 
 	private function _init()
@@ -39,7 +39,8 @@ class Absen_manualpe extends App_Controller {
 		$this->load->library('datatables');
 		$instansi = decrypt_url($this->input->post('instansi'),'instansi');
 		$level 	  = $this->db->select('level')->get_where('v_instansi_all', ['id' => $instansi])->row()->level;
-        $this->datatables->select('a.id, a.name, a.start_date, a.end_date, json_nama_nip as nama_nip, c.dept_alias,a.absen_in,a.absen_out')
+       
+		$this->datatables->select('a.id, a.name, a.start_date, a.end_date, json_nama_nip as nama_nip, c.dept_alias,a.absen_in,a.absen_out')
         	->from('schabsen_manual a')
         	->join("(select id as schabsenmanual_id, 
 					json_build_object(
