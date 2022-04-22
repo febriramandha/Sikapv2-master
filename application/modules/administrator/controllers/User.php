@@ -444,9 +444,10 @@ class User extends App_Controller {
 									  'absen_online_app' => $absen_online,
 									);
 
+								var_dump($data);
+
 						$this->db->insert('mf_users', $data);
 						$user_id = $this->db->insert_id();
-
 						// insert to server 2
 						$data_att = array('userid' 	 		=> $user_id,
 										  'badgenumber' 	=> $key,			
