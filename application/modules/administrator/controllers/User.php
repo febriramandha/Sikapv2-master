@@ -453,7 +453,7 @@ class User extends App_Controller {
 										  'ssn' 	 		=> $nip,
 								  		  'name' 	 		=> $nama_lengkap,
 								  		  'defaultdeptid' 	=> $defaultdeptid);
-						$this->m_server_att->NewUserinfo($data_att);
+						// $this->m_server_att->NewUserinfo($data_att);
 						// end
 						// $status = 0;
 						// if ($this->input->post('status_akun')) {
