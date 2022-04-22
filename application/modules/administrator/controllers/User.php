@@ -373,6 +373,7 @@ class User extends App_Controller {
 
 	 public function AjaxImport(){
      	$this->output->unset_template();
+		$this->load->model('m_server_att');
 
 		  if(isset($_FILES["file"]["name"])){
                   // upload
