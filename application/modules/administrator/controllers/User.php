@@ -389,21 +389,21 @@ class User extends App_Controller {
 					'updated_at' 	=> date('Y-m-d H:i:s'),
 					'updated_by'  => $this->session->userdata('tpp_user_id'),
 				);	
-				$level = 3;
-				if($row->status_jabatan_simpeg == 'kepala_opd'){
-					$level = 5;
-				}else if($row->status_jabatan_simpeg == 'sekda'){
-					$level = 4;
-				}
+				
 
 				$data_users_login[] = array(
 					'user_id' => $row->id,
 					'username' => $row->username_simpeg,
 					'password' => $row->password_simpeg,
-					'level' => $level,
 					'updated_at' 	=> date('Y-m-d H:i:s'),
 					'status' => $row->status_akun_simpeg
 				);
+
+				if($row->status_jabatan_simpeg == 'kepala_opd'){
+					$data_users_login['level'] = 5;
+				}else if($row->status_jabatan_simpeg == 'sekda'){
+					$data_users_login['level'] = 4;
+				}
 
 				$gender = '1';
 				if($row->jenis_kelamin == 'P'){

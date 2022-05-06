@@ -33,8 +33,10 @@
             <button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1" id="cetak">
                 <span><i class="icon-printer mr-2"></i> Cetak</span>
             </button>
-            <a class="btn btn-sm bg-info-400 legitRipple pt-1 pb-1 sync-pegawai" id="sync-pegawai">
-                <span><i class="icon-spinner11"></i> Sinkron</span>
+            <a class="btn btn-sm bg-info-400 legitRipple pt-1 pb-1 sync-pegawai" id="sync-pegawai-pns">
+                <span><i class="icon-spinner11"></i> Sinkron PNS</span>
+            </a> <a class="btn btn-sm bg-info-400 legitRipple pt-1 pb-1 sync-pegawai" id="sync-pegawai-non-pns">
+                <span><i class="icon-spinner11"></i> Sinkron Non PNS</span>
             </a>
         </div>
 
@@ -64,7 +66,6 @@
 <input type="hidden" name="stag" value="0">
 <script type="text/javascript">
 $(document).ready(function() {
-
     // Initialize
     dt_componen();
     loadSettings();
