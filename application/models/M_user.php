@@ -236,6 +236,21 @@ class M_user extends CI_Model {
 		return 	$data_res;	
 	}
 
+  // semntara export data
+  public function GetUserAllAktifExport($dept_id='')
+  {
+    $level    = $this->db->select('level')->get_where('v_instansi_all', ['id' => $dept_id])->row()->level;
+    $this->db->select('a.id, a.nip, a.key, a.nama, a.dept_alias, b.level, status, status_pegawai, att_status, count_finger, a.gelar_dpn, a.gelar_blk,a.jabatan,c.simpeg_agama_id as agama,a.pns')
+        ->from('v_users_all a')
+        ->where('key > 0')
+        ->where('att_status',1)
+        ->where('a.pns',2)
+        ->join('users_login b','a.id=b.user_id','left')
+        ->join('_agama c','a.agama_id = c.id','left')
+        ->order_by('path_info, eselon_id,pns');
+    $this->db->where("path_id['".$level."']='".$dept_id."'");
+        return $this->db->get();
+  }
 }
 
 /* End of file M_user.php */
