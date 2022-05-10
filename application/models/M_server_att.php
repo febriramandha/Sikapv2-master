@@ -25,6 +25,12 @@ class M_server_att extends CI_Model {
 		return $this->db2->update('userinfo',$data, $id);
 	}
 
+	// update multi
+	public function UpdateUserMultiinfo($data)
+	{
+		return $this->db2->update_batch('userinfo',$data, 'userid');
+	}
+
 	public function cekTemplate($where)
 	{
 		$this->db2->select('userid');
