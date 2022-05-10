@@ -310,6 +310,7 @@ class Instansi extends App_Controller {
 	public function SyncOpd($id)
 	{
 		$id = decrypt_url($id,'parent_id');
+		$this->load->model('m_server_att');
 		$this->output->unset_template();
 		$data_opd_simpeg = $this->m_instansi->GetSyncOPD($id)->result();
 		// var_dump($id);
@@ -325,7 +326,8 @@ class Instansi extends App_Controller {
 				}else {
 					$order++;
 				}
-					$data_update[] = array(
+
+				$data_update = array(
 							'simpeg_dept_id' => $row->id,
 							'dept_name' => $row->nama_unor,
 							'dept_alias' => (empty($row->akronim)) ? $row->nama_unor :  $row->akronim,
@@ -338,8 +340,17 @@ class Instansi extends App_Controller {
 							'created_at' => date('Y-m-d H:i:s'),
 							'created_by'=> $this->session->userdata('tpp_user_id')
 					);
+				$res_ = $this->db->insert('mf_departments',$data_update);
+				$id_new = $this->db->insert_id();
+				$path = $this->db->select('path_info')->get_where('v_instansi_all_master', ['id' => $id_new])->row();
+				$new_path = attConverPathNumber($path->path_info);
+				$data_att_dept = array( 'deptid' 	=> $id_new,
+										'deptname'  => $new_path.'_'.(empty($row->akronim)) ? $row->nama_unor :  $row->akronim,
+										'supdeptid' => $id,
+								);
+				$this->return = $this->m_server_att->Newdepartments($data_att_dept);
 			}
-			$this->return = $this->db->insert_batch('mf_departments', $data_update);
+			$this->return = TRUE;
 		}else {
 			$this->return = TRUE;
 		}
