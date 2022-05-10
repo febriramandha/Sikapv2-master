@@ -237,11 +237,36 @@ $('#cetak').click(function() {
 })
 
 
-$("#sync-pegawai").click(function() {
+$("#sync-pegawai-pns").click(function() {
     var dept_id = $('[name="instansi"]').val();
     $.ajax({
         type: 'get',
         url: uri_dasar + 'administrator/user/SyncPegawai/' + dept_id,
+        dataType: "JSON",
+        error: function() {
+            $('.table').unblock();
+            bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+        },
+        beforeSend: function() {
+            load_dt('.table');
+        },
+        success: function(res) {
+            if (res.status == true) {
+                bx_alert_ok(res.message, 'success');
+                table.ajax.reload();
+            } else {
+                bx_alert(res.message);
+            }
+            $('.table').unblock();
+        }
+    });
+});
+
+$("#sync-pegawai-non-pns").click(function() {
+    var dept_id = $('[name="instansi"]').val();
+    $.ajax({
+        type: 'get',
+        url: uri_dasar + 'administrator/user/SyncPegawaiNon/' + dept_id,
         dataType: "JSON",
         error: function() {
             $('.table').unblock();

@@ -33,6 +33,45 @@ class M_user_login extends CI_Model {
 	        }
 	  }
 
+	// public function _auth_cek()
+	//   {
+	// 	// if
+	//     $this->db->select('a.id, a.user_id, b.dept_id, a.username as username_sikap, a.password as password_sikap, d.username, d.password, a.level, b.nama, a.avatar');
+	//     $this->db->from('users_login a');
+	//     $this->db->join('mf_users b', 'a.user_id=b.id','left');
+	// 	$this->db->join('simpeg_dev.pegawai c','b.nip = c.nip or b.simpeg_pegawai_id = c.id','left');
+	// 	$this->db->join('simpeg_dev.users d','c.id = d.pegawai_id','left');
+	//     $this->db->where('d.username',$this->input->post('username'));
+	//     $this->db->or_where('a.username',$this->input->post('username'));
+	//     $this->db->where('a.status=1');
+	//     $this->db->limit(1);
+	//         $query = $this->db->get();
+	//         if ($query->num_rows() == 0) {
+	//             return FALSE;
+	//         } else {
+	// 			$data = $query->row();
+	// 			if($data->level == "1"){
+	// 				$password = $data->password_sikap;
+	// 			}else {
+	// 				$password = $data->password;
+	// 			}
+
+	// 			if(empty($password) || $password == NULL){
+	// 				$password_ = $data->password_sikap;
+	// 			}else{
+	// 				$password_ = $password;
+	// 			}
+	// 			if (password_verify($this->input->post('password'), $password_)) {
+	// 				// echo 'Password is vali!';
+	// 				return $data;
+	// 			} else {
+	// 				// echo 'Invalid password.';
+	// 				return FALSE;
+	// 			}
+	            
+	//         }
+	//   }
+
 	public function _cek_user($cookie)
 	{
 		$cek = $this->db->select('level, c.dept_id')

@@ -67,6 +67,7 @@ class Data_pegawai extends App_Controller {
 		$this->breadcrumbs->push('Edit Pegawai', '/');
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
 		$this->data['user']			= $this->m_user->GetUser(decrypt_url($id, 'user_id'))->row();
+		$this->data['simpeg_user']  = $this->m_user->getSimpegDeptUser($this->data['user']->dept_id);
 		$this->data['instansi']		= $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
 		$this->data['instansi_cek']	= $this->m_instansi->GetInstansi($this->data['user']->dept_id)->row();
 		$this->data['agama']		= $this->db->order_by('id')->get('_agama')->result();
@@ -93,6 +94,7 @@ class Data_pegawai extends App_Controller {
 			$this->form_validation->set_rules('password', 'ulangi kata sandi', 'trim|required');
 		}
 		$this->form_validation->set_rules('ketegori', 'kategori', 'required')
+							  ->set_rules('simpeg_pegawai_id','Simpeg Pegawai','required')
 							  ->set_rules('nama', 'nama lengkap', 'required');		
 		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 
@@ -113,7 +115,8 @@ class Data_pegawai extends App_Controller {
 								  'tpp'			=> $tpp,
 								  'absen_online_app' => $absen_online_app,
 								  'updated_at' 	=> date('Y-m-d H:i:s'),
-								  'updated_by'  => $this->session->userdata('tpp_user_id'), );
+								  'updated_by'  => $this->session->userdata('tpp_user_id'),
+								  'simpeg_pegawai_id' => decrypt_url($this->input->post('simpeg_pegawai_id'),'simpeg_pegawai_id'), );
 
 					$this->db->update('mf_users', $data, ['id' => decrypt_url($this->input->post('user_id'),'user_id')]);
 

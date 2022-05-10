@@ -155,6 +155,22 @@
                 <span><i>* aktifkan bagi penerima TPP</i></span>
             </div>
         </div>
+        <?php }else { ?>
+        <div class="form-group row">
+            <label class="col-form-label col-lg-2">Pegawai Simpeg <span class="text-danger">*</span></label>
+            <div class="col-lg-10">
+                <div class="form-group">
+                    <select class="form-control select-search" name="simpeg_pegawai_id">
+                        <option value="">Pilih Pegawai Simpeg</option>
+                        <?php foreach ($simpeg_user as $row) {?>
+                        <option value="<?php echo encrypt_url($row->id,'simpeg_pegawai_id') ?>"
+                            <?php if ($row->id == $user->simpeg_pegawai_id) { echo "selected";} ?>>
+                            <?php echo $row->nama_pegawai ?> </option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+        </div>
         <?php } ?>
         <div class="form-group row" id="nip">
             <label class="col-form-label col-lg-2">Jabatan <span class="text-danger">*</span></label>
@@ -167,6 +183,19 @@
                         value="<?php echo $user->jabatan ?>">
                     <span class="text-danger"><i>* data jabatan diperbarui dari aplikasi SIMPEG (beri tanda (-) jika
                             tidak ada) </i></span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row" id="nip">
+            <label class="col-form-label col-lg-2">Kelas Jabatan <span class="text-danger">*</span></label>
+            <div class="col-lg-10">
+                <div class="form-group-feedback form-group-feedback-left">
+                    <div class="form-control-feedback">
+                        <i class="icon-pencil3"></i>
+                    </div>
+                    <input type="text" name="kelas_jabatan" class="form-control" placeholder="kelas jabatan"
+                        value="<?php echo $user->kelas_jabatan ?>" disabled="yes">
+                    <span class="text-danger"><i>* data jabatan diperbarui dari aplikasi SIMPEG </i></span>
                 </div>
             </div>
         </div>

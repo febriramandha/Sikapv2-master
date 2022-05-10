@@ -223,7 +223,7 @@ if ( ! function_exists('password_needs_rehash'))
 
 // ------------------------------------------------------------------------
 
-if ( ! function_exists('password_verify'))
+if ( ! function_exists(''))
 {
 	/**
 	 * password_verify()

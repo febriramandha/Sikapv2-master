@@ -84,6 +84,7 @@ class User extends App_Controller {
 		$this->breadcrumbs->push('Edit Pengguna', '/');
 		$this->data['breadcrumb'] 	= $this->breadcrumbs->show();
 		$this->data['user']			= $this->m_user->GetUser(decrypt_url($id, 'user_id'))->row();
+		$this->data['simpeg_user']  = $this->m_user->getSimpegDeptUser($this->data['user']->dept_id);
 		$this->data['instansi']		= $this->m_instansi->GetInstasiDeptID($this->session->userdata('tpp_dept_id'))->result();
 		$this->data['agama']		= $this->db->order_by('id')->get('_agama')->result();
 		$this->data['eselon']		= $this->db->order_by('id')->get('_eselon')->result();
@@ -372,6 +373,140 @@ class User extends App_Controller {
 		$this->output->unset_template();
 		$id = decrypt_url($id, 'instansi');
 		$data_pegawai_simpeg = $this->m_user->GetSyncPegawai($id)->result();
+		$data_pegawai_new_simpeg = $this->m_user->getPegawaiAsnNewSimpeg($id)->result();
+		$data_mf_users = array();
+		$data_users_login = array();
+		$data_sp_pegawai = array();
+		if(!empty($data_pegawai_simpeg) || $data_pegawai_simpeg){
+			foreach($data_pegawai_simpeg as $row){
+				$status_pegawai = 0;
+				if($row->status_pegawai == 'status_pegawai_asn'){
+					$status_pegawai = 1;
+				}
+				$data_mf_users[] = array(
+					'id' => $row->id,
+					'nama' => $row->nama_pegawai,
+					'dept_id' => $row->sikap_dept_id_pindah,
+					'pns' => $status_pegawai,
+					'updated_at' 	=> date('Y-m-d H:i:s'),
+					'updated_by'  => $this->session->userdata('tpp_user_id'),
+				);	
+				
+
+
+				if($row->status_jabatan_simpeg == 'kepala_opd'){
+					$level = '5';
+				}else if($row->status_jabatan_simpeg == 'sekda'){
+					$level = '4';
+				}else {
+					$level = $row->level_sikap;	
+				}
+
+				$data_users_login[] = array(
+					'user_id' => $row->id,
+					'username' => $row->username_simpeg,
+					'password' => $row->password_simpeg,
+					'updated_at' 	=> date('Y-m-d H:i:s'),
+					'status' => $row->status_akun_simpeg,
+					'level' => $level,
+				);
+
+
+				$gender = '1';
+				if($row->jenis_kelamin == 'P'){
+					$gender = '2';
+				}
+				$data_sp_pegawai[] = array(
+					'user_id' => $row->id,
+					'agama_id' => $row->agama_id_sikap,
+					'gelar_dpn'  => $row->glr_dpn_simpeg,
+					'gelar_blk'  => $row->glr_blkng_simpeg,
+					'gender'     => $gender,
+					'jabatan'    => $row->nama_jabatan,
+					'statpeg_id' => $row->status_pegawai_sikap_id,
+					'golongan_id' => $row->golongan_id_sikap,
+					'eselon_id' => $row->eselon_id_sikap,
+					'kelas_jabatan' => (!empty($row->kelas_jabatan_id)) ? $row->kelas_jabatan_id : NULL
+				);
+			}
+		}
+		$data1 = $this->db->update_batch('mf_users', $data_mf_users, 'id');
+		if($data1){
+			$data2 = $this->db->update_batch('users_login', $data_users_login, 'user_id');
+			if($data2){
+				$data3 = $this->db->update_batch('sp_pegawai', $data_sp_pegawai, 'user_id');
+				if($data3){
+					foreach($data_pegawai_new_simpeg as $row1){
+						$key = $this->db->select('max(key)')->get('mf_users')->row()->max+1;
+							$data = array('key' 		=> $key,
+									  'nip' 		=> $row1->nip,
+									  'nama' 		=> $row1->nama_pegawai,
+									  'dept_id' 	=> $row1->sikap_dept_id,
+									  'pns' 		=> 1,
+									  'att_status' 	=> 1,
+									  'tpp'			=> 1,
+									  'created_at' 	=> date('Y-m-d H:i:s'),
+									  'created_by'  => $this->session->userdata('tpp_user_id'), 
+									  'absen_online_app' => 1
+									);
+
+						$this->db->insert('mf_users', $data);
+						$user_id = $this->db->insert_id();
+
+						// insert to server 2
+						// $data_att = array('userid' 	 		=> $user_id,
+						// 				  'badgenumber' 	=> $key,			
+						// 				  'ssn' 	 		=> $nip,
+						// 		  		  'name' 	 		=> $this->input->post('nama'),
+						// 		  		  'defaultdeptid' 	=> $defaultdeptid);
+						// $this->m_server_att->NewUserinfo($data_att);
+						// end
+
+						$data = array('user_id' 	=> $user_id,
+									  'username' 	=> $row1->username_simpeg,
+									  'password' 	=> $row1->password_simpeg,  
+									  'level' 		=> 3,
+									  'status' 		=> $row1->status,
+									  'created_at' 	=> date('Y-m-d H:i:s'),
+									  'created_by'  => $this->session->userdata('tpp_user_id'), );
+						$return = $this->db->insert('users_login', $data);
+
+						$jk = 1;
+						if($row->jenis_kelamin == "P"){
+							$jk = 2;
+						}
+						// biodata pegawai
+						$data_biodata = array('agama_id'   => $row1->agama_id_sikap,
+											  'jabatan'    => $row1->nama_jabatan,
+											  'gelar_dpn'  => $row1->glr_dpn_simpeg,
+											  'gelar_blk'  => $row1->glr_blkng_simpeg,
+											  'gender'     => $jk,
+											  'statpeg_id' => $row1->status_pegawai_sikap_id,
+											  'user_id'    => $user_id,
+											  'golongan_id' => $row1->golongan_id_sikap,
+											  'eselon_id' => $row1->eselon_id_sikap,
+											  'kelas_jabatan' => (!empty($row1->kelas_jabatan_id)) ? $row1->kelas_jabatan_id : NULL
+										);
+						$return = $this->db->insert('sp_pegawai',$data_biodata);
+					}
+					$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Berhasil sinkron data pegawai.']));
+				}else {
+					$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal sinkron sp pegawai.']));
+				}
+			}else {
+				$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal sinkron data login user.']));
+			}
+		}else {
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal sinkron data user.']));
+		}
+	}
+
+	public function SyncPegawaiNon($id)
+	{
+		$this->output->unset_template();
+		$id = decrypt_url($id, 'instansi');
+		$data_pegawai_simpeg = $this->m_user->GetSyncPegawai($id)->result();
+		$data_pegawai_new_simpeg = $this->m_user->getPegawaiAsnNewSimpeg($id)->result();
 		$data_mf_users = array();
 		$data_users_login = array();
 		$data_sp_pegawai = array();
@@ -429,6 +564,59 @@ class User extends App_Controller {
 			if($data2){
 				$data3 = $this->db->update_batch('sp_pegawai', $data_sp_pegawai, 'user_id');
 				if($data3){
+					foreach($data_pegawai_new_simpeg as $row1){
+						$key = $this->db->select('max(key)')->get('mf_users')->row()->max+1;
+							$data = array('key' 		=> $key,
+									  'nip' 		=> $row1->nip,
+									  'nama' 		=> $row1->nama_pegawai,
+									  'dept_id' 	=> $row1->sikap_dept_id,
+									  'pns' 		=> 1,
+									  'att_status' 	=> 1,
+									  'tpp'			=> 1,
+									  'created_at' 	=> date('Y-m-d H:i:s'),
+									  'created_by'  => $this->session->userdata('tpp_user_id'), 
+									  'absen_online_app' => 1
+									);
+
+						$this->db->insert('mf_users', $data);
+						$user_id = $this->db->insert_id();
+
+						// insert to server 2
+						// $data_att = array('userid' 	 		=> $user_id,
+						// 				  'badgenumber' 	=> $key,			
+						// 				  'ssn' 	 		=> $nip,
+						// 		  		  'name' 	 		=> $this->input->post('nama'),
+						// 		  		  'defaultdeptid' 	=> $defaultdeptid);
+						// $this->m_server_att->NewUserinfo($data_att);
+						// end
+
+						$data = array('user_id' 	=> $user_id,
+									  'username' 	=> $row1->username_simpeg,
+									  'password' 	=> $row1->password_simpeg,  
+									  'level' 		=> 3,
+									  'status' 		=> $row1->status,
+									  'created_at' 	=> date('Y-m-d H:i:s'),
+									  'created_by'  => $this->session->userdata('tpp_user_id'), );
+						$return = $this->db->insert('users_login', $data);
+
+						$jk = 1;
+						if($row->jenis_kelamin == "P"){
+							$jk = 2;
+						}
+						// biodata pegawai
+						$data_biodata = array('agama_id'   => $row1->agama_id_sikap,
+											  'jabatan'    => $row1->nama_jabatan,
+											  'gelar_dpn'  => $row1->glr_dpn_simpeg,
+											  'gelar_blk'  => $row1->glr_blkng_simpeg,
+											  'gender'     => $jk,
+											  'statpeg_id' => $row1->status_pegawai_sikap_id,
+											  'user_id'    => $user_id,
+											  'golongan_id' => $row1->golongan_id_sikap,
+											  'eselon_id' => $row1->eselon_id_sikap,
+											  'kelas_jabatan' => (!empty($row1->kelas_jabatan_id)) ? $row1->kelas_jabatan_id : NULL
+										);
+						$return = $this->db->insert('sp_pegawai',$data_biodata);
+					}
 					$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Berhasil sinkron data pegawai.']));
 				}else {
 					$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal sinkron sp pegawai.']));
