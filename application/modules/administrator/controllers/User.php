@@ -371,6 +371,7 @@ class User extends App_Controller {
 	public function SyncPegawai($id)
 	{
 		$this->output->unset_template();
+		$this->load->model('m_server_att');
 		$id = decrypt_url($id, 'instansi');
 		$data_pegawai_simpeg = $this->m_user->GetSyncPegawai($id)->result();
 		$data_pegawai_new_simpeg = $this->m_user->getPegawaiAsnNewSimpeg($id)->result();
