@@ -48,10 +48,10 @@ class Auth extends Frontend_Controller {
 		if ($this->form_validation->run() == TRUE) {
 
 			$auth = $this->m_user_login->_auth_cek();
-
+			
 			if($auth == true) {
-
-				if ($this->input->post('remember')) {
+				if($auth->intro == 1 || $auth->level == 1 || $auth->pns == 2 ){
+					if ($this->input->post('remember')) {
 		                $key = random_string('alnum', 64);
 		                set_cookie('tpp_cookie', $key, 3600*24*30); // set expired 30 hari kedepan
 		                
@@ -68,9 +68,15 @@ class Auth extends Frontend_Controller {
 		               
 		            }
 
-			    $data = array('status' => true,
+			   		$data = array('status' => true,
 			    			   'message' => '<i class="fa fa-check text-success"></i> Berhasil Masuk', );
-				   		
+
+				}else {
+					$encrypt = $auth->pegawai_id."#".date("Y-m-d H:i:s");
+					// $url = "https://simpeg.agamkab.go.id/auth/login_service?key=encrypt_url_public(user_id#datetime,'login')
+					$data = array('status' => false,
+				    			 'message' => 'akun simpeg anda belum diaktivasi silahkan klik <i><a href="https://simpeg.agamkab.go.id/auth/login_service?key='.encrypt_url_public($encrypt,'login').'" target="_blank" class="btn btn-sm btn-info">disini</a></i> untuk aktivasi akun simpeg anda!' );					   
+				}		
 			}else {
 				  $data = array('status' => false,
 				    			 'message' => 'nama pengguna atau kata sandi salah' );

@@ -64,3 +64,41 @@ function url_expl_date($string='')
      //tampilkan hasil pemecahan
      return $hasil;
 }
+
+// simpeg new 
+function encrypt_url_public($string, $key) 
+{
+        $CI=& get_instance();
+        $output = false;
+        $user_id = '';
+        $level = '';
+        
+        $string = $string;    
+        
+        $secret_key = 'INTEGRASI'.$key.$user_id.$level;
+        $secret_iv = 2456358494765231;
+        $encrypt_method = "aes-256-cbc";
+        $key = hash("sha256", $secret_key);
+        $iv = substr(hash("sha256", $secret_iv), 0, 16);
+        $result = openssl_encrypt($string, $encrypt_method, $key, 0, $iv);
+        $output = base64_encode($result);
+
+        return $output;
+}
+
+function decrypt_url_public($string, $key) {
+        $CI=& get_instance();
+        $output = false;
+        $user_id = '';
+        $level = '';
+        
+        $secret_key = 'INTEGRASI'.$key.$user_id.$level;
+        $secret_iv = 2456358494765231;
+        $encrypt_method = "aes-256-cbc";
+        $key = hash("sha256", $secret_key);
+        $iv = substr(hash("sha256", $secret_iv), 0, 16);
+        $output = openssl_decrypt(base64_decode($string), $encrypt_method, $key, 0, $iv);
+    
+        return $output;
+    
+}
