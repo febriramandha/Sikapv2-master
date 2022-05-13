@@ -9,7 +9,7 @@
 	$jum_hari_kerja_rekap_lkh_terverikasi_otomatis = array(0);
 	$user = array();
 	foreach ($pegawai_lkh as $row) {
-		$jum_hari_kerja_rekap_lkh[] = jum_hari_kerja_rekap_lkh($row->json_jadwal_lkh);
+		$jum_hari_kerja_rekap_lkh[] = jum_hari_kerja_rekap_lkh($row->json_jadwal_lkh,NULL);
 
 		// $jum_data_kerja_rekap_lkh_terverifikasi = jum_data_kerja_rekap_lkh_field($row->json_jadwal_lkh,'f9');
 		// $jum_data_kerja_rekap_lkh_menunggu 		= jum_data_kerja_rekap_lkh_field($row->json_jadwal_lkh,'f10');
@@ -44,106 +44,108 @@
  ?>
 
 <div class="row">
-	<div class="col-lg-4">
-		<div class="table-responsive">
-			<table id="datatable" class="table table-sm table-hover">
-				<thead>
-					<tr>
-						<th></th>
-						<th width="1%" ></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td><i class="icon-user mr-1"></i> <?php echo $this->session->userdata('tpp_name'); ?></td>
-						<td></td>
-					</tr>
-					<!-- <tr>
+    <div class="col-lg-4">
+        <div class="table-responsive">
+            <table id="datatable" class="table table-sm table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th width="1%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="icon-user mr-1"></i> <?php echo $this->session->userdata('tpp_name'); ?></td>
+                        <td></td>
+                    </tr>
+                    <!-- <tr>
 							<td><i class="icon-file-presentation2 mr-1"></i>Total Jumlah Hari Kerja</td>
 							<td><?php echo $jum_hari_kerja_rekap_lkh_round ?></td>
 					</tr> -->
-					<tr>
-						<td><i class="icon-file-presentation2 mr-1"></i>Total Terverifikasi</td>
-						<td><?php echo $jum_data_kerja_rekap_terverifikasi_sum ?></td>
-					</tr>
-					<tr>
-						<td><i class="icon-file-presentation2 mr-1"></i>Total Verifikasi Atasan</td>
-						<td><?php echo $jum_hari_kerja_rekap_lkh_terverikasi_atasan_sum ?></td>
-					</tr>
-					<tr>
-						<td><i class="icon-file-presentation2 mr-1"></i>Total Verifikasi Otomatis</td>
-						<td><?php echo $jum_hari_kerja_rekap_lkh_terverikasi_otomatis_sum ?></td>
-					</tr>
-					<tr>
-						<td><i class="icon-file-presentation2 mr-1"></i>Total Menunggu Verifikasi</td>
-						<td><?php echo $jum_hari_kerja_rekap_lkh_menunggu_sum ?></td>
-					</tr>
-					<tr>
-						<td><i class="icon-file-presentation2 mr-1"></i>Total Laporan ditolak</td>
-						<td><?php echo $jum_hari_kerja_rekap_lkh_ditolak_sum ?></td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
-	<div class="col-lg-8 col-sm-6">
-		<div class="media" id="pengguna_lkh">
-		</div>	
-	</div>
+                    <tr>
+                        <td><i class="icon-file-presentation2 mr-1"></i>Total Terverifikasi</td>
+                        <td><?php echo $jum_data_kerja_rekap_terverifikasi_sum ?></td>
+                    </tr>
+                    <tr>
+                        <td><i class="icon-file-presentation2 mr-1"></i>Total Verifikasi Atasan</td>
+                        <td><?php echo $jum_hari_kerja_rekap_lkh_terverikasi_atasan_sum ?></td>
+                    </tr>
+                    <tr>
+                        <td><i class="icon-file-presentation2 mr-1"></i>Total Verifikasi Otomatis</td>
+                        <td><?php echo $jum_hari_kerja_rekap_lkh_terverikasi_otomatis_sum ?></td>
+                    </tr>
+                    <tr>
+                        <td><i class="icon-file-presentation2 mr-1"></i>Total Menunggu Verifikasi</td>
+                        <td><?php echo $jum_hari_kerja_rekap_lkh_menunggu_sum ?></td>
+                    </tr>
+                    <tr>
+                        <td><i class="icon-file-presentation2 mr-1"></i>Total Laporan ditolak</td>
+                        <td><?php echo $jum_hari_kerja_rekap_lkh_ditolak_sum ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-lg-8 col-sm-6">
+        <div class="media" id="pengguna_lkh">
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
-$(function () {
+$(function() {
 
-		$(document).ready(function () {
+    $(document).ready(function() {
 
         // Build the chart
         $('#pengguna_lkh').highcharts({
-        	chart: {
-        		plotBackgroundColor: null,
-        		plotBorderWidth: null,
-        		plotShadow: false,
-        		type: 'pie'
-        	},
-        	title: {
-        		text: 'Grafik LKH Pegawai'
-        	},
-        	tooltip: {
-        		pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        	},
-        	plotOptions: {
-        		pie: {
-        			allowPointSelect: true,
-        			cursor: 'pointer',
-        			dataLabels: {
-        				enabled: false
-        			},
-        			showInLegend: true
-        		}
-        	},
-        	series: [{
-        		name: "Persentase",
-        		colorByPoint: true,
-        		data: [
-        			{
-	        			name: "Terverifikasi Atasan",
-	        			y: <?php echo $jum_hari_kerja_rekap_lkh_terverikasi_atasan_sum ?>                }, 
-        			
-        			{
-	    				name: "Terverifikasi Otomatis",
-	    				y: <?php echo $jum_hari_kerja_rekap_lkh_terverikasi_otomatis_sum ?>                }, 
-	    			{
-	    				name: " Menunggu Verifikasi",
-	    				y: <?php echo $jum_hari_kerja_rekap_lkh_menunggu_sum ?>                }, 
-	    			{
-	    				name: "Laporan ditolak",
-	    				y: <?php echo $jum_hari_kerja_rekap_lkh_ditolak_sum ?>                }, 
-	    					
-	    			 ]
-	    				
-    			}]
-			});
-    	});
-	});
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Grafik LKH Pegawai'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: "Persentase",
+                colorByPoint: true,
+                data: [{
+                        name: "Terverifikasi Atasan",
+                        y: <?php echo $jum_hari_kerja_rekap_lkh_terverikasi_atasan_sum ?>
+                    },
 
+                    {
+                        name: "Terverifikasi Otomatis",
+                        y: <?php echo $jum_hari_kerja_rekap_lkh_terverikasi_otomatis_sum ?>
+                    },
+                    {
+                        name: " Menunggu Verifikasi",
+                        y: <?php echo $jum_hari_kerja_rekap_lkh_menunggu_sum ?>
+                    },
+                    {
+                        name: "Laporan ditolak",
+                        y: <?php echo $jum_hari_kerja_rekap_lkh_ditolak_sum ?>
+                    },
+
+                ]
+
+            }]
+        });
+    });
+});
 </script>
