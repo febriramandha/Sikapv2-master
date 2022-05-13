@@ -13,7 +13,7 @@ class Dashboard extends App_Controller {
 		parent::__construct();
 		$this->_init();
 		$this->breadcrumbs->push('Dashboard', 'dashboard');
-		$this->data['title'] = "Dashboards";
+		$this->data['title'] = "Dashboard";
 		$this->load->model(['m_article','m_instansi','m_sch_run','m_absen','m_cookie']);
 	}
 
