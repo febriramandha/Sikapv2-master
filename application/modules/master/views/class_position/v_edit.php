@@ -1,7 +1,7 @@
 <!-- Basic table -->
 <div class="card">
     <div class="card-header bg-white header-elements-inline py-2">
-        <h5 class="card-title">Tambah Tunjangan</h5>
+        <h5 class="card-title">Tambah Jabatan</h5>
         <div class="header-elements">
             <div class="list-icons">
                 <a class="list-icons-item" data-action="collapse"></a>
@@ -13,36 +13,13 @@
 
         <?php echo form_open('master/allowance/AjaxSave','class="form-horizontal" id="formAjax"'); ?>
         <div class="form-group row">
-            <label class="col-form-label col-lg-2">Induk Uraian Jabatan</label>
-            <div class="col-lg-10">
-                <div class="form-group-feedback form-group-feedback-left">
-                    <div class="form-control-feedback">
-                        <i class="icon-pencil3"></i>
-                    </div>
-                    <input type="text" class="form-control" name="jabatan" placeholder="Jabatan"
-                        value="<?php echo $tpp_induk->name ?>" disabled="">
-                </div>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-form-label col-lg-2">Jabatan <span class="text-danger">*</span></label>
+            <label class="col-form-label col-lg-2">Nama Jabatan <span class="text-danger">*</span></label>
             <div class="col-lg-10">
                 <div class="form-group-feedback form-group-feedback-left">
                     <div class="form-control-feedback">
                         <i class="icon-pencil3"></i>
                     </div>
                     <input type="text" class="form-control" name="nama_jabatan" placeholder="Nama Jabatan">
-                </div>
-            </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-form-label col-lg-2">Kelas Jabatan <span class="text-danger">*</span></label>
-            <div class="col-lg-10">
-                <div class="form-group-feedback form-group-feedback-left">
-                    <div class="form-control-feedback">
-                        <i class="icon-pencil3"></i>
-                    </div>
-                    <input type="number" class="form-control" name="kelas_jabatan" placeholder="Kelas Jabatan">
                 </div>
             </div>
         </div>
@@ -58,14 +35,17 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-form-label col-lg-2">Nomor Urut<span class="text-danger">*</span></label>
-            <div class="col-lg-2">
-                <div class="form-group-feedback form-group-feedback-left">
-                    <div class="form-control-feedback">
-                        <i class="icon-pencil3"></i>
-                    </div>
-                    <input type="number" class="form-control" name="position" placeholder="nomor urut"
-                        value="<?php echo $position; ?>">
+            <label class="col-form-label col-lg-2">Unit Kerja <span class="text-danger">*</span></label>
+            <div class="col-lg-10">
+                <div class="form-group">
+                    <select class="form-control multiselect-clickable-groups" name="instansi[]" multiple="multiple"
+                        id="filter_list_dropdwn" data-fouc>
+                        <?php foreach ($instansi as $row) { ?>
+                        <option class="tes" value="<?php echo $row->id ?>" parent_id="<?php echo $row->parent_id ?>">
+                            <?php echo '['.$row->level.']'.carakteX($row->level, '-','|').filter_path($row->path_info)." ".strtoupper($row->dept_name) ?>
+                        </option>
+                        <?php } ?>
+                    </select>
                 </div>
             </div>
         </div>
@@ -81,33 +61,15 @@
                 </div>
             </div>
         </div>
-        <div class="form-group row">
-            <label class="col-form-label col-lg-2">Sub <span class="text-danger">*</span></label>
-            <div class="col-lg-10">
-                <div class="form-group">
-                    <select class="form-control select-nosearch" name="sub">
-                        <option value="">Pilih Sub</option>
-                        <option value="1">Ada</option>
-                        <option value="0">Tidak Ada</option>
-                        <option value="2">Uraian</option>
-                    </select>
-                </div>
-            </div>
+        <input type="hidden" name="mod" value="add">
+        <div class="text-left offset-lg-2">
+            <button type="reset" class="btn btn-sm bg-orange-300 result">Batal <i class="icon-cross3 ml-2"></i></button>
+            <button type="submit" class="btn btn-sm btn-info result">Simpan <i
+                    class="icon-checkmark4 ml-2"></i></button>
+            <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>
         </div>
-        <div class="form-group row">
-            <input type="hidden" name="mod" value="add">
-            <input type="hidden" name="parent" value="<?php echo encrypt_url($tpp_induk->id,'tpp') ?>">
-
-            <div class="text-left offset-lg-2">
-                <button type="reset" class="btn btn-sm bg-orange-300 result">Batal <i
-                        class="icon-cross3 ml-2"></i></button>
-                <button type="submit" class="btn btn-sm btn-info result">Simpan <i
-                        class="icon-checkmark4 ml-2"></i></button>
-                <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>
-            </div>
-        </div>
-        <?php echo form_close() ?>
     </div>
+    <?php echo form_close() ?>
 </div>
 
 <script type="text/javascript">

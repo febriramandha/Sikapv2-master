@@ -1,7 +1,7 @@
 <!-- Basic table -->
 <div class="card">
     <div class="card-header bg-white header-elements-inline py-2">
-        <h5 class="card-title">Data Unit Kerja</h5>
+        <h5 class="card-title">Data Tunjangan PNS</h5>
         <div class="header-elements">
             <div class="list-icons">
                 <a class="list-icons-item" data-action="collapse"></a>
@@ -22,18 +22,17 @@
             <table id="example-advanced" class="table table-sm table-hover table-bordered">
                 <thead>
                     <tr>
-                        <th>Nama Unit Kerja</th>
-                        <th width="1%" style="font-size: 80%;">Jumlah Pengguna</th>
-                        <th width="1%">Status</th>
-                        <th width="1%" class="text-nowrap">Kecamatan</th>
-                        <th width="1%" class="text-nowrap">No Urut</th>
+                        <th>Uraian</th>
+                        <th width="1%" style="font-size: 80%;">Kelas Jabatan</th>
+                        <th width="1%">Besaran TPP</th>
+                        <th width="1%">No Urut</th>
                         <th width="1%">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($instansi as $row ) { 
+                    <?php foreach ($tpp as $row ) { 
                                 $jum_sub = $row->jum_sub;
-                                $id =     encrypt_url($row->id,"instansi");
+                                $id =     encrypt_url($row->id,"tpp");
                                 if ($jum_sub) {
                                           $class = "folder";
                                           $jum_sub_ = '('.$row->jum_sub.')';
@@ -42,29 +41,49 @@
                                           $jum_sub_ = '';
                                 }
                               ?>
-                    <tr data-tt-id="<?php echo $row->id ?>" data-tt-parent-id="<?php echo $row->parent_id ?>">
+                    <tr data-tt-id="<?php echo $row->id; ?>" data-tt-parent-id="<?php echo $row->parent?>">
                         <td class="text-nowrap"><span class="<?php echo $class ?>">
                                 <?php echo filter_path($row->path_info) ?>
-                                <?php echo $row->dept_alias ?>
+                                <?php echo $row->name ?>
                                 <?php echo $jum_sub_ ?></span></td>
-                        <td class="text-center"><?php echo $row->jum_user ?></td>
-                        <td class="text-center"><?php echo status_tree($row->status_instansi) ?></td>
-                        <td class="text-nowrap"><?php echo $row->kecamatan ?></td>
-                        <td class="text-center"><?php echo $row->position_order ?></td>
+                        <td class="text-center"><?php echo $row->kelas_jabatan ?></td>
+                        <td class="text-center"><?php echo $row->tpp ?></td>
+                        <td class="text-center"><?php echo $row->position?></td>
                         <td class="text-nowrap">
-                            <a href="<?php echo base_url('master/instansi/add/'.$id) ?>" tooltip="tambah sub instansi"
+                            <?php if($row->sub == '2'){ ?>
+                            <a href="<?php echo base_url('master/allowance/addopd/'.$id) ?>"
+                                tooltip="tambah instansi penerima" flow="left">
+                                <i class="icon-file-plus2 text-blue-300 mr-1"></i>
+                            </a>
+                            <a href="<?php echo base_url('master/allowance/editopd/'.$id) ?>"
+                                tooltip="edit instansi penerima" flow="left">
+                                <i class="icon-pencil5 text-orange-400 mr-1"></i>
+                            </a>
+                            <a href="<?php echo base_url('master/allowance/add/'.$id) ?>" tooltip="tambah sub tpp"
+                                flow="left">
+                                <i class="icon-file-plus2 text-warning-300 mr-1"></i>
+                            </a>
+                            <?php }else if($row->sub == '0') { ?>
+                            <a class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?"
+                                title="hapus data" tooltip="hapus tpp" flow="left" style="cursor:pointer;"
+                                id="<?php echo $id ?>">
+                                <i class="icon-bin"></i>
+                            </a>
+                            <?php }else { ?>
+                            <a href="<?php echo base_url('master/allowance/add/'.$id) ?>" tooltip="tambah sub tpp"
                                 flow="left">
                                 <i class="icon-file-plus2 text-orange-300 mr-1"></i>
                             </a>
-                            <a href="<?php echo base_url('master/instansi/edit/'.$id) ?>" tooltip="edit instansi"
+                            <a href="<?php echo base_url('master/allowance/edit/'.$id) ?>" tooltip="edit tpp"
                                 flow="left">
                                 <i class="icon-pencil5 text-info-400 mr-1"></i>
                             </a>
                             <a class="confirm-aksi list-icons-item text-warning-600" msg="Benar ingin hapus data ini?"
-                                title="hapus data" tooltip="hapus instansi" flow="left" style="cursor:pointer;"
+                                title="hapus data" tooltip="hapus tpp" flow="left" style="cursor:pointer;"
                                 id="<?php echo $id ?>">
                                 <i class="icon-bin"></i>
                             </a>
+                            <?php } ?>
                         </td>
                     </tr>
 
@@ -107,7 +126,7 @@ $("#search").keyup(function() {
 
 function confirmAksi(id) {
     $.ajax({
-        url: "<?php echo site_url('master/instansi/AjaxDel') ?>",
+        url: "<?php echo site_url('master/allowance/AjaxDel') ?>",
         data: {
             id: id
         },
@@ -131,7 +150,7 @@ function confirmAksi(id) {
 }
 
 $('#cetak').click(function() {
-    newWindow = window.open(uri_dasar + 'master/instansi/cetak', "open", 'height=600,width=800');
+    newWindow = window.open(uri_dasar + 'master/allowance/cetak', "open", 'height=600,width=800');
     if (window.focus) {
         newWindow.focus()
     }

@@ -61,7 +61,7 @@ class M_instansi extends CI_Model {
 
 	public function GetAdminDept($dept_id='')
 	{
-		$cek = $this->db->select('id, parent_id, position_order, level')->get_where('v_instansi_all', ['id' => $dept_id])->row();
+		$cek = $this->db->select('id, parent_id, position_order, level, simpeg_dept_id')->get_where('v_instansi_all', ['id' => $dept_id])->row();
 
 		if ($cek->parent_id > 1 && $cek->position_order == 1 && $cek->level <= 3) {
 			$dept_id_cek = $cek->parent_id;
@@ -87,7 +87,7 @@ class M_instansi extends CI_Model {
 
 	public function GetInstansiLevel($dept_id='', $level='')
 	{
-		$this->db->select('id, dept_name, dept_alias, parent_id, path_info, path_id, level,position_order');
+		$this->db->select('id, dept_name, dept_alias, parent_id, path_info, path_id, level,position_order,simpeg_dept_id');
 		$this->db->where("path_id['".$level."']='".$dept_id."'");
 		return $this->db->get('v_instansi_all');
 	}

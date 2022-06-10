@@ -669,7 +669,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		return $ket;
     }
 
-    function jum_terlambar_rekap($json_data,$status_pegawai)
+    function jum_terlambar_rekap($json_data,$status_pegawai=NULL)
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -723,7 +723,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          return  $jumlah_hari_kerja;
     }
 
-    function jum_pulang_cepat_rekap($json_data,$status_pegawai)
+    function jum_pulang_cepat_rekap($json_data,$status_pegawai=NULL)
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -788,7 +788,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          return  $jumlah_hari_kerja;
     }
 
-    function jum_tk_rekap($json_data,$status_pegawai)
+    function jum_tk_rekap($json_data,$status_pegawai=NULL)
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -843,7 +843,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          return  $jumlah_hari_kerja;
     }
 
-    function jum_tidak_upacara_rekap($json_data,$status_pegawai)
+    function jum_tidak_upacara_rekap($json_data,$status_pegawai=NULL)
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -871,7 +871,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
          return  $jumlah_hari_kerja;
     }
 
-    function jum_tidak_sholatza_rekap($json_data, $agama_id='',$user_id_pengecualian='',$status_pegawai)
+    function jum_tidak_sholatza_rekap($json_data, $agama_id='',$user_id_pengecualian='',$status_pegawai=NULL)
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -932,7 +932,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
     }
 
-    function jum_dinas_luar_rekap($json_data,$status_pegawai)
+    function jum_dinas_luar_rekap($json_data,$status_pegawai=NULL)
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -983,7 +983,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     	return $result;
     }
 
-    function jum_cuti_rekap($json_data,$status_pegawai)
+    function jum_cuti_rekap($json_data,$status_pegawai=NULL)
     {
     	$pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_absen'];
@@ -1032,7 +1032,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     	return $result;
     }
 
-    function jum_hari_kerja_rekap_lkh($json_data,$status_pegawai)
+    function jum_hari_kerja_rekap_lkh($json_data,$status_pegawai=NULL)
     {
     	 $pgarray_data = json_decode($json_data, true);
     	 $json_absen  = $pgarray_data['data_jum_lkh'];
