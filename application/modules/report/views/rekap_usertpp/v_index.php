@@ -10,6 +10,10 @@
     </div>
     <?php echo form_open('report/rekap-usertpp/cetak','class="form-horizontal" target="popup" id="formAjax"'); ?>
     <div class="card-body">
+        <div class="alert alert-warning alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+            <span class="font-weight-semibold">Module Coming Soon</span>
+        </div>
         <div class="form-group row">
             <label class="col-form-label col-lg-2">Unit Kerja <span class="text-danger">*</span></label>
             <div class="col-lg-10">
@@ -153,103 +157,103 @@ $('#kalkulasi').click(function() {
     table.ajax.reload();
 })
 $(document).ready(function() {
-    table = $('#datatable').DataTable({
-        processing: true,
-        serverSide: true,
-        "ordering": false,
-        "searching": false,
-        language: {
-            search: '<span></span> _INPUT_',
-            searchPlaceholder: 'Cari...',
-            processing: '<i class="icon-spinner9 spinner text-blue"></i> Loading..'
-        },
-        "lengthMenu": [
-            [10, 25, 50, 100, 200],
-            [10, 25, 50, 100, 200]
-        ],
-        ajax: {
-            url: uri_dasar + 'report/rekap-usertpp/indexJson',
-            type: "post",
-            "data": function(data) {
-                data.csrf_sikap_token_name = csrf_value;
-                data.pegawai = $('[name="pegawai[]"]').val();
-                data.tahun = $('[name="tahun"]').val();
-                data.bulan = $('[name="bulan"]').val();
-            },
-            beforeSend: function() {
-                result.attr("disabled", true);
-                $('#kalkulasi').hide();
-                spinner.show();
-            },
-            "dataSrc": function(json) {
-                //Make your callback here.
-                result.attr("disabled", false);
-                spinner.hide();
-                $('#kalkulasi').show();
-                return json.data;
-            }
-        },
-        "columns": [{
-                "data": "id",
-                searchable: false
-            },
-            {
-                "data": "nama_nip",
-                searchable: false
-            },
-            {
-                "data": "tpp_aspek_perilaku",
-                searchable: false
-            },
-            {
-                "data": "tpp_capaian_kerja",
-                searchable: false
-            },
-            {
-                "data": "besar_potongan_aspek_disiplin_kerja",
-                searchable: false
-            },
-            {
-                "data": "besar_potongan_produktivitas_kerja",
-                searchable: false
-            },
-            {
-                "data": "jumlah_tpp_dikurangi",
-                searchable: false
-            },
-            {
-                "data": "bpjs",
-                searchable: false
-            },
-            {
-                "data": "ptg_bpjs",
-                searchable: false
-            },
-            {
-                "data": "pph",
-                searchable: false
-            },
-            {
-                "data": "jum_diterima",
-                searchable: false
-            },
+    // table = $('#datatable').DataTable({
+    //     processing: true,
+    //     serverSide: true,
+    //     "ordering": false,
+    //     "searching": false,
+    //     language: {
+    //         search: '<span></span> _INPUT_',
+    //         searchPlaceholder: 'Cari...',
+    //         processing: '<i class="icon-spinner9 spinner text-blue"></i> Loading..'
+    //     },
+    //     "lengthMenu": [
+    //         [10, 25, 50, 100, 200],
+    //         [10, 25, 50, 100, 200]
+    //     ],
+    //     ajax: {
+    //         url: uri_dasar + 'report/rekap-usertpp/indexJson',
+    //         type: "post",
+    //         "data": function(data) {
+    //             data.csrf_sikap_token_name = csrf_value;
+    //             data.pegawai = $('[name="pegawai[]"]').val();
+    //             data.tahun = $('[name="tahun"]').val();
+    //             data.bulan = $('[name="bulan"]').val();
+    //         },
+    //         beforeSend: function() {
+    //             result.attr("disabled", true);
+    //             $('#kalkulasi').hide();
+    //             spinner.show();
+    //         },
+    //         "dataSrc": function(json) {
+    //             //Make your callback here.
+    //             result.attr("disabled", false);
+    //             spinner.hide();
+    //             $('#kalkulasi').show();
+    //             return json.data;
+    //         }
+    //     },
+    //     "columns": [{
+    //             "data": "id",
+    //             searchable: false
+    //         },
+    //         {
+    //             "data": "nama_nip",
+    //             searchable: false
+    //         },
+    //         {
+    //             "data": "tpp_aspek_perilaku",
+    //             searchable: false
+    //         },
+    //         {
+    //             "data": "tpp_capaian_kerja",
+    //             searchable: false
+    //         },
+    //         {
+    //             "data": "besar_potongan_aspek_disiplin_kerja",
+    //             searchable: false
+    //         },
+    //         {
+    //             "data": "besar_potongan_produktivitas_kerja",
+    //             searchable: false
+    //         },
+    //         {
+    //             "data": "jumlah_tpp_dikurangi",
+    //             searchable: false
+    //         },
+    //         {
+    //             "data": "bpjs",
+    //             searchable: false
+    //         },
+    //         {
+    //             "data": "ptg_bpjs",
+    //             searchable: false
+    //         },
+    //         {
+    //             "data": "pph",
+    //             searchable: false
+    //         },
+    //         {
+    //             "data": "jum_diterima",
+    //             searchable: false
+    //         },
 
 
-        ],
-        rowCallback: function(row, data, iDisplayIndex) {
-            var info = this.fnPagingInfo();
-            var page = info.iPage;
-            var length = info.iLength;
-            var index = page * length + (iDisplayIndex + 1);
-            $('td:eq(0)', row).html(index);
+    //     ],
+    //     rowCallback: function(row, data, iDisplayIndex) {
+    //         var info = this.fnPagingInfo();
+    //         var page = info.iPage;
+    //         var length = info.iLength;
+    //         var index = page * length + (iDisplayIndex + 1);
+    //         $('td:eq(0)', row).html(index);
 
-        },
-        createdRow: function(row, data, index) {
-            $('td', row).eq(1).addClass('text-nowrap p-1');
-            $('td', row).eq(2).addClass('text-nowrap p-1 text-center');
-            $('td', row).eq(3).addClass('text-nowrap p-1 text-center');
-        },
-    });
+    //     },
+    //     createdRow: function(row, data, index) {
+    //         $('td', row).eq(1).addClass('text-nowrap p-1');
+    //         $('td', row).eq(2).addClass('text-nowrap p-1 text-center');
+    //         $('td', row).eq(3).addClass('text-nowrap p-1 text-center');
+    //     },
+    // });
     // Initialize
     dt_componen();
 
