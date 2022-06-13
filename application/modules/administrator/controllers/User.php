@@ -413,11 +413,15 @@ class User extends App_Controller {
 						$key = $this->db->select('max(key)')->get('mf_users')->row()->max+1;
 
 						// nip user
-						// if ($this->input->post('ketegori') == 1) {
-						// 	$nip =  $this->input->post('nip'); 
-						// }else {
-						// 	$nip =  $key; 
-						// }
+						$kategori = 2;
+						if ($this->input->post('ketegori') == 1) {
+							$nip =  $this->input->post('nip'); 
+							$kategori = 1;
+						}else {
+							$nip =  $key; 
+							$golongan = NULL;
+							$eselon = NULL;
+						}
 						// att status
 						$defaultdeptid = '-1';
 						$att_status = 0;
@@ -427,16 +431,18 @@ class User extends App_Controller {
 							$defaultdeptid = $unit_kerja;
 						}
 						// tpp
-						// $tpp = 0;
-						// if ($this->input->post('tpp') && $this->input->post('ketegori')==1) {
-						// 	$tpp = 1;
-						// }
+						$tpp = 0;
+						if ($this->input->post('tpp') && $this->input->post('ketegori')==1) {
+							$tpp = 1;
+						}
+
+
 
 						$data = array('key' 		=> $key,
 									  'nip' 		=> $nip,
 									  'nama' 		=> $nama_lengkap,
 									  'dept_id' 	=> $unit_kerja,
-									  'pns' 		=> 1,
+									  'pns' 		=> $kategori,
 									  'att_status' 	=> $att_status,
 									  'tpp'			=> $tpp,
 									  'created_at' 	=> date('Y-m-d H:i:s'),
