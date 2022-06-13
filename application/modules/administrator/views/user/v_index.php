@@ -223,11 +223,15 @@ $('#cetak').click(function() {
 $('#formAjax').submit(function() {
     var result = $('.result');
     var spinner = $('#spinner');
+    var formData = new FormData($(this)[0]);
+
     $.ajax({
         type: 'POST',
         url: $(this).attr('action'),
-        data: $(this).serialize(),
+        data: formData,
         dataType: "JSON",
+        contentType: false,
+        processData: false,
         error: function() {
             result.attr("disabled", false);
             spinner.hide();
