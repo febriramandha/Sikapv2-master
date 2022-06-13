@@ -221,6 +221,7 @@ $('#cetak').click(function() {
 })
 
 $('#formAjax').submit(function() {
+    var result = $('.result');
     var spinner = $('#spinner');
     $.ajax({
         type: 'POST',
