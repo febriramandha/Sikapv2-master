@@ -489,12 +489,10 @@ class User extends App_Controller {
 						$return = $this->db->insert('sp_pegawai',$data_biodata);
         
                     } 
-                }              
-            }
+                }    
+				$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil diimport']));	
 
-			if ($return) {
-			$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil diimport']));	
-		}else {
+            }else {
 			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal mengambil data.']));
 		}
 	 }
