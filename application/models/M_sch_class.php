@@ -25,6 +25,28 @@ class M_sch_class extends CI_Model {
 		return $this->db->get();
 	}
 
+	public function GetPegawaiInstansi($dept_id)
+	{
+		$this->db->select('id')->from('v_users_all')->where('dept_id',$dept_id);
+
+		return $this->db->get();
+
+	}
+
+	public function GetPegawaiSchRun($dept_id,$user_id)
+	{
+		$date = date('Y-m-d');
+		
+		$this->db->select('a.id')
+					->from('sch_run_users a')
+					->join('sch_run b', 'a.sch_run_id = b.id')
+					->where('b.start_date <=', $date)
+					->where('b.end_date >=', $date)
+					->where('a.dept_id',$dept_id)
+					->where($user_id,'any(user_id)', false);
+	
+		return $this->db->get();
+	}
 }
 
 /* End of file M_sch_class.php */

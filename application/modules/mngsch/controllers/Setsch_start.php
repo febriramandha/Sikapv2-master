@@ -127,6 +127,11 @@ class Setsch_start extends App_Controller {
 			if ($this->input->post('status')) {
 				$status = 1;
 			}
+			
+			$centang_pegawai = '0';
+			if ($this->input->post('centang_pegawai')) {
+				$centang_pegawai = 1;
+			}
 
 			$this->mod = $this->input->post('mod');			
 			if ($this->mod == "add") {
@@ -154,6 +159,28 @@ class Setsch_start extends App_Controller {
 
 				$this->return = $this->db->insert_batch('sch_run_deil', $data);
 
+				$instansi_ = $this->input->post('instansi');
+				if($centang_pegawai == 1){
+					for ($i=0; $i < count($instansi_); $i++) {
+						$get_pegawai = $this->m_sch_class->GetPegawaiInstansi($instansi_[$i])->result();
+						foreach($get_pegawai as $row){
+							$user_get[] = $row->id; 
+						}
+						$user_get_ = str_replace(['[', ']', '"'],['{', '}',''],json_encode($user_get));
+
+						if(!empty($user_get)){
+							$data_centang = array(
+							  'schrun_id' 		=> $run_id,
+							  'user_id' 		=> $user_get_,
+							  'dept_id' 		=> $instansi_[$i],
+				 			);
+							$data_centang['created_at'] = date('Y-m-d H:i:s');
+							$data_centang['created_by'] = $this->session->userdata('tpp_user_id');
+							$this->return = $this->db->insert('sch_run_users',$data_centang);		
+						}
+						unset($user_get);
+					}
+				}
 
 				if ($this->return) {
 					 $this->result = array('status' => true,

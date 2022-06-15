@@ -251,7 +251,15 @@ class M_user extends CI_Model {
     $this->db->where("path_id['".$level."']='".$dept_id."'");
         return $this->db->get();
   }
+  
+  public function cek_data($data='',$cek='',$params='')
+  {
+      $query = $this->db->select('*')->where($params,$data)->from($cek)->count_all_results();
+      return $query;
+  }
 }
+
+
 
 /* End of file M_user.php */
 /* Location: ./application/models/M_user.php */
