@@ -105,7 +105,7 @@
             <div class="navbar navbar-light">
                 <div class="text-center w-100">
                     <button type="button" class="navbar-toggler">
-                        SIKAP 2.1.1
+                        SIKAP 2.1.3
                         &copy; 2018 - <?php echo date('Y') ?> Powered by <a href="#">Web Programmer Dinas Komunikasi dan
                             Informatika Kab. Agam </a>
                     </button>
