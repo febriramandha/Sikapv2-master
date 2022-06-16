@@ -13,7 +13,7 @@ class Maintenance_hook
         if(file_exists(APPPATH.'config/config.php')){
             include(APPPATH.'config/config.php');
             
-            if(!(in_array($_SERVER['REMOTE_ADDR'], $config['maintenance_ips']) || in_array($_SERVER['HTTP_X_FORWARDED_FOR'], $config['maintenance_ips'])) && $config['maintenance_mode'] === TRUE){
+            if(!(in_array($_SERVER['REMOTE_ADDR'], $config['maintenance_ips']) || in_array(!empty($_SERVER['HTTP_X_FORWARDED_FOR']), $config['maintenance_ips'])) && $config['maintenance_mode'] === TRUE){
                 include(APPPATH.'views/maintenance.php');
                 exit;
             }

@@ -248,8 +248,8 @@ class Rekap_tpp extends App_Controller {
         	$this->datatables->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip)');
         	$this->datatables->add_column('jum_terlambar_rekap','$1','jum_terlambar_rekap(json_absen)');
         	$this->datatables->add_column('persen_terlambar_rekap','$1','selisih_jam_terlambar(json_absen)');
-        	$this->datatables->add_column('jum_tidak_apel','$1','jum_tidak_apel(json_absen)');
-        	$this->datatables->add_column('persen_tidak_apel','$1','persen_tidak_apel(json_absen)');
+        	$this->datatables->add_column('jum_tidak_apel','$1','0');
+        	$this->datatables->add_column('persen_tidak_apel','$1','0');
         	$this->datatables->add_column('jum_pulang_cepat_rekap','$1','jum_pulang_cepat_rekap(json_absen)');
         	$this->datatables->add_column('persen_pulang_cepat','$1','selisih_jam_cepat_pulang(json_absen)');
         	$this->datatables->add_column('jum_tk_rekap','$1','jum_tk_rekap(json_absen)');
@@ -257,7 +257,8 @@ class Rekap_tpp extends App_Controller {
         	$this->datatables->add_column('jum_tidak_upacara_rekap','$1','jum_tidak_upacara_rekap(json_absen)');
         	$this->datatables->add_column('persen_tidak_upacara','$1','persen_tidak_upacara(json_absen)');
         	$this->datatables->add_column('jum_tidak_sholatza_rekap','$1','jum_tidak_sholatza_rekap(json_absen, agama_id, id)');
-        	$this->datatables->add_column('total_persen_aspek_disiplin','$1','total_persen_aspek_disiplin(json_absen)');
+        	// semntra apel pagi dibuat 0
+			$this->datatables->add_column('total_persen_aspek_disiplin','$1','total_persen_aspek_disiplin(json_absen)');
         	$this->datatables->add_column('jum_tidak_buat_lkh','$1','jum_tidak_buat_lkh(json_jadwal_lkh,jumlah_laporan)');
         	$this->datatables->add_column('persen_tidak_buat_lkh','$1','persen_tidak_buat_lkh(json_jadwal_lkh,jumlah_laporan)');
 							
@@ -274,6 +275,48 @@ class Rekap_tpp extends App_Controller {
         return $this->output->set_output($this->datatables->generate());
 	}
 
+	public function cetak()
+	{
+		$this->output->unset_template();
+		$dept_id = decrypt_url($this->input->post('instansi'),'instansi');
+		
+
+		$this->form_validation->set_rules('instansi', 'nama instansi', 'required')
+							  ->set_rules('pegawai[]', 'pegawai', 'required')
+							  ->set_rules('tahun', 'tahun', 'required')
+							  ->set_rules('bulan', 'bulan', 'required');
+		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
+		if ($this->form_validation->run() == TRUE) {
+			$tahun  	= $this->input->post('tahun');
+			$bulan  	= $this->input->post('bulan');
+
+			$hari_ini 		= "$tahun-$bulan-01";
+ 			$rank1 			= date('Y-m-01', strtotime($hari_ini));
+ 			$rank2 			= date('Y-m-t', strtotime($hari_ini));
+			$jum_hari = jumlah_hari_rank($rank1, $rank2);
+			if ($jum_hari > 31) {
+				echo 'maksimat tanggal yang diizinkan 31 hari';
+			}else{
+				$user_id  	= $this->input->post('pegawai');
+				$user_id_in =array();
+				if ($user_id) {
+					foreach ($user_id as $r_v ) {
+						$user_id_in[] = $r_v;
+					}
+				}
+				$this->data['jum_hari']	= $jum_hari;
+				$this->data['rank1'] 	= $rank1;
+				$this->data['pegawai_tpp'] = $this->m_absen->PegawaiAbsenQueryPemotonganTPP($user_id_in, $rank1, $rank2)->result();
+				$this->data['priode']		 = tgl_ind_bulan($rank1).' s/d '.tgl_ind_bulan($rank2);
+				$this->data['datainstansi']  		= $this->m_pejabat_instansi->GetPajabatByInstansi($dept_id, 7)->row();
+				$this->data['datainstansi_kepala']  = $this->m_pejabat_instansi->GetPajabatByInstansi($dept_id, 3)->row();
+				$this->load->library('Tpdf');
+				$this->load->view('rekap_tpp/v_cetak', $this->data);
+			}
+		}else {
+			echo  validation_errors();
+		}
+	}
 
 }
 

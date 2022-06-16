@@ -210,7 +210,7 @@
 
 	function total_persen_aspek_disiplin($json_data)
 	{
-		return selisih_jam_terlambar($json_data)+persen_tidak_apel($json_data)+selisih_jam_cepat_pulang($json_data)+persen_tk($json_data)+persen_tidak_upacara($json_data);
+		return selisih_jam_terlambar($json_data)+0+selisih_jam_cepat_pulang($json_data)+persen_tk($json_data)+persen_tidak_upacara($json_data);
 	}
 
 	function jum_tidak_buat_lkh($json_data,$jumlah_laporan='')

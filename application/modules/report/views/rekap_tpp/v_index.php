@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    <?php echo form_open('report/rekap-kehadiran/cetak','class="form-horizontal" target="popup" id="formAjax"'); ?>
+    <?php echo form_open('report/rekap-tpp/cetak','class="form-horizontal" target="popup" id="formAjax"'); ?>
     <div class="card-body">
         <div class="form-group row">
             <label class="col-form-label col-lg-2">Unit Kerja <span class="text-danger">*</span></label>
