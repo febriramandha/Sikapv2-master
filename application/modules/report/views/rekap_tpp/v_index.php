@@ -124,7 +124,7 @@
                     <tr class="text-center table-active">
                         <th width="1%" rowspan="3">No</th>
                         <th width="1%" rowspan="3">Nama/NIP</th>
-                        <th rowspan="1" colspan="11" rowspan="1">Pengurangan Aspek Displin Kerja</th>
+                        <th rowspan="1" colspan="11">Pengurangan Aspek Displin Kerja</th>
                         <th rowspan="1" colspan="3">Pengurangan Aspek Produktivitas Kerja</th>
 
                     </tr>
@@ -136,7 +136,7 @@
                         <th width="1%" class="p-1" colspan="2">Tidak Mengikuti Upacara</th>
                         <th width="1%" class="p-1" colspan="1">Total % Pengurangan Aspek Disiplin Kerja</th>
                         <th width="1%" class="p-1" colspan="2">Tidak Membuat LKH</th>
-                        <th width="1%" class="p-1" colspan="1">Total Pengurangan Aspek Produktivitas Kerja</th>
+                        <th width="1%" class="p-1" colspan="1">Total % Pengurangan Aspek Produktivitas Kerja</th>
                     </tr>
                     <tr class=" text-center table-active">
                         <th class="p-1">jml</th>
@@ -317,6 +317,13 @@ $(document).ready(function() {
             $('td', row).eq(6).addClass('text-nowrap p-1 text-center');
             $('td', row).eq(7).addClass('text-nowrap p-1 text-center');
             $('td', row).eq(8).addClass('text-nowrap p-1 text-center');
+            $('td', row).eq(9).addClass('text-nowrap p-1 text-center');
+            $('td', row).eq(10).addClass('text-nowrap p-1 text-center');
+            $('td', row).eq(11).addClass('text-nowrap p-1 text-center');
+            $('td', row).eq(12).addClass('text-nowrap p-1 text-center');
+            $('td', row).eq(13).addClass('text-nowrap p-1 text-center');
+            $('td', row).eq(14).addClass('text-nowrap p-1 text-center');
+            $('td', row).eq(15).addClass('text-nowrap p-1 text-center');
         },
     });
     // Initialize
