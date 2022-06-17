@@ -54,7 +54,7 @@
                   <td colspan="2" width="8.33%"><b>Tidak Mengikuti Upacara</b></td>
                   <td colspan="2" width="8.33%"><b>Total % Pengurangan Aspek Disiplin Kerja</b></td>
                   <td colspan="2" width="8.34%"><b>Tidak Membuat LKH</b></td>
-                  <td colspan="2" width="8.6%"><b>Total % Pengurangan Aspek Produktivitas Kerja</b></td>
+                  <td colspan="2" width="8.58%"><b>Total % Pengurangan Aspek Produktivitas Kerja</b></td>
             </tr>
             <tr align="center">
                   <td width="4%"><b>jml</b></td>
@@ -69,8 +69,8 @@
                   <td width="4.33%"><b>Nilai(%)</b></td>
                   <td width="4%"><b>jml</b></td>
                   <td width="4.33%"><b>Nilai(%)</b></td>
-                  <td width="4.17%"><b>jml</b></td>
-                  <td width="4.17%"><b>Nilai(%)</b></td>
+                  <td width="3.8%"><b>jml</b></td>
+                  <td width="4.53%"><b>Nilai(%)</b></td>
                   <td width="8.6%"><b>Nilai(%)</b></td>
             </tr>
             </thead>';
@@ -91,8 +91,8 @@ $no=1;foreach ($pegawai_tpp as $row) {
                         <td width="4.33%" align="center">'.persen_tidak_upacara($row->json_absen).'</td>
                         <td width="4%" align="center">'.jum_tidak_upacara_rekap($row->json_absen).'</td>
                         <td width="4.33%" align="center">'.total_persen_aspek_disiplin($row->json_absen).'</td>
-                        <td width="4.17%" align="center">'.jum_tidak_buat_lkh($row->json_jadwal_lkh,$row->jumlah_laporan).'</td>
-                        <td width="4.17%" align="center">'.persen_tidak_buat_lkh($row->json_jadwal_lkh,$row->jumlah_laporan).'</td>
+                        <td width="3.8%" align="center">'.jum_tidak_buat_lkh($row->json_jadwal_lkh,$row->jumlah_laporan).'</td>
+                        <td width="4.53%" align="center">'.persen_tidak_buat_lkh($row->json_jadwal_lkh,$row->jumlah_laporan).'</td>
                         <td width="8.6%" align="center">'.persen_tidak_buat_lkh($row->json_jadwal_lkh,$row->jumlah_laporan).'</td>';
             $tbl .='</tr>';
         }
