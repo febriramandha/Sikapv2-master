@@ -294,6 +294,32 @@ class Schshift_pegawai extends App_Controller {
 		}
 	}
 
+	public function AjaxDel()
+	{
+		$this->output->unset_template();
+		$cek = $this->db->select('id')->get_where('shift_run_users',['schrun_id' => decrypt_url($this->input->get('id'),'schrun_id_shift'), 'dept_id' => decrypt_url($this->input->get('instansi'),'instansi')])->result();
+		$cek_sch_run = $this->db->select('id')->get_where('sch_run_users',['schrun_id' => decrypt_url($this->input->get('id'),'schrun_id_shift'), 'dept_id' => decrypt_url($this->input->get('instansi'),'instansi')])->row();
+		
+
+		$data_id = array();
+		foreach($cek as $row){
+			array_push($data_id,$row->id);
+		}
+		if ($cek) {
+			$del = $this->db->where_in('id',$data_id)->delete('shift_run_users');
+		}
+		if ($del) {
+			$del2 = $this->db->delete('sch_run_users',['id' => $cek_sch_run->id]);
+			if($del2){
+				$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil dihapus.']));
+			}else {
+				$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Ada berberapa data tidak berhasil dihapus.']));
+			}
+		} else{
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal dihapus.']));	
+		}
+	}	
+
 
 }
 
