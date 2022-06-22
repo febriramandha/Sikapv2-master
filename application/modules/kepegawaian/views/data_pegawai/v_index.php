@@ -26,6 +26,9 @@
         </div>
 
         <div class="text-right mt-1">
+            <button class="btn btn-sm bg-primary-400 legitRipple pt-1 pb-1" id="export">
+                <span><i class="icon-printer mr-2"></i>Export</span>
+            </button>
             <button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1" id="cetak">
                 <span><i class="icon-printer mr-2"></i> Cetak</span>
             </button>
@@ -169,4 +172,12 @@ $('#cetak').click(function() {
     }
     return false;
 })
+
+$('#export').click(function() {
+    newWindow = window.open(uri_dasar + 'kepegawaian/data-pegawai/export/' + $('[name="instansi"]').val());
+    if (window.focus) {
+        newWindow.focus()
+    }
+    return false;
+});
 </script>

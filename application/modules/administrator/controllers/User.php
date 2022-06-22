@@ -11,10 +11,13 @@ class User extends App_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+		require_once APPPATH.'third_party/PHPExcel/PHPExcel.php';
+
 		$this->_init();
 		$this->breadcrumbs->push('Pengguna', 'administrator/user');
 		$this->data['title'] = "Administrator";
 		$this->load->model(['m_instansi','m_user_login','m_user']);
+        $this->excel = new PHPExcel(); 
 	}
 
 	private function _init()
@@ -639,6 +642,148 @@ class User extends App_Controller {
 			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal sinkron data user.']));
 		}
 	}
+	 public function AjaxImport(){
+     	$this->output->unset_template();
+		$this->load->model('m_server_att');
+
+		  if(isset($_FILES["file"]["name"])){
+                  // upload
+                $file_tmp = $_FILES['file']['tmp_name'];
+                $file_name = $_FILES['file']['name'];
+                $file_size =$_FILES['file']['size'];
+                $file_type=$_FILES['file']['type'];
+                // move_uploaded_file($file_tmp,"uploads/".$file_name); // simpan filenya di folder uploads
+                
+                $object = PHPExcel_IOFactory::load($file_tmp);
+
+                foreach($object->getWorksheetIterator() as $worksheet){
+        
+                    $highestRow = $worksheet->getHighestRow();
+                    $highestColumn = $worksheet->getHighestColumn();
+        
+                    for($row=3; $row<=$highestRow; $row++){
+        
+                        $nama_lengkap = $worksheet->getCellByColumnAndRow(1, $row)->getValue();
+                        $gelar_depan = $worksheet->getCellByColumnAndRow(2, $row)->getValue();
+                        $gelar_blkng = $worksheet->getCellByColumnAndRow(3, $row)->getValue();
+                        $nip = $worksheet->getCellByColumnAndRow(4, $row)->getValue();
+                        $eselon = $worksheet->getCellByColumnAndRow(5, $row)->getValue();
+                        $golongan  = $worksheet->getCellByColumnAndRow(6, $row)->getValue();
+                        $tpp  = $worksheet->getCellByColumnAndRow(7, $row)->getValue();
+                        $jabtan  = $worksheet->getCellByColumnAndRow(8, $row)->getValue();
+                        $status_pegawai  = $worksheet->getCellByColumnAndRow(9, $row)->getValue();
+                        $unit_kerja  = $worksheet->getCellByColumnAndRow(10, $row)->getValue();
+                        $jenis_kelamin  = $worksheet->getCellByColumnAndRow(11, $row)->getValue();
+                        $agama  = $worksheet->getCellByColumnAndRow(12, $row)->getValue();
+                        $jenis_pengguna  = $worksheet->getCellByColumnAndRow(13, $row)->getValue();
+                        $status_absen_finger  = $worksheet->getCellByColumnAndRow(14, $row)->getValue();
+                        $status_akun  = $worksheet->getCellByColumnAndRow(15, $row)->getValue();
+                        $absen_online  = $worksheet->getCellByColumnAndRow(16, $row)->getValue();
+                        $username  = $worksheet->getCellByColumnAndRow(17, $row)->getValue();
+                        $type  = $worksheet->getCellByColumnAndRow(18, $row)->getValue();
+
+						// key
+						$key = $this->db->select('max(key)')->get('mf_users')->row()->max+1;
+
+						// att status
+						$defaultdeptid = '-1';
+						$att_status = 0;
+						if ($status_absen_finger) {
+							$att_status = 1;
+							// aktif userinfo
+							$defaultdeptid = $unit_kerja;
+						}
+						// tpp
+						$tpp = 0;
+						if ($this->input->post('tpp') && $this->input->post('ketegori')==1) {
+							$tpp = 1;
+						}
+
+						$username_cek = 'is_unique[users_login.username'.$nip.']';
+						$nip_cek	  = 'is_unique[mf_users.nip'.$nip.']';
+
+						$cek_data_login = $this->m_user->cek_data($username,'users_login','username'); 
+						$cek_data_user = $this->m_user->cek_data($nip,'mf_users','nip'); 
+
+						if($cek_data_login == 0 && $cek_data_user == 0) {
+							
+							// if(strlen($nip) >= 6){
+								if(!empty($type) && !empty($nama_lengkap) && !empty($jabtan) && !empty($agama) && !empty($status_pegawai) && !empty($unit_kerja)){
+
+									if($type == 1){
+										$nip = $nip;
+										$username = $nip;
+										$password = $nip; 
+										$eselon = $eselon;
+										$golongan = $golongan;
+									}else{
+										$username = $username;
+										$tpye = 2;
+										$nip = $key;
+										$password = 'sikap_pass123';
+										$eselon = NULL;
+										$golongan = NULL;
+									}
+									if(!empty($username) && strlen($username) >= 6){
+										$data = array('key'      => $key,
+												'nip' 		=> $nip,
+												'nama' 		=> $nama_lengkap,
+												'dept_id' 	=> $unit_kerja,
+												'pns' 		=> $type,
+												'att_status' 	=> $att_status,
+												'tpp'			=> $tpp,
+												'created_at' 	=> date('Y-m-d H:i:s'),
+												'created_by'  => $this->session->userdata('tpp_user_id'),
+												'absen_online_app' => $absen_online,
+												);
+
+										$this->db->insert('mf_users', $data);
+										$user_id = $this->db->insert_id();
+										// insert to server 2
+										$data_att = array('userid' 	 		=> $user_id,
+														'badgenumber' 	=> $key,			
+														'ssn' 	 		=> $nip,
+														'name' 	 		=> $nama_lengkap,
+														'defaultdeptid' 	=> $defaultdeptid);
+										$this->m_server_att->NewUserinfo($data_att);
+										// end
+										// $status = 0;
+										// if ($this->input->post('status_akun')) {
+										// 	$status = 1;
+										// }
+										$data = array('user_id' 	=> $user_id,
+													'username' 	=> $username,
+													'password' 	=> $this->m_user_login->ghash($password),
+													'recovery' 	=> $this->encryption->encrypt($password),  
+													'level' 		=> $jenis_pengguna,
+													'status' 		=> $status_akun,
+													'created_at' 	=> date('Y-m-d H:i:s'),
+													'created_by'  => $this->session->userdata('tpp_user_id'), );
+										$return = $this->db->insert('users_login', $data);
+
+										// biodata pegawai
+										$data_biodata = array('agama_id'   => $agama,
+															'jabatan'    => $jabtan,
+															'gelar_dpn'  => $gelar_depan,
+															'gelar_blk'  => $gelar_blkng,
+															'gender'     => $jenis_kelamin,
+															'statpeg_id' => $status_pegawai,
+															'user_id'    => $user_id,
+															'golongan_id' => $golongan,
+															'eselon_id' => $eselon,
+														);
+										$return = $this->db->insert('sp_pegawai',$data_biodata);
+													}
+								}
+							// }
+						}
+                    } 
+                }    
+				$this->output->set_output(json_encode(['status'=>TRUE, 'message'=> 'Data berhasil diimport']));	
+            }else {
+			$this->output->set_output(json_encode(['status'=>FALSE, 'message'=> 'Gagal mengambil data.']));
+		}
+	 }
 
 }
 

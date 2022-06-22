@@ -34,16 +34,16 @@
                 </thead>
                 <tbody>
                     <?php foreach ($instansi as $row ) { 
-                            $jum_sub = $row->jum_sub;
-                            $id =     encrypt_url($row->id,"instansi");
-                            if ($jum_sub) {
-                                    $class = "folder";
-                                    $jum_sub_ = '('.$row->jum_sub.')';
-                            }else {
-                                    $class = "file";
-                                    $jum_sub_ = '';
-                            }
-                            ?>
+                                $jum_sub = $row->jum_sub;
+                                $id =     encrypt_url($row->id,"instansi");
+                                if ($jum_sub) {
+                                          $class = "folder";
+                                          $jum_sub_ = '('.$row->jum_sub.')';
+                                }else {
+                                          $class = "file";
+                                          $jum_sub_ = '';
+                                }
+                              ?>
                     <tr data-tt-id="<?php echo $row->id ?>" data-tt-parent-id="<?php echo $row->parent_id ?>">
                         <td class="text-nowrap"><span class="<?php echo $class ?>">
                                 <?php echo filter_path($row->path_info) ?>

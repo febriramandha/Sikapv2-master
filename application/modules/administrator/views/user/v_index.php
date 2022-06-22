@@ -16,6 +16,17 @@
             </div>
         </div>
         <div class="form-group row">
+            <label class="col-form-label col-lg-2">Import </label>
+            <div class="col-lg-10">
+                <?php echo form_open('administrator/user/AjaxImport','class="form-horizontal" id="formAjax" enctype="multipart/form-data"'); ?>
+                <input type="file" class="form-control-plaintext" name="file" required accept=".xls, .xlsx">
+                <button type="submit" class="btn btn-sm btn-info result">Simpan <i
+                        class="icon-checkmark4 ml-2"></i></button>
+                <i class="icon-spinner2 spinner" style="display: none" id="spinner"></i>
+                <?php echo form_close() ?>
+            </div>
+        </div>
+        <div class="form-group row">
             <label class="col-form-label col-lg-2">Unit Kerja <span class="text-danger">*</span></label>
             <div class="col-lg-10">
                 <div class="form-group">
@@ -39,8 +50,6 @@
                 <span><i class="icon-spinner11"></i> Sinkron Non PNS</span>
             </a>
         </div>
-
-
         <div class="table-responsive">
             <table id="datatable" class="table table-sm table-hover table-bordered">
                 <thead>
@@ -66,13 +75,6 @@
 <input type="hidden" name="stag" value="0">
 <script type="text/javascript">
 $(document).ready(function() {
-    // Initialize
-    dt_componen();
-    loadSettings();
-    load_datatables();
-});
-
-function load_datatables() {
     table = $('#datatable').DataTable({
         processing: true,
         serverSide: true,
@@ -96,9 +98,6 @@ function load_datatables() {
                     data.instansi = $('[name="instansi"]').val();
                 } else {
                     data.instansi = localStorage.index_instansi;
-                }
-                data.all = function() {
-                    return $('#all_data').val();
                 }
             },
         },
@@ -150,10 +149,11 @@ function load_datatables() {
             $('td', row).eq(2).addClass('text-nowrap p-1');
             $('td', row).eq(8).addClass('text-nowrap');
         },
-
-
     });
-}
+    // Initialize
+    dt_componen();
+    loadSettings();
+});
 
 $(window).on('unload', function() {
     saveSettings();
@@ -174,20 +174,6 @@ function loadSettings() {
         if (!$('[name="instansi"]').val()) {
             $('[name="instansi"]').val($('[name="instansi"] option:first').val()).trigger('change');
         }
-    }
-    $('[name="all_data"]').change(function() {
-        if ($(this).is(":checked")) {
-            localStorage.all = 1;
-            $('#all_data').val(localStorage.all);
-            table.ajax.reload();
-        } else {
-            localStorage.all = 0;
-            $('#all_data').val(localStorage.all);
-            table.ajax.reload();
-        }
-    });
-    if (localStorage.all == "1") {
-        $("#all_data").prop('checked');
     }
 }
 
@@ -242,24 +228,8 @@ $("#sync-pegawai-pns").click(function() {
     $.ajax({
         type: 'get',
         url: uri_dasar + 'administrator/user/SyncPegawai/' + dept_id,
-        dataType: "JSON",
-        error: function() {
-            $('.table').unblock();
-            bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
-        },
-        beforeSend: function() {
-            load_dt('.table');
-        },
-        success: function(res) {
-            if (res.status == true) {
-                bx_alert_ok(res.message, 'success');
-                table.ajax.reload();
-            } else {
-                bx_alert(res.message);
-            }
-            $('.table').unblock();
-        }
     });
+
 });
 
 $("#sync-pegawai-non-pns").click(function() {
@@ -285,5 +255,41 @@ $("#sync-pegawai-non-pns").click(function() {
             $('.table').unblock();
         }
     });
+
+});
+
+
+$('#formAjax').submit(function() {
+    var result = $('.result');
+    var spinner = $('#spinner');
+    var formData = new FormData($(this)[0]);
+
+    $.ajax({
+        type: 'POST',
+        url: $(this).attr('action'),
+        data: formData,
+        dataType: "JSON",
+        contentType: false,
+        processData: false,
+        error: function() {
+            result.attr("disabled", false);
+            spinner.hide();
+            bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+        },
+        beforeSend: function() {
+            result.attr("disabled", true);
+            spinner.show();
+        },
+        success: function(res) {
+            if (res.status == true) {
+                bx_alert_success(res.message, 'administrator/user');
+            } else {
+                bx_alert(res.message);
+            }
+            result.attr("disabled", false);
+            spinner.hide();
+        }
+    });
+    return false;
 });
 </script>

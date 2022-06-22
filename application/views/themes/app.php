@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><?php echo $app_name; ?> - <?php echo $title ?> <?php echo $sub_title ?></title>
     <meta content="<?php echo $author ?>" name="author" />
+    <meta content="<?php echo $development ?>" name="development" />
     <?php foreach($meta as $name=>$content){ ?>
     <meta name="<?php echo $name; ?>" content="<?php echo $content; ?>" />
     <?php } ?>
@@ -104,7 +105,7 @@
             <div class="navbar navbar-light">
                 <div class="text-center w-100">
                     <button type="button" class="navbar-toggler">
-                        SIKAP 2.1.1
+                        SIKAP 2.1.3
                         &copy; 2018 - <?php echo date('Y') ?> Powered by <a href="#">Web Programmer Dinas Komunikasi dan
                             Informatika Kab. Agam </a>
                     </button>
