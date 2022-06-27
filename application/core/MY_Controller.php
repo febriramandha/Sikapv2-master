@@ -24,5 +24,11 @@ class MY_Controller extends CI_Controller {
 			$this->data['author'] 		= 'Rian Reski';
 			$this->data['development']  = 'Handika Putra';
 			$this->load->section('analyticstracking', 'analyticstracking');
+
+			if (base_url() == "https://sikap.agamkab.go.id" || base_url() == "http://sikap.agamkab.go.id") {
+				$this->data['db_connect'] = "simpeg";
+			} else {
+				$this->data['db_connect'] = "simpeg_dev";
+			}
 		}
 }

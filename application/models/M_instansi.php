@@ -78,16 +78,16 @@ class M_instansi extends CI_Model {
 	public function GetInstasiDeptID($dept_id='')
 	{
 		$dept_id_cek = $this->GetAdminDept($dept_id);
-		$level = $this->db->select('level,simpeg_dept_id')->get_where('v_instansi_all', ['id' => $dept_id_cek])->row();
-		return $this->GetInstansiLevel($dept_id_cek, $level->level, $level->simpeg_dept_id);
+		$level = $this->db->select('level')->get_where('v_instansi_all', ['id' => $dept_id_cek])->row();
+		return $this->GetInstansiLevel($dept_id_cek, $level->level);
 	}
 
 	
 
-	public function GetInstansiLevel($dept_id='', $level='', $simpeg_dept_id= '')
+	public function GetInstansiLevel($dept_id='', $level='')
 	{
 		$this->db->select('id, dept_name, dept_alias, parent_id, path_info, path_id, level,position_order');
-		$this->db->where("path_id['".$level."']='".$simpeg_dept_id."'");
+		$this->db->where("path_id['".$level."']='".$dept_id."'");
 		return $this->db->get('v_instansi_all');
 	}
 
@@ -143,7 +143,7 @@ class M_instansi extends CI_Model {
 	public function GetSyncOPD($id){
 		// $id = 1;
 		$this->db->select('a.* ');
-		$this->db->from("(SELECT * FROM (SELECT * FROM simpeg_dev.unor WHERE parent = ".$id.") as aa WHERE aa.type_unor NOT IN ('NAGARI','JORONG','NAGARI_PERSIAPAN','KUK'))as a");
+		$this->db->from("(SELECT * FROM (SELECT * FROM ".$this->data['db_connect'].".unor WHERE parent = ".$id.") as aa WHERE aa.type_unor NOT IN ('NAGARI','JORONG','NAGARI_PERSIAPAN','KUK'))as a");
 		$this->db->where('NOT EXISTS (SELECT * FROM mf_departments b WHERE a.id = b.simpeg_dept_id)','',FALSE);
 		return $this->db->get();
 	}
@@ -159,10 +159,10 @@ class M_instansi extends CI_Model {
 	}
 
 	public function getKecamatan($id){
-		$this->db->select('_kecamatan.id');
-		$this->db->where('simpeg_dev.unor.id',$id);
-		$this->db->join('_kecamatan','_kecamatan.kecamatan_id_simpeg = simpeg_dev.unor.kecamatan_id');
-		$this->db->from('simpeg_dev.unor');
+		$this->db->select('b.id');
+		$this->db->where('a.unor.id',$id);
+		$this->db->join('_kecamatan b','b.kecamatan_id_simpeg = a.unor.kecamatan_id');
+		$this->db->from(''.$this->data['db_connect'].'.unor a');
 		return $this->db->get();
 	}
 
@@ -170,7 +170,7 @@ class M_instansi extends CI_Model {
 	
 	public function GetSyncOPD2(){
 		$this->db->select('a.*,b.id as dept_id_simpeg, b.nama_unor,b.akronim,b.detail_lokasi,b.status as status_simpeg, b.kecamatan_id as kecamatan_id_simpeg_, b.type_unor, b.parent as parent_simpeg, b.norut_unor');
-		$this->db->join('simpeg_dev.unor b','b.id = a.simpeg_dept_id');
+		$this->db->join(''.$this->data['db_connect'].'.unor b','b.id = a.simpeg_dept_id');
 		return $this->db->get('mf_departments a');
 	}
 
@@ -178,7 +178,7 @@ class M_instansi extends CI_Model {
 		$this->db->select('*');
 		$this->db->where("type_unor NOT IN('JORONG','NAGARI','NAGARI_PERSIAPAN')");
 		$this->db->order_by('id');
-		return $this->db->get('simpeg_dev.unor');
+		return $this->db->get(''.$this->data['db_connect'].'.unor');
 	}
 }
 

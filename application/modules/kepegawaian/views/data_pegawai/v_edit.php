@@ -18,7 +18,10 @@
                         <i class="icon-pencil3"></i>
                     </div>
                     <input type="text" name="username" class="form-control trim" placeholder="isi nama pengguna"
-                        autocomplete="off" value="<?php echo $user->username ?>">
+                        autocomplete="off" <?php if($user->pns ==1) {echo "disabled";} ?>
+                        value="<?php echo $user->username ?>">
+                    <span><i>* khusus data akun ASN diperbarui dari
+                            simpeg</i></span>
                 </div>
             </div>
         </div>
@@ -30,8 +33,10 @@
                         <i class="icon-pencil3"></i>
                     </div>
                     <input type="password" name="password_confirmation" class="form-control trim"
-                        placeholder="isi kata sandi" autocomplete="new-password" />
-                    <span><i>* kosongkan jika tidak ingin mengganti kata sandi</i></span>
+                        placeholder="isi kata sandi" autocomplete="new-password"
+                        <?php if($user->pns ==1) {echo "disabled";} ?> />
+                    <span><i>* kosongkan jika tidak ingin mengganti kata sandi (khusus data akun ASN diperbarui dari
+                            simpeg)</i></span>
                 </div>
             </div>
         </div>
@@ -43,8 +48,9 @@
                         <i class="icon-pencil3"></i>
                     </div>
                     <input type="password" name="password" class="form-control trim" placeholder="isi ulangi kata sandi"
-                        autocomplete="off" />
-                    <span><i>* kosongkan jika tidak ingin mengganti kata sandi</i></span>
+                        autocomplete="off" <?php if($user->pns ==1) {echo "disabled";} ?> />
+                    <span><i>* kosongkan jika tidak ingin mengganti kata sandi (khusus data akun ASN diperbarui dari
+                            simpeg)</i></span>
                 </div>
             </div>
         </div>
@@ -73,7 +79,7 @@
                         <i class="icon-pencil3"></i>
                     </div>
                     <input type="text" name="nama" class="form-control" placeholder="isi nama lengkap"
-                        value="<?php echo $user->nama ?>">
+                        value="<?php if(!empty($user->nama_pegawai_simpeg)) { echo $user->nama_pegawai_simpeg; } else {echo $user->nama;}?>">
                 </div>
             </div>
             <div class="col-lg-3">
@@ -82,7 +88,7 @@
                         <i class="icon-pencil3"></i>
                     </div>
                     <input type="text" name="gelar_dpn" class="form-control" placeholder="gelar depan"
-                        value="<?php echo $user->gelar_dpn ?>">
+                        value="<?php if(!empty($user->gelar_depan_simpeg)){ echo $user->gelar_depan_simpeg; }else {$user->gelar_dpn; }?>">
                 </div>
             </div>
             <div class="col-lg-3">
@@ -91,8 +97,11 @@
                         <i class="icon-pencil3"></i>
                     </div>
                     <input type="text" name="gelar_blk" class="form-control" placeholder="gelar belakang"
-                        value="<?php echo $user->gelar_blk ?>">
+                        value="<?php if(!empty($user->gelar_blkng_simpeg)) { echo $user->gelar_blkng_simpeg; } else {$user->gelar_blk; } ?>">
                 </div>
+            </div>
+            <div class="col-lg-9 offset-lg-2">
+                <span class="text-danger"><i>* data nama lengkap diperbarui dari aplikasi SIMPEG </i></span>
             </div>
         </div>
 
@@ -118,10 +127,12 @@
                         <option value="">Pilih Eselon</option>
                         <?php foreach ($eselon as $row) {?>
                         <option value="<?php echo $row->id ?>"
-                            <?php if ($user->eselon_id == $row->id) { echo "selected";} ?>><?php echo $row->eselon ?>
+                            <?php if ($user->eselon_simpeg_id == $row->id) { echo "selected";} ?>>
+                            <?php echo $row->eselon ?>
                         </option>
                         <?php } ?>
                     </select>
+                    <span class="text-danger"><i>* data eselon diperbarui dari aplikasi SIMPEG </i></span>
                 </div>
             </div>
         </div>
@@ -134,10 +145,11 @@
                         <option value="">Pilih Pangkat/Golongan</option>
                         <?php foreach ($golongan as $row) {?>
                         <option value="<?php echo $row->id ?>"
-                            <?php if ($user->golongan_id == $row->id) { echo "selected";} ?>>
+                            <?php if ($user->golongan_simpeg_id == $row->id) { echo "selected";} ?>>
                             <?php echo $row->pangkat ?>(<?php echo $row->golongan ?>)</option>
                         <?php } ?>
                     </select>
+                    <span class="text-danger"><i>* data golongan diperbarui dari aplikasi SIMPEG</i></span>
                 </div>
             </div>
         </div>

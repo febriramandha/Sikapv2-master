@@ -73,7 +73,7 @@ class Synchronize_data extends App_Controller {
 		$this->output->unset_template();
 		$this->load->library('datatables');
         $this->datatables->select('id,a.*')
-        	->from('simpeg_dev.unor a')
+        	->from(''.$this->data['db_connect'].'.unor a')
         	->where("id NOT IN (SELECT b.simpeg_dept_id FROM mf_departments b WHERE b.simpeg_dept_id IS NOT NULL) AND type_unor != 'NAGARI' AND type_unor != 'NAGARI_PERSIAPAN' AND type_unor != 'JORONG' AND status = '1'")
         	->add_column('cek','$1','cekbox_add_instansi(id)')
 			->add_column('action','<div style="white-space: nowrap;">$1</div>', 'aksi_add_simpeg(id)');
@@ -338,7 +338,7 @@ class Synchronize_data extends App_Controller {
 				$arr_id_simpeg = $this->input->post('id_unor[]');
 				foreach($arr_id_simpeg as $row)
 				{
-					$data_unor_simpeg = $this->db->where('a.id',decrypt_url($row,'id_unor_simpeg'))->get('simpeg_dev.unor a')->row();
+					$data_unor_simpeg = $this->db->where('a.id',decrypt_url($row,'id_unor_simpeg'))->get(''.$this->data['db_connect'].'.unor a')->row();
 					$data_insert[] = array('dept_name' 	 	=> $data_unor_simpeg->nama_unor,
 								'dept_alias' 		=> $data_unor_simpeg->akronim,
 								'kecamatan_id' 		=> $data_unor_simpeg->kecamatan_id,
@@ -361,7 +361,7 @@ class Synchronize_data extends App_Controller {
 
 		}else {
 	
-			$data_unor_simpeg = $this->db->where('a.id',$id_simpeg)->get('simpeg_dev.unor a')->row();
+			$data_unor_simpeg = $this->db->where('a.id',$id_simpeg)->get(''.$this->data['db_connect'].'.unor a')->row();
 			$data = array('dept_name' 	 	=> $data_unor_simpeg->nama_unor,
 								'dept_alias' 		=> $data_unor_simpeg->akronim,
 								'kecamatan_id' 		=> $data_unor_simpeg->kecamatan_id,

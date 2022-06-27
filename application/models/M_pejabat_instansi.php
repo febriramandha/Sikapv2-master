@@ -20,6 +20,15 @@ class M_pejabat_instansi extends CI_Model {
 		return $this->db->get();
 	}
 
+	public function GetCekPejabat($dept_id,$user_id)
+	{
+		$this->db->select('*')
+				->from('pejabat_instansi')
+				->where('user_id',$user_id)
+				->where('dept_id',$dept_id);
+		return $this->db->get();
+	}
+
 }
 
 /* End of file M_pejabat_instansi.php */

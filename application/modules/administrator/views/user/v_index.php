@@ -228,6 +228,23 @@ $("#sync-pegawai-pns").click(function() {
     $.ajax({
         type: 'get',
         url: uri_dasar + 'administrator/user/SyncPegawai/' + dept_id,
+        dataType: "JSON",
+        error: function() {
+            $('.table').unblock();
+            bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+        },
+        beforeSend: function() {
+            load_dt('.table');
+        },
+        success: function(res) {
+            if (res.status == true) {
+                bx_alert_ok(res.message, 'success');
+                table.ajax.reload();
+            } else {
+                bx_alert(res.message);
+            }
+            $('.table').unblock();
+        }
     });
 
 });

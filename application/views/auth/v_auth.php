@@ -50,7 +50,7 @@
             <div class="col-12">
                 <div class="text-center p-t-70">
                     <a class="txt2" href="#">
-                        SIKAP 2.1.3
+                        SIKAP 2.1.4
                         &copy; 2018-<?php echo date('Y') ?> Powered by <a href="#">Web Programmer Dinas Komunikasi dan
                             Informatika Kab. Agam </a>
                     </a>
