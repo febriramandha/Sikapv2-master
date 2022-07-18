@@ -361,7 +361,7 @@ if ( ! function_exists('form_dropdown'))
 	 * @param	mixed	$extra
 	 * @return	string
 	 */
-	function form_dropdown($data = '', $options = array(), $selected = array(), $extra = '')
+	function form_dropdown($data = '', $options = array(), $selected = array(), $extra = '',$option_select ='')
 	{
 		$defaults = array();
 
@@ -408,7 +408,9 @@ if ( ! function_exists('form_dropdown'))
 		$multiple = (count($selected) > 1 && stripos($extra, 'multiple') === FALSE) ? ' multiple="multiple"' : '';
 
 		$form = '<select '.rtrim(_parse_form_attributes($data, $defaults)).$extra.$multiple.">\n";
-
+		if(!empty($option_select)){
+			$form .= '<option value="">'.$option_select.'</option>';
+		}
 		foreach ($options as $key => $val)
 		{
 			$key = (string) $key;
@@ -421,6 +423,8 @@ if ( ! function_exists('form_dropdown'))
 				}
 
 				$form .= '<optgroup label="'.$key."\">\n";
+				$form .= '<option value="">Pilih Instansi</option>';
+
 
 				foreach ($val as $optgroup_key => $optgroup_val)
 				{

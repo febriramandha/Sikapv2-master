@@ -364,6 +364,18 @@ class M_user extends CI_Model {
       $query = $this->db->select('*')->where($params,$data)->from($cek)->count_all_results();
       return $query;
   }
+
+  public function GetRiwayatUnitKerja()
+  {
+    $this->db->select('a.id, b.dept_name as dept_from, c.dept_name as dept_to,d.nama,d.nip,e.gelar_dpn,e.gelar_blk')
+            ->from('mutasi a')
+            ->join('mf_departments b','b.id = a.dept_from','left')
+            ->join('mf_departments c','c.id = a.dept_to','left')
+            ->join('mf_users d','d.id = a.user_id','left')
+            ->join('sp_pegawai e','e.user_id = d.id','left')
+            ->order_by('a.tgl_pindah','desc');
+    return $this->db->get();
+  }
 }
 
 

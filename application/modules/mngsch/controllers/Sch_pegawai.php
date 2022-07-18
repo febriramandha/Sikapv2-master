@@ -84,7 +84,7 @@ class Sch_pegawai extends App_Controller {
 		$schrun_id = decrypt_url($this->input->post('schrun_id'),'schrun_id');
 		$sch = $this->db->get_where('sch_run',['id' => $schrun_id])->row();
 		$this->load->library('datatables');
-        $this->datatables->select('DISTINCT ON (no_urut) a.id, a.nip, a.nama, a.dept_name, status_pegawai,gelar_dpn,gelar_blk, b.user_id as checked, usercek.user_id as disabled')
+        $this->datatables->select('DISTINCT ON (no_urut) a.id, a.nip, a.nama, a.dept_id, a.dept_name, status_pegawai,gelar_dpn,gelar_blk, b.user_id as checked, usercek.user_id as disabled, d.tgl_pindah')
         	->from('v_users_all a')
         	->join('(SELECT id, unnest(user_id) as user_id, schrun_id FROM sch_run_users where schrun_id='.$schrun_id.') as b','a.id=b.user_id','left')
         	->join("(SELECT a.id, unnest(user_id) as user_id, schrun_id, start_date, end_date FROM sch_run_users a
@@ -92,13 +92,14 @@ class Sch_pegawai extends App_Controller {
 				where ((start_date >= '$sch->start_date' and start_date <= '$sch->end_date' and end_date >= '$sch->start_date' and end_date <= '$sch->end_date') or
 				(start_date <= '$sch->start_date' and end_date >= '$sch->start_date'
 				and start_date <= '$sch->end_date' and end_date >= '$sch->end_date'))  and schrun_id != $schrun_id and type in(1,2)) as usercek",'a.id=usercek.user_id','left')
+			->join('mutasi d',"a.id = d.user_id AND d.tgl_pindah >= '$sch->start_date' AND d.tgl_pindah <= '$sch->end_date' AND a.dept_id = d.dept_to",'left')
         	->where('key > 0')
         	->where('att_status',1)
         	->order_by('no_urut')
         	->add_column('cekbox','<label class="pure-material-checkbox">
 										<input type="checkbox" name="user[]" $1>
 										<span></span>
-							        </label>','checked_sch(id, checked, disabled)')
+							        </label>','checked_sch(id, checked, disabled, tgl_pindah)')
         	->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip)');
         	 $this->datatables->where('a.dept_id', $instansi);
         	 if ($this->input->post('search[value]')) {

@@ -107,8 +107,7 @@ class Instansi extends App_Controller {
 		->set_rules('alias', 'nama singkatan', 'required')
 		->set_rules('kategori', 'kategori', 'required')
 		->set_rules('kecamatan', 'kecamatan', 'required')
-		->set_rules('order', 'urutan', 'required|numeric')
-		->set_rules('simpeg_dept_id', 'Simpeg Dept ID', 'required');
+		->set_rules('order', 'urutan', 'required|numeric');
 		if ($this->mod == "add") {
 			$this->form_validation->set_rules('parent', 'instansi induk', 'required');
 		}
@@ -139,9 +138,9 @@ class Instansi extends App_Controller {
 							'created_by' 	 	=> $this->session->userdata('tpp_user_id'),
 							'absen_online'		=> $absen_online,
 							'alamat'			=> $this->input->post('alamat'),
-							'latlong'			=> $this->input->post('latlong'),
-							'radius'			=> $this->input->post('radius'),
-							'simpeg_dept_id'	=> $this->input->post('simpeg_dept_id'),
+							'latlong'			=> (!empty($this->input->post('latlong'))) ? $this->input->post('latlong') : NULL ,
+							'radius'			=> (!empty($this->input->post('radius'))) ? $this->input->post('radius') : NULL,
+							'simpeg_dept_id'	=> (!empty($this->input->post('simpeg_dept_id'))) ? $this->input->post('simpeg_dept_id') : NULL,
 				);
 				$res_ = $this->db->insert('mf_departments',$data);
 				$id_new = $this->db->insert_id();
@@ -186,8 +185,9 @@ class Instansi extends App_Controller {
 					'updated_by' 	 	=> $this->session->userdata('tpp_user_id'),
 					'absen_online'		=> $absen_online,
 					'alamat'			=> $this->input->post('alamat'),
-					'latlong'			=> $this->input->post('latlong'),
-					'radius'			=> $this->input->post('radius'),
+					'latlong'			=> (!empty($this->input->post('latlong'))) ? $this->input->post('latlong') : NULL ,
+					'radius'			=> (!empty($this->input->post('radius'))) ? $this->input->post('radius') : NULL,
+					'simpeg_dept_id'	=> (!empty($this->input->post('simpeg_dept_id'))) ? $this->input->post('simpeg_dept_id') : NULL,
 				);
 				$parent = decrypt_url($this->input->post('parent'),'instansi');
 				if($parent != 0){

@@ -18,7 +18,7 @@
                         <i class="icon-pencil3"></i>
                     </div>
                     <input type="text" name="username" class="form-control trim" placeholder="isi nama pengguna"
-                        autocomplete="off" <?php if($user->pns ==1) {echo "disabled";} ?>
+                        autocomplete="off" <?php if($user->pns ==1) {echo "readonly";} ?>
                         value="<?php echo $user->username ?>">
                     <span><i>* khusus data akun ASN diperbarui dari
                             simpeg</i></span>
@@ -34,7 +34,7 @@
                     </div>
                     <input type="password" name="password_confirmation" class="form-control trim"
                         placeholder="isi kata sandi" autocomplete="new-password"
-                        <?php if($user->pns ==1) {echo "disabled";} ?> />
+                        <?php if($user->pns ==1) {echo "readonly";} ?> />
                     <span><i>* kosongkan jika tidak ingin mengganti kata sandi (khusus data akun ASN diperbarui dari
                             simpeg)</i></span>
                 </div>
@@ -48,7 +48,7 @@
                         <i class="icon-pencil3"></i>
                     </div>
                     <input type="password" name="password" class="form-control trim" placeholder="isi ulangi kata sandi"
-                        autocomplete="off" <?php if($user->pns ==1) {echo "disabled";} ?> />
+                        autocomplete="off" <?php if($user->pns ==1) {echo "readonly";} ?> />
                     <span><i>* kosongkan jika tidak ingin mengganti kata sandi (khusus data akun ASN diperbarui dari
                             simpeg)</i></span>
                 </div>

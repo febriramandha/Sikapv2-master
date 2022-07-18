@@ -48,13 +48,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		return $a;
 	}
 
-	function checked_sch_shift($id='', $checked='', $disabled='')
+	function checked_sch_shift($id='', $checked='', $disabled='', $tgl_pindah='')
 	{
 		$id = encrypt_url($id,"user_id_schshiftrun_user");
 		if ($checked) {
 			  $checked = 'class="checkbox" checked value="'.$id.'"';
 		}elseif ($disabled) {
+			if(empty($tgl_pindah)){
 			  $checked = 'disabled';
+			}
 		}else {
 			 $checked = 'class="checkbox" value="'.$id.'"';
 		}
@@ -62,13 +64,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		return $checked;
 	}
 
-	function checked_sch($id='', $checked='', $disabled='')
+	function checked_sch($id='', $checked='', $disabled='',$tgl_pindah='')
 	{
 		$id = encrypt_url($id,"user_id_schrun_user");
 		if ($checked) {
 			  $checked = 'class="checkbox" checked value="'.$id.'"';
 		}elseif ($disabled) {
+			if(empty($tgl_pindah)){
 			  $checked = 'disabled';
+			}
 		}else {
 			 $checked = 'class="checkbox" value="'.$id.'"';
 		}

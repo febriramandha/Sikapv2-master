@@ -79,7 +79,7 @@
                       foreach ($instansi_simpeg as $row) {
                         $datasimpeg[encrypt_url($row->id,'instansi')] = strtoupper($row->nama_unor); 
                         }
-                        echo form_dropdown('simpeg_dept_id', $datasimpeg, encrypt_url($instansi->simpeg_dept_id,'instansi'),'class="form-control select-search"');
+                        echo form_dropdown('simpeg_dept_id', $datasimpeg, encrypt_url($instansi->simpeg_dept_id,'instansi'),'class="form-control select-search"','TIDAK ADA PILIHAN');
                       ?>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                       foreach ($instansi_all as $row) {
                         $dataparent[encrypt_url($row->id,'instansi')] = '['.$row->level.']'.carakteX($row->level, '-','|').filter_path($row->path_info)." ".strtoupper($row->dept_name); 
                         }
-                        echo form_dropdown('parent_id', $dataparent, encrypt_url($instansi->id,'instansi'),'class="form-control select-search"');
+                        echo form_dropdown('parent_id', $dataparent, encrypt_url($instansi->id,'instansi'),'class="form-control select-search"','TIDAK ADA PILIHAN');
                       ?>
                     </div>
                 </div>

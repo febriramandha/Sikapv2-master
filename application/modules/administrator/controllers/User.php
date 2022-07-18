@@ -99,7 +99,7 @@ class User extends App_Controller {
 
 	public function AjaxSave()
 	{
-		$this->load->model('m_server_att');
+		// $this->load->model('m_server_att');
 		$this->output->unset_template();
 		$mod = $this->input->post('mod');
 		// unik field 
@@ -245,12 +245,25 @@ class User extends App_Controller {
 						$data['absen_online_app'] = 0;
 					}
 
+					$cek_unitkerja =  $this->db->get_where('mf_users',['id' => decrypt_url($this->input->post('user_id'),'user_id')])->row();
+					if($cek_unitkerja->dept_id !== decrypt_url($this->input->post('instansi'),'instansi')){
+						$mutasi[] = array(
+							'user_id' => decrypt_url($this->input->post('user_id'),'user_id'),
+							'dept_from' => $cek_unitkerja->dept_id,
+							'dept_to' => decrypt_url($this->input->post('instansi'),'instansi'),
+							'tgl_pindah' => date('Y-m-d'),
+						);
+					}
+
 					$this->db->update('mf_users', $data, ['id' => decrypt_url($this->input->post('user_id'),'user_id')]);
 
+					if(!empty($mutasi)){
+							$this->db->insert_batch('mutasi', $mutasi);
+					}
 					// insert to server 2
 					$data_att = array('name' 	 		=> $this->input->post('nama'),
 							  		  'defaultdeptid' 	=> $defaultdeptid);
-					$this->m_server_att->UpdateUserinfo($data_att, ['userid' => decrypt_url($this->input->post('user_id'),'user_id')]);
+					// $this->m_server_att->UpdateUserinfo($data_att, ['userid' => decrypt_url($this->input->post('user_id'),'user_id')]);
 					// end
 
 					$status = 0;
@@ -377,6 +390,7 @@ class User extends App_Controller {
 		// $this->load->model('m_server_att');
 		$id = decrypt_url($id, 'instansi');
 		if($id !== FALSE){
+			$mutasi = array();
 			$data_pegawai_simpeg = $this->m_user->GetSyncPegawai($id)->result();
 			$data_pegawai_new_simpeg = $this->m_user->getPegawaiAsnNewSimpeg($id)->result();
 			$data_mf_users = array();
@@ -406,6 +420,14 @@ class User extends App_Controller {
 					
 
 					if($row->sikap_dept_id !== $row->sikap_dept_id_pindah){
+						$mutasi[] = array(
+							'tgl_pindah' => date('Y-m-d'),
+							'user_id' => $row->id,
+							'dept_to' => $row->sikap_dept_id_pindah,
+							'dept_from' => $row->sikap_dept_id,
+							'created_at' => date('Y-m-d'),
+							'created_by' => $this->session->userdata('tpp_user_id')
+						);
 						$level = '3';
 					}
 					
@@ -457,9 +479,11 @@ class User extends App_Controller {
 							}
 						}else{
 							$cek_pejabat =  $this->db->get_where('pejabat_instansi', array('dept_id' => $row->sikap_dept_id, 'user_id' => $row->id))->row();
-							if($cek_pejabat->pejabat_id === '7'){
-								$del = $this->db->delete('pejabat_instansi',['id' => $cek_pejabat->id]);
-							}
+							if(!empty($cek_pejabat)){
+								if($cek_pejabat->pejabat_id === '7'){
+									$del = $this->db->delete('pejabat_instansi',['id' => $cek_pejabat->id]);
+								}
+							}	
 						}
 					}
 
@@ -495,6 +519,7 @@ class User extends App_Controller {
 					// /start
 						// $this->m_server_att->UpdateUserMultiinfo($data_att);
 					// end
+					 $this->db->insert_batch('mutasi', $mutasi);
 					$data2 = $this->db->update_batch('users_login', $data_users_login, 'user_id');
 					if($data2){
 						$data3 = $this->db->update_batch('sp_pegawai', $data_sp_pegawai, 'user_id');
