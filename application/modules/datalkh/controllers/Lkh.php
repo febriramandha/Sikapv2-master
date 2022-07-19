@@ -84,7 +84,7 @@ class Lkh extends App_Controller {
 		$this->data['jumlkh']		= $this->_lkh_jum;
 		$this->data['verifikator']	= $this->m_verifikator->GetVerifikator($this->session->userdata('tpp_user_id'))->row();
 		$this->data['jumlah_nonver'] = $this->m_data_lkh->jumlah_nonver($this->session->userdata('tpp_user_id'));
-		$this->data['cek_persentase_kemarin'] = $this->m_data_lkh->getPersentaseLkh($this->session->userdata('tpp_user_id'),$this->data['tanggal_lkh'][1]); 
+		$this->data['cek_persentase_kemarin'] = $this->m_data_lkh->getPersentaseLkh($this->session->userdata('tpp_user_id'),(!empty($this->data['tanggal_lkh'][1])) ? $this->data['tanggal_lkh'][1] : ""); 
 
 		$this->load->view('lkh/v_add', $this->data);
 	}

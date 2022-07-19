@@ -170,12 +170,14 @@ class M_data_lkh extends CI_Model {
 
      public function getPersentaseLkh($user_id,$last_tgl_lkh)
     {
-        $this->db->select('id,tgl_lkh,persentase')
-        ->from('data_lkh')
-        ->where('user_id',$user_id)
-        ->where('persentase',100)
-        ->where('tgl_lkh',$last_tgl_lkh);
-            return $this->db->get()->row();
+        if(!empty($last_tgl_lkh)){
+            $this->db->select('id,tgl_lkh,persentase')
+            ->from('data_lkh')
+            ->where('user_id',$user_id)
+            ->where('persentase',100)
+            ->where('tgl_lkh',$last_tgl_lkh);
+                return $this->db->get()->row();
+        }
     }
 
 }
