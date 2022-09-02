@@ -29,7 +29,7 @@
         Diberitahukan kepada seluruh pengguna aplikasi SIKAP(LKH dan Absensi Online) bahwasanya tanggal <strong>6 dan 7
             September 2022 </strong> aplikasi SIKAP akan di nonaktifkan sementara dikarenakan adanya pemeliharaan dan
         perbaikan aplikasi. Jika ada rekap absen atau lkh yang dibutuhkan bisa diselesaikan sebelum tanggal tersebut
-        perhatiannya kami ucapkan terima kasih!
+        atas perhatiannya kami ucapkan terima kasih!
     </div>
     <!-- /info alert -->
     <!-- end notif -->

@@ -124,7 +124,7 @@ $('.readonlyjm').on('focus', function() {
 var result = $('.result');
 var spinner = $('#spinner');
 $(document).ready(function() {
-    // $('#exampleModalinfo').modal('show');
+    $('#exampleModalinfo').modal('show');
     table = $('#datatable').DataTable({
         processing: true,
         serverSide: true,
