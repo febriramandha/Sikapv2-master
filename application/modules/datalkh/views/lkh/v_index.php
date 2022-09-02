@@ -92,15 +92,20 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header bg-white py-2">
-                <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-info22 mr-2"></i> Informasi</h5>
+                <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-info22 mr-2"></i> Pemberitahuan!
+                </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>Untuk informasi seputar aplikasi SIKAP. Silahkan bergabung ke group telegram berikut:<br>
-                    <a href="https://t.me/joinchat/JfIKS1PkpAzNigljE8OEzQ"
-                        target="_blank">https://t.me/joinchat/JfIKS1PkpAzNigljE8OEzQ</a>
+                <p> Diberitahukan kepada seluruh pengguna aplikasi SIKAP(LKH dan Absensi Online) bahwasanya tanggal
+                    <strong>6 dan 7
+                        September 2022 </strong> aplikasi SIKAP akan di nonaktifkan sementara dikarenakan adanya
+                    pemeliharaan dan
+                    perbaikan aplikasi. Jika ada rekap absen atau lkh yang dibutuhkan bisa diselesaikan sebelum tanggal
+                    tersebut
+                    atas perhatiannya kami ucapkan terima kasih!
                 </p>
                 <button type="button" class="btn btn-primary">Klik Gabung</button>
             </div>
