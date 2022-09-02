@@ -8,61 +8,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class M_user_login extends CI_Model {
 
-	// public function _auth_cek()
-	//   {
-	// 	// if
-	//     $this->db->select('a.id, user_id, b.dept_id, username, password, level, b.nama, avatar');
-	//     $this->db->from('users_login a');
-	//     $this->db->join('mf_users b', 'a.user_id=b.id','left');
-	//     $this->db->where('username',$this->input->post('username'));
-	//     $this->db->where('status=1');
-	//     $this->db->limit(1);
-	//         $query = $this->db->get();
-	//         if ($query->num_rows() == 0) {
-	//             return FALSE;
-	//         } else {
-	// 			$data = $query->row();
-	// 			if (password_verify($this->input->post('password'), $data->password)) {
-	// 				// echo 'Password is valid!';
-	// 				return $data;
-	// 			} else {
-	// 				// echo 'Invalid password.';
-	// 				return FALSE;
-	// 			}
-	            
-	//         }
-	//   }
-
 	public function _auth_cek()
 	  {
-		// if
-	    $this->db->select('a.id, a.user_id, b.dept_id, a.username as username_sikap, a.password as password_sikap, d.username, d.password, a.level, b.nama, a.avatar,c.intro,b.pns,c.id as pegawai_id');
+	    $this->db->select('a.id, user_id, b.dept_id, username, password, level, b.nama, avatar,b.pns');
 	    $this->db->from('users_login a');
 	    $this->db->join('mf_users b', 'a.user_id=b.id','left');
-		$this->db->join(''.$this->data['db_connect'].'.pegawai c','b.nip = c.nip or b.simpeg_pegawai_id = c.id','left');
-		$this->db->join(''.$this->data['db_connect'].'.users d','c.id = d.pegawai_id','left');
-	    $this->db->where('d.username',$this->input->post('username'));
-	    $this->db->or_where('a.username',$this->input->post('username'));
-	    $this->db->where('a.status=1');
+	    $this->db->where('username',$this->input->post('username'));
+	    $this->db->or_where('b.nip',$this->input->post('username'));
+	    $this->db->where('status=1');
 	    $this->db->limit(1);
 	        $query = $this->db->get();
 	        if ($query->num_rows() == 0) {
-	            return FALSE;
+				return FALSE;
 	        } else {
 				$data = $query->row();
-				if($data->level == "1"){
-					$password = $data->password_sikap;
-				}else {
-					$password = $data->password;
-				}
-
-				if(empty($password) || $password == NULL){
-					$password_ = $data->password_sikap;
-				}else{
-					$password_ = $password;
-				}
-				if (password_verify($this->input->post('password'), $password_)) {
-					// echo 'Password is vali!';
+				if (password_verify($this->input->post('password'), $data->password)) {
+					// echo 'Password is valid!';
 					return $data;
 				} else {
 					// echo 'Invalid password.';
@@ -71,6 +32,44 @@ class M_user_login extends CI_Model {
 	            
 	        }
 	  }
+
+	// public function _auth_cek()
+	//   {
+	//     $this->db->select('a.id, a.user_id, b.dept_id, a.username as username_sikap, a.password as password_sikap, d.username, d.password, a.level, b.nama, a.avatar,c.intro,b.pns,c.id as pegawai_id');
+	//     $this->db->from('users_login a');
+	//     $this->db->join('mf_users b', 'a.user_id=b.id','left');
+	// 	$this->db->join(''.$this->data['db_connect'].'.pegawai c','b.nip = c.nip or b.simpeg_pegawai_id = c.id','left');
+	// 	$this->db->join(''.$this->data['db_connect'].'.users d','c.id = d.pegawai_id','left');
+	//     $this->db->where('d.username',$this->input->post('username'));
+	//     $this->db->or_where('a.username',$this->input->post('username'));
+	//     $this->db->where('a.status=1');
+	//     $this->db->limit(1);
+	//         $query = $this->db->get();
+	//         if ($query->num_rows() == 0) {
+	//             return FALSE;
+	//         } else {
+	// 			$data = $query->row();
+	// 			if($data->level == "1"){
+	// 				$password = $data->password_sikap;
+	// 			}else {
+	// 				$password = $data->password;
+	// 			}
+
+	// 			if(empty($password) || $password == NULL){
+	// 				$password_ = $data->password_sikap;
+	// 			}else{
+	// 				$password_ = $password;
+	// 			}
+	// 			if (password_verify($this->input->post('password'), $password_)) {
+	// 				// echo 'Password is vali!';
+	// 				return $data;
+	// 			} else {
+	// 				// echo 'Invalid password.';
+	// 				return FALSE;
+	// 			}
+	            
+	//         }
+	//   }
 
 	public function _cek_user($cookie)
 	{

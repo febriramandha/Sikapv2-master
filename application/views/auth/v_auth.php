@@ -72,7 +72,7 @@ $('#formAjax').submit(function() {
         error: function() {
             result.html('Masuk');
             result.attr("disabled", false);
-            bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
+            bx_alert('gagal menghubungkan ke server simpeg cobalah mengulang halaman ini kembali');
         },
         beforeSend: function() {
             result.html('<i class="fa fa-refresh fa-spin fa-1x fa-fw"></i>');

@@ -28,7 +28,7 @@ class MY_Controller extends CI_Controller {
 			if (base_url() == "https://sikap.agamkab.go.id" || base_url() == "http://sikap.agamkab.go.id") {
 				$this->data['db_connect'] = "simpeg";
 			} else {
-				$this->data['db_connect'] = "simpeg_dev";
+				$this->data['db_connect'] = "simpeg";
 			}
 		}
 }
