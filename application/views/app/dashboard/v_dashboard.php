@@ -21,6 +21,18 @@
 </div>
 <div class="row">
 
+    <!-- notif maintance -->
+    <!-- Info alert -->
+    <div class="alert alert-info alert-styled-left alert-arrow-left bg-white">
+        <button type="button" class="close" data-dismiss="alert"><span>&times;</span></button>
+        <h6 class="alert-heading font-weight-semibold mb-1">Pemberitahuan!</h6>
+        Diberitahukan kepada seluruh pengguna aplikasi SIKAP(LKH dan Absensi Online) bahwasanya tanggal <strong>5 dan 6
+            September 2022 </strong> aplikasi SIKAP akan di nonaktifkan sementara dikarenakan adanya pemeliharaan dan
+        perbaikan aplikasi. Jika ada rekap absen atau lkh yang dibutuhkan bisa diselesaikan sebelum tanggal tersebut
+        perhatiannya kami ucapkan terima kasih!
+    </div>
+    <!-- /info alert -->
+    <!-- end notif -->
 
     <?php if ($this->session->userdata('tpp_level') == 1 || $this->session->userdata('tpp_level') == 4 ) {
  	?>
