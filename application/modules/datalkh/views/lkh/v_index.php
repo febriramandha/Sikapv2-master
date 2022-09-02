@@ -107,7 +107,6 @@
                     tersebut
                     atas perhatiannya kami ucapkan terima kasih!
                 </p>
-                <button type="button" class="btn btn-primary">Klik Gabung</button>
             </div>
             <div class="modal-footer bg-white py-2">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>

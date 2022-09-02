@@ -179,6 +179,37 @@ if ($jumlah_nonver) {
 </div>
 <!-- /large modal -->
 <?php } ?>
+
+<!-- notif -->
+<!-- Modal -->
+<div class="modal fade" id="exampleModalinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-white py-2">
+                <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-info22 mr-2"></i> Pemberitahuan!
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p> Diberitahukan kepada seluruh pengguna aplikasi SIKAP(LKH dan Absensi Online) bahwasanya tanggal
+                    <strong>6 dan 7
+                        September 2022 </strong> aplikasi SIKAP akan di nonaktifkan sementara dikarenakan adanya
+                    pemeliharaan dan
+                    perbaikan aplikasi. Jika ada rekap absen atau lkh yang dibutuhkan bisa diselesaikan sebelum tanggal
+                    tersebut
+                    atas perhatiannya kami ucapkan terima kasih!
+                </p>
+            </div>
+            <div class="modal-footer bg-white py-2">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- notif -->
 <input type="hidden" name="cekverifikasi" value="<?php echo $verifikasi ?>">
 <script type="text/javascript">
 $('.ckeditor_text').each(function(e) {
@@ -228,6 +259,8 @@ $('.readonlyjm').on('focus', function() {
 });
 
 $(document).ready(function() {
+    $('#exampleModalinfo').modal('show');
+
     load_jam($('[name="tgl"]').val());
     var verifikasi = $('[name="cekverifikasi"]').val();
     if (verifikasi == 1) {
