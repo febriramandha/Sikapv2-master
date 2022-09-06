@@ -72,7 +72,7 @@ class Auth extends Frontend_Controller {
 			    			   'message' => '<i class="fa fa-check text-success"></i> Berhasil Masuk', );
 
 				}else {
-					$encrypt = $auth->pegawai_id."#".date("Y-m-d H:i:s");
+					$encrypt = $auth->simpeg_user_id."#".date("Y-m-d H:i:s");
 					// $url = "https://simpeg.agamkab.go.id/auth/login_service?key=encrypt_url_public(user_id#datetime,'login')
 					$data = array('status' => false,
 				    			 'message' => 'akun simpeg anda belum diaktivasi silahkan klik <i><a href="https://simpeg.agamkab.go.id/auth/login_service?key='.encrypt_url_public($encrypt,'login').'" target="_blank" class="btn btn-sm btn-info">disini</a></i> untuk aktivasi akun simpeg anda!' );					   
