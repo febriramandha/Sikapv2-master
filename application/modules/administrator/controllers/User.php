@@ -99,7 +99,7 @@ class User extends App_Controller {
 
 	public function AjaxSave()
 	{
-		// $this->load->model('m_server_att');
+		$this->load->model('m_server_att');
 		$this->output->unset_template();
 		$mod = $this->input->post('mod');
 		// unik field 
@@ -263,7 +263,7 @@ class User extends App_Controller {
 					// insert to server 2
 					$data_att = array('name' 	 		=> $this->input->post('nama'),
 							  		  'defaultdeptid' 	=> $defaultdeptid);
-					// $this->m_server_att->UpdateUserinfo($data_att, ['userid' => decrypt_url($this->input->post('user_id'),'user_id')]);
+					$this->m_server_att->UpdateUserinfo($data_att, ['userid' => decrypt_url($this->input->post('user_id'),'user_id')]);
 					// end
 
 					$status = 0;
@@ -387,7 +387,7 @@ class User extends App_Controller {
 	public function SyncPegawai($id)
 	{
 		$this->output->unset_template();
-		// $this->load->model('m_server_att');
+		$this->load->model('m_server_att');
 		$id = decrypt_url($id, 'instansi');
 		if($id !== FALSE){
 			$mutasi = array();
@@ -520,7 +520,7 @@ class User extends App_Controller {
 				$data1 = $this->db->update_batch('mf_users', $data_mf_users, 'id');
 				if($data1){
 					// /start
-						// $this->m_server_att->UpdateUserMultiinfo($data_att);
+						$this->m_server_att->UpdateUserMultiinfo($data_att);
 					// end
 					 $this->db->insert_batch('mutasi', $mutasi);
 					$data2 = $this->db->update_batch('users_login', $data_users_login, 'user_id');
@@ -550,7 +550,7 @@ class User extends App_Controller {
 												'ssn' 	 		=> $row1->nip,
 												'name' 	 		=> $row1->nama_pegawai,
 												'defaultdeptid' 	=> $row1->sikap_dept_id);
-								// $this->m_server_att->NewUserinfo($data_att);
+								$this->m_server_att->NewUserinfo($data_att);
 								// end
 
 								$data = array('user_id' 	=> $user_id,
@@ -677,12 +677,12 @@ class User extends App_Controller {
 						$user_id = $this->db->insert_id();
 
 						// insert to server 2
-						// $data_att = array('userid' 	 		=> $user_id,
-						// 				  'badgenumber' 	=> $key,			
-						// 				  'ssn' 	 		=> $nip,
-						// 		  		  'name' 	 		=> $this->input->post('nama'),
-						// 		  		  'defaultdeptid' 	=> $defaultdeptid);
-						// $this->m_server_att->NewUserinfo($data_att);
+						$data_att = array('userid' 	 		=> $user_id,
+										  'badgenumber' 	=> $key,			
+										  'ssn' 	 		=> $nip,
+								  		  'name' 	 		=> $this->input->post('nama'),
+								  		  'defaultdeptid' 	=> $defaultdeptid);
+						$this->m_server_att->NewUserinfo($data_att);
 						// end
 
 						$data = array('user_id' 	=> $user_id,
