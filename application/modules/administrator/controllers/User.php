@@ -399,121 +399,124 @@ class User extends App_Controller {
 			$data_att = array();
 			if(!empty($data_pegawai_simpeg) || $data_pegawai_simpeg){
 				foreach($data_pegawai_simpeg as $row){
-					$status_pegawai = 0;
-					if($row->status_pegawai == 'status_pegawai_asn'){
-						$status_pegawai = 1;
-					}
-					$data_mf_users[] = array(
-						'id' => $row->id,
-						'nama' => $row->nama_pegawai,
-						'dept_id' => $row->sikap_dept_id_pindah,
-						'pns' => $status_pegawai,
-						'updated_at' 	=> date('Y-m-d H:i:s'),
-						'updated_by'  => $this->session->userdata('tpp_user_id'),
-					);	
-
-					$data_att[] = array(
-						'userid' => $row->id,
-						'name' => $row->nama_pegawai,
-						'defaultdeptid' => $row->sikap_dept_id_pindah,
-					);
-					
-
-					if($row->sikap_dept_id !== $row->sikap_dept_id_pindah){
-						$mutasi[] = array(
-							'tgl_pindah' => date('Y-m-d'),
-							'user_id' => $row->id,
-							'dept_to' => $row->sikap_dept_id_pindah,
-							'dept_from' => $row->sikap_dept_id,
-							'created_at' => date('Y-m-d'),
-							'created_by' => $this->session->userdata('tpp_user_id')
-						);
-						$level = '3';
-					}
-					
-					if($row->status_jabatan_simpeg === 'kepala_opd'){
-						$level = '5';
-					}else if($row->status_jabatan_simpeg === 'sekda'){
-						$level = '4';
-					}else {
-						$level = $row->level_sikap;	
-					}
-					if($row->sikap_dept_id !== $row->sikap_dept_id_pindah){
-						if($level === '5'){
-						$where = array('dept_id' 	=> $row->sikap_dept_id_pindah,
-										'pejabat_id' => 3 );
-							$cek =  $this->db->get_where('pejabat_instansi', $where)->row();
-							$data = array(
-									'user_id' => $row->id,
-									'dept_id' => $row->sikap_dept_id_pindah,
-							); 
-							if($cek){	
-								$data['telegram_chat_id'] = null;
-								$data['updated_at'] = date('Y-m-d H:i:s');
-								$data['updated_by'] = $this->session->userdata('tpp_user_id');
-								$update = $this->db->update('pejabat_instansi', $data, ['id' => $cek->id]);
-							}else{
-								$data['pejabat_id'] = 3;
-								$data['created_at'] = date('Y-m-d H:i:s');
-								$data['created_by'] = $this->session->userdata('tpp_user_id');
-								$add = $this->db->insert('pejabat_instansi', $data);
-							}
-						}elseif($level === '4'){
-							$where = array('dept_id' 	=> $row->sikap_dept_id_pindah,
-										'pejabat_id' => 1 );
-							$cek =  $this->db->get_where('pejabat_instansi', $where)->row();
-							$data = array(
-									'user_id' => $row->id,
-									'dept_id' => $row->sikap_dept_id_pindah,
-							); 
-							if($cek){	
-								$data['telegram_chat_id'] = null;
-								$data['updated_at'] = date('Y-m-d H:i:s');
-								$data['updated_by'] = $this->session->userdata('tpp_user_id');
-								$update = $this->db->update('pejabat_instansi', $data, ['id' => $cek->id]);
-							}else{
-								$data['pejabat_id'] = 1;
-								$data['created_at'] = date('Y-m-d H:i:s');
-								$data['created_by'] = $this->session->userdata('tpp_user_id');
-								$add = $this->db->insert('pejabat_instansi', $data);
-							}
-						}else{
-							$cek_pejabat =  $this->db->get_where('pejabat_instansi', array('dept_id' => $row->sikap_dept_id, 'user_id' => $row->id))->row();
-							if(!empty($cek_pejabat)){
-								if($cek_pejabat->pejabat_id === '7'){
-									$del = $this->db->delete('pejabat_instansi',['id' => $cek_pejabat->id]);
-								}
-							}	
+					if($row->sikap_dept_id_pindah != 1){
+						$status_pegawai = 0;
+						if($row->status_pegawai == 'status_pegawai_asn'){
+							$status_pegawai = 1;
 						}
+						$data_mf_users[] = array(
+							'id' => $row->id,
+							'nama' => $row->nama_pegawai,
+							'dept_id' => $row->sikap_dept_id_pindah,
+							'pns' => $status_pegawai,
+							'updated_at' 	=> date('Y-m-d H:i:s'),
+							'updated_by'  => $this->session->userdata('tpp_user_id'),
+						);	
+
+						$data_att[] = array(
+							'userid' => $row->id,
+							'name' => $row->nama_pegawai,
+							'defaultdeptid' => $row->sikap_dept_id_pindah,
+						);
+						
+
+						if($row->sikap_dept_id !== $row->sikap_dept_id_pindah){
+							$mutasi[] = array(
+								'tgl_pindah' => date('Y-m-d'),
+								'user_id' => $row->id,
+								'dept_to' => $row->sikap_dept_id_pindah,
+								'dept_from' => $row->sikap_dept_id,
+								'created_at' => date('Y-m-d'),
+								'created_by' => $this->session->userdata('tpp_user_id')
+							);
+							$level = '3';
+						}
+						
+						if($row->status_jabatan_simpeg === 'kepala_opd'){
+							$level = '5';
+						}else if($row->status_jabatan_simpeg === 'sekda'){
+							$level = '4';
+						}else {
+							$level = $row->level_sikap;	
+						}
+
+						if($row->sikap_dept_id !== $row->sikap_dept_id_pindah){
+							if($level === '5'){
+							$where = array('dept_id' 	=> $row->sikap_dept_id_pindah,
+											'pejabat_id' => 3 );
+								$cek =  $this->db->get_where('pejabat_instansi', $where)->row();
+								$data = array(
+										'user_id' => $row->id,
+										'dept_id' => $row->sikap_dept_id_pindah,
+								); 
+								if($cek){	
+									$data['telegram_chat_id'] = null;
+									$data['updated_at'] = date('Y-m-d H:i:s');
+									$data['updated_by'] = $this->session->userdata('tpp_user_id');
+									$update = $this->db->update('pejabat_instansi', $data, ['id' => $cek->id]);
+								}else{
+									$data['pejabat_id'] = 3;
+									$data['created_at'] = date('Y-m-d H:i:s');
+									$data['created_by'] = $this->session->userdata('tpp_user_id');
+									$add = $this->db->insert('pejabat_instansi', $data);
+								}
+							}elseif($level === '4'){
+								$where = array('dept_id' 	=> $row->sikap_dept_id_pindah,
+											'pejabat_id' => 1 );
+								$cek =  $this->db->get_where('pejabat_instansi', $where)->row();
+								$data = array(
+										'user_id' => $row->id,
+										'dept_id' => $row->sikap_dept_id_pindah,
+								); 
+								if($cek){	
+									$data['telegram_chat_id'] = null;
+									$data['updated_at'] = date('Y-m-d H:i:s');
+									$data['updated_by'] = $this->session->userdata('tpp_user_id');
+									$update = $this->db->update('pejabat_instansi', $data, ['id' => $cek->id]);
+								}else{
+									$data['pejabat_id'] = 1;
+									$data['created_at'] = date('Y-m-d H:i:s');
+									$data['created_by'] = $this->session->userdata('tpp_user_id');
+									$add = $this->db->insert('pejabat_instansi', $data);
+								}
+							}else{
+								$cek_pejabat =  $this->db->get_where('pejabat_instansi', array('dept_id' => $row->sikap_dept_id, 'user_id' => $row->id))->row();
+								if(!empty($cek_pejabat)){
+									if($cek_pejabat->pejabat_id === '7'){
+										$del = $this->db->delete('pejabat_instansi',['id' => $cek_pejabat->id]);
+									}
+								}	
+							}
+						}
+
+						$data_users_login[] = array(
+							'user_id' => $row->id,
+							'username' => $row->username_simpeg,
+							'password' => $row->password_simpeg,
+							'updated_at' 	=> date('Y-m-d H:i:s'),
+							'status' => $row->status_akun_simpeg,
+							'level' => $level,
+						);
+
+
+						$gender = '1';
+						if($row->jenis_kelamin == 'P'){
+							$gender = '2';
+						}
+						$data_sp_pegawai[] = array(
+							'user_id' => $row->id,
+							'agama_id' => $row->agama_id_sikap,
+							'gelar_dpn'  => $row->glr_dpn_simpeg,
+							'gelar_blk'  => $row->glr_blkng_simpeg,
+							'gender'     => $gender,
+							'jabatan'    => $row->nama_jabatan,
+							'statpeg_id' => $row->status_pegawai_sikap_id,
+							'golongan_id' => $row->golongan_id_sikap,
+							'eselon_id' => $row->eselon_id_sikap,
+							'kelas_jabatan' => (!empty($row->kelas_jabatan_id)) ? $row->kelas_jabatan_id : NULL
+						);
 					}
-
-					$data_users_login[] = array(
-						'user_id' => $row->id,
-						'username' => $row->username_simpeg,
-						'password' => $row->password_simpeg,
-						'updated_at' 	=> date('Y-m-d H:i:s'),
-						'status' => $row->status_akun_simpeg,
-						'level' => $level,
-					);
-
-
-					$gender = '1';
-					if($row->jenis_kelamin == 'P'){
-						$gender = '2';
-					}
-					$data_sp_pegawai[] = array(
-						'user_id' => $row->id,
-						'agama_id' => $row->agama_id_sikap,
-						'gelar_dpn'  => $row->glr_dpn_simpeg,
-						'gelar_blk'  => $row->glr_blkng_simpeg,
-						'gender'     => $gender,
-						'jabatan'    => $row->nama_jabatan,
-						'statpeg_id' => $row->status_pegawai_sikap_id,
-						'golongan_id' => $row->golongan_id_sikap,
-						'eselon_id' => $row->eselon_id_sikap,
-						'kelas_jabatan' => (!empty($row->kelas_jabatan_id)) ? $row->kelas_jabatan_id : NULL
-					);
-				}
+				}	
 				$data1 = $this->db->update_batch('mf_users', $data_mf_users, 'id');
 				if($data1){
 					// /start

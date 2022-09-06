@@ -48,7 +48,7 @@
             <table id="datatable" class="table table-sm table-hover table-bordered"">
                 <thead>
                     <tr>
-                        <th width=" 1%">No</th>
+                    <th width=" 1%">No</th>
                 <th class="text-nowrap">Nama Pegawai</th>
                 <th class="text-nowrap" width="1%">Asal Unit Kerja</th>
                 <th class="text-nowrap" width="1%">Unit Kerja Tujuan</th>
@@ -145,6 +145,9 @@ $(document).ready(function() {
             $('td', row).eq(1).addClass('text-nowrap p-1');
             $('td', row).eq(2).addClass('text-nowrap p-1');
             $('td', row).eq(3).addClass('text-nowrap p-1');
+            $('td', row).eq(4).addClass('text-nowrap p-1');
+            $('td', row).eq(5).addClass('text-nowrap p-1');
+            $('td', row).eq(6).addClass('text-nowrap p-1');
         },
 
 
