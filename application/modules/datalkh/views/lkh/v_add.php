@@ -194,13 +194,10 @@ if ($jumlah_nonver) {
                 </button>
             </div>
             <div class="modal-body">
-                <p> Diberitahukan kepada seluruh pengguna aplikasi SIKAP(LKH dan Absensi Online) bahwasanya tanggal
-                    <strong>6 dan 7
-                        September 2022 </strong> aplikasi SIKAP akan di nonaktifkan sementara dikarenakan adanya
-                    pemeliharaan dan
-                    perbaikan aplikasi. Jika ada rekap absen atau lkh yang dibutuhkan bisa diselesaikan sebelum tanggal
-                    tersebut
-                    atas perhatiannya kami ucapkan terima kasih!
+                <p> Diberitahukan kepada seluruh pengguna aplikasi SIKAP, pengisian LKH diperpanjang dimulai dari
+                    tanggal <strong>5 September 2022 </strong> sampai <strong>8 September 2022 Jam 14.00
+                        WIB</strong>Jika
+                    ada lkh yang belum diisi segera di selesaiakan. Atas perhatiannya kami ucapkan terima kasih!
                 </p>
             </div>
             <div class="modal-footer bg-white py-2">
