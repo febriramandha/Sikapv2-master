@@ -87,30 +87,6 @@
     </div>
 </div>
 <!-- Modal -->
-<div class="modal fade" id="exampleModalinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-white py-2">
-                <h5 class="modal-title" id="exampleModalCenterTitle"><i class="icon-info22 mr-2"></i> Pemberitahuan!
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p> Diberitahukan kepada seluruh pengguna aplikasi SIKAP, pengisian LKH diperpanjang dimulai dari
-                    tanggal <strong>5 September 2022 </strong> sampai <strong>8 September 2022 Jam 14.00
-                        WIB</strong>Jika
-                    ada lkh yang belum diisi segera di selesaiakan. Atas perhatiannya kami ucapkan terima kasih!
-                </p>
-            </div>
-            <div class="modal-footer bg-white py-2">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
-            </div>
-        </div>
-    </div>
-</div>
 <script type="text/javascript">
 $(".datepicker").datepicker({
     format: 'dd-mm-yyyy',
@@ -125,7 +101,6 @@ $('.readonlyjm').on('focus', function() {
 var result = $('.result');
 var spinner = $('#spinner');
 $(document).ready(function() {
-    $('#exampleModalinfo').modal('show');
     table = $('#datatable').DataTable({
         processing: true,
         serverSide: true,
