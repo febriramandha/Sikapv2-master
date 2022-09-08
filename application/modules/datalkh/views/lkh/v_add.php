@@ -182,7 +182,7 @@ if ($jumlah_nonver) {
 
 <!-- notif -->
 <!-- Modal -->
-<div class="modal fade" id="exampleModalinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+<!-- <div class="modal fade" id="exampleModalinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -205,7 +205,7 @@ if ($jumlah_nonver) {
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- notif -->
 <input type="hidden" name="cekverifikasi" value="<?php echo $verifikasi ?>">
 <script type="text/javascript">
@@ -256,7 +256,6 @@ $('.readonlyjm').on('focus', function() {
 });
 
 $(document).ready(function() {
-    $('#exampleModalinfo').modal('show');
 
     load_jam($('[name="tgl"]').val());
     var verifikasi = $('[name="cekverifikasi"]').val();
