@@ -25,7 +25,7 @@ ini_set('max_execution_time', 600);
 | $config['maintenance_mode'] = TRUE; // site is offline
 | $config['maintenance_mode'] = FALSE; // site is online
 */
-$config['maintenance_mode'] = TRUE;
+$config['maintenance_mode'] = FALSE;
 $config['maintenance_ips'] = array('172.30.253.3');
 
 /*
@@ -56,6 +56,7 @@ $newurl = str_replace("index.php","", $_SERVER['SCRIPT_NAME']);
 if (isset($_SERVER['HTTP_X_SCRIPT_NAME'])) {
 	$newurl = str_replace("index.php","", $_SERVER['HTTP_X_SCRIPT_NAME']);
 }
+
 $config['base_url'] = "$http" . $_SERVER['SERVER_NAME'] . "" . $newurl;
 
 
@@ -437,8 +438,9 @@ $config['sess_regenerate_destroy'] = FALSE;
 $config['cookie_prefix']	= '';
 $config['cookie_domain']	= '';
 $config['cookie_path']		= '/';
-$config['cookie_secure']	= FALSE;
-$config['cookie_httponly'] 	= FALSE;
+$config['cookie_secure']	= (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? TRUE : FALSE;
+// $config['cookie_secure']	= FALSE;
+$config['cookie_httponly'] 	= TRUE;
 
 /*
 |--------------------------------------------------------------------------

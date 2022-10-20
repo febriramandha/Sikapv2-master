@@ -53,14 +53,17 @@ class Auth extends Frontend_Controller {
 				if($auth->intro == 1 || $auth->level == 1 || $auth->pns == 2 ){
 					if ($this->input->post('remember')) {
 		                $key = random_string('alnum', 64);
-		                set_cookie('tpp_cookie', $key, 3600*24*30); // set expired 30 hari kedepan
+		                // set_cookie('tpp_cookie', $key, 7300); // set expired 2 jam kedepan
+
+		                set_cookie('tpp_cookie', $key, 3600*24*30, '','/','',(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? TRUE : FALSE,TRUE); // set expired 30 hari kedepan
 		                
 		                // simpan key di database
 		                $this->m_user_login->save_cookie($key, $auth->id, 3600*24*30);
 		                $this->m_user_login->_daftarkan_session($auth, "");
 		            }else {
 		            	$key = random_string('alnum', 64);
-		                set_cookie('tpp_cookie', $key, 7300); // set expired 2 jam kedepan
+		                // set_cookie('tpp_cookie', $key, 7300); // set expired 2 jam kedepan
+		                set_cookie('tpp_cookie', $key, 7300,'','/','', (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? TRUE : FALSE, TRUE); // set expired 2 jam kedepan
 		                
 		                // simpan key di database
 		                $this->m_user_login->save_cookie($key, $auth->id, 7200);

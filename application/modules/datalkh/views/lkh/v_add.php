@@ -182,7 +182,7 @@ if ($jumlah_nonver) {
 
 <!-- notif -->
 <!-- Modal -->
-<div class="modal fade" id="exampleModalinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+<!-- <div class="modal fade" id="exampleModalinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -194,13 +194,10 @@ if ($jumlah_nonver) {
                 </button>
             </div>
             <div class="modal-body">
-                <p> Diberitahukan kepada seluruh pengguna aplikasi SIKAP(LKH dan Absensi Online) bahwasanya tanggal
-                    <strong>6 dan 7
-                        September 2022 </strong> aplikasi SIKAP akan di nonaktifkan sementara dikarenakan adanya
-                    pemeliharaan dan
-                    perbaikan aplikasi. Jika ada rekap absen atau lkh yang dibutuhkan bisa diselesaikan sebelum tanggal
-                    tersebut
-                    atas perhatiannya kami ucapkan terima kasih!
+                <p> Diberitahukan kepada seluruh pengguna aplikasi SIKAP, pengisian LKH diperpanjang dimulai dari
+                    tanggal <strong>5 September 2022 </strong> sampai <strong>8 September 2022 Jam 14.00
+                        WIB</strong>Jika
+                    ada lkh yang belum diisi segera di selesaiakan. Atas perhatiannya kami ucapkan terima kasih!
                 </p>
             </div>
             <div class="modal-footer bg-white py-2">
@@ -208,7 +205,7 @@ if ($jumlah_nonver) {
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <!-- notif -->
 <input type="hidden" name="cekverifikasi" value="<?php echo $verifikasi ?>">
 <script type="text/javascript">
@@ -259,7 +256,6 @@ $('.readonlyjm').on('focus', function() {
 });
 
 $(document).ready(function() {
-    $('#exampleModalinfo').modal('show');
 
     load_jam($('[name="tgl"]').val());
     var verifikasi = $('[name="cekverifikasi"]').val();
