@@ -56,6 +56,7 @@ $newurl = str_replace("index.php","", $_SERVER['SCRIPT_NAME']);
 if (isset($_SERVER['HTTP_X_SCRIPT_NAME'])) {
 	$newurl = str_replace("index.php","", $_SERVER['HTTP_X_SCRIPT_NAME']);
 }
+
 $config['base_url'] = "$http" . $_SERVER['SERVER_NAME'] . "" . $newurl;
 
 
@@ -437,8 +438,9 @@ $config['sess_regenerate_destroy'] = FALSE;
 $config['cookie_prefix']	= '';
 $config['cookie_domain']	= '';
 $config['cookie_path']		= '/';
-$config['cookie_secure']	= FALSE;
-$config['cookie_httponly'] 	= FALSE;
+$config['cookie_secure']	= (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? TRUE : FALSE;
+// $config['cookie_secure']	= FALSE;
+$config['cookie_httponly'] 	= TRUE;
 
 /*
 |--------------------------------------------------------------------------
