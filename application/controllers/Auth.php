@@ -37,6 +37,7 @@ class Auth extends Frontend_Controller {
          }
 		$this->load->view('auth/v_auth', $this->data);
 	}
+
 // data simpeg
 	public function GetData()
 	{
@@ -48,38 +49,67 @@ class Auth extends Frontend_Controller {
 		if ($this->form_validation->run() == TRUE) {
 
 			$auth = $this->m_user_login->_auth_cek();
-			
 			if($auth == true) {
-				if($auth->intro == 1 || $auth->level == 1 || $auth->pns == 2 ){
-					if ($this->input->post('remember')) {
-		                $key = random_string('alnum', 64);
-		                // set_cookie('tpp_cookie', $key, 7300); // set expired 2 jam kedepan
-
-		                set_cookie('tpp_cookie', $key, 3600*24*30, '','/','',(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? TRUE : FALSE,TRUE); // set expired 30 hari kedepan
-		                
-		                // simpan key di database
-		                $this->m_user_login->save_cookie($key, $auth->id, 3600*24*30);
-		                $this->m_user_login->_daftarkan_session($auth, "");
-		            }else {
-		            	$key = random_string('alnum', 64);
-		                // set_cookie('tpp_cookie', $key, 7300); // set expired 2 jam kedepan
-		                set_cookie('tpp_cookie', $key, 7300,'','/','', (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? TRUE : FALSE, TRUE); // set expired 2 jam kedepan
-		                
-		                // simpan key di database
-		                $this->m_user_login->save_cookie($key, $auth->id, 7200);
-		                $this->m_user_login->_daftarkan_session($auth, "");
-		               
-		            }
-
-			   		$data = array('status' => true,
-			    			   'message' => '<i class="fa fa-check text-success"></i> Berhasil Masuk', );
-
-				}else {
+				if($auth->pns == 1){
 					$encrypt = $auth->simpeg_user_id."#".date("Y-m-d H:i:s");
-					// $url = "https://simpeg.agamkab.go.id/auth/login_service?key=encrypt_url_public(user_id#datetime,'login')
-					$data = array('status' => false,
-				    			 'message' => 'akun simpeg anda belum diaktivasi silahkan klik <i><a href="https://simpeg.agamkab.go.id/auth/login_service?key='.encrypt_url_public($encrypt,'login').'" target="_blank" class="btn btn-sm btn-info">disini</a></i> untuk aktivasi akun simpeg anda!' );					   
-				}		
+					if($auth->intro != 1){
+						// $url = "https://simpeg.agamkab.go.id/auth/login_service?key=encrypt_url_public(user_id#datetime,'login')
+						$data = array('status' => false,
+							'message' => 'akun simpeg anda belum diaktivasi silahkan klik <i><a href="https://simpeg.agamkab.go.id/auth/login_service?key='.encrypt_url_public($encrypt,'login').'" target="_blank" class="btn btn-sm btn-info">disini</a></i> untuk aktivasi!' );					   
+			
+					}else if(empty($auth->total_persen)){
+						// $url = "https://simpeg.agamkab.go.id/auth/login_service?key=encrypt_url_public(user_id#datetime,'login')
+						$data = array('status' => false,
+									'message' => 'anda belum melengkapi akun simpeg, silahkan klik <i><a href="https://simpeg.agamkab.go.id/auth/login_service?key='.encrypt_url_public($encrypt,'login').'" target="_blank" class="btn btn-sm btn-info">disini</a></i> untuk melengkapi!' );	
+					}else if($auth->total_persen != "100" ){
+						$encrypt = $auth->simpeg_user_id."#".date("Y-m-d H:i:s");
+						// $url = "https://simpeg.agamkab.go.id/auth/login_service?key=encrypt_url_public(user_id#datetime,'login')
+						$data = array('status' => false,
+									'message' => 'kelengkapan akun simpeg anda masih <b>'.$auth->total_persen.'%</b>, silahkan klik <i><a href="https://simpeg.agamkab.go.id/auth/login_service?key='.encrypt_url_public($encrypt,'login').'" target="_blank" class="btn btn-sm btn-info">disini</a></i> untuk melengkapi!' );	
+					}else {
+						if ($this->input->post('remember')) {
+							$key = random_string('alnum', 64);
+							// set_cookie('tpp_cookie', $key, 7300); // set expired 2 jam kedepan
+
+							set_cookie('tpp_cookie', $key, 3600*24*30, '','/','',(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? TRUE : FALSE,TRUE); // set expired 30 hari kedepan
+							
+							// simpan key di database
+							$this->m_user_login->save_cookie($key, $auth->id, 3600*24*30);
+							$this->m_user_login->_daftarkan_session($auth, "");
+						}else {
+							$key = random_string('alnum', 64);
+							// set_cookie('tpp_cookie', $key, 7300); // set expired 2 jam kedepan
+							set_cookie('tpp_cookie', $key, 7300,'','/','', (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? TRUE : FALSE, TRUE); // set expired 2 jam kedepan
+							
+							// simpan key di database
+							$this->m_user_login->save_cookie($key, $auth->id, 7200);
+							$this->m_user_login->_daftarkan_session($auth, "");
+						}
+						$data = array('status' => true,
+						'message' => '<i class="fa fa-check text-success"></i> Berhasil Masuk', );
+					}			   
+				}else if($auth->pns == 2 || $auth->level == 1){
+					if ($this->input->post('remember')) {
+						$key = random_string('alnum', 64);
+						// set_cookie('tpp_cookie', $key, 7300); // set expired 2 jam kedepan
+
+						set_cookie('tpp_cookie', $key, 3600*24*30, '','/','',(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? TRUE : FALSE,TRUE); // set expired 30 hari kedepan
+						
+						// simpan key di database
+						$this->m_user_login->save_cookie($key, $auth->id, 3600*24*30);
+						$this->m_user_login->_daftarkan_session($auth, "");
+					}else {
+						$key = random_string('alnum', 64);
+						// set_cookie('tpp_cookie', $key, 7300); // set expired 2 jam kedepan
+						set_cookie('tpp_cookie', $key, 7300,'','/','', (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') ? TRUE : FALSE, TRUE); // set expired 2 jam kedepan
+						
+						// simpan key di database
+						$this->m_user_login->save_cookie($key, $auth->id, 7200);
+						$this->m_user_login->_daftarkan_session($auth, "");
+					}
+					$data = array('status' => true,
+					'message' => '<i class="fa fa-check text-success"></i> Berhasil Masuk', );
+				}
 			}else {
 				  $data = array('status' => false,
 				    			 'message' => 'nama pengguna atau kata sandi salah' );

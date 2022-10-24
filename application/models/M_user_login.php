@@ -35,12 +35,14 @@ class M_user_login extends CI_Model {
 
 	public function _auth_cek()
 	  {
-	    $this->db->select('a.id, a.user_id, b.dept_id, a.username as username_sikap, a.password as password_sikap, d.username, d.password, a.level, b.nama, a.avatar,c.intro,b.pns,c.id as pegawai_id,d.id as simpeg_user_id');
+	    $this->db->select('a.id, a.user_id, b.dept_id, a.username as username_sikap, a.password as password_sikap, d.username, d.password, a.level, b.nama, a.avatar,c.intro,b.pns,c.id as pegawai_id,d.id as simpeg_user_id,e.total_persen');
 	    $this->db->from('users_login a');
 	    $this->db->join('mf_users b', 'a.user_id=b.id','left');
 		$this->db->join(''.$this->data['db_connect'].'.pegawai c','b.nip = c.nip or b.simpeg_pegawai_id = c.id','left');
 		$this->db->join(''.$this->data['db_connect'].'.users d','c.id = d.pegawai_id','left');
-	    $this->db->where('d.username',$this->input->post('username'));
+		$this->db->join('v_biodata_simpeg e','e.id = d.pegawai_id','left');
+	    $this->db->where('c.nip',$this->input->post('username'));
+	    $this->db->or_where('d.username',$this->input->post('username'));
 	    $this->db->or_where('a.username',$this->input->post('username'));
 	    $this->db->where('a.status=1');
 	    $this->db->limit(1);
