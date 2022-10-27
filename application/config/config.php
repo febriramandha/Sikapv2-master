@@ -25,7 +25,7 @@ ini_set('max_execution_time', 600);
 | $config['maintenance_mode'] = TRUE; // site is offline
 | $config['maintenance_mode'] = FALSE; // site is online
 */
-$config['maintenance_mode'] = TRUE;
+$config['maintenance_mode'] = FALSE;
 $config['maintenance_ips'] = array('172.30.253.3');
 
 /*
