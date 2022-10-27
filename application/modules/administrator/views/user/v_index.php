@@ -44,11 +44,6 @@
             <button class="btn btn-sm bg-success-400 legitRipple pt-1 pb-1" id="cetak">
                 <span><i class="icon-printer mr-2"></i> Cetak</span>
             </button>
-            <a class="btn btn-sm bg-info-400 legitRipple pt-1 pb-1 sync-pegawai" id="sync-pegawai-pns">
-                <span><i class="icon-spinner11"></i> Sinkron PNS</span>
-            </a> <a class="btn btn-sm bg-info-400 legitRipple pt-1 pb-1 sync-pegawai" id="sync-pegawai-non-pns">
-                <span><i class="icon-spinner11"></i> Sinkron Non PNS</span>
-            </a>
         </div>
         <div class="table-responsive">
             <table id="datatable" class="table table-sm table-hover table-bordered">
@@ -220,60 +215,6 @@ $('#cetak').click(function() {
         newWindow.focus()
     }
     return false;
-})
-
-
-$("#sync-pegawai-pns").click(function() {
-    var dept_id = $('[name="instansi"]').val();
-    $.ajax({
-        type: 'get',
-        url: uri_dasar + 'administrator/user/SyncPegawai/' + dept_id,
-        dataType: "JSON",
-        error: function() {
-            $('.table').unblock();
-            bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
-        },
-        beforeSend: function() {
-            load_dt('.table');
-        },
-        success: function(res) {
-            if (res.status == true) {
-                bx_alert_ok(res.message, 'success');
-                table.ajax.reload();
-            } else {
-                bx_alert(res.message);
-            }
-            $('.table').unblock();
-        }
-    });
-
-});
-
-$("#sync-pegawai-non-pns").click(function() {
-    alert("fitur belum tersedia!");
-    // var dept_id = $('[name="instansi"]').val();
-    // $.ajax({
-    //     type: 'get',
-    //     url: uri_dasar + 'administrator/user/SyncPegawaiNon/' + dept_id,
-    //     dataType: "JSON",
-    //     error: function() {
-    //         $('.table').unblock();
-    //         bx_alert('gagal menghubungkan ke server cobalah mengulang halaman ini kembali');
-    //     },
-    //     beforeSend: function() {
-    //         load_dt('.table');
-    //     },
-    //     success: function(res) {
-    //         if (res.status == true) {
-    //             bx_alert_ok(res.message, 'success');
-    //             table.ajax.reload();
-    //         } else {
-    //             bx_alert(res.message);
-    //         }
-    //         $('.table').unblock();
-    //     }
-    // });
-
 });
 
 

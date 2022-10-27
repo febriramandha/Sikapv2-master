@@ -20,8 +20,7 @@
                     <input type="text" name="username" class="form-control trim" placeholder="isi nama pengguna"
                         autocomplete="off" <?php if($user->pns ==1) {echo "readonly";} ?>
                         value="<?php echo $user->username ?>">
-                    <span><i>* khusus data akun ASN diperbarui dari
-                            simpeg</i></span>
+                    <span><i>* khusus ASN username diperbarui dari akun simpeg</i></span>
                 </div>
             </div>
         </div>
@@ -35,8 +34,8 @@
                     <input type="password" name="password_confirmation" class="form-control trim"
                         placeholder="isi kata sandi" autocomplete="new-password"
                         <?php if($user->pns ==1) {echo "readonly";} ?> />
-                    <span><i>* kosongkan jika tidak ingin mengganti kata sandi (khusus data akun ASN diperbarui dari
-                            simpeg)</i></span>
+                    <span><i>* kosongkan jika tidak ingin mengganti kata sandi (khusus ASN password diperbarui dari
+                            akun simpeg)</i></span>
                 </div>
             </div>
         </div>
@@ -49,8 +48,8 @@
                     </div>
                     <input type="password" name="password" class="form-control trim" placeholder="isi ulangi kata sandi"
                         autocomplete="off" <?php if($user->pns ==1) {echo "readonly";} ?> />
-                    <span><i>* kosongkan jika tidak ingin mengganti kata sandi (khusus data akun ASN diperbarui dari
-                            simpeg)</i></span>
+                    <span><i>* kosongkan jika tidak ingin mengganti kata sandi (khusus ASN password diperbarui dari
+                            akun simpeg)</i></span>
                 </div>
             </div>
         </div>
@@ -207,7 +206,7 @@
                     </div>
                     <input type="text" name="kelas_jabatan" class="form-control" placeholder="kelas jabatan"
                         value="<?php echo $user->kelas_jabatan ?>" disabled="yes">
-                    <span class="text-danger"><i>* data jabatan diperbarui dari aplikasi SIMPEG </i></span>
+                    <span class="text-danger"><i>* data kelas jabatan diperbarui dari aplikasi SIMPEG </i></span>
                 </div>
             </div>
         </div>
