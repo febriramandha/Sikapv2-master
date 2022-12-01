@@ -94,7 +94,7 @@ class Data_pegawai extends App_Controller {
 			$this->form_validation->set_rules('password', 'ulangi kata sandi', 'trim|required');
 		}
 		$this->form_validation->set_rules('ketegori', 'kategori', 'required')
-							  ->set_rules('simpeg_pegawai_id','Simpeg Pegawai','required')
+							//   ->set_rules('simpeg_pegawai_id','Simpeg Pegawai','required')
 							  ->set_rules('nama', 'nama lengkap', 'required');		
 		$this->form_validation->set_error_delimiters('<div><spam class="text-danger"><i>* ','</i></spam></div>');
 

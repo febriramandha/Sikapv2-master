@@ -136,11 +136,7 @@ class Rekap_kehadiran extends App_Controller {
 											jam_pulang_notfixed,
 											count_day_shift,
 											jumtidak_upacara,
-											jum_apel,
-											jumopd_apel,
-											jumuserspiket_apel,
-											ibadah_id,
-											jam_absen_apel
+											ibadah_id
 										) ORDER BY rentan_tanggal)
 								) as json_absen
 							from mf_users a
@@ -171,10 +167,6 @@ class Rekap_kehadiran extends App_Controller {
 											max((p.checktime)::time) AS jam_pulang_notfixed,
 											e.count_day as count_day_shift,
 											q.jum as jumtidak_upacara,
-											s.hadir as jum_apel,
-											t.jum as jumopd_apel,
-											t.user_id as jumuserspiket_apel,
-											min((v.checktime)::time without time zone) AS jam_absen_apel,
 											r.ibadah_id
 											from 
 											(select a.id, a.dept_id, rentan_tanggal from mf_users a, (select * from rentan_tanggal('$rank1','$rank2')) as tanggal) as a
@@ -194,12 +186,8 @@ class Rekap_kehadiran extends App_Controller {
 											left join mf_checkinout o on ((a.id = o.user_id) AND (a.rentan_tanggal = date(o.checktime)) AND ((o.checktime)::time without time zone >= n.check_in_time1) AND ((o.checktime)::time without time zone <= n.check_in_time2))
 											left join mf_checkinout p on ((a.id = p.user_id) AND (a.rentan_tanggal = date(p.checktime)) AND ((p.checktime)::time without time zone >= n.check_out_time1) AND ((p.checktime)::time without time zone <= n.check_out_time2))
 											left join v_tidak_hadir_upacara q on (a.id=q.user_id and a.rentan_tanggal=q.tanggal)
-											left join v_apel_pagi_opd t on (a.dept_id=t.dept_id and a.rentan_tanggal=t.tgl_apel)
-											left join v_apel_pagi_users s on (a.id	=s.user_id and a.rentan_tanggal=s.tgl_apel and t.id = s.id)
-											left join sch_apel u on (a.rentan_tanggal = date(u.tgl_apel) and a.dept_id = any(u.dept_id) and u.deleted=1)
-											left join mf_checkinout v on ((a.id = v.user_id) AND (u.tgl_apel = date(v.checktime)) AND ((v.checktime)::time >= u.start_time) AND ((v.checktime)::time <= u.end_time)) 
 											left join ibadah_muslim r on (a.id=r.user_id and a.rentan_tanggal=r.tgl_ibadah)
-											group by 1,2,3,4,5,6,7,10,11,12,15,16,17,18,19,20,21,22,25,26,27,28,29,31
+											group by 1,2,3,4,5,6,7,10,11,12,15,16,17,18,19,20,21,22,25,26,27
 							) as b on a.id=b.id
 							group by 1
 							) as b",'a.id=b.id','left',false);

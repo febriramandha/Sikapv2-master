@@ -169,11 +169,11 @@
         </div>
         <?php }else { ?>
         <div class="form-group row">
-            <label class="col-form-label col-lg-2">Pegawai Simpeg <span class="text-danger">*</span></label>
+            <label class="col-form-label col-lg-2">Pegawai Non ASN Simpeg </label>
             <div class="col-lg-10">
                 <div class="form-group">
                     <select class="form-control select-search" name="simpeg_pegawai_id">
-                        <option value="">Pilih Pegawai Simpeg</option>
+                        <option value="">Pilih Pegawai Non ASN Simpeg</option>
                         <?php foreach ($simpeg_user as $row) {?>
                         <option value="<?php echo encrypt_url($row->id,'simpeg_pegawai_id') ?>"
                             <?php if ($row->id == $user->simpeg_pegawai_id) { echo "selected";} ?>>

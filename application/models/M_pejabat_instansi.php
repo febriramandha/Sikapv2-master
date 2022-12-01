@@ -14,7 +14,7 @@ class M_pejabat_instansi extends CI_Model {
 				->from('mf_departments a')
 				->join("(select user_id, dept_id from pejabat_instansi where pejabat_id=$id) as b",'b.dept_id=a.id','left')
 				->join('v_users_all c','b.user_id=c.id','left')
-				->join('_kecamatan d','a.kecamatan_id=d.id OR a.kecamatan_id = d.kecamatan_id_simpeg','left')
+				->join('_kecamatan d','a.kecamatan_id=d.id OR a.kecamatan_id = CAST(d.kecamatan_id_simpeg as int)','left')
 				->join('_golongan e','c.golongan_id=e.id','left')
 				->where('a.id', $dept_id);
 		return $this->db->get();
