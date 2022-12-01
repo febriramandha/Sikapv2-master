@@ -87,26 +87,22 @@ class Rabsensi extends App_Controller {
 									l.status_in,
 									l.status_out,
 									m.id as daysoff_id,
-									r.hadir as hadir_apel,
-									q.dept_id as dept_apel,
 									a.dept_id as dept_id,
 									n.start_time as start_time_notfixed, 
 									n.end_time as end_time_notfixed,
-									s.user_id as users_id_piket_apel,
 									a.status_pegawai,
-									min((t.checktime)::time ) AS jam_absen_apel,
 									min((o.checktime)::time ) AS jam_masuk_notfixed,
 									max((p.checktime)::time ) AS jam_pulang_notfixed")
         	//user dan tanggal
         	->from("(select * from v_users_all, (select * from rentan_tanggal('$rank1_','$rank2_')) as tanggal) as a");
         	// jadwal user sesuai jam kerja
-        	 $this->db->join('v_jadwal_kerja_users b',"((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day)and b.user_id=a.id)",'left',false);
+        	 $this->db->join('v_jadwal_kerja_users_2 b',"((rentan_tanggal >= b.start_date and rentan_tanggal <= b.end_date and extract('isodow' from a.rentan_tanggal) = b.s_day)and b.user_id=a.id)",'left',false);
         	// cari ceklok sesuai jadwal = jam masuk
         	$this->db->join('mf_checkinout c',"((a.id = c.user_id) AND (a.rentan_tanggal = date(c.checktime)) AND ((c.checktime)::time  >= b.check_in_time1) AND ((c.checktime)::time  <= b.check_in_time2))",'left',false);
         	// cari ceklok sesuai jadwal = jam keluar
         	$this->db->join('mf_checkinout d',"((a.id = d.user_id) AND (a.rentan_tanggal = date(d.checktime)) AND ((d.checktime)::time  >= b.check_out_time1) AND ((d.checktime)::time  <= b.check_out_time2))",'left',false);
         	// jadwal shift user
-        	$this->db->join('v_jadwal_kerja_users_shift e',"(a.id = e.user_id and e.start_shift=a.rentan_tanggal)",'left',false);
+        	$this->db->join('v_jadwal_kerja_users_shift_2 e',"(a.id = e.user_id and e.start_shift=a.rentan_tanggal)",'left',false);
         	// cari ceklok sesuai jadwal shift = jam masuk shift
         	$this->db->join('mf_checkinout f',"((a.id = f.user_id) AND (e.start_shift = date(f.checktime)) AND ((f.checktime)::time  >= e.check_in_time1) AND ((f.checktime)::time  <= e.check_in_time2))",'left',false);
         	// cari ceklok sesuai jadwal shift = jam keluar shift
@@ -123,21 +119,12 @@ class Rabsensi extends App_Controller {
         	// hari libur
         	$this->db->join('days_off m',"(rentan_tanggal >= m.start_date and rentan_tanggal <= m.end_date)",'left',false);
         	//jadwal kerja tidak tetap
-        	 $this->db->join('v_jadwal_kerja_users_notfixed n',"((rentan_tanggal >= n.start_date and rentan_tanggal <= n.end_date and extract('isodow' from a.rentan_tanggal) = n.day_id)and n.user_id=a.id)",'left',false);
+        	 $this->db->join('v_jadwal_kerja_users_notfixed_2 n',"((rentan_tanggal >= n.start_date and rentan_tanggal <= n.end_date and extract('isodow' from a.rentan_tanggal) = n.day_id)and n.user_id=a.id)",'left',false);
         	 // cari ceklok sesuai jadwal = jam masuk
         	$this->db->join('mf_checkinout o',"((a.id = o.user_id) AND (a.rentan_tanggal = date(o.checktime)) AND ((o.checktime)::time >= n.check_in_time1) AND ((o.checktime)::time <= n.check_in_time2))",'left',false);
         	// cari ceklok sesuai jadwal = jam keluar
         	$this->db->join('mf_checkinout p',"((a.id = p.user_id) AND (a.rentan_tanggal = date(p.checktime)) AND ((p.checktime)::time >= n.check_out_time1) AND ((p.checktime)::time <= n.check_out_time2))",'left',false);
-			//  absen sch apel 
-			$this->db->join('sch_apel q',"(a.rentan_tanggal = date(q.tgl_apel) and a.dept_id = any(q.dept_id) and q.deleted=1)",'left',false);
-			//  absen apel 
-			$this->db->join('v_apel_pagi_users r',"(a.id = r.user_id and a.rentan_tanggal = r.tgl_apel)",'left',false);
-			// absen user apel piket
-			$this->db->join('sch_apel_users s',"(a.dept_id = s.dept_id and r.id = s.sch_apel_id)",'left',false);
-			// absen apel finger
-			$this->db->join('mf_checkinout t',"((a.id = t.user_id) AND (q.tgl_apel = date(t.checktime)) AND ((t.checktime)::time >= q.start_time) AND ((t.checktime)::time <= q.end_time))",'left',false);
-
-        	$this->db->group_by('1,2,3,4,5,6,7,8,9,12,13,14,17,18,19,no_urut,20,21,22,23,24,25,26,27,28,29,30,31');
+        	$this->db->group_by('1,2,3,4,5,6,7,8,9,12,13,14,17,18,19,no_urut,20,21,22,23,24,25,26,27,28');
         	$this->db->order_by('a.no_urut, rentan_tanggal');
         	$this->datatables->add_column('nama_nip','$1','nama_icon_nip(nama,gelar_dpn,gelar_blk,nip)');
         	$this->datatables->add_column('tanggal','$1','tglInd_hrtabel(rentan_tanggal)');
