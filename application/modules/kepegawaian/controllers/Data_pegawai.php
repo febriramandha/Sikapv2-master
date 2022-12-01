@@ -129,7 +129,7 @@ class Data_pegawai extends App_Controller {
 								  'updated_at' 	=> date('Y-m-d H:i:s'),
 								  'status'		=> $status,
 								  'updated_by'  => $this->session->userdata('tpp_user_id'), );
-					if ($this->input->post('password')) {
+					if ($this->input->post('password') && $this->input->post('ketegori') == 2) {
 						$data['password'] = $this->m_user_login->ghash($this->input->post('password'));
 						$data['recovery'] = $this->encryption->encrypt($this->input->post('password'));
 					}
