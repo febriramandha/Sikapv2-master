@@ -3,9 +3,7 @@
         <div class="news">
             <marquee class="news-content">
                 Diberitahukan kepada seluruh <b>ASN</b> pengguna aplikasi SIKAP (LKH & Absensi Online) mulai hari
-                <b>Senin,31
-                    Oktober
-                    2022</b> akses login menggunakan <b>username & password akun SIMPEG!</b>
+                <b>Kamis,1 Desember 2022</b> akses login menggunakan <b>username & password akun SIMPEG!</b>
             </marquee>
         </div>
     </div>
