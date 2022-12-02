@@ -87,11 +87,12 @@ class Data_pegawai extends App_Controller {
 			$username_cek = 'edit_unique[users_login.username.'.decrypt_url($this->input->post('login_id'),'login_id').']';
 		}
 
-		$this->form_validation->set_rules('username', 'nama pengguna', 'required|trim|min_length[6]|'.$username_cek.'');
-
-		if ($this->input->post('password') || $this->input->post('password_confirmation') || $mod == "add") {
-			$this->form_validation->set_rules('password_confirmation', 'kata sandi', 'trim|required|min_length[6]|matches[password]');
-			$this->form_validation->set_rules('password', 'ulangi kata sandi', 'trim|required');
+		if($this->input->post('ketegori')== '2'){
+			$this->form_validation->set_rules('username', 'nama pengguna', 'required|trim|min_length[6]|'.$username_cek.'');
+			if ($this->input->post('password') || $this->input->post('password_confirmation') || $mod == "add") {
+				$this->form_validation->set_rules('password_confirmation', 'kata sandi', 'trim|required|min_length[6]|matches[password]');
+				$this->form_validation->set_rules('password', 'ulangi kata sandi', 'trim|required');
+			}
 		}
 		$this->form_validation->set_rules('ketegori', 'kategori', 'required')
 							//   ->set_rules('simpeg_pegawai_id','Simpeg Pegawai','required')
