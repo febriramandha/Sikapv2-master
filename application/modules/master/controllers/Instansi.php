@@ -140,7 +140,7 @@ class Instansi extends App_Controller {
 							'alamat'			=> $this->input->post('alamat'),
 							'latlong'			=> (!empty($this->input->post('latlong'))) ? $this->input->post('latlong') : NULL ,
 							'radius'			=> (!empty($this->input->post('radius'))) ? $this->input->post('radius') : NULL,
-							'simpeg_dept_id'	=> (!empty($this->input->post('simpeg_dept_id'))) ? $this->input->post('simpeg_dept_id') : NULL,
+							'simpeg_dept_id'	=> (!empty($this->input->post('simpeg_dept_id'))) ? decrypt_url($this->input->post('simpeg_dept_id'),'simpeg_dept_id') : NULL,
 				);
 				$res_ = $this->db->insert('mf_departments',$data);
 				$id_new = $this->db->insert_id();
