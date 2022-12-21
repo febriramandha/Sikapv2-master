@@ -258,7 +258,7 @@ class User extends App_Controller {
 					$this->db->update('mf_users', $data, ['id' => decrypt_url($this->input->post('user_id'),'user_id')]);
 
 					if(!empty($mutasi)){
-							$this->db->insert_batch('mutasi', $mutasi);
+							// $this->db->insert_batch('mutasi', $mutasi);
 					}
 					// insert to server 2
 					$data_att = array('name' 	 		=> $this->input->post('nama'),

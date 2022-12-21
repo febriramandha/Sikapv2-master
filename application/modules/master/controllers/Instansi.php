@@ -187,14 +187,13 @@ class Instansi extends App_Controller {
 					'alamat'			=> $this->input->post('alamat'),
 					'latlong'			=> (!empty($this->input->post('latlong'))) ? $this->input->post('latlong') : NULL ,
 					'radius'			=> (!empty($this->input->post('radius'))) ? $this->input->post('radius') : NULL,
-					'simpeg_dept_id'	=> (!empty($this->input->post('simpeg_dept_id'))) ? $this->input->post('simpeg_dept_id') : NULL,
+					'simpeg_dept_id'	=> (!empty($this->input->post('simpeg_dept_id'))) ? decrypt_url($this->input->post('simpeg_dept_id'),'instansi') : NULL,
 				);
 				$parent = decrypt_url($this->input->post('parent'),'instansi');
 				if($parent != 0){
 					$data['parent_id'] = $this->input->post('parent_id');
 				}
 				$this->return = $this->db->update('mf_departments', $data, ['id' => decrypt_url($this->input->post('id'),'instansi')]);
-
 				$path = $this->db->select('path_info')->get_where('v_instansi_all_master', ['id' => decrypt_url($this->input->post('id'),'instansi')])->row();
 
 				$new_path = attConverPathNumber($path->path_info);
