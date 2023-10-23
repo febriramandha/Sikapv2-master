@@ -237,7 +237,7 @@
 			}else{
 				$parse = 0;
 			} 
-			$total = number_format((float)$parse, 2, '.', ''); 
+			$total = number_format((float)$parse, 3, '.', ''); 
 		}
 		return $total;
 	}

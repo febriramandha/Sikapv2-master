@@ -13,7 +13,7 @@
 							<div class="text-muted font-size-sm">
 								<span class="font-weight-semibold"><i class="icon-calendar3 mr-1"></i><?php echo format_waktu_ind($row->created_at)  ?></span><br>
 								<span class="badge badge-mark border-blue mr-1"></span>
-								<?php echo $row->description  ?>
+								<?php echo $row->description?>
 							</div>
 							<span class="text-muted"><?php echo $row->content  ?></span>
 						</td>

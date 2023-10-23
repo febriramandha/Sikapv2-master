@@ -55,6 +55,7 @@ class Rekap_kehadiran extends App_Controller {
         		if ($tpp != 'false' && $tpp) {
         			$this->db->where('tpp',1);
         		}
+				
         		$data_pegawai = $this->db->get()->result();
 
         		$res='<select class="form-control multiselect-clickable-groups" name="pegawai[]" multiple="multiple" data-fouc>';

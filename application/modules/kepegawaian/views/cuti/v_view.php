@@ -72,7 +72,7 @@
 						<th width="1%">No</th>
 						<th class="text-nowrap">Tanggal Cuti</th>
 						<th class="text-nowrap">Jenis Cuti</th>
-						<!-- <th width="1%" style="font-size: 80%;">Jumlah Hari</th> -->
+						<th width="1%" style="font-size: 80%;">Jumlah Hari</th>
 						<th width="1%">Aksi</th>
 					</tr>
 				</thead>
@@ -112,7 +112,7 @@ $(document).ready(function(){
 	        {"data": "id", searchable:false},
 	        {"data": "start_date", searchable:false},
 	        {"data": "cuti_nama", searchable:false},
-	        // {"data": "kode", searchable:false},
+	        {"data": "kode", searchable:false},
 	        {"data": "action", searchable:false},
 	    ],
 	    rowCallback: function(row, data, iDisplayIndex) {

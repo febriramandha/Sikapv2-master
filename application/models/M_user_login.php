@@ -63,7 +63,7 @@ class M_user_login extends CI_Model {
 					$password_ = $password;
 				}
 				if (password_verify($this->input->post('password'), $password_)) {
-					// echo 'Password is vali!';
+					// echo 'Password is valid!';
 					return $data;
 				} else {
 					// echo 'Invalid password.';

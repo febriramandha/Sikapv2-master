@@ -119,6 +119,10 @@ function tgl_minus_lkh($tgl='', $nilai='', $hari_id=array())
           return $a;
     }
 
+
+
+
+
     function cek_dltabel($dl)
     {
           $a = '';

@@ -214,13 +214,14 @@
       <label class="col-form-label col-lg-2">Jenis Pengguna <span class="text-danger">*</span></label>
       <div class="col-lg-10">
         <div class="form-group">
-         <select class="form-control select-nosearch" name="level" >  
-          <option disabled="">Pilih Jenis Pengguna</option> 
-          <option value="<?php echo encrypt_url(1,'level') ?>">Super Administrator</option>
-          <option value="<?php echo encrypt_url(2,'level') ?>">Admin Instansi</option>
-          <option value="<?php echo encrypt_url(5,'level') ?>">Pimpinan</option>
-          <option value="<?php echo encrypt_url(3,'level') ?>" selected>Pegawai</option>
-          <option value="<?php echo encrypt_url(4,'level') ?>">User Eksekutif</option>
+         <select class="form-control select-nosearch" name="level" >
+			 <option disabled="">Pilih Jenis Pengguna</option>
+			 <option value="<?php echo encrypt_url(1, 'level') ?>">Super Administrator</option>
+			 <option value="<?php echo encrypt_url(2, 'level') ?>">Admin Instansi</option>
+			 <option value="<?php echo encrypt_url(5, 'level') ?>">Pimpinan</option>
+			 <option value="<?php echo encrypt_url(3, 'level') ?>">Pegawai</option>
+			 <option value="<?php echo encrypt_url(4, 'level') ?>">User Eksekutif</option>
+			 <option value="<?php echo encrypt_url(6, 'level') ?>">Admin Keuangan</option>
         </select> 
       </div>
     </div>

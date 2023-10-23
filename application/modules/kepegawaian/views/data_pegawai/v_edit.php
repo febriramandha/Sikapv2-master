@@ -273,19 +273,21 @@
             <label class="col-form-label col-lg-2">Jenis Pengguna <span class="text-danger">*</span></label>
             <div class="col-lg-10">
                 <div class="form-group">
-                    <select class="form-control select-nosearch" name="level" disabled="true">
-                        <option disabled="">Pilih Jenis Pengguna</option>
-                        <option value="<?php echo encrypt_url(1,'level') ?>"
-                            <?php if ($user->level == 1) { echo "selected";} ?>>Super Administrator</option>
-                        <option value="<?php echo encrypt_url(2,'level') ?>"
-                            <?php if ($user->level == 2) { echo "selected";} ?>>Admin Instansi</option>
-                        <option value="<?php echo encrypt_url(5,'level') ?>"
-                            <?php if ($user->level == 5) { echo "selected";} ?>>Pimpinan</option>
-                        <option value="<?php echo encrypt_url(3,'level') ?>"
-                            <?php if ($user->level == 3) { echo "selected";} ?>>Pegawai</option>
-                        <option value="<?php echo encrypt_url(4,'level') ?>"
-                            <?php if ($user->level == 4) { echo "selected";} ?>>User Eksekutif</option>
-                    </select>
+					<select class="form-control select-nosearch" name="level" disabled="true">
+						<option disabled="">Pilih Jenis Pengguna</option>
+						<option value="<?php echo encrypt_url(1, 'level') ?>"
+							<?php if ($user->level == 1) { echo "selected"; } ?>>Super Administrator</option>
+						<option value="<?php echo encrypt_url(2, 'level') ?>"
+							<?php if ($user->level == 2) { echo "selected"; } ?>>Admin Instansi</option>
+						<option value="<?php echo encrypt_url(5, 'level') ?>"
+							<?php if ($user->level == 5) { echo "selected"; } ?>>Pimpinan</option>
+						<option value="<?php echo encrypt_url(3, 'level') ?>"
+							<?php if ($user->level == 3) { echo "selected"; } ?>>Pegawai</option>
+						<option value="<?php echo encrypt_url(4, 'level') ?>"
+							<?php if ($user->level == 4) { echo "selected"; } ?>>User Eksekutif</option>
+						<option value="<?php echo encrypt_url(6, 'level') ?>"
+							<?php if ($user->level == 6) { echo "selected"; } ?>>Admin Keuangan</option>
+					</select>
                 </div>
             </div>
         </div>

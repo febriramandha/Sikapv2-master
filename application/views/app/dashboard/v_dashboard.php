@@ -147,7 +147,7 @@
                                             <span class="badge badge-mark border-blue mr-1"></span>
                                             <?php echo $row->description  ?>
                                         </div>
-                                        <span class="text-muted"><?php echo $row->content  ?></span>
+                                        <span class="text-muted"><?php echo $row->content?></span>
                                     </td>
                                 </tr>
                             </thead>

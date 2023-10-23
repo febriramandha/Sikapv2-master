@@ -8,7 +8,7 @@
 				<?php echo form_open('app/profile/AjaxGet','id="formAjax"'); ?>
 				<div class="alert alert-warning border-0 alert-dismissible">
 					<button type="button" class="close" data-dismiss="alert"><span>×</span></button>
-					Kosongkan kata sandi jika tidak mengganti kata sandi
+					Kosongkan kata sandi jika tidak mengganti kata sandi. Khusus ASN, ganti password di <a href="https://simpeg.agamkab.go.id/" target="_blank">https://simpeg.agamkab.go.id/</a>
 				</div>
 				
 				<div class="form-group row">

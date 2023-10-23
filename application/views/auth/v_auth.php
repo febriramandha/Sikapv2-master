@@ -2,8 +2,8 @@
     <div class="ticker">
         <div class="news">
             <marquee class="news-content">
-                Diberitahukan kepada seluruh <b>ASN</b> pengguna aplikasi SIKAP (LKH & Absensi Online) mulai hari
-                <b>Kamis,1 Desember 2022</b> akses login menggunakan <b>username & password akun SIMPEG!</b>
+                Diberitahukan kepada seluruh <b>ASN</b> pengguna aplikasi SIKAP (LKH & Absensi Online) 
+                <b></b> akses login menggunakan <b>username & password akun SIMPEG!</b>
             </marquee>
         </div>
     </div>

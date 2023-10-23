@@ -149,7 +149,7 @@ class Rekap_lkh extends App_Controller {
 						left join v_jadwal_kerja_users_shift_3 c on (a.id = c.user_id and c.start_shift=a.rentan_tanggal)
 						left join v_jadwal_kerja_users_notfixed d on ((rentan_tanggal >= d.start_date and rentan_tanggal <= d.end_date and extract('isodow' from a.rentan_tanggal) = d.day_id)and d.user_id=a.id)
 						left join days_off e on (rentan_tanggal >= e.start_date and rentan_tanggal <= e.end_date)
-						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum, poin, COUNT(*) FILTER(where persentase = 100) AS count_persen FROM data_lkh where status=1 GROUP BY 1,2,4) as f on (a.id = f.user_id and rentan_tanggal = f.tgl_lkh)
+						left join (SELECT user_id,tgl_lkh,count(DISTINCT id) AS jum, poin, COUNT(*) FILTER(where persentase = 100) AS count_persen FROM data_lkh where status=1 AND poin=1 GROUP BY 1,2,4) as f on (a.id = f.user_id and rentan_tanggal = f.tgl_lkh)
 						left join data_cuti h on (a.id = h.user_id and h.deleted =1 and (rentan_tanggal >= h.start_date and rentan_tanggal <= h.end_date)) 
 						left join _cuti i on h.cuti_id=i.id
 						group by 1,2,3,4,5,6,7,8,9,10,11,12,13,14) as b on a.id=b.id 
